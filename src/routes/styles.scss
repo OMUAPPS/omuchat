@@ -1,0 +1,36 @@
+:root {
+    --color-bg-1: #f6f3eb;
+    --color-bg-2: #fffefc;
+    --color-1: #0b6f72;
+    --color-2: #35dfe1;
+    --color-text: #000;
+    --color-outline: rgba(0, 0, 0, 0.1);
+    --margin: 10px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    font-family:
+        Noto Sans JP,
+        serif;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    background-attachment: fixed;
+    background-color: var(--color-bg-1);
+    background-size: 100vw 100vh;
+}
+
+@font-face {
+    font-family: 'Pacifico';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Pacifico Regular'), local('Pacifico-Regular'),
+        url(https://fonts.gstatic.com/s/pacifico/v12/FwZY7-Qmy14u9lezJ-6H6MmBp0u-.woff2) format('woff2');
+    font-display: swap;
+}

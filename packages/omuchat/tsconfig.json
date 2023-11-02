@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "noEmitOnError": true,
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "strictNullChecks": true,
+        "experimentalDecorators": true,
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "sourceMap": true,
+        "target": "es2020",
+        "module": "commonjs",
+        "removeComments": false,
+        "noLib": false,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        },
+        "strict": true,
+        "newLine": "LF"
+    },
+    "compileOnSave": true,
+    "include": [
+        "./src/**/*.ts"
+    ]
+}
