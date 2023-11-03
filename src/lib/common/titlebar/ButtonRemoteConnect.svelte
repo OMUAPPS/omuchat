@@ -6,10 +6,7 @@
 
 	const popup = getPopupContext();
 	function openConnectPopup() {
-		popup.push({
-			component: PopupRemoteConnect,
-			props: {}
-		});
+		popup.push({ component: PopupRemoteConnect, props: {} });
 	}
 </script>
 

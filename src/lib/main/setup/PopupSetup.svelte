@@ -52,6 +52,10 @@
 		// TODO
 		popup.pop();
 	}
+
+	function reset() {
+		result = null;
+	}
 </script>
 
 <Popup title="セットアップ" icon="ti ti-qrcode" windowed={false} decorated={false}>
@@ -81,6 +85,10 @@
 					>
 						追加する
 						<i class="ti ti-arrow-right" />
+					</Button>
+					<Button rounded callback={reset} disabled={locked}>
+						<i class="ti ti-arrow-left" />
+						戻る
 					</Button>
 				</div>
 			</FlexColWrapper>
