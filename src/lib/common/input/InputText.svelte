@@ -10,11 +10,12 @@
 <style lang="scss">
 	.input {
 		width: 100%;
-		height: 30px;
+		height: 40px;
 		padding: 0 10px;
 		margin: 10px 0;
 		border: 1px solid var(--color-1);
 		border-radius: 5px;
+		background: var(--color-bg-1);
 
 		&:focus {
 			background: var(--color-bg-1);
@@ -30,7 +31,8 @@
 		}
 
 		&:read-only {
-			background: var(--color-bg-1);
+			background: var(--color-bg-2);
+			color: var(--color-2);
 		}
 
 		&::placeholder {

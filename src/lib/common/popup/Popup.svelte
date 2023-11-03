@@ -5,7 +5,7 @@
 	export let title: string;
 	export let icon: string;
 	export let windowed: boolean = true;
-	export let decoration: boolean = true;
+	export let decorated: boolean = true;
 	const popup = getPopupContext();
 	let container: HTMLButtonElement;
 
@@ -18,11 +18,11 @@
 
 <button class="container" class:windowed on:click={onClick} bind:this={container}>
 	<div class="popup" class:windowed>
-		{#if windowed && decoration}
+		{#if windowed && decorated}
 			<PopupHeader {title} {icon} />
 		{/if}
 		<div class="content" class:windowed>
-			{#if !windowed && decoration}
+			{#if !windowed && decorated}
 				<PopupHeader {title} {icon} />
 			{/if}
 			<slot />

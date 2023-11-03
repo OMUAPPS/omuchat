@@ -2,9 +2,10 @@
 	export let callback = () => {};
 	export let outline = false;
 	export let rounded = false;
+	export let disabled = false;
 </script>
 
-<button class="button" type="button" on:click={callback} class:outline class:rounded>
+<button class="button" type="button" on:click={callback} class:outline class:rounded {disabled}>
 	<slot />
 </button>
 
@@ -29,6 +30,11 @@
 		&:hover {
 			background: var(--color-1);
 			color: var(--color-bg-2);
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
 		}
 	}
 

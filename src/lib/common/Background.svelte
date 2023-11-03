@@ -7,14 +7,15 @@
 	.container {
 		position: fixed;
 		top: 0;
-		left: 0;
-		right: 0;
+		left: -100vh;
+		right: -100vh;
 		bottom: 0;
 		transform: matrix(1, 0, 0.5, 1, 0, 0) translateX(-30vh);
 		-ms-transform: matrix(1, 0, 0.5, 1, 0, 0) translateX(-30vh);
 		-webkit-transform: matrix(1, 0, 0.5, 1, 0, 0) translateX(-30vh);
 		opacity: 0.25;
 		pointer-events: none;
+		background: var(--color-bg-1);
 	}
 
 	@keyframes bg1 {
