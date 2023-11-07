@@ -22,7 +22,8 @@
 		color: var(--color-1);
 		background: transparent;
 		min-width: 40px;
-		min-height: 40px;
+		height: 40px;
+		max-height: 100%;
 		padding-left: 10px;
 		padding-right: 10px;
 		font-size: 16px;

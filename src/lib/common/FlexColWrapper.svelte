@@ -1,17 +1,17 @@
 <script lang="ts">
 	export let between = false;
 	export let reverse = false;
+	export let widthFull = false;
+	export let heightFull = false;
 </script>
 
-<div class="wrapper" class:between class:reverse>
+<div class="wrapper" class:between class:reverse class:widthFull class:heightFull>
 	<slot />
 </div>
 
 <style>
 	.wrapper {
 		display: flex;
-		width: 100%;
-		height: 100%;
 		flex-direction: column;
 		align-items: center;
 	}
@@ -24,15 +24,11 @@
 		flex-direction: column-reverse;
 	}
 
-	.align-start {
-		align-items: flex-start;
+	.widthFull {
+		width: 100%;
 	}
 
-	.align-center {
-		align-items: center;
-	}
-
-	.align-end {
-		align-items: flex-end;
+	.heightFull {
+		height: 100%;
 	}
 </style>

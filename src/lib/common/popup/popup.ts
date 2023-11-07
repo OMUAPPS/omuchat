@@ -1,9 +1,8 @@
-import { SvelteComponent, getContext, setContext, type ComponentType } from 'svelte';
+import type { PropedComponent } from '$lib/type/component';
+import { getContext, setContext } from 'svelte';
 import { writable, type Readable } from 'svelte/store';
 
-export interface Popup<Props extends Record<string, any> = any> {
-    component: ComponentType<SvelteComponent<Props>>;
-    props: Props;
+export interface Popup<Props extends Record<string, any> = any> extends PropedComponent<Props> {
 }
 
 export interface PopupContext {

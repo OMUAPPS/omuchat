@@ -7,7 +7,6 @@
 	import ButtonClose from './common/titlebar/ButtonClose.svelte';
 	import ButtonMaximize from './common/titlebar/ButtonMaximize.svelte';
 	import ButtonMinimize from './common/titlebar/ButtonMinimize.svelte';
-	import ButtonRemoteConnect from './common/titlebar/ButtonRemoteConnect.svelte';
 	import TitleBar from './common/titlebar/TitleBar.svelte';
 	import Title from './images/title.svg';
 </script>
@@ -22,7 +21,6 @@
 				</div>
 				<TitleBar>
 					<FlexRowWrapper>
-						<ButtonRemoteConnect />
 						<ButtonMinimize />
 						<ButtonMaximize />
 						<ButtonClose />
