@@ -387,6 +387,8 @@ export interface ImageComponent extends MessageComponent {
     id?: string;
 }
 
+export type MessageComponentType = TextComponent | ImageComponent;
+
 export interface ChatEvent {
     room_id: string;
 }
@@ -396,7 +398,7 @@ export class Message implements Keyable, ChatEvent, Id {
         readonly id: string,
         readonly room_id: string,
 
-        readonly content?: MessageComponent | null,
+        readonly content?: MessageComponentType | null,
         readonly author?: Author | null,
         readonly paid?: Paid | null,
         readonly gift?: Gift | null,
