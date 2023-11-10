@@ -6,7 +6,6 @@
 <svelte:head>
 	<title>Editor</title>
 	<meta name="description" content="Svelte demo app" />
-	<link rel="stylesheet" href="/@tabler/icons-webfont/tabler-icons.css" />
 </svelte:head>
 
 <main>
