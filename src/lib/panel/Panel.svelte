@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/common/Button.svelte';
+	import ButtonMini from '$lib/common/ButtonMini.svelte';
 	import Component from '$lib/common/Component.svelte';
 	import { getPopupContext } from '$lib/common/popup/popup';
 	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
@@ -83,10 +83,10 @@
 				</div>
 			</button>
 			<div class="right">
-				<Button rounded callback={openSettings}>
+				<ButtonMini callback={openSettings}>
 					<Tooltip>設定</Tooltip>
 					<i class="ti ti-settings" />
-				</Button>
+				</ButtonMini>
 			</div>
 		</div>
 		<div class="panel">
@@ -125,8 +125,7 @@
 	.header {
 		height: 40px;
 		width: 100%;
-		padding-bottom: 15px;
-		padding-top: 5px;
+		padding-bottom: 10px;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -137,7 +136,6 @@
 
 		&:hover > * {
 			transition: 0.05s;
-			// transform: translateY(-5px);
 		}
 	}
 
@@ -151,17 +149,10 @@
 		background: none;
 		cursor: grab;
 		gap: 5px;
-
-		* {
-			height: 30px;
-			display: flex;
-			align-items: center;
-		}
 	}
 
 	.right {
 		visibility: hidden;
-		transform: translateY(-10px);
 	}
 
 	.container:hover {

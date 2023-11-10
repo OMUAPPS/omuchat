@@ -7,7 +7,7 @@
 {#if component.type === 'text'}
 	{component.value || ''}
 {:else if component.type === 'image'}
-	<img src={component.value} alt={component.id} />
+	<img src={component.value} alt={component.id} title={component.id} />
 {/if}
 {#if component.siblings}
 	{#each component.siblings as sibling}

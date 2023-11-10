@@ -1,10 +1,12 @@
 <script>
 	export let between = false;
 	export let reverse = false;
+	export let widthFull = false;
+	export let heightFull = false;
 	export let gap = false;
 </script>
 
-<div class="wrapper" class:between class:reverse class:gap>
+<div class="wrapper" class:between class:reverse class:gap class:widthFull class:heightFull>
 	<slot />
 </div>
 
@@ -26,5 +28,13 @@
 
 	.gap {
 		gap: 10px;
+	}
+
+	.widthFull {
+		width: 100%;
+	}
+
+	.heightFull {
+		height: 100%;
 	}
 </style>

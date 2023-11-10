@@ -80,13 +80,11 @@
 
 		&:hover {
 			background: var(--color-bg-1);
-			transform: translateX(5px);
 		}
 
 		&.active {
 			background: var(--color-1);
 			color: var(--color-bg-1);
-			transform: translateX(5px);
 		}
 	}
 </style>
