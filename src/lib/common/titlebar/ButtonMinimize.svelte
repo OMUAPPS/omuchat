@@ -1,15 +1,14 @@
 <script>
 	import { appWindow } from '@tauri-apps/api/window';
 	import Button from '../Button.svelte';
-	import Tooltip from '../Tooltip.svelte';
+	import Tooltip from '../tooltip/Tooltip.svelte';
 
 	function minimizeWindow() {
 		appWindow.minimize();
 	}
 </script>
 
-<Tooltip text="最小化">
-	<Button callback={minimizeWindow}>
-		<i class="ti ti-minus" />
-	</Button>
-</Tooltip>
+<Button callback={minimizeWindow}>
+	<Tooltip>最小化</Tooltip>
+	<i class="ti ti-minus" />
+</Button>

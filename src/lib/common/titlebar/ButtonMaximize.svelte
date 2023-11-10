@@ -1,15 +1,14 @@
 <script>
 	import { appWindow } from '@tauri-apps/api/window';
 	import Button from '../Button.svelte';
-	import Tooltip from '../Tooltip.svelte';
+	import Tooltip from '../tooltip/Tooltip.svelte';
 
 	function maximizeWindow() {
 		appWindow.maximize();
 	}
 </script>
 
-<Tooltip text="最大化">
-	<Button callback={maximizeWindow}>
-		<i class="ti ti-rectangle" />
-	</Button>
-</Tooltip>
+<Button callback={maximizeWindow}>
+	<Tooltip>最大化</Tooltip>
+	<i class="ti ti-rectangle" />
+</Button>

@@ -1,15 +1,14 @@
 <script>
 	import { appWindow } from '@tauri-apps/api/window';
 	import Button from '../Button.svelte';
-	import Tooltip from '../Tooltip.svelte';
+	import Tooltip from '../tooltip/Tooltip.svelte';
 
 	function closeWindow() {
 		appWindow.close();
 	}
 </script>
 
-<Tooltip text="閉じる">
-	<Button callback={closeWindow}>
-		<i class="ti ti-x" />
-	</Button>
-</Tooltip>
+<Button callback={closeWindow}>
+	<Tooltip>閉じる</Tooltip>
+	<i class="ti ti-x" />
+</Button>

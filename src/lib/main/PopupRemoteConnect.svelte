@@ -4,7 +4,7 @@
 	import Button from '$lib/common/Button.svelte';
 	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
 	import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
-	import Tooltip from '$lib/common/Tooltip.svelte';
+	import Tooltip from '../common/tooltip/Tooltip.svelte';
 	import { getPopupContext } from '$lib/common/popup/popup';
 	import type { ShareResponse } from '$lib/type/tauri';
 	import { ClipboardHelper } from '$lib/util/clipboard-helper';
@@ -36,18 +36,16 @@
 <Popup title="リモート接続" icon="ti ti-qrcode" windowed={false}>
 	<div class="container">
 		{#if $result}
-			<Tooltip text="コピー">
-				<button on:click={copyQrToClipboard} class="qr">
-					<QrCode value={$result.url} size={150} bind:qrImage />
-				</button>
-			</Tooltip>
+			<button on:click={copyQrToClipboard} class="qr">
+				<Tooltip>コピー</Tooltip>
+				<QrCode value={$result.url} size={150} bind:qrImage />
+			</button>
 			このQRコードをスキャンしてください
 			<FlexRowWrapper gap between>
-				<Tooltip text="コピー">
-					<Button callback={copyUrlToClipboard}>
-						{$result.host}:{$result.port}/
-					</Button>
-				</Tooltip>
+				<Tooltip>コピー</Tooltip>
+				<Button callback={copyUrlToClipboard}>
+					{$result.host}:{$result.port}/
+				</Button>
 			</FlexRowWrapper>
 		{/if}
 		<div class="close">

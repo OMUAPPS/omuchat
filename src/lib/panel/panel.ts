@@ -7,6 +7,7 @@ export interface PanelEntry {
     icon: string;
     name: string;
     width?: number;
+    fit?: boolean;
     component(): PropedComponent;
     element?: HTMLElement;
     dragging?: boolean;

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Button from '$lib/common/Button.svelte';
 	import Component from '$lib/common/Component.svelte';
-	import Tooltip from '$lib/common/Tooltip.svelte';
 	import { getPopupContext } from '$lib/common/popup/popup';
+	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 	import { style } from '$lib/util/class-helper';
 	import { onDestroy, onMount } from 'svelte';
 	import { getPanelContext, type PanelEntry } from './panel';
@@ -67,7 +67,11 @@
 	class="container"
 	class:dragging
 	class:selected
-	style={style({ minWidth: `${panel.width}px`, width: `283px`, order: `${$index}` })}
+	style={style({
+		minWidth: `${panel.width || 250}px`,
+		width: panel.fit ? `100%` : `283px`,
+		order: `${$index}`
+	})}
 	bind:this={element}
 >
 	<div class="drag-wrapper" bind:this={dragElement}>
@@ -79,11 +83,10 @@
 				</div>
 			</button>
 			<div class="right">
-				<Tooltip text="設定">
-					<Button callback={openSettings}>
-						<i class="ti ti-settings" />
-					</Button>
-				</Tooltip>
+				<Button rounded callback={openSettings}>
+					<Tooltip>設定</Tooltip>
+					<i class="ti ti-settings" />
+				</Button>
 			</div>
 		</div>
 		<div class="panel">
@@ -120,9 +123,10 @@
 	}
 
 	.header {
-		height: 30px;
+		height: 40px;
 		width: 100%;
-		padding-bottom: 10px;
+		padding-bottom: 15px;
+		padding-top: 5px;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -166,12 +170,6 @@
 		}
 	}
 
-	.grip {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
 	.header:hover {
 		color: var(--color-1);
 	}
@@ -184,7 +182,8 @@
 	.panel {
 		background: var(--color-bg-2);
 		outline: 1px solid rgba(0, 0, 0, 0.1);
-		height: calc(100% - 30px);
+		height: calc(100% - 40px);
 		width: 100%;
+		overflow-y: auto;
 	}
 </style>

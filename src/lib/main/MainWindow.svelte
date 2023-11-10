@@ -1,26 +1,46 @@
 <script lang="ts">
-	import Button from '$lib/common/Button.svelte';
 	import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
-	import Tooltip from '$lib/common/Tooltip.svelte';
-	import { getPopupContext } from '$lib/common/popup/popup';
 	import ButtonOpenRemoteConnect from '$lib/common/titlebar/ButtonOpenRemoteConnect.svelte';
 	import ButtonOpenSettings from '$lib/common/titlebar/ButtonOpenSettings.svelte';
 	import PanelProvider from '$lib/panel/PanelProvider.svelte';
+	import { writable } from 'svelte/store';
+	import Tooltip from '../common/tooltip/Tooltip.svelte';
 	import PopupSetup from './setup/PopupSetup.svelte';
 
-	const popup = getPopupContext();
-	function openConnectPopup() {
-		popup.push({ component: PopupSetup, props: {} });
-	}
+	const pages = {
+		messages: {
+			name: 'Messages',
+			icon: 'ti ti-message',
+			component: PopupSetup,
+			props: {}
+		},
+		settings: {
+			name: 'Settings',
+			icon: 'ti ti-settings',
+			component: PopupSetup,
+			props: {}
+		}
+	};
+
+	const current = writable(pages.messages);
 </script>
 
 <div class="wrapper">
 	<div class="tab-container">
-		<Tooltip text="Setup">
-			<Button callback={openConnectPopup} outline>
-				<i class="ti ti-plug" />
-			</Button>
-		</Tooltip>
+		<FlexColWrapper>
+			{#each Object.entries(pages) as [key, page]}
+				<button
+					class="page"
+					on:click={() => {
+						current.set(page);
+					}}
+					class:active={$current === page}
+				>
+					<Tooltip>{page.name}</Tooltip>
+					<i class={page.icon} />
+				</button>
+			{/each}
+		</FlexColWrapper>
 		<FlexColWrapper>
 			<ButtonOpenRemoteConnect />
 			<ButtonOpenSettings />
@@ -29,13 +49,12 @@
 	<PanelProvider />
 </div>
 
-<style>
+<style lang="scss">
 	.wrapper {
 		display: flex;
 		height: 100%;
 		flex-direction: row;
 		align-items: center;
-		/* margin: 10px; */
 	}
 
 	.tab-container {
@@ -45,6 +64,29 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: 10px;
-		padding: 40px 0px;
+		padding-bottom: 40px;
+		padding-top: 50px;
+		width: 40px;
+	}
+
+	.page {
+		width: 40px;
+		height: 40px;
+		outline: none;
+		border: none;
+		background: none;
+		font-size: 16px;
+		transition: 0.07s;
+
+		&:hover {
+			background: var(--color-bg-1);
+			transform: translateX(5px);
+		}
+
+		&.active {
+			background: var(--color-1);
+			color: var(--color-bg-1);
+			transform: translateX(5px);
+		}
 	}
 </style>

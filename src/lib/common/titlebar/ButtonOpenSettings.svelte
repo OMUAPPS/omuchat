@@ -1,7 +1,7 @@
 <script>
 	import PopupRemoteConnect from '../../main/PopupRemoteConnect.svelte';
 	import Button from '../Button.svelte';
-	import Tooltip from '../Tooltip.svelte';
+	import Tooltip from '../tooltip/Tooltip.svelte';
 	import { getPopupContext } from '../popup/popup';
 
 	const popup = getPopupContext();
@@ -10,8 +10,7 @@
 	}
 </script>
 
-<Tooltip text="設定">
-	<Button callback={openConnectPopup}>
-		<i class="ti ti-settings" />
-	</Button>
-</Tooltip>
+<Button callback={openConnectPopup}>
+	<Tooltip>設定</Tooltip>
+	<i class="ti ti-settings" />
+</Button>

@@ -1,5 +1,7 @@
 <script lang="ts">
-	import QrCode from '$lib/common/qrcode/QRCode.svelte';
+	import PanelMessages from '$lib/main/panel/messages/PanelMessages.svelte';
+	import PanelRooms from '$lib/main/panel/rooms/PanelRooms.svelte';
+	import type { Message } from '@/omuchat';
 	import { get, writable } from 'svelte/store';
 	import Panel from './Panel.svelte';
 	import { setPanelContext, type PanelContext, type PanelEntry } from './panel';
@@ -43,39 +45,36 @@
 	setPanelContext(context);
 
 	context.addPanel({
-		icon: 'ti ti-plug',
-		name: 'test1',
+		icon: 'ti ti-message',
+		name: 'コメント／メッセージ',
 		width: 300,
+		fit: true,
 		component() {
 			return {
-				component: null,
+				component: PanelMessages,
+				props: {}
+			};
+		}
+	});
+	context.addPanel({
+		icon: 'ti ti-message',
+		name: 'ギフト／投げ銭',
+		component() {
+			return {
+				component: PanelMessages,
 				props: {
-					value: 'test1'
+					filter: (message: Message) => !!(message.gift || message.paid)
 				}
 			};
 		}
 	});
 	context.addPanel({
-		icon: 'ti ti-plug',
-		name: 'test2',
+		icon: 'ti ti-home',
+		name: '接続中',
 		component() {
 			return {
-				component: null,
-				props: {
-					value: 'test2'
-				}
-			};
-		}
-	});
-	context.addPanel({
-		icon: 'ti ti-plug',
-		name: 'test3',
-		component() {
-			return {
-				component: QrCode,
-				props: {
-					value: 'test3'
-				}
+				component: PanelRooms,
+				props: {}
 			};
 		}
 	});
