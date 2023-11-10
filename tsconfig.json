@@ -19,12 +19,16 @@
             "@/*": [
                 "./src/*",
                 "./packages/*"
-            ],
+            ]
         },
         "rootDirs": [
             "..",
             "./types"
         ],
+        "lib": [
+            "es2017",
+            "dom"
+        ]
     },
     "include": [
         "next-env.d.ts",
