@@ -13,11 +13,8 @@
 		align-items: center;
 		outline: none;
 		border: none;
-		display: flex;
 		width: 40px;
 		height: 40px;
-		justify-content: center;
-		align-items: center;
 		color: var(--color-1);
 		background: transparent;
 		font-size: 16px;

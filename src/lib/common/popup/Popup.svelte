@@ -30,7 +30,7 @@
 	</div>
 </button>
 
-<style>
+<style lang="scss">
 	.container {
 		appearance: none;
 		border: none;
@@ -44,9 +44,6 @@
 		justify-content: center;
 		align-items: center;
 		background: rgba(246, 243, 235, 0.9);
-		display: flex;
-		justify-content: center;
-		align-items: center;
 		z-index: 100;
 		overflow: hidden;
 	}
@@ -73,7 +70,7 @@
 		&.windowed {
 			width: 500px;
 			height: 300px;
-			border: 2px solid var(--dark, var(--color-1));
+			border: 2px solid var(--color-1);
 			box-shadow: 0 8px 0 0 var(--color-2);
 		}
 		&:not(.windowed) {

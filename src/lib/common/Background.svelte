@@ -42,8 +42,7 @@
 		left: -100vh;
 		right: -100vh;
 		bottom: 0;
-		background: url(/comment.svg);
-		background-repeat: repeat;
+		background: url(/comment.svg) repeat;
 		background-size: 200px 100px;
 		object-fit: contain;
 
