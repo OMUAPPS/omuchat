@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Button from '$lib/common/Button.svelte';
+	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
 	import { getClient } from '$lib/common/omuchat/omuchat';
 	import type { RoomInfo } from '@/omuchat';
 	import { onMount } from 'svelte';
@@ -8,22 +10,44 @@
 	export let filter: (message: RoomInfo) => boolean = () => true;
 
 	const client = getClient();
+	const rooms = writable(Object.values(client.rooms.cache));
+	let showOffline = false;
 
-	const rooms = writable(client.rooms.cache);
+	function update(newRooms: Record<string, RoomInfo>) {
+		rooms.set(Object.values(newRooms).filter(filter));
+	}
 
-	client.rooms.listen((newRooms) => {
-		rooms.set(newRooms);
-	});
+	client.rooms.listen(update);
+
+	function toggleOffline() {
+		showOffline = !showOffline;
+	}
 
 	onMount(async () => {
-		rooms.set(await client.rooms.fetch());
+		update(await client.rooms.fetch());
 	});
 </script>
 
 <div class="rooms">
-	{#each Object.values($rooms).filter(filter) as room}
+	{#each $rooms.filter((room) => room.online) as room}
 		<RoomEntry {room} />
 	{/each}
+	<Button callback={toggleOffline}>
+		<FlexRowWrapper widthFull reverse>
+			{#if showOffline}
+				<i class="ti ti-chevron-up" />
+				オンラインのみ表示
+			{:else}
+				<i class="ti ti-chevron-down" />
+				オフラインも表示する
+			{/if}
+		</FlexRowWrapper>
+	</Button>
+	{#if showOffline}
+		{#each $rooms.filter((room) => !room.online) as room}
+			<RoomEntry {room} />
+		{/each}
+	{/if}
 </div>
 
 <style lang="scss">
