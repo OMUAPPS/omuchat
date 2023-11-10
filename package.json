@@ -15,6 +15,7 @@
         "packages/*"
     ],
     "dependencies": {
+        "@tabler/icons-webfont": "^2.40.0",
         "@tauri-apps/api": "^1.4.0",
         "axios": "^1.6.0",
         "qrious": "^4.0.2"
@@ -26,9 +27,9 @@
         "@sveltejs/vite-plugin-svelte": "^2.4.2",
         "@tauri-apps/cli": "^1.4.0",
         "@tsconfig/svelte": "^5.0.0",
-        "csstype": "^3.1.2",
         "@typescript-eslint/eslint-plugin": "^6.6.0",
         "@typescript-eslint/parser": "^6.6.0",
+        "csstype": "^3.1.2",
         "eslint": "^8.48.0",
         "eslint-plugin-prettier": "^5.0.0",
         "eslint-plugin-unused-imports": "^3.0.0",
