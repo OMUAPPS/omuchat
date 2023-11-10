@@ -1,42 +1,60 @@
 <script lang="ts">
+	import Component from '$lib/common/Component.svelte';
 	import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
 	import ButtonOpenRemoteConnect from '$lib/common/titlebar/ButtonOpenRemoteConnect.svelte';
 	import ButtonOpenSettings from '$lib/common/titlebar/ButtonOpenSettings.svelte';
 	import PanelProvider from '$lib/panel/PanelProvider.svelte';
-	import { writable } from 'svelte/store';
+	import { style } from '$lib/util/class-helper';
 	import Tooltip from '../common/tooltip/Tooltip.svelte';
-	import PopupSetup from './setup/PopupSetup.svelte';
+	import { currentPage, pages } from './page/page';
 
-	const pages = {
-		messages: {
-			name: 'Messages',
-			icon: 'ti ti-message',
-			component: PopupSetup,
-			props: {}
+	pages.set([
+		{
+			title: 'メイン',
+			icon: 'ti ti-home',
+			component: () => {
+				return {
+					component: PanelProvider,
+					props: {}
+				};
+			}
 		},
-		settings: {
-			name: 'Settings',
-			icon: 'ti ti-settings',
-			component: PopupSetup,
-			props: {}
+		{
+			title: 'メッセージ',
+			icon: 'ti ti-message',
+			component: () => {
+				return {
+					component: PanelProvider,
+					props: {}
+				};
+			}
+		},
+		{
+			title: 'チャンネル',
+			icon: 'ti ti-plug',
+			component: () => {
+				return {
+					component: PanelProvider,
+					props: {}
+				};
+			}
 		}
-	};
-
-	const current = writable(pages.messages);
+	]);
+	currentPage.set($pages[0]);
 </script>
 
 <div class="wrapper">
 	<div class="tab-container">
 		<FlexColWrapper>
-			{#each Object.entries(pages) as [key, page]}
+			{#each Object.values($pages) as page}
 				<button
 					class="page"
 					on:click={() => {
-						current.set(page);
+						currentPage.set(page);
 					}}
-					class:active={$current === page}
+					class:active={$currentPage === page}
 				>
-					<Tooltip>{page.name}</Tooltip>
+					<Tooltip>{page.title}</Tooltip>
 					<i class={page.icon} />
 				</button>
 			{/each}
@@ -46,7 +64,11 @@
 			<ButtonOpenSettings />
 		</FlexColWrapper>
 	</div>
-	<PanelProvider />
+	{#each $pages as page}
+		<div style={style({ display: $currentPage === page ? '' : 'none' })} class="page-container">
+			<Component component={page.component()} />
+		</div>
+	{/each}
 </div>
 
 <style lang="scss">
@@ -86,5 +108,10 @@
 			background: var(--color-1);
 			color: var(--color-bg-1);
 		}
+	}
+
+	.page-container {
+		width: calc(100% - 40px);
+		height: 100%;
 	}
 </style>
