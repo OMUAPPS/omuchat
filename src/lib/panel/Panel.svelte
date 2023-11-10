@@ -4,7 +4,7 @@
 	import { getPopupContext } from '$lib/common/popup/popup';
 	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 	import { style } from '$lib/util/class-helper';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { getPanelContext, type PanelEntry } from './panel';
 
 	export let panel: PanelEntry;
@@ -41,26 +41,20 @@
 		context.dragPanel(panel, event.clientX - offset.x);
 	}
 
+	function openSettings() {
+		popup.push(panel.componentSettings());
+	}
+
 	onMount(() => {
 		window.addEventListener('mouseup', handleMouseUp);
 		window.addEventListener('mousemove', handleMouseMove);
 		panel.element = dragElement;
-	});
 
-	onDestroy(() => {
-		window.removeEventListener('mouseup', handleMouseUp);
-		window.removeEventListener('mousemove', handleMouseMove);
+		return () => {
+			window.removeEventListener('mouseup', handleMouseUp);
+			window.removeEventListener('mousemove', handleMouseMove);
+		};
 	});
-
-	function openSettings() {
-		popup.push({
-			component: Component,
-			props: {
-				component: panel.component(),
-				props: panel
-			}
-		});
-	}
 </script>
 
 <div
@@ -90,7 +84,7 @@
 			</div>
 		</div>
 		<div class="panel">
-			<Component component={panel.component()} />
+			<Component component={panel.componentPanel()} />
 		</div>
 	</div>
 </div>

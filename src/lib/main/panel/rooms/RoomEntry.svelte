@@ -31,7 +31,7 @@
 					}}
 				>
 					<Tooltip>視聴者数（クリックでコピー）</Tooltip>
-					{room.viewers}
+                    {room.viewers}
 					<i class="ti ti-user" />
 				</ButtonMini>
 				<i class={`online-state ti ti-bolt ${room.online ? 'online' : 'offline'}`}>

@@ -8,7 +8,8 @@ export interface PanelEntry {
     name: string;
     width?: number;
     fit?: boolean;
-    component(): PropedComponent;
+    componentPanel(): PropedComponent;
+    componentSettings(): PropedComponent;
     element?: HTMLElement;
     dragging?: boolean;
     index?: Writable<number>;
