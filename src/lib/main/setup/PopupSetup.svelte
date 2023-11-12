@@ -3,17 +3,18 @@
 	import Button from '$lib/common/Button.svelte';
 	import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
 	import InputText from '$lib/common/input/InputText.svelte';
+	import { getClient } from '$lib/common/omuchat/omuchat';
 	import PopupHeader from '$lib/common/popup/PopupHeader.svelte';
-	import { getPopupContext } from '$lib/common/popup/popup';
-	import type { ChannelInfo } from '@/omuchat';
+	import { popupContext } from '$lib/common/popup/popup';
+	import { ChannelInfo, type ModelJson } from '@/omuchat';
 	import axios from 'axios';
 	import Popup from '../../common/popup/Popup.svelte';
 	import ChannelEntry from './ChannelEntry.svelte';
 
-	const popup = getPopupContext();
+	const client = getClient();
 
 	interface Response {
-		channels: ChannelInfo[];
+		channels: ModelJson<ChannelInfo>[];
 	}
 
 	let result: Record<string, { info: ChannelInfo; active: boolean }> | null = null;
@@ -34,7 +35,7 @@
 				console.log(res);
 				result = res.data.channels.reduce((acc, channel) => {
 					acc[channel.url] = {
-						info: channel,
+						info: ChannelInfo.fromJSON(client, channel),
 						active: false
 					};
 					return acc;
@@ -49,8 +50,14 @@
 	}
 
 	function finish() {
-		// TODO
-		popup.pop();
+		if (!result) return;
+		const channels = Object.values(result)
+			.filter((v) => v.active)
+			.map((v) => v.info);
+		channels.forEach((channel) => {
+			client.channels.add(channel);
+		});
+		popupContext.pop();
 	}
 
 	function reset() {
@@ -58,7 +65,7 @@
 	}
 </script>
 
-<Popup title="セットアップ" icon="ti ti-qrcode" windowed={false} decorated={false}>
+<Popup title="セットアップ" icon="ti ti-qrcode" windowed={false} noDecorated={false}>
 	<Background />
 	<div class="container">
 		<PopupHeader title="セットアップ" icon="ti ti-login-2" />
@@ -102,7 +109,7 @@
 					次へ
 					<i class="ti ti-arrow-right" />
 				</Button>
-				<Button rounded callback={popup.pop}>
+				<Button rounded callback={popupContext.pop}>
 					スキップ
 					<i class="ti ti-arrow-right" />
 				</Button>

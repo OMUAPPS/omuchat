@@ -1,4 +1,5 @@
 <script>
+	import { t } from '$lib/i18n/i18n-context';
 	import { appWindow } from '@tauri-apps/api/window';
 	import Button from '../Button.svelte';
 	import Tooltip from '../tooltip/Tooltip.svelte';
@@ -9,6 +10,6 @@
 </script>
 
 <Button callback={closeWindow}>
-	<Tooltip>閉じる</Tooltip>
+	<Tooltip>{$t('titlebar.close')}</Tooltip>
 	<i class="ti ti-x" />
 </Button>

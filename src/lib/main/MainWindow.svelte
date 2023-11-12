@@ -1,11 +1,15 @@
 <script lang="ts">
 	import Component from '$lib/common/Component.svelte';
 	import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
-	import ButtonOpenRemoteConnect from '$lib/common/titlebar/ButtonOpenRemoteConnect.svelte';
-	import ButtonOpenSettings from '$lib/common/titlebar/ButtonOpenSettings.svelte';
 	import PanelProvider from '$lib/panel/PanelProvider.svelte';
 	import { style } from '$lib/util/class-helper';
 	import Tooltip from '../common/tooltip/Tooltip.svelte';
+	import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
+	import ButtonOpenSettings from './ButtonOpenSettings.svelte';
+	import PageAssets from './page/PageAssets.svelte';
+	import PageChannels from './page/PageChannels.svelte';
+	import PageHome from './page/PageHome.svelte';
+	import PageMessages from './page/PageMessages.svelte';
 	import { currentPage, pages } from './page/page';
 
 	pages.set([
@@ -14,7 +18,7 @@
 			icon: 'ti ti-home',
 			component: () => {
 				return {
-					component: PanelProvider,
+					component: PageHome,
 					props: {}
 				};
 			}
@@ -24,7 +28,7 @@
 			icon: 'ti ti-message',
 			component: () => {
 				return {
-					component: PanelProvider,
+					component: PageMessages,
 					props: {}
 				};
 			}
@@ -32,6 +36,26 @@
 		{
 			title: 'チャンネル',
 			icon: 'ti ti-plug',
+			component: () => {
+				return {
+					component: PageChannels,
+					props: {}
+				};
+			}
+		},
+		{
+			title: 'アセット',
+			icon: 'ti ti-package',
+			component: () => {
+				return {
+					component: PageAssets,
+					props: {}
+				};
+			}
+		},
+		{
+			title: '開発',
+			icon: 'ti ti-bug',
 			component: () => {
 				return {
 					component: PanelProvider,
@@ -98,10 +122,11 @@
 		border: none;
 		background: none;
 		font-size: 16px;
-		transition: 0.07s;
+		// transition: 0.05s;
 
 		&:hover {
-			background: var(--color-bg-1);
+			background-color: color-mix(in srgb, var(--color-1) 10%, transparent);
+			// color: var(--color-bg-2);
 		}
 
 		&.active {

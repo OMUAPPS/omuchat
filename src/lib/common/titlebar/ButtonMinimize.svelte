@@ -1,4 +1,5 @@
 <script>
+	import { t } from '$lib/i18n/i18n-context';
 	import { appWindow } from '@tauri-apps/api/window';
 	import Button from '../Button.svelte';
 	import Tooltip from '../tooltip/Tooltip.svelte';
@@ -9,6 +10,6 @@
 </script>
 
 <Button callback={minimizeWindow}>
-	<Tooltip>最小化</Tooltip>
+	<Tooltip>{$t('titlebar.minimize')}</Tooltip>
 	<i class="ti ti-minus" />
 </Button>

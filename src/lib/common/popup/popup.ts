@@ -1,46 +1,26 @@
 import type { PropedComponent } from '$lib/type/component';
-import { getContext, setContext } from 'svelte';
-import { writable, type Readable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
-export interface Popup<Props extends Record<string, any> = any> extends PropedComponent<Props> {
+
+const stack = writable<PropedComponent[]>([]);
+const current = writable<PropedComponent | null>(null);
+
+function push(props: PropedComponent) {
+    stack.update((stack) => [...stack, props]);
+    current.set(props);
 }
 
-export interface PopupContext {
-    stack: Readable<Popup[]>;
-    current: Readable<Popup | null>;
-    push: (props: Popup) => void;
-    pop: () => void;
+function pop() {
+    stack.update((stack) => {
+        stack.pop();
+        current.set(stack[stack.length - 1] || null);
+        return stack;
+    });
 }
 
-export const POPUP_CONTEXT = Symbol('popup-context');
-
-export function createPopupContext(): PopupContext {
-    const stack = writable<Popup[]>([]);
-    const current = writable<Popup | null>(null);
-
-    const context = {
-        stack,
-        current,
-        push(props: Popup) {
-            stack.update((stack) => [...stack, props]);
-            current.set(props);
-        },
-        pop() {
-            stack.update((stack) => {
-                const props = stack.pop();
-                current.set(stack[stack.length - 1] || null);
-                return stack;
-            });
-        },
-    };
-    setPopupContext(context);
-    return context;
-}
-
-export function setPopupContext(context: PopupContext) {
-    return setContext(POPUP_CONTEXT, context);
-}
-
-export function getPopupContext(): PopupContext {
-    return getContext(POPUP_CONTEXT);
-}
+export const popupContext = {
+    push,
+    pop,
+    current,
+    stack,
+};

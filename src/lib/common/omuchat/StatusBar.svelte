@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '$lib/i18n/i18n-context';
 	import { Status, type StatusValue } from '@omuchat/client';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
@@ -18,17 +19,15 @@
 	{#if $status === Status.CONNECTED}
 		<i class="ti ti-check" />
 	{/if}
-	{#if $status === Status.CONNECTING}
+	{#if $status === Status.CONNECTING || $status === Status.RECONNECTING}
 		<i class="ti ti-reload" />
 	{/if}
 	{#if $status === Status.DISCONNECTED}
 		<i class="ti ti-x" />
 	{/if}
-	{$status}
-	{#if $status === Status.CONNECTING}
-		{#if client.connectAttemptCount > 0}
-			<p>接続試行回数: {client.connectAttemptCount}</p>
-		{/if}
+	{$t(`status.${$status}`)}
+	{#if $status === Status.RECONNECTING}
+		<p>{$t('status.connect_attempt_count', { count: client.connectAttemptCount })}</p>
 	{/if}
 </p>
 
@@ -45,6 +44,10 @@
 	}
 
 	.connecting {
+		color: var(--color-1);
+	}
+
+	.reconnecting {
 		color: #ff8c00;
 	}
 

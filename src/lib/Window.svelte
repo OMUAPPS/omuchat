@@ -3,7 +3,7 @@
 	import FlexRowWrapper from './common/FlexRowWrapper.svelte';
 	import OmuChatProvider from './common/omuchat/OmuChatProvider.svelte';
 	import StatusBar from './common/omuchat/StatusBar.svelte';
-	import PopupProvider from './common/popup/PopupProvider.svelte';
+	import PopupRenderer from './common/popup/PopupRenderer.svelte';
 	import ButtonClose from './common/titlebar/ButtonClose.svelte';
 	import ButtonMaximize from './common/titlebar/ButtonMaximize.svelte';
 	import ButtonMinimize from './common/titlebar/ButtonMinimize.svelte';
@@ -13,24 +13,23 @@
 
 <div class="window">
 	<OmuChatProvider info={PluginInfo.create({ name: 'test', version: '0.0.1', group: 'test' })}>
-		<PopupProvider>
-			<div class="drag-area" data-tauri-drag-region>
-				<div class="title">
-					<img src={Title} alt="title" width="64" height="10" />
-					<StatusBar />
-				</div>
-				<TitleBar>
-					<FlexRowWrapper>
-						<ButtonMinimize />
-						<ButtonMaximize />
-						<ButtonClose />
-					</FlexRowWrapper>
-				</TitleBar>
+		<div class="drag-area" data-tauri-drag-region>
+			<div class="title">
+				<img src={Title} alt="title" width="64" height="10" />
+				<StatusBar />
 			</div>
-			<div class="content">
-				<slot />
-			</div>
-		</PopupProvider>
+			<TitleBar>
+				<FlexRowWrapper>
+					<ButtonMinimize />
+					<ButtonMaximize />
+					<ButtonClose />
+				</FlexRowWrapper>
+			</TitleBar>
+		</div>
+		<div class="content">
+			<slot />
+		</div>
+		<PopupRenderer />
 	</OmuChatProvider>
 </div>
 
@@ -63,7 +62,7 @@
 	.window {
 		outline: 2px solid var(--color-1);
 		outline-offset: -1px;
-		background-color: var(--color-bg-2);
+		background: var(--color-bg-2);
 		width: 100vw;
 		height: 100vh;
 		overflow: hidden;

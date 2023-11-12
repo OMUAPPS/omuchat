@@ -4,13 +4,13 @@
 	import Button from '$lib/common/Button.svelte';
 	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
 	import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
-	import Tooltip from '../common/tooltip/Tooltip.svelte';
-	import { getPopupContext } from '$lib/common/popup/popup';
+	import { popupContext } from '$lib/common/popup/popup';
 	import type { ShareResponse } from '$lib/type/tauri';
 	import { ClipboardHelper } from '$lib/util/clipboard-helper';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import Popup from '../common/popup/Popup.svelte';
+	import Tooltip from '../common/tooltip/Tooltip.svelte';
 	const result = writable<ShareResponse | null>(null);
 	let qrImage: HTMLImageElement;
 
@@ -22,8 +22,6 @@
 		});
 	});
 
-	const popup = getPopupContext();
-
 	function copyUrlToClipboard() {
 		ClipboardHelper.writeText($result!.url);
 	}
@@ -31,9 +29,13 @@
 	function copyQrToClipboard() {
 		ClipboardHelper.writeImage(qrImage);
 	}
+
+	function close() {
+		popupContext.pop();
+	}
 </script>
 
-<Popup title="リモート接続" icon="ti ti-qrcode" windowed={false}>
+<Popup title="remote_connect" windowed={false}>
 	<div class="container">
 		{#if $result}
 			<button on:click={copyQrToClipboard} class="qr">
@@ -49,7 +51,7 @@
 			</FlexRowWrapper>
 		{/if}
 		<div class="close">
-			<Button callback={() => popup.pop()} outline>
+			<Button callback={close} outline>
 				<JustifyBaselineWrapper>
 					閉じる
 					<i class="ti ti-x" />

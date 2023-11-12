@@ -6,6 +6,15 @@
 	import type { RoomInfo } from '@/omuchat';
 
 	export let room: RoomInfo;
+
+	function open() {
+		window.open(room.url, '_blank');
+	}
+
+	function copyViewers() {
+		if (!room.viewers) return;
+		ClipboardHelper.writeText(room.viewers.toString());
+	}
 </script>
 
 <div class="room">
@@ -13,25 +22,15 @@
 		<img src={room.image_url} alt="thumbnail" class="room-thumbnail" />
 		<div class="buttons">
 			<FlexRowWrapper widthFull reverse>
-				<ButtonMini
-					callback={() => {
-						if (!room.viewers) return;
-						ClipboardHelper.writeText(room.viewers.toString());
-					}}
-				>
+				<ButtonMini callback={open}>
 					<Tooltip>見る</Tooltip>
 					<i class="ti ti-external-link" />
 				</ButtonMini>
 			</FlexRowWrapper>
 			<FlexRowWrapper widthFull reverse between>
-				<ButtonMini
-					callback={() => {
-						if (!room.viewers) return;
-						ClipboardHelper.writeText(room.viewers.toString());
-					}}
-				>
+				<ButtonMini callback={copyViewers}>
 					<Tooltip>視聴者数（クリックでコピー）</Tooltip>
-                    {room.viewers}
+					{room.viewers}
 					<i class="ti ti-user" />
 				</ButtonMini>
 				<i class={`online-state ti ti-bolt ${room.online ? 'online' : 'offline'}`}>

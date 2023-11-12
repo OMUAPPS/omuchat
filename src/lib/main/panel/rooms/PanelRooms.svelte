@@ -32,17 +32,19 @@
 	{#each $rooms.filter((room) => room.online) as room}
 		<RoomEntry {room} />
 	{/each}
-	<Button callback={toggleOffline}>
-		<FlexRowWrapper widthFull reverse>
-			{#if showOffline}
-				<i class="ti ti-chevron-up" />
-				オンラインのみ表示
-			{:else}
-				<i class="ti ti-chevron-down" />
-				オフラインも表示する
-			{/if}
-		</FlexRowWrapper>
-	</Button>
+	{#if $rooms.some((room) => !room.online)}
+		<Button callback={toggleOffline}>
+			<FlexRowWrapper widthFull reverse>
+				{#if showOffline}
+					<i class="ti ti-chevron-up" />
+					オンラインのみ表示
+				{:else}
+					<i class="ti ti-chevron-down" />
+					オフラインも表示する
+				{/if}
+			</FlexRowWrapper>
+		</Button>
+	{/if}
 	{#if showOffline}
 		{#each $rooms.filter((room) => !room.online) as room}
 			<RoomEntry {room} />

@@ -1,0 +1,82 @@
+{
+    "general": {
+        "yes": "はい",
+        "no": "いいえ",
+        "ok": "OK",
+        "cancel": "キャンセル",
+        "close": "閉じる",
+        "save": "保存",
+        "reset": "リセット",
+        "copy": "コピー",
+        "copied": "コピーしました",
+        "error": "エラー",
+        "warning": "警告",
+        "info": "情報",
+        "success": "成功",
+        "try_again": "再試行",
+        "retry": "再試行",
+        "in_progress": "進行中...",
+        "choose_file": "ファイルを選択",
+        "choose_folder": "フォルダを選択",
+        "loading": "読み込み中...",
+        "search": "検索",
+        "searching": "検索中...",
+        "no_results": "結果がありません",
+        "show_more": "もっと見る",
+        "show_less": "隠す",
+        "select": "選択",
+        "select_all": "すべて選択"
+    },
+    "status": {
+        "connecting": "接続中...",
+        "reconnecting": "再接続中...",
+        "connected": "接続済み",
+        "disconnected": "切断済み",
+        "connect_attempt_count": "接続試行回数: {count}"
+    },
+    "titlebar": {
+        "close": "閉じる",
+        "minimize": "最小化",
+        "maximize": "最大化"
+    },
+    "pages": {
+        "home": "ホーム",
+        "settings": "設定",
+        "about": "このアプリについて"
+    },
+    "popup": {
+        "settings": {
+            "title": "設定",
+            "icon": "ti ti-settings",
+            "description": "設定を変更できます。"
+        },
+        "remote_connect": {
+            "title": "リモート接続",
+            "icon": "ti ti-qrcode",
+            "description": "リモート接続を開始します。"
+        }
+    },
+    "settings": {
+        "category": {
+            "general": {
+                "name": "一般",
+                "description": "一般的な設定を変更できます。"
+            },
+            "language": {
+                "name": "言語",
+                "description": "言語を変更できます。"
+            },
+            "appearance": {
+                "name": "外観",
+                "description": "外観を変更できます。"
+            },
+            "advanced": {
+                "name": "詳細",
+                "description": "詳細な設定を変更できます。"
+            }
+        },
+        "setting": {
+            "devMode": "開発者モード"
+        }
+    }
+}

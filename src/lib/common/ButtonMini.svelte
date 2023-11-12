@@ -1,5 +1,5 @@
-<script>
-	export let callback = () => {};
+<script lang="ts">
+	export let callback = (event: MouseEvent) => {};
 	export let outline = false;
 	export let disabled = false;
 </script>

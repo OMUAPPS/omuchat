@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ButtonMini from '$lib/common/ButtonMini.svelte';
 	import Component from '$lib/common/Component.svelte';
-	import { getPopupContext } from '$lib/common/popup/popup';
+	import { popupContext } from '$lib/common/popup/popup';
 	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 	import { style } from '$lib/util/class-helper';
 	import { onMount } from 'svelte';
@@ -12,7 +12,6 @@
 	export let selected = false;
 
 	const context = getPanelContext();
-	const popup = getPopupContext();
 
 	const index = panel.index;
 	let element: HTMLDivElement;
@@ -42,7 +41,7 @@
 	}
 
 	function openSettings() {
-		popup.push(panel.componentSettings());
+		popupContext.push(panel.componentSettings());
 	}
 
 	onMount(() => {
@@ -91,7 +90,7 @@
 
 <style lang="scss">
 	.container {
-		margin-top: 0px;
+		margin-top: 0;
 		height: 100%;
 		background: var(--color-bg-1);
 

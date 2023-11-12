@@ -1,29 +1,27 @@
 <script lang="ts">
 	import PopupHeader from './PopupHeader.svelte';
-	import { getPopupContext } from './popup';
+	import { popupContext } from './popup';
 
 	export let title: string;
-	export let icon: string;
 	export let windowed: boolean = true;
-	export let decorated: boolean = true;
-	const popup = getPopupContext();
+	export let noDecorated: boolean = false;
 	let container: HTMLButtonElement;
 
 	function onClick(event: MouseEvent) {
 		if (event.target === container) {
-			popup.pop();
+			popupContext.pop();
 		}
 	}
 </script>
 
 <button class="container" class:windowed on:click={onClick} bind:this={container}>
 	<div class="popup" class:windowed>
-		{#if windowed && decorated}
-			<PopupHeader {title} {icon} />
+		{#if !noDecorated && windowed}
+			<PopupHeader {title} />
 		{/if}
-		<div class="content" class:windowed>
-			{#if !windowed && decorated}
-				<PopupHeader {title} {icon} />
+		<div class="content" class:windowed class:noDecorated>
+			{#if !noDecorated && !windowed}
+				<PopupHeader {title} />
 			{/if}
 			<slot />
 		</div>
@@ -75,7 +73,10 @@
 		}
 		&:not(.windowed) {
 			position: absolute;
-			top: 40px;
+
+			&:not(.noDecorated) {
+				top: 40px;
+			}
 			width: 100%;
 			height: calc(100% - 40px);
 			padding-top: 40px;

@@ -35,7 +35,7 @@
 	}
 
 	.message {
-		padding: 5px 0px;
+		padding: 5px 0;
 		&:hover {
 			background: var(--color-bg-1);
 		}

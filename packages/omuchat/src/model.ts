@@ -1,5 +1,9 @@
 import { Client } from "./omuchat";
 
+export type ModelJson<T> = {
+    [K in keyof T]: T[K]
+}
+
 export abstract class Keyable {
     abstract key(): string;
     abstract toJSON(): unknown;
@@ -103,7 +107,7 @@ export class PluginInfo implements Keyable {
         };
     }
 
-    static fromJSON(json: any): PluginInfo {
+    static fromJSON(json: ModelJson<PluginInfo>): PluginInfo {
         return new PluginInfo(
             json.name,
             json.group,
@@ -231,7 +235,6 @@ export class ProviderInfo implements Keyable, Id {
 export class RoomInfo implements Keyable, Id {
     constructor(
         readonly id: string,
-
         readonly provider_id: string,
         readonly online: boolean,
         readonly url: string,
@@ -287,8 +290,9 @@ export class ChannelInfo implements Keyable, Id {
         };
     }
 
-    static fromJSON(json: any): ChannelInfo {
+    static fromJSON(client: Client, json: ModelJson<ChannelInfo>): ChannelInfo {
         return new ChannelInfo(
+            client,
             json.id,
             json.provider_id,
             json.url,

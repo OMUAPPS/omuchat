@@ -413,7 +413,7 @@ export class ListApiImpl implements ListApi {
 export const Status = {
     CONNECTED: "connected",
     CONNECTING: "connecting",
-    RECCONECTING: "reconnecting",
+    RECONNECTING: "reconnecting",
     DISCONNECTED: "disconnected",
 };
 
@@ -486,7 +486,7 @@ export class OmuChat implements Client, EventListener {
 
     status(): StatusValue {
         if (this.connected) return Status.CONNECTED;
-        if (this.connecting) return Status.CONNECTING;
+        if (this.connecting) return this.connectAttemptCount > 0 ? Status.RECONNECTING : Status.CONNECTING;
         return Status.DISCONNECTED;
     }
 

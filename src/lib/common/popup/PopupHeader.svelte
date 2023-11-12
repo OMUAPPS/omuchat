@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { t } from '$lib/i18n/i18n-context';
+
 	export let title = '';
-	export let icon = '';
 </script>
 
 <div class="header">
-	<i class={icon} />
-	<div class="title">{title}</div>
+	<i class={$t(`popup.${title}.icon`)} />
+	<div class="title">{$t(`popup.${title}.title`)}</div>
 </div>
 
 <style>

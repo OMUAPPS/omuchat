@@ -1,13 +1,10 @@
 <script lang="ts">
-	import PanelMessages from '$lib/main/panel/messages/PanelMessages.svelte';
-	import PanelRooms from '$lib/main/panel/rooms/PanelRooms.svelte';
-	import PopupRoomsSettings from '$lib/main/panel/rooms/PopupRoomsSettings.svelte';
-	import type { Message } from '@/omuchat';
-	import { get, writable } from 'svelte/store';
-	import Panel from './Panel.svelte';
+	import { get, writable, type Writable } from 'svelte/store';
 	import { setPanelContext, type PanelContext, type PanelEntry } from './panel';
+	import Panel from './Panel.svelte';
 
-	const panels = writable<PanelEntry[]>([]);
+	export let panels: Writable<PanelEntry[]> = writable([]);
+
 	const selected = writable<PanelEntry | null>(null);
 	const context: PanelContext = {
 		panels,
@@ -43,56 +40,6 @@
 		}
 	};
 	setPanelContext(context);
-
-	context.addPanel({
-		icon: 'ti ti-message',
-		name: 'コメント／メッセージ',
-		width: 300,
-		fit: true,
-		componentPanel() {
-			return {
-				component: PanelMessages,
-				props: {}
-			};
-		},
-		componentSettings() {
-			return {
-				component: PanelMessages,
-				props: {}
-			};
-		}
-	});
-	context.addPanel({
-		icon: 'ti ti-message',
-		name: 'ギフト／投げ銭',
-		componentPanel() {
-			return {
-				component: PanelMessages,
-				props: {
-					filter: (message: Message) => !!(message.gift || message.paid)
-				}
-			};
-		},
-		componentSettings() {
-			return {
-				component: PanelMessages,
-				props: {}
-			};
-		}
-	});
-	context.addPanel({
-		icon: 'ti ti-home',
-		name: '接続中',
-		componentPanel() {
-			return {
-				component: PanelRooms,
-				props: {}
-			};
-		},
-		componentSettings() {
-			return { component: PopupRoomsSettings, props: {} };
-		}
-	});
 
 	$: $panels.forEach((p, i) => (p.index = writable(i)));
 </script>

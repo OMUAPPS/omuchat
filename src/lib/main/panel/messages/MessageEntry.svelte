@@ -39,8 +39,8 @@
 	}
 
 	.author-avatar {
-		width: 24px;
-		height: 24px;
+		width: 32px;
+		height: 32px;
 		border-radius: 50%;
 	}
 

@@ -2,28 +2,32 @@
 	import PanelProvider from '$lib/panel/PanelProvider.svelte';
 	import type { PanelEntry } from '$lib/panel/panel';
 	import { writable } from 'svelte/store';
-	import PanelChannels from '../panel/channels/PanelChannels.svelte';
+	import PanelMessages from '../panel/messages/PanelMessages.svelte';
 	import PanelRooms from '../panel/rooms/PanelRooms.svelte';
 	import PopupRoomsSettings from '../panel/rooms/PopupRoomsSettings.svelte';
 
 	const panels = writable<PanelEntry[]>([
 		{
-			icon: 'ti ti-home',
-			name: 'チャンネル',
+			icon: 'ti ti-message',
+			name: 'コメント／メッセージ',
+			width: 300,
+			fit: true,
 			componentPanel() {
 				return {
-					component: PanelChannels,
+					component: PanelMessages,
 					props: {}
 				};
 			},
-			fit: true,
 			componentSettings() {
-				return { component: PopupRoomsSettings, props: {} };
+				return {
+					component: PanelMessages,
+					props: {}
+				};
 			}
 		},
 		{
 			icon: 'ti ti-home',
-			name: 'ルーム',
+			name: '接続中',
 			componentPanel() {
 				return {
 					component: PanelRooms,
