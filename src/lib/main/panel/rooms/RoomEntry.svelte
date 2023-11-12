@@ -52,7 +52,6 @@
 <style lang="scss">
 	.room {
 		padding: 10px;
-		border-radius: 5px;
 		background: var(--color-bg-2);
 		&:hover {
 			background: var(--color-bg-1);

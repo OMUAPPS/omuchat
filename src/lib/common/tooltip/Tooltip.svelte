@@ -1,117 +1,117 @@
 <script lang="ts">
-    import {afterUpdate, onDestroy} from 'svelte';
+	import { afterUpdate, onDestroy } from 'svelte';
 
-    let element: HTMLDivElement;
-    let target: HTMLElement;
-    let tooltip: HTMLElement;
-    let show = false;
-    type Rect = { x: number; y: number; width: number; height: number };
-    let tooltipRect: Rect = {
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0
-    };
-    let targetRect: Rect = {
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0
-    };
-    let tooltipPos: { x: number; y: number } = {x: 0, y: 0};
+	let element: HTMLDivElement;
+	let target: HTMLElement;
+	let tooltip: HTMLElement;
+	let show = false;
+	type Rect = { x: number; y: number; width: number; height: number };
+	let tooltipRect: Rect = {
+		x: 0,
+		y: 0,
+		width: 0,
+		height: 0
+	};
+	let targetRect: Rect = {
+		x: 0,
+		y: 0,
+		width: 0,
+		height: 0
+	};
+	let tooltipPos: { x: number; y: number } = { x: 0, y: 0 };
 
-    function showTooltip() {
-        show = true;
-        targetRect = target.getBoundingClientRect();
-    }
+	function showTooltip() {
+		show = true;
+		targetRect = target.getBoundingClientRect();
+	}
 
-    function hideTooltip() {
-        show = false;
-    }
+	function hideTooltip() {
+		show = false;
+	}
 
-    function clamp(value: number, min: number, max: number) {
-        return Math.min(Math.max(value, min), max);
-    }
+	function clamp(value: number, min: number, max: number) {
+		return Math.min(Math.max(value, min), max);
+	}
 
-    $: {
-        const padding = 5;
-        if (target && tooltip) {
-            tooltipRect = tooltip.getBoundingClientRect();
-            tooltipPos = {
-                x: clamp(
-                    targetRect.x + targetRect.width / 2 - tooltipRect.width / 2,
-                    padding,
-                    window.innerWidth - tooltipRect.width - padding
-                ),
-                y: clamp(
-                    targetRect.y + targetRect.height + 10,
-                    padding,
-                    window.innerHeight - tooltipRect.height - padding
-                )
-            };
-        }
-    }
+	$: {
+		const padding = 5;
+		if (target && tooltip) {
+			tooltipRect = tooltip.getBoundingClientRect();
+			tooltipPos = {
+				x: clamp(
+					targetRect.x + targetRect.width / 2 - tooltipRect.width / 2,
+					padding,
+					window.innerWidth - tooltipRect.width - padding
+				),
+				y: clamp(
+					targetRect.y + targetRect.height + 10,
+					padding,
+					window.innerHeight - tooltipRect.height - padding
+				)
+			};
+		}
+	}
 
-    afterUpdate(() => {
-        if (!element.parentElement) {
-            throw new Error('TooltipInline must be a child of another element');
-        }
-        target = element.parentElement;
-        target.addEventListener('mouseenter', showTooltip);
-        target.addEventListener('mouseleave', hideTooltip);
-    });
+	afterUpdate(() => {
+		if (!element.parentElement) {
+			throw new Error('TooltipInline must be a child of another element');
+		}
+		target = element.parentElement;
+		target.addEventListener('mouseenter', showTooltip);
+		target.addEventListener('mouseleave', hideTooltip);
+	});
 
-    onDestroy(() => {
-        target.removeEventListener('mouseenter', showTooltip);
-        target.removeEventListener('mouseleave', hideTooltip);
-    });
+	onDestroy(() => {
+		target.removeEventListener('mouseenter', showTooltip);
+		target.removeEventListener('mouseleave', hideTooltip);
+	});
 </script>
 
 <div class="wrapper" bind:this={element}>
-    {#if show}
-        <div class="tooltip" style="top: {tooltipPos.y}px; left: {tooltipPos.x}px;" bind:this={tooltip}>
-            <slot/>
-        </div>
-        <div
-                class="pointer"
-                style="top: {targetRect.y + targetRect.height}px; left: {targetRect.x +
+	{#if show}
+		<div class="tooltip" style="top: {tooltipPos.y}px; left: {tooltipPos.x}px;" bind:this={tooltip}>
+			<slot />
+		</div>
+		<div
+			class="pointer"
+			style="top: {targetRect.y + targetRect.height}px; left: {targetRect.x +
 				targetRect.width / 2}px;"
-        />
-    {/if}
+		/>
+	{/if}
 </div>
 
 <style lang="scss">
-    .tooltip {
-        position: fixed;
-        pointer-events: none;
-        z-index: 20;
-        background: var(--color-text);
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 0;
-        font-size: 12px;
-        font-weight: 600;
-        white-space: nowrap;
-        user-select: none;
-    }
+	.tooltip {
+		position: fixed;
+		pointer-events: none;
+		z-index: 200;
+		background: var(--color-text);
+		color: #fff;
+		padding: 5px 10px;
+		border-radius: 0;
+		font-size: 12px;
+		font-weight: 600;
+		white-space: nowrap;
+		user-select: none;
+	}
 
-    .pointer {
-        content: '';
-        position: fixed;
-        z-index: 20;
-        border: 5px solid transparent;
-        border-bottom-color: var(--color-text);
-        user-select: none;
-        pointer-events: none;
-        transform: translateX(-50%);
-    }
+	.pointer {
+		content: '';
+		position: fixed;
+		z-index: 20;
+		border: 5px solid transparent;
+		border-bottom-color: var(--color-text);
+		user-select: none;
+		pointer-events: none;
+		transform: translateX(-50%);
+	}
 
-    .wrapper {
-        position: fixed;
-        width: 0;
-        height: 0;
-        appearance: none;
-        border: none;
-        background: none;
-    }
+	.wrapper {
+		position: fixed;
+		width: 0;
+		height: 0;
+		appearance: none;
+		border: none;
+		background: none;
+	}
 </style>

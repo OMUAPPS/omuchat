@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '$lib/i18n/i18n-context';
 	import type { Writable } from 'svelte/store';
 
 	export let label: string;
@@ -8,7 +9,7 @@
 </script>
 
 <div class="combo">
-	<span class="combo-label">{label}</span>
+	<span class="combo-label">{$t(label)}</span>
 	<select bind:value={$value} {disabled}>
 		{#each options as option}
 			<option value={option}>{option}</option>
@@ -26,18 +27,5 @@
 		justify-content: space-between;
 		cursor: pointer;
 		user-select: none;
-		input {
-			border: none;
-			appearance: none;
-			width: 20px;
-			height: 20px;
-			border-radius: 25%;
-			background: var(--color-bg-2);
-			outline: 1px solid var(--color-1);
-			&:checked {
-				background: var(--color-1);
-				outline: none;
-			}
-		}
 	}
 </style>

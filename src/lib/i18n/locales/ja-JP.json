@@ -42,16 +42,16 @@
     "pages": {
         "home": "ホーム",
         "settings": "設定",
-        "about": "このアプリについて"
+        "remote_connect": "リモート接続"
     },
     "popup": {
         "settings": {
-            "title": "設定",
+            "name": "設定",
             "icon": "ti ti-settings",
             "description": "設定を変更できます。"
         },
         "remote_connect": {
-            "title": "リモート接続",
+            "name": "リモート接続",
             "icon": "ti ti-qrcode",
             "description": "リモート接続を開始します。"
         }
@@ -73,10 +73,15 @@
             "advanced": {
                 "name": "詳細",
                 "description": "詳細な設定を変更できます。"
+            },
+            "credits": {
+                "name": "クレジット",
+                "description": "クレジットを表示します。"
             }
         },
         "setting": {
-            "devMode": "開発者モード"
+            "devMode": "開発者モード",
+            "language": "言語"
         }
     }
 }

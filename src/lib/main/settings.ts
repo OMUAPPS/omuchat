@@ -20,7 +20,7 @@ export const SETTING_REGISTRY: Record<string, Record<string, Setting>> = {
                 return {
                     component: Checkbox,
                     props: {
-                        label: 'Dev mode',
+                        label: 'settings.setting.devMode',
                         value: devMode
                     }
                 }
@@ -34,7 +34,7 @@ export const SETTING_REGISTRY: Record<string, Record<string, Setting>> = {
                 return {
                     component: Combobox,
                     props: {
-                        label: 'Language',
+                        label: 'settings.setting.language',
                         value: language,
                         options: Object.keys(LOCALES) as (keyof typeof LOCALES)[]
                     }

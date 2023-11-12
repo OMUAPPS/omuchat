@@ -7,5 +7,5 @@ export interface Page {
     component(): PropedComponent;
 }
 
-export const pages: Writable<Page[]> = writable([]);
+export const pages: Writable<Record<string, Page>> = writable({});
 export const currentPage: Writable<Page | null> = writable(null);

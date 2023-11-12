@@ -6,14 +6,15 @@
 	import Tooltip from '../common/tooltip/Tooltip.svelte';
 	import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
 	import ButtonOpenSettings from './ButtonOpenSettings.svelte';
-	import PageAssets from './page/PageAssets.svelte';
 	import PageChannels from './page/PageChannels.svelte';
 	import PageHome from './page/PageHome.svelte';
 	import PageMessages from './page/PageMessages.svelte';
+	import PageAssets from './page/assets/PageAssets.svelte';
 	import { currentPage, pages } from './page/page';
+	import { devMode } from './settings';
 
-	pages.set([
-		{
+	pages.set({
+		main: {
 			title: 'メイン',
 			icon: 'ti ti-home',
 			component: () => {
@@ -23,7 +24,7 @@
 				};
 			}
 		},
-		{
+		message: {
 			title: 'メッセージ',
 			icon: 'ti ti-message',
 			component: () => {
@@ -33,7 +34,7 @@
 				};
 			}
 		},
-		{
+		channel: {
 			title: 'チャンネル',
 			icon: 'ti ti-plug',
 			component: () => {
@@ -43,7 +44,7 @@
 				};
 			}
 		},
-		{
+		asset: {
 			title: 'アセット',
 			icon: 'ti ti-package',
 			component: () => {
@@ -53,7 +54,17 @@
 				};
 			}
 		},
-		{
+		app: {
+			title: 'アプリ',
+			icon: 'ti ti-player-play',
+			component: () => {
+				return {
+					component: PageAssets,
+					props: {}
+				};
+			}
+		},
+		dev: {
 			title: '開発',
 			icon: 'ti ti-bug',
 			component: () => {
@@ -63,8 +74,23 @@
 				};
 			}
 		}
-	]);
-	currentPage.set($pages[0]);
+	});
+	currentPage.set($pages.main);
+
+	$: if ($devMode) {
+		$pages.dev = {
+			title: '開発',
+			icon: 'ti ti-bug',
+			component: () => {
+				return {
+					component: PanelProvider,
+					props: {}
+				};
+			}
+		};
+	} else {
+		delete $pages.dev;
+	}
 </script>
 
 <div class="wrapper">
@@ -88,7 +114,7 @@
 			<ButtonOpenSettings />
 		</FlexColWrapper>
 	</div>
-	{#each $pages as page}
+	{#each Object.entries($pages) as [key, page]}
 		<div style={style({ display: $currentPage === page ? '' : 'none' })} class="page-container">
 			<Component component={page.component()} />
 		</div>
@@ -126,7 +152,9 @@
 
 		&:hover {
 			background-color: color-mix(in srgb, var(--color-1) 10%, transparent);
-			// color: var(--color-bg-2);
+			color: color-mix(in srgb, var(--color-bg-1) 10%, var(--color-1));
+			outline: 1px solid color-mix(in srgb, var(--color-1) 25%, transparent);
+			outline-offset: -3px;
 		}
 
 		&.active {

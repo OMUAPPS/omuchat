@@ -7,17 +7,34 @@
 	import { t } from '$lib/i18n/i18n-context';
 	import { writable } from 'svelte/store';
 	import { SETTING_REGISTRY } from '../settings';
-	const categories = Object.entries(SETTING_REGISTRY).map(([name, settings]) => {
-		return {
-			name,
-			settings: Object.entries(settings).map(([name, setting]) => {
-				return {
-					name,
-					...setting
-				};
-			})
-		};
-	});
+	import SettingsCredits from './SettingsCredits.svelte';
+	const categories = [
+		...Object.entries(SETTING_REGISTRY).map(([name, settings]) => {
+			return {
+				name,
+				settings: Object.entries(settings).map(([name, setting]) => {
+					return {
+						name,
+						...setting
+					};
+				})
+			};
+		}),
+		{
+			name: 'credits',
+			settings: [
+				{
+					name: 'credits',
+					component() {
+						return {
+							component: SettingsCredits,
+							props: {}
+						};
+					}
+				}
+			]
+		}
+	];
 	const currentCategory = writable(categories[0]);
 </script>
 
@@ -49,7 +66,7 @@
 				</button>
 			{/each}
 		</div>
-		<div class="settings">
+		<div class="settings" class:fit={$currentCategory.name === 'credits'}>
 			{#each $currentCategory.settings as setting}
 				<Component component={setting.component()} />
 			{/each}
@@ -73,7 +90,6 @@
 	}
 
 	.content {
-		margin-top: 80px;
 		width: 100%;
 		height: 100%;
 		padding: 20px;
@@ -91,6 +107,10 @@
 	.settings {
 		width: 300px;
 		height: 100%;
+
+		&.fit {
+			width: calc(100% - 250px);
+		}
 	}
 
 	.category {
@@ -128,11 +148,12 @@
 	}
 
 	.header {
-		position: absolute;
+		position: relative;
 		top: 0;
 		left: 0;
 		right: 0;
 		height: 80px;
+		width: 100%;
 		padding: 40px 20px;
 		display: flex;
 		flex-direction: row;

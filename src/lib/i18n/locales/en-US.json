@@ -1,1 +1,83 @@
-{}
+{
+    "general": {
+        "yes": "Yes",
+        "no": "No",
+        "ok": "OK",
+        "cancel": "Cancel",
+        "close": "Close",
+        "save": "Save",
+        "reset": "Reset",
+        "copy": "Copy",
+        "copied": "Copied",
+        "error": "Error",
+        "warning": "Warning",
+        "info": "Information",
+        "success": "Success",
+        "try_again": "Try Again",
+        "retry": "Retry",
+        "in_progress": "In Progress...",
+        "choose_file": "Choose File",
+        "choose_folder": "Choose Folder",
+        "loading": "Loading...",
+        "search": "Search",
+        "searching": "Searching...",
+        "no_results": "No Results",
+        "show_more": "Show More",
+        "show_less": "Show Less",
+        "select": "Select",
+        "select_all": "Select All"
+    },
+    "status": {
+        "connecting": "Connecting...",
+        "reconnecting": "Reconnecting...",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect_attempt_count": "Connection Attempt Count: {count}"
+    },
+    "titlebar": {
+        "close": "Close",
+        "minimize": "Minimize",
+        "maximize": "Maximize"
+    },
+    "pages": {
+        "home": "Home",
+        "settings": "Settings",
+        "remote_connect": "Remote Connect"
+    },
+    "popup": {
+        "settings": {
+            "name": "Settings",
+            "icon": "ti ti-settings",
+            "description": "You can change settings here."
+        },
+        "remote_connect": {
+            "name": "Remote Connect",
+            "icon": "ti ti-qrcode",
+            "description": "Start a remote connection."
+        }
+    },
+    "settings": {
+        "category": {
+            "general": {
+                "name": "General",
+                "description": "Change general settings."
+            },
+            "language": {
+                "name": "Language",
+                "description": "Change the language."
+            },
+            "appearance": {
+                "name": "Appearance",
+                "description": "Change the appearance."
+            },
+            "advanced": {
+                "name": "Advanced",
+                "description": "Change advanced settings."
+            }
+        },
+        "setting": {
+            "devMode": "Developer Mode",
+            "language": "Language"
+        }
+    }
+}

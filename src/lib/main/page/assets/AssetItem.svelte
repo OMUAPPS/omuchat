@@ -1,16 +1,18 @@
 <script lang="ts">
-	import { t } from '$lib/i18n/i18n-context';
+	import type { Asset } from './asset';
 
-	export let title = '';
+	export let asset: Asset;
 </script>
 
-<div class="header">
-	<i class={$t(`popup.${title}.icon`)} />
-	<div class="title">{$t(`popup.${title}.name`)}</div>
+<div class="asset">
+	<div class="asset-icon">
+		<img src={asset.icon} alt={asset.name} />
+	</div>
+	<div class="asset-name">{asset.name}</div>
 </div>
 
 <style>
-	.header {
+	.asset {
 		display: flex;
 		flex-direction: row;
 		align-items: baseline;

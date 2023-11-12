@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '$lib/i18n/i18n-context';
 	import type { Writable } from 'svelte/store';
 
 	export let label: string;
@@ -11,7 +12,7 @@
 </script>
 
 <label class="toggle">
-	<span class="toggle-label">{label}</span>
+	<span class="toggle-label">{$t(label)}</span>
 	<input type="checkbox" bind:checked={$value} {disabled} on:click={toggle} />
 	{#if $value}
 		<i class="toggle-icon ti ti-check" />
