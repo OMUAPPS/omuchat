@@ -20,6 +20,14 @@
         serif;
 }
 
+a {
+    color: var(--color-1);
+
+    :visited {
+        color: var(--color-2);
+    }
+}
+
 body {
     min-height: 100vh;
     margin: 0;
