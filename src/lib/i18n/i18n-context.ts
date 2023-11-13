@@ -9,6 +9,6 @@ export const t: Writable<TranslateFunction> = writable(() => {
 
 i18n.subscribe(i18n => {
     if (i18n) {
-        t.set(i18n.t);
+        t.set(i18n.translate);
     }
 });

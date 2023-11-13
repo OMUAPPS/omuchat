@@ -1,7 +1,7 @@
 export type TranslateFunction = (key: string, params?: Record<string, any>) => string;
 
 export interface I18n {
-    t: TranslateFunction;
+    translate: TranslateFunction;
     locale: string;
 }
 
@@ -31,7 +31,7 @@ export function createI18n(messages: Messages, locale: string): I18n {
 
     return {
         locale,
-        t(key: string, params?: Record<string, any>): string {
+        translate(key: string, params?: Record<string, any>): string {
             const translation = getTranslation(key);
             if (!translation) {
                 console.warn(`Translation for key "${key}" not found`);
@@ -47,9 +47,9 @@ export function createI18n(messages: Messages, locale: string): I18n {
 
 export function createI18nUnion(i18ns: I18n[]): I18n {
     return {
-        t(key: string, params?: Record<string, any>): string {
+        translate(key: string, params?: Record<string, any>): string {
             for (const i18n of i18ns) {
-                const translated = i18n.t(key, params);
+                const translated = i18n.translate(key, params);
                 if (translated !== key) return translated;
             }
             return key;
