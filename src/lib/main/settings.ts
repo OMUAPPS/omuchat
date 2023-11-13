@@ -7,6 +7,28 @@ import Combobox from "./settings/Combobox.svelte";
 export const devMode = writable(false);
 export const language = writable<keyof typeof LOCALES>("ja-JP");
 
+function getSystemLanguage() {
+    if (window.navigator.language in LOCALES) {
+        return window.navigator.language;
+    }
+    for (const lang of window.navigator.languages) {
+        if (lang in LOCALES) {
+            return lang;
+        }
+    }
+    return "en-US";
+}
+
+// TODO: omuchat storage api
+export function init() {
+    devMode.set(localStorage.getItem('devMode') === 'true');
+    language.set(localStorage.getItem('language') as keyof typeof LOCALES || getSystemLanguage());
+    devMode.subscribe(value => localStorage.setItem('devMode', value.toString()));
+    language.subscribe(value => localStorage.setItem('language', value));
+}
+
+setTimeout(init, 0);
+
 export interface Setting<T = any> {
     type: 'boolean' | 'string' | 'number' | 'combo';
     component(): PropedComponent;

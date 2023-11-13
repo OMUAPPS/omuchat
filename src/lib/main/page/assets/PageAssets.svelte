@@ -1,20 +1,62 @@
 <script lang="ts">
 	import InputText from '$lib/common/input/InputText.svelte';
-	import { writable } from 'svelte/store';
-	import AssetItem from './AssetItem.svelte';
+	import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
+	import { writable, type Writable } from 'svelte/store';
 	import type { Asset, AssetType } from './asset';
+	import AssetItem from './AssetItem.svelte';
 
-	const assets = writable<Asset[]>(
+	// test
+	export const assets: Writable<Asset[]> = writable<Asset[]>(
 		Array.from({ length: 100 }, (_, i) => ({
 			id: i,
 			name: `アセット ${i}`,
 			type: ['app', 'image', 'panel'][i % 3] as AssetType,
 			thumbnail: `https://picsum.photos/seed/${i}/200/200`,
 			description: `asset ${i} description`,
-			tags: ['tag1', 'tag2', 'tag3'],
+			tags: ['tag1', 'tag2', 'tag3', `tag${i}`],
 			url: `https://picsum.photos/seed/${i}/200/200`
 		}))
 	);
+
+	const searchLookup = writable<Record<string, Asset>>({});
+
+	assets.subscribe((assets) => {
+		function key(asset: Asset) {
+			return `${asset.name} ${asset.tags.join(' ')} ${asset.description}`;
+		}
+		setTimeout(() => {
+			const lookup: Record<string, Asset> = {};
+			assets.forEach((asset) => {
+				lookup[key(asset)] = asset;
+			});
+			searchLookup.set(lookup);
+		}, 0);
+	});
+
+	function searchAssets(search: string) {
+		function score(key: string) {
+			const words = search.split(' ');
+			let score = 0;
+			words.forEach((word) => {
+				if (key.includes(word)) {
+					score++;
+				}
+			});
+			if (key.includes(search)) {
+				score += 10;
+			}
+			if (key.startsWith(search)) {
+				score += 10;
+			}
+			return score;
+		}
+
+		return Object.entries($searchLookup)
+			.map(([key, asset]) => ({ asset, score: score(key) }))
+			.sort((a, b) => b.score - a.score)
+			.filter(({ score }) => score > 0)
+			.map(({ asset }) => asset);
+	}
 
 	const search = writable('');
 </script>
@@ -26,13 +68,23 @@
 			アセット
 		</div>
 		<div>
-			<InputText placeholder="検索" bind:value={$search} />
+			{#if $assets.length > 10000}
+				<InputTextLazy placeholder="検索" bind:value={$search} />
+			{:else}
+				<InputText placeholder="検索" bind:value={$search} />
+			{/if}
 		</div>
 	</div>
 	<div class="items">
-		{#each $assets.filter((asset) => asset.name.includes($search)) as asset}
-			<AssetItem {asset} />
-		{/each}
+		{#if $search === ''}
+			{#each $assets as asset}
+				<AssetItem {asset} />
+			{/each}
+		{:else}
+			{#each searchAssets($search) as asset}
+				<AssetItem {asset} />
+			{/each}
+		{/if}
 	</div>
 </div>
 
@@ -50,7 +102,6 @@
 			position: fixed;
 			top: 40px;
 			left: 40px;
-			z-index: 1;
 			display: flex;
 			flex-direction: row;
 			gap: 40px;
@@ -74,10 +125,9 @@
 		}
 
 		.items {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-			grid-gap: 30px;
-			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
 		}
 	}
 </style>

@@ -115,6 +115,7 @@
 
 	.wrapper {
 		position: fixed;
+		z-index: 10;
 		width: 0;
 		height: 0;
 		appearance: none;
