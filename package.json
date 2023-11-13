@@ -4,12 +4,12 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev-tauri": "tauri dev",
-        "build-tauri": "tauri build",
-        "dev": "vite --host 0.0.0.0",
-        "build": "vite build",
-        "preview": "vite preview",
-        "check": "svelte-check --tsconfig ./tsconfig.json",
+        "dev": "tauri dev",
+        "build": "tauri build",
+        "ui:dev": "vite --host 0.0.0.0",
+        "ui:build": "vite build",
+        "ui:preview": "vite preview",
+        "ui:check": "svelte-check --tsconfig ./tsconfig.json",
         "lint:stylelint": "stylelint --ignore-path .gitignore ./**/*.{css,svelte}",
         "fix:stylelint": "stylelint --fix --ignore-path .gitignore ./**/*.{css,svelte}"
     },

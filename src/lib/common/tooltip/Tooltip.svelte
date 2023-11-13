@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { style } from '$lib/util/class-helper';
 	import { afterUpdate, onDestroy } from 'svelte';
 
 	let element: HTMLDivElement;
@@ -69,13 +70,19 @@
 
 <div class="wrapper" bind:this={element}>
 	{#if show}
-		<div class="tooltip" style="top: {tooltipPos.y}px; left: {tooltipPos.x}px;" bind:this={tooltip}>
+		<div
+			class="tooltip"
+			style={style({ top: `${tooltipPos.y}px`, left: `${tooltipPos.x}px` })}
+			bind:this={tooltip}
+		>
 			<slot />
 		</div>
 		<div
 			class="pointer"
-			style="top: {targetRect.y + targetRect.height}px; left: {targetrect.x +
-				targetrect.width / 2}px;"
+			style={style({
+				top: `${targetRect.y + targetRect.height}px`,
+				left: `${targetRect.x + targetRect.width / 2}px`
+			})}
 		/>
 	{/if}
 </div>
