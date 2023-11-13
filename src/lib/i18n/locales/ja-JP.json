@@ -40,7 +40,30 @@
         "maximize": "最大化"
     },
     "pages": {
-        "home": "ホーム",
+        "main": {
+            "name": "メイン",
+            "icon": "ti ti-home"
+        },
+        "message": {
+            "name": "メッセージ",
+            "icon": "ti ti-message"
+        },
+        "channel": {
+            "name": "チャンネル",
+            "icon": "ti ti-plug"
+        },
+        "asset": {
+            "name": "アセット",
+            "icon": "ti ti-package"
+        },
+        "app": {
+            "name": "アプリ",
+            "icon": "ti ti-player-play"
+        },
+        "dev": {
+            "name": "開発",
+            "icon": "ti ti-bug"
+        },
         "settings": "設定",
         "remote_connect": "リモート接続"
     },

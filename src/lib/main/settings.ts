@@ -4,40 +4,53 @@ import { writable } from "svelte/store";
 import Checkbox from "./settings/Checkbox.svelte";
 import Combobox from "./settings/Combobox.svelte";
 
-export const devMode = writable(false);
-export const language = writable<keyof typeof LOCALES>("ja-JP");
 
-function getSystemLanguage() {
+function getSystemLanguage(): keyof typeof LOCALES {
     if (window.navigator.language in LOCALES) {
-        return window.navigator.language;
+        return window.navigator.language as keyof typeof LOCALES;
     }
     for (const lang of window.navigator.languages) {
         if (lang in LOCALES) {
-            return lang;
+            return lang as keyof typeof LOCALES;
         }
     }
     return "en-US";
 }
 
-// TODO: omuchat storage api
-export function init() {
-    devMode.set(localStorage.getItem('devMode') === 'true');
-    language.set(localStorage.getItem('language') as keyof typeof LOCALES || getSystemLanguage());
-    devMode.subscribe(value => localStorage.setItem('devMode', value.toString()));
-    language.subscribe(value => localStorage.setItem('language', value));
+// TODO: omuchat storage apiに移行
+export function createSetting<T>(key: string, serializer: (value: T) => string, deserializer: (value: string) => T, defaultValue: T) {
+    const store = writable<T>(localStorage.getItem(key) ? deserializer(localStorage.getItem(key)!) : defaultValue);
+    store.subscribe(value => localStorage.setItem(key, serializer(value)));
+    return store;
 }
 
-setTimeout(init, 0);
+function createBooleanSetting(key: string, defaultValue: boolean) {
+    return createSetting(key, value => value.toString(), value => value === 'true', defaultValue);
+}
 
-export interface Setting<T = any> {
-    type: 'boolean' | 'string' | 'number' | 'combo';
+function createNumberSetting(key: string, defaultValue: number) {
+    return createSetting(key, value => value.toString(), value => Number(value), defaultValue);
+}
+
+function createStringSetting(key: string, defaultValue: string) {
+    return createSetting(key, value => value, value => value, defaultValue);
+}
+
+function createLiteralSetting<T extends string>(key: string, defaultValue: T) {
+    return createSetting(key, value => value, value => value as T, defaultValue);
+}
+
+export const devMode = createBooleanSetting('devMode', false);
+export const language = createLiteralSetting<keyof typeof LOCALES>('language', getSystemLanguage());
+export const currentPage = createStringSetting('currentPage', 'main');
+
+export interface Setting {
     component(): PropedComponent;
 }
 
 export const SETTING_REGISTRY: Record<string, Record<string, Setting>> = {
     general: {
         devMode: {
-            type: 'boolean',
             component() {
                 return {
                     component: Checkbox,
@@ -51,7 +64,6 @@ export const SETTING_REGISTRY: Record<string, Record<string, Setting>> = {
     },
     language: {
         language: {
-            type: 'combo',
             component() {
                 return {
                     component: Combobox,

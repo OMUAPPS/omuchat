@@ -1,11 +1,17 @@
 <script lang="ts">
+	import { classes } from '$lib/util/class-helper';
+
 	export let between = false;
 	export let reverse = false;
 	export let widthFull = false;
 	export let heightFull = false;
 </script>
 
-<div class="wrapper" class:between class:reverse class:widthFull class:heightFull>
+<div
+	class:between
+	class:reverse
+	class={classes('wrapper', widthFull && 'width-full', heightFull && 'height-full')}
+>
 	<slot />
 </div>
 
@@ -24,11 +30,11 @@
 		flex-direction: column-reverse;
 	}
 
-	.widthFull {
+	.width-full {
 		width: 100%;
 	}
 
-	.heightFull {
+	.height-full {
 		height: 100%;
 	}
 </style>

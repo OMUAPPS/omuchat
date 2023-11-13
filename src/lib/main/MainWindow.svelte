@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Component from '$lib/common/Component.svelte';
 	import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
+	import { t } from '$lib/i18n/i18n-context';
 	import PanelProvider from '$lib/panel/PanelProvider.svelte';
 	import { style } from '$lib/util/class-helper';
 	import Tooltip from '../common/tooltip/Tooltip.svelte';
@@ -10,13 +11,12 @@
 	import PageHome from './page/PageHome.svelte';
 	import PageMessages from './page/PageMessages.svelte';
 	import PageAssets from './page/assets/PageAssets.svelte';
-	import { currentPage, pages } from './page/page';
-	import { devMode } from './settings';
+	import { pages } from './page/page';
+	import { currentPage, devMode } from './settings';
 
 	pages.set({
 		main: {
-			title: 'メイン',
-			icon: 'ti ti-home',
+			name: 'main',
 			component: () => {
 				return {
 					component: PageHome,
@@ -25,8 +25,7 @@
 			}
 		},
 		message: {
-			title: 'メッセージ',
-			icon: 'ti ti-message',
+			name: 'message',
 			component: () => {
 				return {
 					component: PageMessages,
@@ -35,8 +34,7 @@
 			}
 		},
 		channel: {
-			title: 'チャンネル',
-			icon: 'ti ti-plug',
+			name: 'channel',
 			component: () => {
 				return {
 					component: PageChannels,
@@ -45,8 +43,7 @@
 			}
 		},
 		asset: {
-			title: 'アセット',
-			icon: 'ti ti-package',
+			name: 'asset',
 			component: () => {
 				return {
 					component: PageAssets,
@@ -55,32 +52,19 @@
 			}
 		},
 		app: {
-			title: 'アプリ',
-			icon: 'ti ti-player-play',
+			name: 'app',
 			component: () => {
 				return {
 					component: PageAssets,
 					props: {}
 				};
 			}
-		},
-		dev: {
-			title: '開発',
-			icon: 'ti ti-bug',
-			component: () => {
-				return {
-					component: PanelProvider,
-					props: {}
-				};
-			}
 		}
 	});
-	currentPage.set($pages.main);
 
 	$: if ($devMode) {
 		$pages.dev = {
-			title: '開発',
-			icon: 'ti ti-bug',
+			name: 'dev',
 			component: () => {
 				return {
 					component: PanelProvider,
@@ -100,12 +84,12 @@
 				<button
 					class="page"
 					on:click={() => {
-						currentPage.set(page);
+						currentPage.set(page.name);
 					}}
-					class:active={$currentPage === page}
+					class:active={$currentPage === page.name}
 				>
-					<Tooltip>{page.title}</Tooltip>
-					<i class={page.icon} />
+					<Tooltip>{$t(`pages.${page.name}.name`)}</Tooltip>
+					<i class={$t(`pages.${page.name}.icon`)} />
 				</button>
 			{/each}
 		</FlexColWrapper>
@@ -115,7 +99,10 @@
 		</FlexColWrapper>
 	</div>
 	{#each Object.entries($pages) as [key, page]}
-		<div style={style({ display: $currentPage === page ? '' : 'none' })} class="page-container">
+		<div
+			style={style({ display: $currentPage === page.name ? '' : 'none' })}
+			class="page-container"
+		>
 			<Component component={page.component()} />
 		</div>
 	{/each}
