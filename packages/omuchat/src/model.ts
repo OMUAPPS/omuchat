@@ -1,4 +1,4 @@
-import { Client } from "./omuchat";
+import type { Client } from "./omuchat";
 
 export type ModelJson<T> = {
     [K in keyof T]: T[K]

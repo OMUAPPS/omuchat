@@ -15,9 +15,7 @@
     margin: 0;
     padding: 0;
     user-select: none;
-    font-family:
-        Noto Sans JP,
-        serif;
+    font-family: 'Noto Sans JP', sans-serif;
 }
 
 a {
@@ -36,11 +34,4 @@ body {
     background-size: 100vw 100vh;
 }
 
-@font-face {
-    font-family: 'Pacifico';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Pacifico Regular'), local('Pacifico-Regular'),
-        url(https://fonts.gstatic.com/s/pacifico/v12/FwZY7-Qmy14u9lezJ-6H6MmBp0u-.woff2) format('woff2');
-    font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap');

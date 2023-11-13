@@ -1,4 +1,4 @@
-import { PluginInfo, ListInfo, ProxyInfo } from "./model";
+import type { ListInfo, PluginInfo, ProxyInfo } from "./model";
 
 export interface EventJson<T extends keyof EventMap> {
     type: T;

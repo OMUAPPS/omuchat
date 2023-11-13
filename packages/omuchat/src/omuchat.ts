@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { EventJson, EventMap, ProxyEventType } from "./events";
+import type { EventJson, EventMap, ProxyEventType } from "./events";
 import {
     ActionInfo,
     ChannelInfo,

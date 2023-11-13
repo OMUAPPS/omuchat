@@ -1,4 +1,4 @@
-import { ImageComponent, TextComponent } from "./model";
+import type { ImageComponent, TextComponent } from "./model";
 
 export class ComponentFactory {
     text({ value }: { value: string }): TextComponent {
