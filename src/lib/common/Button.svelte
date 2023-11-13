@@ -12,33 +12,34 @@
 <style lang="scss">
 	.button {
 		display: flex;
-		justify-content: center;
 		align-items: center;
-		outline: none;
-		border: none;
-		color: var(--color-1);
-		background: transparent;
+		justify-content: center;
 		min-width: 40px;
 		min-height: 40px;
 		max-height: 100%;
-		padding-left: 10px;
 		padding-right: 10px;
+		padding-left: 10px;
 		font-size: 16px;
+		color: var(--color-1);
+		background: transparent;
+		border: none;
+		outline: none;
 
 		&:hover {
+			color: var(--color-bg-2);
 			background: var(--color-1);
 			outline: 2px solid #fff;
-			color: var(--color-bg-2);
 		}
 
 		&:disabled {
-			opacity: 0.5;
 			cursor: not-allowed;
+			opacity: 0.5;
 		}
 	}
 
 	.outline {
 		border: 1px solid var(--color-1);
+
 		// box-shadow: 0 1px 0 0 var(--color-1);
 	}
 

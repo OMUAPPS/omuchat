@@ -90,14 +90,14 @@
 
 <style lang="scss">
 	.container {
-		margin-top: 0;
 		height: 100%;
+		margin-top: 0;
 		background: var(--color-bg-1);
 
 		&.dragging {
-			transform: translateY(-10px);
-			opacity: 0.6;
 			pointer-events: none;
+			opacity: 0.6;
+			transform: translateY(-10px);
 
 			.drag-wrapper {
 				position: fixed;
@@ -116,12 +116,12 @@
 	}
 
 	.header {
-		height: 40px;
-		width: 100%;
-		padding-bottom: 10px;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		width: 100%;
+		height: 40px;
+		padding-bottom: 10px;
 
 		* {
 			transition: 0.03s;
@@ -134,14 +134,14 @@
 
 	.left {
 		display: flex;
-		align-items: center;
-		font-size: 16px;
-		width: 100%;
-		appearance: none;
-		border: none;
-		background: none;
-		cursor: grab;
 		gap: 5px;
+		align-items: center;
+		width: 100%;
+		font-size: 16px;
+		appearance: none;
+		cursor: grab;
+		background: none;
+		border: none;
 	}
 
 	.right {
@@ -159,15 +159,15 @@
 	}
 
 	.dragging {
-		cursor: grabbing;
 		color: var(--color-1);
+		cursor: grabbing;
 	}
 
 	.panel {
-		background: var(--color-bg-2);
-		outline: 1px solid rgba(0, 0, 0, 0.1);
-		height: calc(100% - 40px);
 		width: 100%;
+		height: calc(100% - 40px);
 		overflow-y: auto;
+		background: var(--color-bg-2);
+		outline: 1px solid rgb(0 0 0 / 10%);
 	}
 </style>

@@ -11,28 +11,27 @@
 <style lang="scss">
 	.button {
 		display: flex;
-		justify-content: center;
 		align-items: center;
-		outline: none;
-		border: none;
-		background: transparent;
+		justify-content: center;
 		min-width: 30px;
-		padding-left: 6px;
-		padding-right: 6px;
 		min-height: 30px;
-		border-radius: 5px;
+		padding-right: 6px;
+		padding-left: 6px;
 		font-size: 16px;
+		background: transparent;
+		border: none;
 		border-radius: 6px;
+		outline: none;
 
 		&:hover {
+			color: var(--color-bg-2);
 			background: var(--color-1);
 			outline: 2px solid #fff;
-			color: var(--color-bg-2);
 		}
 
 		&:disabled {
-			opacity: 0.5;
 			cursor: not-allowed;
+			opacity: 0.5;
 		}
 	}
 

@@ -66,11 +66,11 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
+		gap: 10px;
 		align-items: center;
 		justify-content: center;
 		width: 100%;
 		height: 100%;
-		gap: 10px;
 	}
 
 	.close {
@@ -79,12 +79,12 @@
 	}
 
 	.qr {
-		border: none;
-		background: none;
-		padding: 0;
-		margin: 0;
 		width: 150px;
 		height: 150px;
+		padding: 0;
+		margin: 0;
+		background: none;
+		border: none;
 
 		&:hover {
 			outline: 2px solid var(--color-1);

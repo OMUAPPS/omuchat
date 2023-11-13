@@ -34,8 +34,8 @@
 	.left {
 		display: flex;
 		flex-direction: row;
-		align-items: center;
 		gap: 5px;
+		align-items: center;
 	}
 
 	.author-avatar {

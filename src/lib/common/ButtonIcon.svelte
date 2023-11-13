@@ -9,19 +9,19 @@
 <style lang="scss">
 	.button {
 		display: flex;
-		justify-content: center;
 		align-items: center;
-		outline: none;
-		border: none;
+		justify-content: center;
 		width: 40px;
 		height: 40px;
+		font-size: 16px;
 		color: var(--color-1);
 		background: transparent;
-		font-size: 16px;
+		border: none;
+		outline: none;
 
 		&:hover {
-			background: var(--color-1);
 			color: var(--color-bg-2);
+			background: var(--color-1);
 		}
 	}
 </style>

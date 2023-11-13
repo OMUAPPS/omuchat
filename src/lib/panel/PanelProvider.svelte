@@ -52,13 +52,13 @@
 
 <style>
 	.container {
-		background: var(--color-bg-1);
 		display: flex;
 		flex-direction: row;
-		padding: 10px;
-		height: 100%;
 		gap: 10px;
 		width: 100%;
+		height: 100%;
+		padding: 10px;
 		overflow-x: scroll;
+		background: var(--color-bg-1);
 	}
 </style>

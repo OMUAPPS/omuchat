@@ -13,6 +13,7 @@
 <style>
 	.wrapper {
 		display: flex;
+
 		/* height: 100%; */
 		flex-direction: row;
 		align-items: center;

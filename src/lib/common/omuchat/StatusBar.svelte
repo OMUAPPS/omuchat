@@ -33,10 +33,10 @@
 
 <style>
 	p {
-		color: rgba(0, 0, 0, 0.5);
-		font-weight: bold;
-		font-size: 12px;
 		height: 100%;
+		font-size: 12px;
+		font-weight: bold;
+		color: rgb(0 0 0 / 50%);
 	}
 
 	.connected {
@@ -52,6 +52,6 @@
 	}
 
 	.disconnected {
-		color: #ff0000;
+		color: #f00;
 	}
 </style>

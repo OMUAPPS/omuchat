@@ -5,7 +5,7 @@
 <style>
 	.wrapper {
 		display: flex;
-		align-items: baseline;
 		gap: 5px;
+		align-items: baseline;
 	}
 </style>

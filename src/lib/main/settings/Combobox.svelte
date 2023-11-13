@@ -20,11 +20,11 @@
 <style lang="scss">
 	.combo {
 		position: relative;
-		width: 100%;
-		padding: 10px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		width: 100%;
+		padding: 10px;
 		cursor: pointer;
 		user-select: none;
 	}

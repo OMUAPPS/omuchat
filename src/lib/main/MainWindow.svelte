@@ -124,42 +124,43 @@
 <style lang="scss">
 	.wrapper {
 		display: flex;
-		height: 100%;
 		flex-direction: row;
 		align-items: center;
+		height: 100%;
 	}
 
 	.tab-container {
 		display: flex;
 		flex-direction: column;
-		height: 100%;
+		gap: 10px;
 		align-items: center;
 		justify-content: space-between;
-		gap: 10px;
-		padding-bottom: 40px;
-		padding-top: 50px;
 		width: 40px;
+		height: 100%;
+		padding-top: 50px;
+		padding-bottom: 40px;
 	}
 
 	.page {
 		width: 40px;
 		height: 40px;
-		outline: none;
-		border: none;
-		background: none;
 		font-size: 16px;
+		background: none;
+		border: none;
+		outline: none;
+
 		// transition: 0.05s;
 
 		&:hover {
-			background-color: color-mix(in srgb, var(--color-1) 10%, transparent);
 			color: color-mix(in srgb, var(--color-bg-1) 10%, var(--color-1));
+			background-color: color-mix(in srgb, var(--color-1) 10%, transparent);
 			outline: 1px solid color-mix(in srgb, var(--color-1) 25%, transparent);
 			outline-offset: -3px;
 		}
 
 		&.active {
-			background: var(--color-1);
 			color: var(--color-bg-1);
+			background: var(--color-1);
 		}
 	}
 

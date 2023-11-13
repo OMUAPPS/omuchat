@@ -122,28 +122,28 @@
 	.container {
 		position: fixed;
 		top: 40px;
-		left: 0;
 		bottom: 0;
-		width: 20%;
-		min-width: 300px;
-		background: var(--color-bg-2);
-		outline: 2px solid var(--color-1);
+		left: 0;
 		display: flex;
 		flex-direction: column;
-		justify-content: flex-start;
-		align-items: center;
 		gap: 60px;
+		align-items: center;
+		justify-content: flex-start;
+		width: 20%;
+		min-width: 300px;
 		padding-top: 60px;
-		padding-left: 40px;
 		padding-right: 40px;
+		padding-left: 40px;
+		background: var(--color-bg-2);
+		outline: 2px solid var(--color-1);
 	}
 
 	.channels {
+		display: flex;
+		flex-direction: column;
 		width: 100%;
 		height: 60%;
 		overflow-y: auto;
-		display: flex;
-		flex-direction: column;
 
 		&::-webkit-scrollbar {
 			display: none;
@@ -151,10 +151,10 @@
 	}
 
 	.buttons {
-		width: 100%;
 		display: flex;
 		flex-direction: row-reverse;
 		justify-content: space-between;
+		width: 100%;
 		margin-top: 60px;
 	}
 </style>

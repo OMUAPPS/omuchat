@@ -9,7 +9,9 @@
         "dev": "vite --host 0.0.0.0",
         "build": "vite build",
         "preview": "vite preview",
-        "check": "svelte-check --tsconfig ./tsconfig.json"
+        "check": "svelte-check --tsconfig ./tsconfig.json",
+        "lint:stylelint": "stylelint --ignore-path .gitignore ./**/*.{css,svelte}",
+        "fix:stylelint": "stylelint --fix --ignore-path .gitignore ./**/*.{css,svelte}"
     },
     "workspaces": [
         "packages/*"
@@ -34,8 +36,16 @@
         "eslint-plugin-prettier": "^5.0.0",
         "eslint-plugin-svelte": "^2.35.0",
         "eslint-plugin-unused-imports": "^3.0.0",
+        "postcss-html": "^1.5.0",
         "prettier": "3.0.3",
         "sass": "^1.68.0",
+        "stylelint": "^15.11.0",
+        "stylelint-config-html": "^1.1.0",
+        "stylelint-config-prettier": "^9.0.5",
+        "stylelint-config-recess-order": "^4.3.0",
+        "stylelint-config-standard": "^34.0.0",
+        "stylelint-config-standard-scss": "^11.1.0",
+        "sugarss": "^4.0.1",
         "svelte": "^4.0.5",
         "svelte-check": "^3.4.6",
         "tslib": "^2.6.0",

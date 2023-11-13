@@ -74,8 +74,8 @@
 		</div>
 		<div
 			class="pointer"
-			style="top: {targetRect.y + targetRect.height}px; left: {targetRect.x +
-				targetRect.width / 2}px;"
+			style="top: {targetRect.y + targetRect.height}px; left: {targetrect.x +
+				targetrect.width / 2}px;"
 		/>
 	{/if}
 </div>
@@ -83,26 +83,26 @@
 <style lang="scss">
 	.tooltip {
 		position: fixed;
-		pointer-events: none;
 		z-index: 200;
-		background: var(--color-text);
-		color: #fff;
 		padding: 5px 10px;
-		border-radius: 0;
 		font-size: 12px;
 		font-weight: 600;
+		color: #fff;
 		white-space: nowrap;
+		pointer-events: none;
 		user-select: none;
+		background: var(--color-text);
+		border-radius: 0;
 	}
 
 	.pointer {
-		content: '';
 		position: fixed;
 		z-index: 20;
+		pointer-events: none;
+		content: '';
+		user-select: none;
 		border: 5px solid transparent;
 		border-bottom-color: var(--color-text);
-		user-select: none;
-		pointer-events: none;
 		transform: translateX(-50%);
 	}
 
@@ -111,7 +111,7 @@
 		width: 0;
 		height: 0;
 		appearance: none;
-		border: none;
 		background: none;
+		border: none;
 	}
 </style>

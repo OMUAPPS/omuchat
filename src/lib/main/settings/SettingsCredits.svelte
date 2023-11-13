@@ -50,23 +50,23 @@
 
 <style lang="scss">
 	.container {
-		width: 100%;
-		height: 100%;
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
-		padding-left: 80px;
-		padding-top: 40px;
 		gap: 40px;
+		align-items: flex-start;
+		width: 100%;
+		height: 100%;
+		padding-top: 40px;
+		padding-left: 80px;
 		overflow: auto;
 	}
 
 	.licence {
-		width: 100%;
-		height: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
+		width: 100%;
+		height: 100%;
 
 		.content {
 			margin-top: 10px;
@@ -76,7 +76,7 @@
 	}
 
 	h3 {
-		color: var(--color-1);
 		font-size: 20px;
+		color: var(--color-1);
 	}
 </style>

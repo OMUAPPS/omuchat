@@ -23,8 +23,8 @@
 		display: flex;
 		flex-direction: row;
 		gap: 10px;
-		padding-left: 10px;
 		min-height: 40px;
+		padding-left: 10px;
 
 		&:hover {
 			background: var(--color-bg-1);
@@ -34,8 +34,8 @@
 	.left {
 		display: flex;
 		flex-direction: row;
-		align-items: center;
 		gap: 5px;
+		align-items: center;
 	}
 
 	.channel-icon {

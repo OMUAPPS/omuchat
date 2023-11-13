@@ -53,9 +53,11 @@
 	.room {
 		padding: 10px;
 		background: var(--color-bg-2);
+
 		&:hover {
 			background: var(--color-bg-1);
 		}
+
 		border-bottom: 1px solid var(--color-bg-1);
 	}
 
@@ -69,8 +71,8 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		height: 20px;
 		width: 100%;
+		height: 20px;
 		margin-left: 5px;
 	}
 
@@ -87,19 +89,18 @@
 	}
 
 	.room-thumbnail {
-		min-width: 100px;
 		width: 100px;
+		min-width: 100px;
 		object-fit: contain;
 	}
 
 	.room-name {
-		font-size: 12px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-
 		display: -webkit-box;
+		overflow: hidden;
+		font-size: 12px;
+		color: rgba($color: #000, $alpha: 50%);
+		text-overflow: ellipsis;
 		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
-		color: rgba($color: #000000, $alpha: 0.5);
 	}
 </style>

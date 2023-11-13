@@ -10,13 +10,13 @@
 
 <style>
 	a {
-		color: var(--color-1);
 		font-size: 12px;
+		color: var(--color-1);
 
 		&.filled {
+			color: var(--color-bg-1);
 			text-decoration: none;
 			background-color: var(--color-1);
-			color: var(--color-bg-1);
 		}
 	}
 </style>

@@ -19,27 +19,27 @@
 
 <style lang="scss">
 	.channel-entry {
-		width: 100%;
-		height: 60px;
 		display: flex;
 		align-items: center;
+		width: 100%;
+		height: 60px;
 		padding: 10px;
-		border: 1px solid var(--color-bg-2);
-		background: var(--color-bg-1);
 		cursor: pointer;
+		background: var(--color-bg-1);
+		border: 1px solid var(--color-bg-2);
 
 		&:hover {
 			background: var(--color-bg-2);
 		}
 
 		.icon {
-			min-width: 32px;
 			width: 32px;
-			min-height: 32px;
+			min-width: 32px;
 			height: 32px;
-			border-radius: 50%;
-			overflow: hidden;
+			min-height: 32px;
 			margin-right: 10px;
+			overflow: hidden;
+			border-radius: 50%;
 
 			img {
 				width: 100%;
@@ -51,8 +51,8 @@
 		.info {
 			display: flex;
 			flex-direction: column;
-			justify-content: center;
 			align-items: flex-start;
+			justify-content: center;
 			width: 100%;
 		}
 
@@ -66,8 +66,8 @@
 		}
 
 		&.active {
-			background: var(--color-1);
 			color: var(--color-bg-2);
+			background: var(--color-1);
 
 			.name {
 				font-weight: bold;

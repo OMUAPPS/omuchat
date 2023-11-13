@@ -46,11 +46,11 @@
 		top: 0;
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
 		align-items: center;
-		padding: 0 10px;
+		justify-content: space-between;
 		width: 100%;
 		height: 40px;
+		padding: 0 10px;
 		outline: 1px solid var(--color-bg-1);
 	}
 </style>

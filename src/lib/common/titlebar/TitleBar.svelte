@@ -5,8 +5,8 @@
 <style>
 	.title-bar {
 		display: flex;
+		gap: 20px;
 		align-items: center;
 		justify-content: space-between;
-		gap: 20px;
 	}
 </style>

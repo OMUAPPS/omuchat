@@ -22,21 +22,23 @@
 <style lang="scss">
 	.toggle {
 		position: relative;
-		width: 100%;
-		padding: 10px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		width: 100%;
+		padding: 10px;
 		cursor: pointer;
 		user-select: none;
+
 		input {
-			border: none;
-			appearance: none;
 			width: 20px;
 			height: 20px;
-			border-radius: 25%;
+			appearance: none;
 			background: var(--color-bg-2);
+			border: none;
+			border-radius: 25%;
 			outline: 1px solid var(--color-1);
+
 			&:checked {
 				background: var(--color-1);
 				outline: none;
@@ -45,12 +47,12 @@
 
 		.toggle-icon {
 			position: absolute;
-			justify-content: center;
-			width: 20px;
-			height: 20px;
 			right: 10px;
 			display: flex;
 			align-items: center;
+			justify-content: center;
+			width: 20px;
+			height: 20px;
 			color: var(--color-bg-2);
 		}
 	}

@@ -29,9 +29,9 @@
 	.split {
 		display: flex;
 		flex-direction: row;
-		height: 100%;
-		width: 100%;
 		gap: 10px;
+		width: 100%;
+		height: 100%;
 	}
 
 	.vertical {
@@ -40,8 +40,8 @@
 
 	.split-left,
 	.split-right {
-		overflow: hidden;
 		width: 100%;
 		height: 100%;
+		overflow: hidden;
 	}
 </style>

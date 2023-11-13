@@ -14,10 +14,10 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
+		gap: 10px;
 		align-items: center;
 		justify-content: center;
 		width: 100%;
 		height: 100%;
-		gap: 10px;
 	}
 </style>

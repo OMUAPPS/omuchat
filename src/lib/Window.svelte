@@ -35,37 +35,37 @@
 
 <style>
 	.drag-area {
-		outline: 1px solid var(--color-outline);
-		background: var(--color-bg-2);
 		position: fixed;
 		top: 0;
 		left: 0;
-		width: 100vw;
-		height: 40px;
 		z-index: 1000;
-		user-select: none;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		width: 100vw;
+		height: 40px;
+		user-select: none;
+		background: var(--color-bg-2);
+		outline: 1px solid var(--color-outline);
 	}
 
 	.title {
-		margin-left: 10px;
 		display: flex;
 		flex-direction: row;
+		gap: 10px;
 		align-items: center;
 		justify-content: center;
-		gap: 10px;
+		margin-left: 10px;
 	}
 
 	.window {
-		outline: 2px solid var(--color-1);
-		outline-offset: -1px;
-		background: var(--color-bg-2);
 		width: 100vw;
 		height: 100vh;
 		overflow: hidden;
+		background: var(--color-bg-2);
+		outline: 2px solid var(--color-1);
+		outline-offset: -1px;
 	}
 
 	.content {
