@@ -48,6 +48,32 @@ export interface Setting {
     component(): PropedComponent;
 }
 
+// 無駄な労力ジェネレーター2021
+function calcLanguageScore(lang: string): number {
+    let score = 0;
+    score += window.navigator.languages.indexOf(lang) === -1 ? 0 : window.navigator.languages.indexOf(lang);
+    score = window.navigator.language === lang ? 100 : 0;
+    [
+        'en',
+        'zh',
+        'fr',
+        'de',
+        'it',
+        'pt',
+        'ro',
+        'ru',
+        'ro',
+        'es',
+        'sv',
+    ].forEach(pair => {
+        if (lang.startsWith(pair) && window.navigator.language.startsWith(pair)) {
+            score += 10;
+        }
+    });
+
+    return score;
+}
+
 export const SETTING_REGISTRY: Record<string, Record<string, Setting>> = {
     general: {
         devMode: {
@@ -70,7 +96,9 @@ export const SETTING_REGISTRY: Record<string, Record<string, Setting>> = {
                     props: {
                         label: 'settings.setting.language',
                         value: language,
-                        options: Object.keys(LOCALES) as (keyof typeof LOCALES)[]
+                        options: Object.keys(LOCALES).sort(
+                            (a, b) => calcLanguageScore(b) - calcLanguageScore(a)
+                        ) as (keyof typeof LOCALES)[]
                     }
                 }
             }
