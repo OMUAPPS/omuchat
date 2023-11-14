@@ -76,7 +76,6 @@ export interface Action extends Event {
     args: Record<string, any>;
 }
 
-// EVENTSの型定義
 export type EventType = keyof EventMap;
 
 export type EventMap = {

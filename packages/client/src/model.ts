@@ -233,6 +233,7 @@ export class RoomInfo implements Keyable, Id {
     constructor(
         readonly id: string,
         readonly provider_id: string,
+        readonly channel_id: string,
         readonly online: boolean,
         readonly url: string,
         readonly name: string | null,
@@ -242,13 +243,14 @@ export class RoomInfo implements Keyable, Id {
     ) {}
 
     key(): string {
-        return this.provider_id;
+        return `${this.id}@${this.provider_id}`
     }
 
     toJSON(): unknown {
         return {
             id: this.id,
             provider_id: this.provider_id,
+            channel_id: this.channel_id,
             online: this.online,
             url: this.url,
             name: this.name,

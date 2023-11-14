@@ -221,7 +221,8 @@ export class List<T extends Keyable> {
         );
     }
 
-    async get(key: string) {
+    async get(key: string): Promise<T> {
+        if (this.cache[key]) return this.cache[key];
         const item = await this.api.get(this.id, key);
         this.cache[key] = item;
         return item;
