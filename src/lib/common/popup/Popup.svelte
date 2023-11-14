@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { classes } from '$lib/util/class-helper';
 	import PopupHeader from './PopupHeader.svelte';
 	import { popupContext } from './popup';
 
@@ -19,7 +20,7 @@
 		{#if !noDecorated && windowed}
 			<PopupHeader {title} />
 		{/if}
-		<div class="content" class:windowed class:noDecorated>
+		<div class:windowed class={classes('content', noDecorated && 'no-decorated')}>
 			{#if !noDecorated && !windowed}
 				<PopupHeader {title} />
 			{/if}
@@ -46,7 +47,7 @@
 	.popup {
 		max-width: 100%;
 		max-height: 100%;
-		animation: menuIn 0.2s cubic-bezier(0, 1.14, 0, 1);
+		animation: menu-in 0.2s cubic-bezier(0, 1.14, 0, 1);
 		animation-fill-mode: forwards;
 
 		&:not(.windowed) {
@@ -73,7 +74,7 @@
 		&:not(.windowed) {
 			position: absolute;
 
-			&:not(.noDecorated) {
+			&:not(.no-decorated) {
 				top: 40px;
 			}
 
@@ -83,7 +84,7 @@
 		}
 	}
 
-	@keyframes menuIn {
+	@keyframes menu-in {
 		0% {
 			opacity: 0;
 			transform: scale(0);
@@ -95,7 +96,7 @@
 		}
 	}
 
-	@keyframes menuOut {
+	@keyframes menu-out {
 		0% {
 			opacity: 1;
 			transform: scale(1);

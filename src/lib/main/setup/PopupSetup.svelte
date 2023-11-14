@@ -6,7 +6,7 @@
 	import { getClient } from '$lib/common/omuchat/omuchat';
 	import PopupHeader from '$lib/common/popup/PopupHeader.svelte';
 	import { popupContext } from '$lib/common/popup/popup';
-	import { ChannelInfo, type ModelJson } from '@/omuchat';
+	import { ChannelInfo, type ModelJson } from '@omuchat/client';
 	import axios from 'axios';
 	import Popup from '../../common/popup/Popup.svelte';
 	import ChannelEntry from './ChannelEntry.svelte';
@@ -65,10 +65,10 @@
 	}
 </script>
 
-<Popup title="セットアップ" icon="ti ti-qrcode" windowed={false} noDecorated={false}>
+<Popup title="setup" windowed={false} noDecorated={false}>
 	<Background />
 	<div class="container">
-		<PopupHeader title="セットアップ" icon="ti ti-login-2" />
+		<PopupHeader title="セットアップ" />
 		{#if result}
 			<FlexColWrapper>
 				<div class="channels">

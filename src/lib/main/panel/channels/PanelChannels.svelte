@@ -4,6 +4,8 @@
 	import type { ChannelInfo } from '@/omuchat';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { popupContext } from '../../../common/popup/popup';
+	import PopupSetup from '../../setup/PopupSetup.svelte';
 	import ChannelEntry from './ChannelEntry.svelte';
 
 	export let filter: (message: ChannelInfo) => boolean = () => true;
@@ -19,6 +21,13 @@
 	onMount(async () => {
 		channels.set(await client.channels.fetch());
 	});
+
+	function openSetup() {
+		popupContext.push({
+			component: PopupSetup,
+			props: {}
+		});
+	}
 </script>
 
 <div class="container">
@@ -26,6 +35,10 @@
 		<ButtonMini>
 			<i class="ti ti-plus" />
 			追加する
+		</ButtonMini>
+		<ButtonMini callback={openSetup}>
+			<i class="ti ti-plus" />
+			簡単セットアップ
 		</ButtonMini>
 	</div>
 	{#each Object.values($channels).filter(filter) as channel}
