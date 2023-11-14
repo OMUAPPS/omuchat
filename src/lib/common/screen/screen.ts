@@ -1,6 +1,6 @@
-import type { PropedComponent } from '$lib/common/component/proped-component';
 import { writable } from 'svelte/store';
 
+import type { PropedComponent } from '$lib/common/component/proped-component';
 
 const stack = writable<PropedComponent[]>([]);
 const current = writable<PropedComponent | null>(null);
@@ -18,9 +18,9 @@ function pop() {
     });
 }
 
-export const popupContext = {
+export const screenContext = {
     push,
     pop,
     current,
-    stack,
+    stack
 };

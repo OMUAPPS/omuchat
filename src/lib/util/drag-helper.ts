@@ -14,5 +14,4 @@ export class DragHelper {
     static setImageUrl(event: DragEvent, url: string) {
         event.dataTransfer?.setData('text/html', `<img src="${url}">`);
     }
-
 }

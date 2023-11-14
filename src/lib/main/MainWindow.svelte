@@ -1,158 +1,160 @@
 <script lang="ts">
-	import Component from '../common/component/PropedComponent.svelte';
-	import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
-	import { t } from '$lib/i18n/i18n-context';
-	import PanelProvider from './panel/PanelProvider.svelte';
-	import { style } from '$lib/util/class-helper';
-	import Tooltip from '../common/tooltip/Tooltip.svelte';
-	import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
-	import ButtonOpenSettings from './ButtonOpenSettings.svelte';
-	import PageChannels from './page/PageChannels.svelte';
-	import PageHome from './page/PageHome.svelte';
-	import PageMessages from './page/PageMessages.svelte';
-	import PageAssets from './page/assets/PageAssets.svelte';
-	import { pages } from './page/page';
-	import { currentPage, devMode } from './settings';
+    import Component from '../common/component/PropedComponent.svelte';
+    import Tooltip from '../common/tooltip/Tooltip.svelte';
 
-	pages.set({
-		main: {
-			name: 'main',
-			component: () => {
-				return {
-					component: PageHome,
-					props: {}
-				};
-			}
-		},
-		message: {
-			name: 'message',
-			component: () => {
-				return {
-					component: PageMessages,
-					props: {}
-				};
-			}
-		},
-		channel: {
-			name: 'channel',
-			component: () => {
-				return {
-					component: PageChannels,
-					props: {}
-				};
-			}
-		},
-		asset: {
-			name: 'asset',
-			component: () => {
-				return {
-					component: PageAssets,
-					props: {}
-				};
-			}
-		},
-		app: {
-			name: 'app',
-			component: () => {
-				return {
-					component: PageAssets,
-					props: {}
-				};
-			}
-		}
-	});
+    import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
+    import ButtonOpenSettings from './ButtonOpenSettings.svelte';
+    import PageAssets from './page/assets/PageAssets.svelte';
+    import { pages } from './page/page';
+    import PageChannels from './page/PageChannels.svelte';
+    import PageHome from './page/PageHome.svelte';
+    import PageMessages from './page/PageMessages.svelte';
+    import PanelProvider from './panel/PanelProvider.svelte';
+    import { currentPage, devMode } from './settings';
 
-	$: if ($devMode) {
-		$pages.dev = {
-			name: 'dev',
-			component: () => {
-				return {
-					component: PanelProvider,
-					props: {}
-				};
-			}
-		};
-	} else {
-		delete $pages.dev;
-	}
+    import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
+    import { t } from '$lib/i18n/i18n-context';
+    import { style } from '$lib/util/class-helper';
+
+    pages.set({
+        main: {
+            name: 'main',
+            component: () => {
+                return {
+                    component: PageHome,
+                    props: {}
+                };
+            }
+        },
+        message: {
+            name: 'message',
+            component: () => {
+                return {
+                    component: PageMessages,
+                    props: {}
+                };
+            }
+        },
+        channel: {
+            name: 'channel',
+            component: () => {
+                return {
+                    component: PageChannels,
+                    props: {}
+                };
+            }
+        },
+        asset: {
+            name: 'asset',
+            component: () => {
+                return {
+                    component: PageAssets,
+                    props: {}
+                };
+            }
+        },
+        app: {
+            name: 'app',
+            component: () => {
+                return {
+                    component: PageAssets,
+                    props: {}
+                };
+            }
+        }
+    });
+
+    $: if ($devMode) {
+        $pages.dev = {
+            name: 'dev',
+            component: () => {
+                return {
+                    component: PanelProvider,
+                    props: {}
+                };
+            }
+        };
+    } else {
+        delete $pages.dev;
+    }
 </script>
 
 <div class="wrapper">
-	<div class="tab-container">
-		<FlexColWrapper>
-			{#each Object.values($pages) as page}
-				<button
-					class="page"
-					on:click={() => {
-						currentPage.set(page.name);
-					}}
-					class:active={$currentPage === page.name}
-				>
-					<Tooltip>{$t(`pages.${page.name}.name`)}</Tooltip>
-					<i class={$t(`pages.${page.name}.icon`)} />
-				</button>
-			{/each}
-		</FlexColWrapper>
-		<FlexColWrapper>
-			<ButtonOpenRemoteConnect />
-			<ButtonOpenSettings />
-		</FlexColWrapper>
-	</div>
-	{#each Object.entries($pages) as [key, page]}
-		<div
-			style={style({ display: $currentPage === page.name ? '' : 'none' })}
-			class="page-container"
-		>
-			<Component component={page.component()} />
-		</div>
-	{/each}
+    <div class="tab-container">
+        <FlexColWrapper>
+            {#each Object.values($pages) as page}
+                <button
+                    class="page"
+                    on:click={() => {
+                        currentPage.set(page.name);
+                    }}
+                    class:active={$currentPage === page.name}
+                >
+                    <Tooltip>{$t(`pages.${page.name}.name`)}</Tooltip>
+                    <i class={$t(`pages.${page.name}.icon`)} />
+                </button>
+            {/each}
+        </FlexColWrapper>
+        <FlexColWrapper>
+            <ButtonOpenRemoteConnect />
+            <ButtonOpenSettings />
+        </FlexColWrapper>
+    </div>
+    {#each Object.values($pages) as page}
+        <div
+            style={style({ display: $currentPage === page.name ? '' : 'none' })}
+            class="page-container"
+        >
+            <Component component={page.component()} />
+        </div>
+    {/each}
 </div>
 
 <style lang="scss">
-	.wrapper {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		height: 100%;
-	}
+    .wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 100%;
+    }
 
-	.tab-container {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		align-items: center;
-		justify-content: space-between;
-		width: 40px;
-		height: 100%;
-		padding-top: 50px;
-		padding-bottom: 40px;
-	}
+    .tab-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        width: 40px;
+        height: 100%;
+        padding-top: 50px;
+        padding-bottom: 40px;
+    }
 
-	.page {
-		width: 40px;
-		height: 40px;
-		font-size: 16px;
-		background: none;
-		border: none;
-		outline: none;
+    .page {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        background: none;
+        border: none;
+        outline: none;
 
-		// transition: 0.05s;
+        // transition: 0.05s;
 
-		&:hover {
-			color: color-mix(in srgb, var(--color-bg-1) 10%, var(--color-1));
-			background-color: color-mix(in srgb, var(--color-1) 10%, transparent);
-			outline: 1px solid color-mix(in srgb, var(--color-1) 25%, transparent);
-			outline-offset: -3px;
-		}
+        &:hover {
+            color: color-mix(in srgb, var(--color-bg-1) 10%, var(--color-1));
+            background-color: color-mix(in srgb, var(--color-1) 10%, transparent);
+            outline: 1px solid color-mix(in srgb, var(--color-1) 25%, transparent);
+            outline-offset: -3px;
+        }
 
-		&.active {
-			color: var(--color-bg-1);
-			background: var(--color-1);
-		}
-	}
+        &.active {
+            color: var(--color-bg-1);
+            background: var(--color-1);
+        }
+    }
 
-	.page-container {
-		width: calc(100% - 40px);
-		height: 100%;
-	}
+    .page-container {
+        width: calc(100% - 40px);
+        height: 100%;
+    }
 </style>

@@ -20,14 +20,14 @@ export function createI18n(messages: Messages, locale: string): I18n {
             result = result[part] as Messages;
         }
         if (typeof translation === 'object') {
-            translation = (translation as any)[""];
+            translation = (translation as any)[''];
         }
         if (!translation) return key;
         if (params) {
             return translation.replace(/\{([a-zA-Z0-9]+)\}/g, (_, key) => params[key] ?? key);
         }
         return translation;
-    }
+    };
 
     return {
         locale,
@@ -42,7 +42,7 @@ export function createI18n(messages: Messages, locale: string): I18n {
             }
             return translation;
         }
-    }
+    };
 }
 
 export function createI18nUnion(i18ns: I18n[]): I18n {
@@ -55,7 +55,7 @@ export function createI18nUnion(i18ns: I18n[]): I18n {
             return key;
         },
         get locale(): string {
-            return i18ns.map(i18n => i18n.locale).join(',');
+            return i18ns.map((i18n) => i18n.locale).join(',');
         }
-    }
+    };
 }

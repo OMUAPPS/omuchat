@@ -1,15 +1,12 @@
 import type { Client } from "./omuchat";
 
 export type ModelJson<T> = {
-    [K in keyof T]: T[K]
-}
+    [K in keyof T]: T[K];
+};
 
-export abstract class Keyable {
-    abstract key(): string;
-    abstract toJSON(): unknown;
-    static new(json: any) {
-        throw new Error("Not implemented");
-    }
+export interface Keyable {
+    key(): string;
+    toJSON(): unknown;
 }
 
 export interface Id {

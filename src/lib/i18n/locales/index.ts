@@ -17,6 +17,6 @@ export const LOCALES = {
     },
     'ja-JP': {
         name: '日本語',
-        load: () => loadI18n('./ja-JP.json'),
-    },
-}
+        load: () => loadI18n('./ja-JP.json')
+    }
+};

@@ -1,69 +1,71 @@
 <script lang="ts">
-	import ButtonMini from '$lib/common/input/ButtonMini.svelte';
-	import { getClient } from '$lib/common/omuchat/omuchat';
-	import { popupContext } from '../../../common/screen/screen';
-	import PopupSetup from '$lib/main/setup/PopupSetup.svelte';
-	import type { ChannelInfo } from '@omuchat/client';
-	import { onMount } from 'svelte';
-	import { writable } from 'svelte/store';
-	import ChannelEntry from './ChannelEntry.svelte';
+    import type { ChannelInfo } from '@omuchat/client';
+    import { onMount } from 'svelte';
+    import { writable } from 'svelte/store';
 
-	export let filter: (message: ChannelInfo) => boolean = () => true;
+    import ChannelEntry from './ChannelEntry.svelte';
 
-	const client = getClient();
+    import ButtonMini from '$lib/common/input/ButtonMini.svelte';
+    import { getClient } from '$lib/common/omuchat/omuchat';
+    import { screenContext } from '$lib/common/screen/screen';
+    import PopupSetup from '$lib/main/setup/PopupSetup.svelte';
 
-	const channels = writable(client.channels.cache);
+    export let filter: (message: ChannelInfo) => boolean = () => true;
 
-	client.channels.listen((newChannels) => {
-		channels.set(newChannels);
-	});
+    const client = getClient();
 
-	onMount(async () => {
-		channels.set(await client.channels.fetch());
-	});
+    const channels = writable(client.channels.cache);
 
-	function openSetup() {
-		popupContext.push({
-			component: PopupSetup,
-			props: {}
-		});
-	}
+    client.channels.listen((newChannels) => {
+        channels.set(newChannels);
+    });
+
+    onMount(async () => {
+        channels.set(await client.channels.fetch());
+    });
+
+    function openSetup() {
+        screenContext.push({
+            component: PopupSetup,
+            props: {}
+        });
+    }
 </script>
 
 <div class="container">
-	<div class="buttons">
-		<ButtonMini>
-			<i class="ti ti-plus" />
-			追加する
-		</ButtonMini>
-		<ButtonMini callback={openSetup}>
-			<i class="ti ti-plus" />
-			簡単セットアップ
-		</ButtonMini>
-	</div>
-	{#each Object.values($channels).filter(filter) as channel}
-		<ChannelEntry {channel} />
-	{/each}
+    <div class="buttons">
+        <ButtonMini>
+            <i class="ti ti-plus" />
+            追加する
+        </ButtonMini>
+        <ButtonMini callback={openSetup}>
+            <i class="ti ti-plus" />
+            簡単セットアップ
+        </ButtonMini>
+    </div>
+    {#each Object.values($channels).filter(filter) as channel}
+        <ChannelEntry {channel} />
+    {/each}
 </div>
 
 <style lang="scss">
-	.container {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		padding-top: 40px;
-	}
+    .container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding-top: 40px;
+    }
 
-	.buttons {
-		position: absolute;
-		top: 0;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-		height: 40px;
-		padding: 0 10px;
-		outline: 1px solid var(--color-bg-1);
-	}
+    .buttons {
+        position: absolute;
+        top: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 40px;
+        padding: 0 10px;
+        outline: 1px solid var(--color-bg-1);
+    }
 </style>

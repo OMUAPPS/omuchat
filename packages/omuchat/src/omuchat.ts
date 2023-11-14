@@ -41,10 +41,7 @@ interface ListApi extends EventListener {
     ): Promise<void>;
 }
 
-const proxy = <T extends any>(
-    item: T,
-    proxies: Array<(item: T) => T | null>,
-) => {
+const proxy = <T = any>(item: T, proxies: Array<(item: T) => T | null>) => {
     let result: T | null = item;
     for (const proxy of proxies) {
         result = proxy(result);
@@ -417,7 +414,7 @@ export const Status = {
     DISCONNECTED: "disconnected",
 };
 
-export type StatusValue = typeof Status[keyof typeof Status];
+export type StatusValue = (typeof Status)[keyof typeof Status];
 
 export type ClientEvents = {
     status: {
@@ -486,7 +483,10 @@ export class OmuChat implements Client, EventListener {
 
     status(): StatusValue {
         if (this.connected) return Status.CONNECTED;
-        if (this.connecting) return this.connectAttemptCount > 0 ? Status.RECONNECTING : Status.CONNECTING;
+        if (this.connecting)
+            return this.connectAttemptCount > 0
+                ? Status.RECONNECTING
+                : Status.CONNECTING;
         return Status.DISCONNECTED;
     }
 
@@ -524,10 +524,13 @@ export class OmuChat implements Client, EventListener {
         this.socket.onclose = () => {
             console.log("disconnected");
             this.close();
-            setTimeout(() => {
-                this.connectAttemptCount++;
-                this.tryConnect();
-            }, this.connectAttemptCount > 10 ? 3000 : 0);
+            setTimeout(
+                () => {
+                    this.connectAttemptCount++;
+                    this.tryConnect();
+                },
+                this.connectAttemptCount > 10 ? 3000 : 0,
+            );
         };
 
         this.socket.onerror = (event) => {
@@ -553,7 +556,9 @@ export class OmuChat implements Client, EventListener {
                 this.socket!.onclose = null;
                 this.socket!.onerror = null;
                 this.socket.close();
-            } catch (e) {}
+            } catch (e) {
+                console.error(e);
+            }
         }
         this.socket = null;
         this.connected = false;
@@ -594,7 +599,7 @@ export class OmuChat implements Client, EventListener {
             this.eventHandlers[event] = this.eventHandlers[event].filter(
                 (handler) => handler !== listener,
             );
-        }
+        };
     }
 
     private emit<T extends keyof Events>(type: T, data: Events[T]) {

@@ -1,77 +1,77 @@
 <script lang="ts">
-	import type { ChannelInfo } from '@omuchat/client';
+    import type { ChannelInfo } from '@omuchat/client';
 
-	export let channel: ChannelInfo;
-	export let active = false;
-	export let callback = () => {};
+    export let channel: ChannelInfo;
+    export let active = false;
+    export let callback = () => {};
 </script>
 
 <button class="channel-entry" class:active on:click={callback}>
-	<div class="icon">
-		<img src={channel.icon_url} alt="icon" />
-	</div>
-	<div class="info">
-		<div class="name">{channel.name}</div>
-		<div class="provider">{channel.provider_id}</div>
-	</div>
-	<i class={active ? `ti ti-check` : `ti ti-plus`} />
+    <div class="icon">
+        <img src={channel.icon_url} alt="icon" />
+    </div>
+    <div class="info">
+        <div class="name">{channel.name}</div>
+        <div class="provider">{channel.provider_id}</div>
+    </div>
+    <i class={active ? `ti ti-check` : `ti ti-plus`} />
 </button>
 
 <style lang="scss">
-	.channel-entry {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		height: 60px;
-		padding: 10px;
-		cursor: pointer;
-		background: var(--color-bg-1);
-		border: 1px solid var(--color-bg-2);
+    .channel-entry {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 60px;
+        padding: 10px;
+        cursor: pointer;
+        background: var(--color-bg-1);
+        border: 1px solid var(--color-bg-2);
 
-		&:hover {
-			background: var(--color-bg-2);
-		}
+        &:hover {
+            background: var(--color-bg-2);
+        }
 
-		.icon {
-			width: 32px;
-			min-width: 32px;
-			height: 32px;
-			min-height: 32px;
-			margin-right: 10px;
-			overflow: hidden;
-			border-radius: 50%;
+        .icon {
+            width: 32px;
+            min-width: 32px;
+            height: 32px;
+            min-height: 32px;
+            margin-right: 10px;
+            overflow: hidden;
+            border-radius: 50%;
 
-			img {
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-			}
-		}
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
 
-		.info {
-			display: flex;
-			flex-direction: column;
-			align-items: flex-start;
-			justify-content: center;
-			width: 100%;
-		}
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            width: 100%;
+        }
 
-		.name {
-			font-size: 16px;
-		}
+        .name {
+            font-size: 16px;
+        }
 
-		.provider {
-			font-size: 12px;
-			opacity: 0.5;
-		}
+        .provider {
+            font-size: 12px;
+            opacity: 0.5;
+        }
 
-		&.active {
-			color: var(--color-bg-2);
-			background: var(--color-1);
+        &.active {
+            color: var(--color-bg-2);
+            background: var(--color-1);
 
-			.name {
-				font-weight: bold;
-			}
-		}
-	}
+            .name {
+                font-weight: bold;
+            }
+        }
+    }
 </style>

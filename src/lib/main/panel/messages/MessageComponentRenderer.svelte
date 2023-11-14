@@ -1,16 +1,16 @@
 <script lang="ts">
-	import type { MessageComponentType } from '@omuchat/client';
+    import type { MessageComponentType } from '@omuchat/client';
 
-	export let component: MessageComponentType;
+    export let component: MessageComponentType;
 </script>
 
 {#if component.type === 'text'}
-	{component.value || ''}
+    {component.value || ''}
 {:else if component.type === 'image'}
-	<img src={component.value} alt={component.id} title={component.id} />
+    <img src={component.value} alt={component.id} title={component.id} />
 {/if}
 {#if component.siblings}
-	{#each component.siblings as sibling}
-		<svelte:self component={sibling} />
-	{/each}
+    {#each component.siblings as sibling}
+        <svelte:self component={sibling} />
+    {/each}
 {/if}

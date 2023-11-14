@@ -1,7 +1,6 @@
 import type { OmuChat } from '@omuchat/client';
 import { getContext, setContext } from 'svelte';
 
-
 export const OMUCHAT_CONTEXT = Symbol('omuchat-context');
 
 export function setClient(context: OmuChat) {

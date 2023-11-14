@@ -1,9 +1,9 @@
-export const name = "Tabler Icons";
-export const icon = "ti ti-brand-tabler";
-export const author = "Tabler Icons";
-export const url = "https://tabler-icons.io/";
-export const licenceName = "MIT License";
-export const licenceUrl = "https://github.com/tabler/tabler-icons/blob/master/LICENSE";
+export const name = 'Tabler Icons';
+export const icon = 'ti ti-brand-tabler';
+export const author = 'Tabler Icons';
+export const url = 'https://tabler-icons.io/';
+export const licenceName = 'MIT License';
+export const licenceUrl = 'https://github.com/tabler/tabler-icons/blob/master/LICENSE';
 export const licence = `
 MIT License
 
@@ -25,4 +25,4 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.`
+SOFTWARE.`;

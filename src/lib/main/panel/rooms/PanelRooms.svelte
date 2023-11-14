@@ -1,60 +1,62 @@
 <script lang="ts">
-	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
-	import Button from '$lib/common/input/Button.svelte';
-	import { getClient } from '$lib/common/omuchat/omuchat';
-	import type { RoomInfo } from '@omuchat/client';
-	import { onMount } from 'svelte';
-	import { writable } from 'svelte/store';
-	import RoomEntry from './RoomEntry.svelte';
+    import type { RoomInfo } from '@omuchat/client';
+    import { onMount } from 'svelte';
+    import { writable } from 'svelte/store';
 
-	export let filter: (message: RoomInfo) => boolean = () => true;
+    import RoomEntry from './RoomEntry.svelte';
 
-	const client = getClient();
-	const rooms = writable(Object.values(client.rooms.cache));
-	let showOffline = false;
+    import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
+    import Button from '$lib/common/input/Button.svelte';
+    import { getClient } from '$lib/common/omuchat/omuchat';
 
-	function update(newRooms: Record<string, RoomInfo>) {
-		rooms.set(Object.values(newRooms).filter(filter));
-	}
+    export let filter: (message: RoomInfo) => boolean = () => true;
 
-	client.rooms.listen(update);
+    const client = getClient();
+    const rooms = writable(Object.values(client.rooms.cache));
+    let showOffline = false;
 
-	function toggleOffline() {
-		showOffline = !showOffline;
-	}
+    function update(newRooms: Record<string, RoomInfo>) {
+        rooms.set(Object.values(newRooms).filter(filter));
+    }
 
-	onMount(async () => {
-		update(await client.rooms.fetch());
-	});
+    client.rooms.listen(update);
+
+    function toggleOffline() {
+        showOffline = !showOffline;
+    }
+
+    onMount(async () => {
+        update(await client.rooms.fetch());
+    });
 </script>
 
 <div class="rooms">
-	{#each $rooms.filter((room) => room.online) as room}
-		<RoomEntry {room} />
-	{/each}
-	{#if $rooms.some((room) => !room.online)}
-		<Button callback={toggleOffline}>
-			<FlexRowWrapper widthFull reverse>
-				{#if showOffline}
-					<i class="ti ti-chevron-up" />
-					オンラインのみ表示
-				{:else}
-					<i class="ti ti-chevron-down" />
-					オフラインも表示する
-				{/if}
-			</FlexRowWrapper>
-		</Button>
-	{/if}
-	{#if showOffline}
-		{#each $rooms.filter((room) => !room.online) as room}
-			<RoomEntry {room} />
-		{/each}
-	{/if}
+    {#each $rooms.filter((room) => room.online) as room}
+        <RoomEntry {room} />
+    {/each}
+    {#if $rooms.some((room) => !room.online)}
+        <Button callback={toggleOffline}>
+            <FlexRowWrapper widthFull reverse>
+                {#if showOffline}
+                    <i class="ti ti-chevron-up" />
+                    オンラインのみ表示
+                {:else}
+                    <i class="ti ti-chevron-down" />
+                    オフラインも表示する
+                {/if}
+            </FlexRowWrapper>
+        </Button>
+    {/if}
+    {#if showOffline}
+        {#each $rooms.filter((room) => !room.online) as room}
+            <RoomEntry {room} />
+        {/each}
+    {/if}
 </div>
 
 <style lang="scss">
-	.rooms {
-		display: flex;
-		flex-direction: column;
-	}
+    .rooms {
+        display: flex;
+        flex-direction: column;
+    }
 </style>

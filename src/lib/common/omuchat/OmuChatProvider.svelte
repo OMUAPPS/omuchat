@@ -1,18 +1,19 @@
 <script lang="ts">
-	import type { PluginInfo } from '@omuchat/client';
-	import { OmuChat } from '@omuchat/client';
-	import { onDestroy } from 'svelte';
-	import { setClient } from './omuchat';
+    import type { PluginInfo } from '@omuchat/client';
+    import { OmuChat } from '@omuchat/client';
+    import { onDestroy } from 'svelte';
 
-	export let info: PluginInfo;
+    import { setClient } from './omuchat';
 
-	const client = new OmuChat(info);
-	setClient(client);
+    export let info: PluginInfo;
 
-	client.run('127.0.0.1', 26423);
-	onDestroy(() => {
-		client.disconnect();
-	});
+    const client = new OmuChat(info);
+    setClient(client);
+
+    client.run('127.0.0.1', 26423);
+    onDestroy(() => {
+        client.disconnect();
+    });
 </script>
 
 <slot />

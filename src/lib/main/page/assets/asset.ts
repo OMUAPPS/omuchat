@@ -12,5 +12,5 @@ export interface Asset {
 export const TYPE_ICONS = {
     app: 'ti ti-package',
     panel: 'ti ti-layout-grid',
-    image: 'ti ti-photo',
+    image: 'ti ti-photo'
 };

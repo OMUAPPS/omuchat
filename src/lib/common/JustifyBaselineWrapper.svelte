@@ -1,11 +1,11 @@
 <div class="wrapper">
-	<slot />
+    <slot />
 </div>
 
 <style>
-	.wrapper {
-		display: flex;
-		gap: 5px;
-		align-items: baseline;
-	}
+    .wrapper {
+        display: flex;
+        gap: 5px;
+        align-items: baseline;
+    }
 </style>
