@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { popupContext } from './popup';
+	import { popupContext } from './screen';
 	const current = popupContext.current;
 </script>
 

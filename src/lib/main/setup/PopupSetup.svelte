@@ -4,9 +4,9 @@
 	import Button from '$lib/common/input/Button.svelte';
 	import InputText from '$lib/common/input/InputText.svelte';
 	import { getClient } from '$lib/common/omuchat/omuchat';
-	import Popup from '$lib/common/popup/Popup.svelte';
-	import PopupHeader from '$lib/common/popup/PopupHeader.svelte';
-	import { popupContext } from '$lib/common/popup/popup';
+	import Popup from '../../common/screen/Screen.svelte';
+	import PopupHeader from '../../common/screen/ScreenHeader.svelte';
+	import { popupContext } from '../../common/screen/screen';
 	import { ChannelInfo, type ModelJson } from '@omuchat/client';
 	import axios from 'axios';
 	import ChannelEntry from './ChannelEntry.svelte';

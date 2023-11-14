@@ -4,11 +4,11 @@
 	import Button from '../common/input/Button.svelte';
 	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
 	import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
-	import { popupContext } from '$lib/common/popup/popup';
+	import { popupContext } from '../common/screen/screen';
 	import { ClipboardHelper } from '$lib/util/clipboard-helper';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
-	import Popup from '../common/popup/Popup.svelte';
+	import Popup from '../common/screen/Screen.svelte';
 	import Tooltip from '../common/tooltip/Tooltip.svelte';
 	const result = writable<ShareResult | null>(null);
 	let qrImage: HTMLImageElement;

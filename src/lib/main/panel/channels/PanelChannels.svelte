@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ButtonMini from '$lib/common/input/ButtonMini.svelte';
 	import { getClient } from '$lib/common/omuchat/omuchat';
-	import { popupContext } from '$lib/common/popup/popup';
+	import { popupContext } from '../../../common/screen/screen';
 	import PopupSetup from '$lib/main/setup/PopupSetup.svelte';
 	import type { ChannelInfo } from '@omuchat/client';
 	import { onMount } from 'svelte';

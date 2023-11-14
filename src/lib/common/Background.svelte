@@ -11,8 +11,6 @@
 		background: var(--color-bg-1);
 		opacity: 0.25;
 		transform: matrix(1, 0, 0.5, 1, 0, 0) translateX(-30vh);
-		transform: matrix(1, 0, 0.5, 1, 0, 0) translateX(-30vh);
-		transform: matrix(1, 0, 0.5, 1, 0, 0) translateX(-30vh);
 	}
 
 	@keyframes bg1 {
@@ -38,7 +36,7 @@
 	.background {
 		position: absolute;
 		inset: 10px -100vh 0;
-		background: url("/comment.svg") repeat;
+		background: url('/comment.svg') repeat;
 		background-size: 200px 100px;
 		object-fit: contain;
 

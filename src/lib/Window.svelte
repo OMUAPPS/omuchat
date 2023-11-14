@@ -3,7 +3,7 @@
 	import FlexRowWrapper from './common/FlexRowWrapper.svelte';
 	import OmuChatProvider from './common/omuchat/OmuChatProvider.svelte';
 	import StatusBar from './common/omuchat/StatusBar.svelte';
-	import PopupRenderer from './common/popup/PopupRenderer.svelte';
+	import PopupRenderer from './common/screen/ScreenRenderer.svelte';
 	import ButtonClose from './common/titlebar/ButtonClose.svelte';
 	import ButtonMaximize from './common/titlebar/ButtonMaximize.svelte';
 	import ButtonMinimize from './common/titlebar/ButtonMinimize.svelte';

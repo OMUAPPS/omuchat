@@ -65,6 +65,8 @@
                 }
             }
         ],
+        "import/no-relative-parent-imports": "error",
+        "import/no-unresolved": "off",
         "no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": "off",

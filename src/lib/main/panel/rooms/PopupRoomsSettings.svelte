@@ -1,6 +1,6 @@
 <script lang="ts">
 	import InputText from '$lib/common/input/InputText.svelte';
-	import Popup from '$lib/common/popup/Popup.svelte';
+	import Popup from '../../../common/screen/Screen.svelte';
 </script>
 
 <Popup title="設定" icon="ti ti-home">

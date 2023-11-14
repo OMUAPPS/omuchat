@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PropedComponent from '$lib/common/component/PropedComponent.svelte';
 	import ButtonMini from '$lib/common/input/ButtonMini.svelte';
-	import { popupContext } from '$lib/common/popup/popup';
+	import { popupContext } from '../../common/screen/screen';
 	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 	import { style } from '$lib/util/class-helper';
 	import { onMount } from 'svelte';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { classes } from '$lib/util/class-helper';
-	import PopupHeader from './PopupHeader.svelte';
-	import { popupContext } from './popup';
+	import PopupHeader from './ScreenHeader.svelte';
+	import { popupContext } from './screen';
 
 	export let title: string;
 	export let windowed: boolean = true;

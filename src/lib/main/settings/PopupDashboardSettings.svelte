@@ -2,8 +2,8 @@
 	import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
 	import PropedComponent from '$lib/common/component/PropedComponent.svelte';
 	import Button from '$lib/common/input/Button.svelte';
-	import PopupHeader from '$lib/common/popup/PopupHeader.svelte';
-	import { popupContext } from '$lib/common/popup/popup';
+	import PopupHeader from '../../common/screen/ScreenHeader.svelte';
+	import { popupContext } from '../../common/screen/screen';
 	import { t } from '$lib/i18n/i18n-context';
 	import { writable } from 'svelte/store';
 	import { SETTING_REGISTRY } from '../settings';
@@ -41,7 +41,7 @@
 <div class="container">
 	<div class="header">
 		<PopupHeader title="settings" />
-		<div class="description">{$t('popup.settings.description')}</div>
+		<div class="description">{$t('screen.settings.description')}</div>
 	</div>
 	<div class="close-button">
 		<Button callback={popupContext.pop} outline rounded>

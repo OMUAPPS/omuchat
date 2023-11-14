@@ -1,6 +1,6 @@
 <script>
 	import Button from '$lib/common/input/Button.svelte';
-	import { popupContext } from '$lib/common/popup/popup';
+	import { popupContext } from '$lib/common/screen/screen';
 	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 	import { t } from '$lib/i18n/i18n-context';
 	import PopupRemoteConnect from './PopupRemoteConnect.svelte';
