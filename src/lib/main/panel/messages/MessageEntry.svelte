@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Message } from '@/omuchat';
+	import type { Message } from '@omuchat/client';
 	import MessageComponentRenderer from './MessageComponentRenderer.svelte';
 
 	export let message: Message;
