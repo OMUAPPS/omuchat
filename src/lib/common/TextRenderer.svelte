@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ImageComponent, TextComponent } from '@/omuchat/src/model';
+	import type { ImageComponent, TextComponent } from '@omuchat/client';
 
 	export let components: Array<TextComponent | ImageComponent> = [];
 </script>

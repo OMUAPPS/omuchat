@@ -1,7 +1,7 @@
 <script lang="ts">
 	import QrCode from '../common/qrcode/QRCode.svelte';
 
-	import Button from '$lib/common/Button.svelte';
+	import Button from '../common/input/Button.svelte';
 	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
 	import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
 	import { popupContext } from '$lib/common/popup/popup';

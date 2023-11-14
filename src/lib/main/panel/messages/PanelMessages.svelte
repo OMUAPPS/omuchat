@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getClient } from '$lib/common/omuchat/omuchat';
 	import MessageRenderer from '$lib/main/panel/messages/MessageEntry.svelte';
-	import type { Message } from '@/omuchat';
+	import type { Message } from '@omuchat/client';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 

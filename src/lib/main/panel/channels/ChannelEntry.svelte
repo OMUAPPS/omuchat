@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ChannelInfo } from '@/omuchat';
+	import type { ChannelInfo } from '@omuchat/client';
 
 	export let channel: ChannelInfo;
 </script>

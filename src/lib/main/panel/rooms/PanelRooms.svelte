@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Button from '$lib/common/Button.svelte';
 	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
+	import Button from '$lib/common/input/Button.svelte';
 	import { getClient } from '$lib/common/omuchat/omuchat';
-	import type { RoomInfo } from '@/omuchat';
+	import type { RoomInfo } from '@omuchat/client';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import RoomEntry from './RoomEntry.svelte';

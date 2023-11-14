@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MessageComponentType } from '@/omuchat';
+	import type { MessageComponentType } from '@omuchat/client';
 
 	export let component: MessageComponentType;
 </script>

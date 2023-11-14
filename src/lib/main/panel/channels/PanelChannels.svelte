@@ -1,11 +1,11 @@
 <script lang="ts">
-	import ButtonMini from '$lib/common/ButtonMini.svelte';
+	import ButtonMini from '$lib/common/input/ButtonMini.svelte';
 	import { getClient } from '$lib/common/omuchat/omuchat';
-	import type { ChannelInfo } from '@/omuchat';
+	import { popupContext } from '$lib/common/popup/popup';
+	import PopupSetup from '$lib/main/setup/PopupSetup.svelte';
+	import type { ChannelInfo } from '@omuchat/client';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
-	import { popupContext } from '../../../common/popup/popup';
-	import PopupSetup from '../../setup/PopupSetup.svelte';
 	import ChannelEntry from './ChannelEntry.svelte';
 
 	export let filter: (message: ChannelInfo) => boolean = () => true;

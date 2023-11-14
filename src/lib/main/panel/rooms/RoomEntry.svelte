@@ -1,9 +1,9 @@
 <script lang="ts">
-	import ButtonMini from '$lib/common/ButtonMini.svelte';
 	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
+	import ButtonMini from '$lib/common/input/ButtonMini.svelte';
 	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 	import { ClipboardHelper } from '$lib/util/clipboard-helper';
-	import type { RoomInfo } from '@/omuchat';
+	import type { RoomInfo } from '@omuchat/client';
 
 	export let room: RoomInfo;
 

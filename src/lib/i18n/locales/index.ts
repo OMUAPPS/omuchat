@@ -20,5 +20,3 @@ export const LOCALES = {
         load: () => loadI18n('./ja-JP.json'),
     },
 }
-
-export const I18N_REGISTRY: Record<string, Entry> = LOCALES;

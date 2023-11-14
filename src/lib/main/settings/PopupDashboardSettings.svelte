@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Button from '$lib/common/Button.svelte';
-	import Component from '../../common/component/PropedComponent.svelte';
 	import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
+	import PropedComponent from '$lib/common/component/PropedComponent.svelte';
+	import Button from '$lib/common/input/Button.svelte';
 	import PopupHeader from '$lib/common/popup/PopupHeader.svelte';
 	import { popupContext } from '$lib/common/popup/popup';
 	import { t } from '$lib/i18n/i18n-context';
@@ -68,7 +68,7 @@
 		</div>
 		<div class="settings" class:fit={$currentCategory.name === 'credits'}>
 			{#each $currentCategory.settings as setting}
-				<Component component={setting.component()} />
+				<PropedComponent component={setting.component()} />
 			{/each}
 		</div>
 	</div>

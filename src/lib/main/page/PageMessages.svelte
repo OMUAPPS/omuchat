@@ -1,9 +1,9 @@
 <script lang="ts">
-	import PanelProvider from '../panel/PanelProvider.svelte';
-	import type { PanelEntry } from '../panel/panel';
-	import type { Message } from '@/omuchat';
+	import type { Message } from '@omuchat/client';
 	import { writable } from 'svelte/store';
+	import PanelProvider from '../panel/PanelProvider.svelte';
 	import PanelMessages from '../panel/messages/PanelMessages.svelte';
+	import type { PanelEntry } from '../panel/panel';
 	import PanelRooms from '../panel/rooms/PanelRooms.svelte';
 	import PopupRoomsSettings from '../panel/rooms/PopupRoomsSettings.svelte';
 

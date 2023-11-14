@@ -8,7 +8,7 @@
 	<slot />
 </a>
 
-<style>
+<style lang="scss">
 	a {
 		font-size: 12px;
 		color: var(--color-1);

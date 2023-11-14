@@ -1,4 +1,6 @@
 <script>
+	import { classes } from '$lib/util/class-helper';
+
 	export let between = false;
 	export let reverse = false;
 	export let widthFull = false;
@@ -6,15 +8,18 @@
 	export let gap = false;
 </script>
 
-<div class="wrapper" class:between class:reverse class:gap class:widthFull class:heightFull>
+<div
+	class:between
+	class:reverse
+	class:gap
+	class={classes('wrapper', widthFull && 'width-full', heightFull && 'height-full')}
+>
 	<slot />
 </div>
 
 <style>
 	.wrapper {
 		display: flex;
-
-		/* height: 100%; */
 		flex-direction: row;
 		align-items: center;
 	}
@@ -31,11 +36,11 @@
 		gap: 10px;
 	}
 
-	.widthFull {
+	.width-full {
 		width: 100%;
 	}
 
-	.heightFull {
+	.height-full {
 		height: 100%;
 	}
 </style>

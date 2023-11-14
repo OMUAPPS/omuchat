@@ -1,9 +1,9 @@
 <script lang="ts">
-	import ButtonMini from '../../common/ButtonMini.svelte';
-	import Component from '../../common/component/PropedComponent.svelte';
-	import { popupContext } from '../../common/popup/popup';
-	import Tooltip from '../../common/tooltip/Tooltip.svelte';
-	import { style } from '../../util/class-helper';
+	import PropedComponent from '$lib/common/component/PropedComponent.svelte';
+	import ButtonMini from '$lib/common/input/ButtonMini.svelte';
+	import { popupContext } from '$lib/common/popup/popup';
+	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
+	import { style } from '$lib/util/class-helper';
 	import { onMount } from 'svelte';
 	import { getPanelContext, type PanelEntry } from './panel';
 
@@ -83,7 +83,7 @@
 			</div>
 		</div>
 		<div class="panel">
-			<Component component={panel.componentPanel()} />
+			<PropedComponent component={panel.componentPanel()} />
 		</div>
 	</div>
 </div>
@@ -93,6 +93,11 @@
 		height: 100%;
 		margin-top: 0;
 		background: var(--color-bg-1);
+
+		.drag-wrapper {
+			width: 100%;
+			height: 100%;
+		}
 
 		&.dragging {
 			pointer-events: none;
@@ -108,11 +113,6 @@
 			outline: 2px solid var(--color-1);
 			outline-offset: 2px;
 		}
-	}
-
-	.drag-wrapper {
-		width: 100%;
-		height: 100%;
 	}
 
 	.header {

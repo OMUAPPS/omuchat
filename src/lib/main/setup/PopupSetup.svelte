@@ -1,14 +1,14 @@
 <script lang="ts">
 	import Background from '$lib/common/Background.svelte';
-	import Button from '$lib/common/Button.svelte';
 	import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
+	import Button from '$lib/common/input/Button.svelte';
 	import InputText from '$lib/common/input/InputText.svelte';
 	import { getClient } from '$lib/common/omuchat/omuchat';
+	import Popup from '$lib/common/popup/Popup.svelte';
 	import PopupHeader from '$lib/common/popup/PopupHeader.svelte';
 	import { popupContext } from '$lib/common/popup/popup';
 	import { ChannelInfo, type ModelJson } from '@omuchat/client';
 	import axios from 'axios';
-	import Popup from '../../common/popup/Popup.svelte';
 	import ChannelEntry from './ChannelEntry.svelte';
 
 	const client = getClient();
