@@ -4,12 +4,12 @@
 
     import Button from '../common/input/Button.svelte';
     import QrCode from '../common/qrcode/QRCode.svelte';
-    import { popupContext } from '../common/screen/screen';
-    import Popup from '../common/screen/Screen.svelte';
+    import Screen from '../common/screen/Screen.svelte';
     import Tooltip from '../common/tooltip/Tooltip.svelte';
 
     import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
+    import { screenContext } from '$lib/common/screen/screen';
     import { ClipboardHelper } from '$lib/util/clipboard-helper';
 
     const result = writable<ShareResult | null>(null);
@@ -38,11 +38,11 @@
     }
 
     function close() {
-        popupContext.pop();
+        screenContext.pop();
     }
 </script>
 
-<Popup title="remote_connect" windowed={false}>
+<Screen title="remote_connect" windowed={false}>
     <div class="container">
         {#if $result}
             <button on:click={copyQrToClipboard} class="qr">
@@ -66,7 +66,7 @@
             </Button>
         </div>
     </div>
-</Popup>
+</Screen>
 
 <style lang="scss">
     .container {

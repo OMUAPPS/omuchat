@@ -67,7 +67,7 @@
         "settings": "設定",
         "remote_connect": "リモート接続"
     },
-    "popup": {
+    "screen": {
         "settings": {
             "name": "設定",
             "icon": "ti ti-settings",

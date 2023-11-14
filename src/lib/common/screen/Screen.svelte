@@ -1,8 +1,7 @@
 <script lang="ts">
-    import { popupContext } from './screen';
-    import PopupHeader from './ScreenHeader.svelte';
-
     import { classes } from '$lib/util/class-helper';
+    import ScreenHeader from './ScreenHeader.svelte';
+    import { screenContext } from './screen';
 
     export let title: string;
     export let windowed: boolean = true;
@@ -11,19 +10,19 @@
 
     function onClick(event: MouseEvent) {
         if (event.target === container) {
-            popupContext.pop();
+            screenContext.pop();
         }
     }
 </script>
 
 <button class="container" class:windowed on:click={onClick} bind:this={container}>
-    <div class="popup" class:windowed>
+    <div class="screen" class:windowed>
         {#if !noDecorated && windowed}
-            <PopupHeader {title} />
+            <ScreenHeader {title} />
         {/if}
         <div class:windowed class={classes('content', noDecorated && 'no-decorated')}>
             {#if !noDecorated && !windowed}
-                <PopupHeader {title} />
+                <ScreenHeader {title} />
             {/if}
             <slot />
         </div>
@@ -45,7 +44,7 @@
         border: none;
     }
 
-    .popup {
+    .screen {
         max-width: 100%;
         max-height: 100%;
         animation: menu-in 0.2s cubic-bezier(0, 1.14, 0, 1);

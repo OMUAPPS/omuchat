@@ -5,8 +5,8 @@
 </script>
 
 <div class="header">
-    <i class={$t(`popup.${title}.icon`)} />
-    <div class="title">{$t(`popup.${title}.name`)}</div>
+    <i class={$t(`screen.${title}.icon`)} />
+    <div class="title">{$t(`screen.${title}.name`)}</div>
 </div>
 
 <style>

@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { popupContext } from './screen';
-    const current = popupContext.current;
+    import { screenContext } from './screen';
+
+    const current = screenContext.current;
 </script>
 
 {#if $current}

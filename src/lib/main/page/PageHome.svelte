@@ -5,7 +5,7 @@
     import type { PanelEntry } from '../panel/panel';
     import PanelProvider from '../panel/PanelProvider.svelte';
     import PanelRooms from '../panel/rooms/PanelRooms.svelte';
-    import PopupRoomsSettings from '../panel/rooms/PopupRoomsSettings.svelte';
+    import ScreenRoomsSettings from '../panel/rooms/ScreenRoomsSettings.svelte';
 
     const panels = writable<PanelEntry[]>([
         {
@@ -36,7 +36,7 @@
                 };
             },
             componentSettings() {
-                return { component: PopupRoomsSettings, props: {} };
+                return { component: ScreenRoomsSettings, props: {} };
             }
         }
     ]);

@@ -8,7 +8,7 @@
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import { getClient } from '$lib/common/omuchat/omuchat';
     import { screenContext } from '$lib/common/screen/screen';
-    import PopupSetup from '$lib/main/setup/PopupSetup.svelte';
+    import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
 
     export let filter: (message: ChannelInfo) => boolean = () => true;
 
@@ -26,7 +26,7 @@
 
     function openSetup() {
         screenContext.push({
-            component: PopupSetup,
+            component: ScreenSetup,
             props: {}
         });
     }
