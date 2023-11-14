@@ -5,18 +5,23 @@
 	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
 	import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
 	import { popupContext } from '$lib/common/popup/popup';
-	import type { ShareResponse } from '$lib/type/tauri';
 	import { ClipboardHelper } from '$lib/util/clipboard-helper';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import Popup from '../common/popup/Popup.svelte';
 	import Tooltip from '../common/tooltip/Tooltip.svelte';
-	const result = writable<ShareResponse | null>(null);
+	const result = writable<ShareResult | null>(null);
 	let qrImage: HTMLImageElement;
+
+	interface ShareResult {
+		host: string;
+		port: number;
+		url: string;
+	}
 
 	onMount(async () => {
 		const api = await import('@tauri-apps/api');
-		api.invoke<ShareResponse>('share_url').then((res) => {
+		api.invoke<ShareResult>('share_url').then((res) => {
 			console.log(res);
 			result.set(res);
 		});
