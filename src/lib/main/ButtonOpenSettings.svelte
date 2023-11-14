@@ -1,5 +1,5 @@
 <script>
-	import Button from '$lib/common/Button.svelte';
+	import Button from '$lib/common/input/Button.svelte';
 	import { popupContext } from '$lib/common/popup/popup';
 	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 	import { t } from '$lib/i18n/i18n-context';

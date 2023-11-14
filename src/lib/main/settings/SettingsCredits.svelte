@@ -1,5 +1,5 @@
 <script>
-	import ExternalLink from '$lib/common/ExternalLink.svelte';
+	import ExternalLink from '$lib/common/input/ExternalLink.svelte';
 	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 	import { LICENCES } from '$lib/licence/licence';
 </script>
