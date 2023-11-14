@@ -136,10 +136,11 @@
 
     .left {
         display: flex;
-        gap: 5px;
+        gap: 10px;
         align-items: center;
         width: 100%;
         font-size: 16px;
+        font-weight: 600;
         appearance: none;
         cursor: grab;
         background: none;

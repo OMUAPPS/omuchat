@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
-import Checkbox from './settings/Checkbox.svelte';
-import Combobox from './settings/Combobox.svelte';
+import Checkbox from './settings/CheckboxField.svelte';
+import Combobox from './settings/ComboboxField.svelte';
 
 import type { PropedComponent } from '$lib/common/component/proped-component';
 import { LOCALES } from '$lib/i18n/locales';
@@ -62,6 +62,7 @@ function createLiteralSetting<T extends string>(key: string, defaultValue: T) {
 export const devMode = createBooleanSetting('devMode', false);
 export const language = createLiteralSetting<keyof typeof LOCALES>('language', getSystemLanguage());
 export const currentPage = createStringSetting('currentPage', 'main');
+export const currentSettingsCategory = createStringSetting('currentPageSettings', 'general');
 
 export interface Setting {
     component(): PropedComponent;

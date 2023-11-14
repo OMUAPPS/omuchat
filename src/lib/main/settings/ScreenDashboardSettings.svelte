@@ -1,7 +1,7 @@
 <script lang="ts">
     import { writable } from 'svelte/store';
 
-    import { SETTING_REGISTRY } from '../settings';
+    import { currentSettingsCategory, SETTING_REGISTRY } from '../settings';
 
     import SettingsCredits from './SettingsCredits.svelte';
 
@@ -38,7 +38,12 @@
             ]
         }
     ];
+
     const currentCategory = writable(categories[0]);
+    currentSettingsCategory.subscribe((category) => {
+        currentCategory.set(categories.find((c) => c.name === category)!);
+    });
+    $: $currentSettingsCategory = $currentCategory.name;
 </script>
 
 <div class="container">

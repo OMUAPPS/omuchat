@@ -99,7 +99,7 @@
         white-space: nowrap;
         pointer-events: none;
         user-select: none;
-        background: var(--color-text);
+        background: #000;
         border-radius: 0;
     }
 
@@ -110,7 +110,7 @@
         content: '';
         user-select: none;
         border: 5px solid transparent;
-        border-bottom-color: var(--color-text);
+        border-bottom-color: #000;
         transform: translateX(-50%);
     }
 

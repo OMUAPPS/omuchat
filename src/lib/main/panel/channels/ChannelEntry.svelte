@@ -1,19 +1,26 @@
 <script lang="ts">
+    import type { ChannelInfo } from '@omuchat/client';
+    import { writable } from 'svelte/store';
+
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
+    import Checkbox from '$lib/common/input/Checkbox.svelte';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-    import type { ChannelInfo } from '@omuchat/client';
 
     export let channel: ChannelInfo;
+
+    const active = writable(false);
 </script>
 
 <div class="container">
     <div class="left">
-        {#if channel.icon_url}
-            <img src={channel.icon_url} alt="icon" class="channel-icon" />
-        {:else}
-            <ProviderIcon providerId={channel.provider_id} />
-        {/if}
+        <div class="channel-icon">
+            {#if channel.icon_url}
+                <img src={channel.icon_url} alt="icon" />
+            {:else}
+                <ProviderIcon providerId={channel.provider_id} />
+            {/if}
+        </div>
         <div class="description">
             <div class="channel-name">{channel.name || channel.provider_id}</div>
             <small class="channel-url">
@@ -42,6 +49,7 @@
                 <i class="ti ti-external-link" />
             </ButtonMini>
         </a>
+        <Checkbox value={active} />
     </div>
 </div>
 
@@ -76,6 +84,7 @@
     .channel-icon {
         width: 32px;
         height: 32px;
+        margin: 5px;
         border-radius: 50%;
     }
 
