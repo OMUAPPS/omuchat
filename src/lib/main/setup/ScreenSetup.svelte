@@ -70,10 +70,10 @@
     }
 </script>
 
-<Screen title="setup" windowed={false} noDecorated={false}>
+<Screen title="setup" windowed={false} noDecorated>
     <Background />
     <div class="container">
-        <ScreenHeader title="セットアップ" />
+        <ScreenHeader title="setup" />
         {#if result}
             <FlexColWrapper>
                 <div class="channels">

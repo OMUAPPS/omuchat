@@ -77,6 +77,11 @@
             "name": "リモート接続",
             "icon": "ti ti-qrcode",
             "description": "リモート接続を開始します。"
+        },
+        "setup": {
+            "name": "セットアップ",
+            "icon": "ti ti-settings",
+            "description": "セットアップを開始します。"
         }
     },
     "settings": {
