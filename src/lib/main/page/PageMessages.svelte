@@ -1,6 +1,6 @@
 <script lang="ts">
-	import PanelProvider from '$lib/panel/PanelProvider.svelte';
-	import type { PanelEntry } from '$lib/panel/panel';
+	import PanelProvider from '../panel/PanelProvider.svelte';
+	import type { PanelEntry } from '../panel/panel';
 	import type { Message } from '@/omuchat';
 	import { writable } from 'svelte/store';
 	import PanelMessages from '../panel/messages/PanelMessages.svelte';

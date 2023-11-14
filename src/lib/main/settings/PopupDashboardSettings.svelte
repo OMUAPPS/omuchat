@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/common/Button.svelte';
-	import Component from '$lib/common/Component.svelte';
+	import Component from '../../common/component/PropedComponent.svelte';
 	import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
 	import PopupHeader from '$lib/common/popup/PopupHeader.svelte';
 	import { popupContext } from '$lib/common/popup/popup';

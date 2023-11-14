@@ -1,4 +1,4 @@
-import type { PropedComponent } from "$lib/type/component";
+import type { PropedComponent } from "$lib/common/component/proped-component";
 import { writable, type Writable } from "svelte/store";
 
 export interface Page {

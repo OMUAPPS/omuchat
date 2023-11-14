@@ -1,5 +1,5 @@
 import { LOCALES } from "$lib/i18n/locales";
-import type { PropedComponent } from "$lib/type/component";
+import type { PropedComponent } from "$lib/common/component/proped-component";
 import { writable } from "svelte/store";
 import Checkbox from "./settings/Checkbox.svelte";
 import Combobox from "./settings/Combobox.svelte";

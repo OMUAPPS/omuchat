@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PropedComponent } from '$lib/type/component';
+	import type { PropedComponent } from './proped-component';
 	export let component: PropedComponent;
 </script>
 

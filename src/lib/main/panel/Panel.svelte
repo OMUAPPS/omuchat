@@ -1,9 +1,9 @@
 <script lang="ts">
-	import ButtonMini from '$lib/common/ButtonMini.svelte';
-	import Component from '$lib/common/Component.svelte';
-	import { popupContext } from '$lib/common/popup/popup';
-	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-	import { style } from '$lib/util/class-helper';
+	import ButtonMini from '../../common/ButtonMini.svelte';
+	import Component from '../../common/component/PropedComponent.svelte';
+	import { popupContext } from '../../common/popup/popup';
+	import Tooltip from '../../common/tooltip/Tooltip.svelte';
+	import { style } from '../../util/class-helper';
 	import { onMount } from 'svelte';
 	import { getPanelContext, type PanelEntry } from './panel';
 

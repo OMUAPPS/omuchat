@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Component from '$lib/common/Component.svelte';
+	import Component from '../common/component/PropedComponent.svelte';
 	import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
 	import { t } from '$lib/i18n/i18n-context';
-	import PanelProvider from '$lib/panel/PanelProvider.svelte';
+	import PanelProvider from './panel/PanelProvider.svelte';
 	import { style } from '$lib/util/class-helper';
 	import Tooltip from '../common/tooltip/Tooltip.svelte';
 	import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';

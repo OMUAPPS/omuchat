@@ -1,4 +1,4 @@
-import type { PropedComponent } from "$lib/type/component";
+import type { PropedComponent } from "$lib/common/component/proped-component";
 import { getContext, setContext } from "svelte";
 import type { Readable } from "svelte/motion";
 import type { Writable } from "svelte/store";
