@@ -5,19 +5,12 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:svelte/recommended",
         "plugin:import/recommended",
-        "plugin:import/warnings",
-        "prettier"
+        "plugin:import/warnings"
     ],
-    "plugins": [
-        "@typescript-eslint",
-        "unused-imports",
-        "prettier"
-    ],
+    "plugins": ["@typescript-eslint", "unused-imports"],
     "overrides": [
         {
-            "files": [
-                "*.svelte"
-            ],
+            "files": ["*.svelte"],
             "parser": "svelte-eslint-parser",
             "parserOptions": {
                 "parser": "@typescript-eslint/parser"
@@ -27,9 +20,7 @@
     "parserOptions": {
         "sourceType": "module",
         "ecmaVersion": 2020,
-        "extraFileExtensions": [
-            ".svelte"
-        ]
+        "extraFileExtensions": [".svelte"]
     },
     "env": {
         "browser": true,
@@ -40,14 +31,7 @@
         "import/order": [
             "error",
             {
-                "groups": [
-                    "builtin",
-                    "external",
-                    "internal",
-                    "parent",
-                    "sibling",
-                    "index"
-                ],
+                "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
                 "pathGroups": [
                     {
                         "pattern": "react",
@@ -55,9 +39,7 @@
                         "position": "before"
                     }
                 ],
-                "pathGroupsExcludedImportTypes": [
-                    "react"
-                ],
+                "pathGroupsExcludedImportTypes": ["react"],
                 "newlines-between": "always",
                 "alphabetize": {
                     "order": "asc",
@@ -68,10 +50,7 @@
         "no-restricted-imports": [
             "error",
             {
-                "patterns": [
-                    "../../",
-                    "../lib"
-                ]
+                "patterns": ["../lib"]
             }
         ],
         "import/default": "off",
@@ -83,7 +62,6 @@
         "@typescript-eslint/no-misused-new": "off",
         "no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": "off",
-        "prettier/prettier": "error"
+        "unused-imports/no-unused-vars": "off"
     }
 }
