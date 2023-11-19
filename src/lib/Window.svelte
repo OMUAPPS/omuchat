@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { PluginInfo } from '@omuchat/client';
-
+    import { App } from '@omuchat/client';
+    import { WebsocketConnection } from '@omuchat/client/src/connection';
     import FlexRowWrapper from './common/FlexRowWrapper.svelte';
-    import OmuChatProvider from './common/omuchat/OmuChatProvider.svelte';
+    import OmuChatProvider from './common/omuchat/ClientProvider.svelte';
     import StatusBar from './common/omuchat/StatusBar.svelte';
     import ScreenRenderer from './common/screen/ScreenRenderer.svelte';
     import ButtonClose from './common/titlebar/ButtonClose.svelte';
@@ -10,10 +10,21 @@
     import ButtonMinimize from './common/titlebar/ButtonMinimize.svelte';
     import TitleBar from './common/titlebar/TitleBar.svelte';
     import Title from './images/title.svg';
+
+    const app = new App({
+        name: "omu-client",
+        version: "0.1.0",
+        group: "omu",
+    });
+    const connection = new WebsocketConnection({
+        host: 'localhost',
+        port: 26423,
+        secure: false,
+    });
 </script>
 
 <div class="window">
-    <OmuChatProvider info={PluginInfo.create({ name: 'test', version: '0.0.1', group: 'test' })}>
+    <OmuChatProvider {app} {connection}>
         <div class="drag-area" data-tauri-drag-region>
             <div class="title">
                 <img src={Title} alt="title" width="64" height="10" />

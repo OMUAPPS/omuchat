@@ -1,17 +1,15 @@
 <script lang="ts">
-    import type { Writable } from 'svelte/store';
-
-    export let value: Writable<boolean>;
+    export let value: boolean;
     export let disabled: boolean = false;
 
     function toggle() {
-        $value = !$value;
+        value = !value;
     }
 </script>
 
 <label class="toggle">
-    <input type="checkbox" bind:checked={$value} {disabled} on:click={toggle} />
-    {#if $value}
+    <input type="checkbox" bind:checked={value} {disabled} on:click={toggle} />
+    {#if value}
         <i class="toggle-icon ti ti-check" />
     {/if}
 </label>

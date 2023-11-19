@@ -28,6 +28,7 @@
         "node": true
     },
     "rules": {
+        "indent": ["error", "space", 4],
         "import/order": [
             "error",
             {

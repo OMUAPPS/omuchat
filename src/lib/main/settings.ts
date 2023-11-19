@@ -68,7 +68,6 @@ export interface Setting {
     component(): PropedComponent;
 }
 
-// 無駄な労力ジェネレーター2021
 function calcLanguageScore(lang: string): number {
     let score = 0;
     score +=

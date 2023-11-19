@@ -1,7 +1,7 @@
-<script lang="ts">
-    import type { ChannelInfo } from '@omuchat/client';
+<script lang="ts">  
+    import type { Channel } from "@omuchat/client";
 
-    export let channel: ChannelInfo;
+    export let channel: Channel;
     export let active = false;
     export let callback = () => {};
 </script>

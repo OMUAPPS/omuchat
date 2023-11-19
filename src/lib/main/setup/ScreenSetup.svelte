@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ChannelInfo, type ModelJson } from '@omuchat/client';
+    import { Channel, type ChannelJson } from '@omuchat/client';
     import axios from 'axios';
 
     import ChannelEntry from './ChannelEntry.svelte';
@@ -8,18 +8,18 @@
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
     import Button from '$lib/common/input/Button.svelte';
     import InputText from '$lib/common/input/InputText.svelte';
-    import { getClient } from '$lib/common/omuchat/omuchat';
+    import { getClient } from '$lib/common/omuchat/client';
     import { screenContext } from '$lib/common/screen/screen';
     import Screen from '$lib/common/screen/Screen.svelte';
     import ScreenHeader from '$lib/common/screen/ScreenHeader.svelte';
 
-    const client = getClient();
+    const {client, chat} = getClient();
 
     interface Response {
-        channels: ModelJson<ChannelInfo>[];
+        channels: ChannelJson[];
     }
 
-    let result: Record<string, { info: ChannelInfo; active: boolean }> | null = null;
+    let result: Record<string, { channel: Channel; active: boolean }> | null = null;
 
     let locked = false;
     let url: string = '';
@@ -36,14 +36,14 @@
             .then((res) => {
                 console.log(res);
                 result = res.data.channels.reduce(
-                    (acc, channel) => {
-                        acc[channel.url] = {
-                            info: ChannelInfo.fromJSON(client, channel),
+                    (acc, info) => {
+                        acc[info.url] = {
+                            channel: new Channel(info),
                             active: false
                         };
                         return acc;
                     },
-                    {} as Record<string, { info: ChannelInfo; active: boolean }>
+                    {} as Record<string, { channel: Channel; active: boolean }>
                 );
             })
             .catch((err) => {
@@ -58,9 +58,9 @@
         if (!result) return;
         const channels = Object.values(result)
             .filter((v) => v.active)
-            .map((v) => v.info);
+            .map((v) => v.channel);
         channels.forEach((channel) => {
-            client.channels.add(channel);
+            chat.channels!.add(channel);
         });
         screenContext.pop();
     }
@@ -79,7 +79,7 @@
                 <div class="channels">
                     {#each Object.keys(result) as url}
                         <ChannelEntry
-                            channel={result[url].info}
+                            channel={result[url].channel}
                             active={result[url].active}
                             callback={() => {
                                 if (!result) return;

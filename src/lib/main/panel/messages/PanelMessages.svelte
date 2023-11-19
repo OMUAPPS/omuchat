@@ -1,23 +1,26 @@
 <script lang="ts">
-    import type { Message } from '@omuchat/client';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
-    import { getClient } from '$lib/common/omuchat/omuchat';
+    import { getClient } from '$lib/common/omuchat/client';
     import MessageRenderer from '$lib/main/panel/messages/MessageEntry.svelte';
+    import type { Message } from '@omuchat/client';
 
     export let filter: (message: Message) => boolean = () => true;
 
-    const client = getClient();
+    const {client, chat} = getClient();
 
-    const messages = writable(client.messages.cache);
+    const messages = writable<Message[]>([]);
 
-    client.messages.listen((newMessages) => {
-        messages.set(newMessages);
+    chat.messages!.on({
+        onCacheUpdate(cache) {
+            messages.update((msgs) => {
+                return [...msgs, ...cache.values()];
+            });
+        },
     });
-
     onMount(async () => {
-        messages.set(await client.messages.fetch());
+        messages.set(Object.values(await chat.messages!.fetch(100)));
     });
 </script>
 

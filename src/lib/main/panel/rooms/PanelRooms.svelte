@@ -1,5 +1,4 @@
 <script lang="ts">
-    import type { RoomInfo } from '@omuchat/client';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
@@ -7,34 +6,39 @@
 
     import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import Button from '$lib/common/input/Button.svelte';
-    import { getClient } from '$lib/common/omuchat/omuchat';
+    import { getClient } from '$lib/common/omuchat/client';
+    import type { Room } from '@omuchat/client';
 
-    export let filter: (message: RoomInfo) => boolean = () => true;
+    export let filter: (message: Room) => boolean = () => true;
 
-    const client = getClient();
-    const rooms = writable(Object.values(client.rooms.cache));
+    const {chat} = getClient();
+    const rooms = writable(chat.rooms!.cache);
     let showOffline = false;
 
-    function update(newRooms: Record<string, RoomInfo>) {
-        rooms.set(Object.values(newRooms).filter(filter));
+    function update(newRooms: Map<string, Room>) {
+        rooms.set(newRooms);
     }
 
-    client.rooms.listen(update);
+    chat.rooms!.on({
+        onCacheUpdate(cache) {
+            update(cache);
+        },
+    });
 
     function toggleOffline() {
         showOffline = !showOffline;
     }
 
     onMount(async () => {
-        update(await client.rooms.fetch());
+        update(await chat.rooms!.fetch(100));
     });
 </script>
 
 <div class="rooms">
-    {#each $rooms.filter((room) => room.online) as room}
+    {#each [...$rooms.values()].filter(filter || (() => true)) as room}
         <RoomEntry {room} />
     {/each}
-    {#if $rooms.some((room) => !room.online)}
+    {#if [...$rooms.values()].some((room) => !room.online)}
         <Button callback={toggleOffline}>
             <FlexRowWrapper widthFull reverse>
                 {#if showOffline}
@@ -48,7 +52,7 @@
         </Button>
     {/if}
     {#if showOffline}
-        {#each $rooms.filter((room) => !room.online) as room}
+        {#each [...$rooms.values()].filter((room) => !room.online) as room}
             <RoomEntry {room} />
         {/each}
     {/if}

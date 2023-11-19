@@ -9,12 +9,12 @@
     import PageChannels from './page/PageChannels.svelte';
     import PageHome from './page/PageHome.svelte';
     import PageMessages from './page/PageMessages.svelte';
-    import PanelProvider from './panel/PanelProvider.svelte';
     import { currentPage, devMode } from './settings';
 
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
     import { t } from '$lib/i18n/i18n-context';
     import { style } from '$lib/util/class-helper';
+    import PageDev from './page/PageDev.svelte';
 
     pages.set({
         main: {
@@ -69,7 +69,7 @@
             name: 'dev',
             component: () => {
                 return {
-                    component: PanelProvider,
+                    component: PageDev,
                     props: {}
                 };
             }

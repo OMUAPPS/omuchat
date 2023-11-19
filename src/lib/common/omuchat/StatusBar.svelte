@@ -1,35 +1,32 @@
 <script lang="ts">
-    import { Status, type StatusValue } from '@omuchat/client';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
-    import { getClient } from './omuchat';
+    import { getClient } from './client';
 
-    import { t } from '$lib/i18n/i18n-context';
+    import type { ConnectionStatus } from '@omuchat/client/src/connection';
 
-    const client = getClient();
-    const status = writable<StatusValue>(client.status());
+    const { client } = getClient();
+    const status = writable<ConnectionStatus>(client.connection.status());
 
     onMount(() => {
-        return client.on('status', (event) => {
-            status.set(event.status);
-        });
+        return client.connection.on({
+            onStatusChange: (newStatus) => {
+                status.set(newStatus);
+            }
+        })
     });
 </script>
 
 <p class={$status}>
-    {#if $status === Status.CONNECTED}
+    {#if $status === 'connected'}
         <i class="ti ti-check" />
     {/if}
-    {#if $status === Status.CONNECTING || $status === Status.RECONNECTING}
+    {#if $status === 'connecting'}
         <i class="ti ti-reload" />
     {/if}
-    {#if $status === Status.DISCONNECTED}
+    {#if $status === 'disconnected'}
         <i class="ti ti-x" />
-    {/if}
-    {$t(`status.${$status}`)}
-    {#if $status === Status.RECONNECTING}
-        <p>{$t('status.connect_attempt_count', { count: client.connectAttemptCount })}</p>
     {/if}
 </p>
 

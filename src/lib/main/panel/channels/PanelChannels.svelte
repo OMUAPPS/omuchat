@@ -1,27 +1,31 @@
 <script lang="ts">
-    import type { ChannelInfo } from '@omuchat/client';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
     import ChannelEntry from './ChannelEntry.svelte';
 
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
-    import { getClient } from '$lib/common/omuchat/omuchat';
+    import { getClient } from '$lib/common/omuchat/client';
     import { screenContext } from '$lib/common/screen/screen';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
+    import type { Channel } from '@omuchat/client';
 
-    export let filter: (message: ChannelInfo) => boolean = () => true;
+    export let filter: (message: Channel) => boolean = () => true;
 
-    const client = getClient();
+    const {client, chat} = getClient();
 
-    const channels = writable(client.channels.cache);
+    const channels = writable([...chat.channels!.cache.values()]);
 
-    client.channels.listen((newChannels) => {
-        channels.set(newChannels);
+    chat.channels!.on({
+        onCacheUpdate(cache) {
+            channels.update((chans) => {
+                return [...chans, ...cache.values()];
+            });
+        },
     });
 
     onMount(async () => {
-        channels.set(await client.channels.fetch());
+        channels.set(Object.values(await chat.channels!.fetch(100)));
     });
 
     function openSetup() {
