@@ -1,10 +1,10 @@
 <script lang="ts">
+    import type { ConnectionStatus } from '@omuchat/client/src/connection';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
     import { getClient } from './client';
 
-    import type { ConnectionStatus } from '@omuchat/client/src/connection';
 
     const { client } = getClient();
     const status = writable<ConnectionStatus>(client.connection.status());

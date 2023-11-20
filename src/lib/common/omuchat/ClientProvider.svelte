@@ -1,8 +1,8 @@
 <script lang="ts">
     import { App, ChatExtensionType, OmuClient } from '@omuchat/client';
+    import type { Connection } from '@omuchat/client/src/connection';
     import { onDestroy } from 'svelte';
 
-    import type { Connection } from '@omuchat/client/src/connection';
     import { setClient } from './client';
 
     export let app: App;

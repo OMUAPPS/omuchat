@@ -1,10 +1,11 @@
 <script lang="ts">
     import type { Provider } from "@omuchat/client";
+
     import { getClient } from "./client";
 
     export let providerId: string;
 
-    const {chat} = getClient();
+    const { chat } = getClient();
 
     async function getProvider(): Promise<Provider> {
         const provider = await chat.providers!.get(providerId);
