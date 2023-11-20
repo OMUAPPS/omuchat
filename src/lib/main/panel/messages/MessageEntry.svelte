@@ -1,15 +1,15 @@
 <script lang="ts">
     import type { Message } from '@omuchat/client';
 
-    import MessageComponentRenderer from './MessageComponentRenderer.svelte';
+    import MessageComponentRenderer from './MessageContent.svelte';
 
     export let message: Message;
 </script>
 
 <div class="message">
     <div class="left">
-        {#if message.author && message.author.image_url}
-            <img src={message.author.image_url} alt="avatar" class="author-avatar" />
+        {#if message.author && message.author.avatar_url}
+            <img src={message.author.avatar_url} alt="avatar" class="author-avatar" />
         {/if}
     </div>
     <div class="right">

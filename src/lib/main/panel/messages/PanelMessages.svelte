@@ -1,22 +1,20 @@
 <script lang="ts">
+    import type { Message } from '@omuchat/client';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
     import { getClient } from '$lib/common/omuchat/client';
     import MessageRenderer from '$lib/main/panel/messages/MessageEntry.svelte';
-    import type { Message } from '@omuchat/client';
 
     export let filter: (message: Message) => boolean = () => true;
 
-    const {client, chat} = getClient();
+    const { chat } = getClient();
 
     const messages = writable<Message[]>([]);
 
     chat.messages!.on({
         onCacheUpdate(cache) {
-            messages.update((msgs) => {
-                return [...msgs, ...cache.values()];
-            });
+            messages.set([...cache.values()]);
         },
     });
     onMount(async () => {
@@ -25,7 +23,7 @@
 </script>
 
 <div class="messages">
-    {#each Object.values($messages).filter(filter || (() => true)) as message}
+    {#each Object.values($messages).filter(filter) as message}
         <div class="message">
             <MessageRenderer {message} />
         </div>
@@ -35,7 +33,7 @@
 <style lang="scss">
     .messages {
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 
     .message {
