@@ -28,7 +28,15 @@
         "node": true
     },
     "rules": {
-        "indent": ["error", "space", 4],
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-misused-new": "off",
+        "array-bracket-spacing": ["error", "never"],
+        "computed-property-spacing": ["error", "never"],
+        "import/default": "off",
+        "import/named": "off",
+        "import/no-named-as-default": "off",
+        "import/no-named-as-default-member": "off",
+        "import/no-unresolved": "off",
         "import/order": [
             "error",
             {
@@ -48,20 +56,15 @@
                 }
             }
         ],
+        "indent": ["error", 4],
         "no-restricted-imports": [
             "error",
             {
                 "patterns": ["../lib"]
             }
         ],
-        "import/default": "off",
-        "import/named": "off",
-        "import/no-named-as-default": "off",
-        "import/no-named-as-default-member": "off",
-        "import/no-unresolved": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-misused-new": "off",
         "no-unused-vars": "off",
+        "object-curly-spacing": ["error", "always"],
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": "off"
     }
