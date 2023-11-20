@@ -1,11 +1,11 @@
 <script lang="ts">
+    import type { Channel } from '@omuchat/client';
     import { writable } from 'svelte/store';
 
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import Checkbox from '$lib/common/input/Checkbox.svelte';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-    import type { Channel } from '@omuchat/client';
 
     export let channel: Channel;
 
