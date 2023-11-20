@@ -14,7 +14,6 @@
         timer = setTimeout(() => {
             value = tempValue;
         }, 500);
-        console.log(value);
     }
 
     function exit() {

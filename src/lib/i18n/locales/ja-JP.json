@@ -82,6 +82,11 @@
             "name": "セットアップ",
             "icon": "ti ti-settings",
             "description": "セットアップを開始します。"
+        },
+        "add_channel": {
+            "name": "チャンネルを追加",
+            "icon": "ti ti-plus",
+            "description": "チャンネルを追加します。"
         }
     },
     "settings": {

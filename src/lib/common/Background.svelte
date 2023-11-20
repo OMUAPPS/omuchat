@@ -6,7 +6,10 @@
 <style lang="scss">
     .container {
         position: fixed;
-        inset: 0 -100vh;
+        top: 0;
+        left: 0;
+        width: calc(100vw + tan(30deg) * 100vh);
+        height: 100vh;
         pointer-events: none;
         background: var(--color-bg-1);
         opacity: 0.25;
@@ -35,7 +38,7 @@
 
     .background {
         position: absolute;
-        inset: 10px -100vh 0;
+        inset: 0;
         background: url('/comment.svg') repeat;
         background-size: 200px 100px;
         object-fit: contain;
