@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { classes } from '$lib/util/class-helper';
-    import ScreenHeader from './ScreenHeader.svelte';
     import { screenContext } from './screen';
+    import ScreenHeader from './ScreenHeader.svelte';
+
+    import { classes } from '$lib/util/class-helper';
 
     export let title: string;
     export let windowed: boolean = true;
@@ -47,12 +48,15 @@
     .screen {
         max-width: 100%;
         max-height: 100%;
-        animation: menu-in 0.2s cubic-bezier(0, 1.14, 0, 1);
         animation-fill-mode: forwards;
 
         &:not(.windowed) {
             width: 100%;
             height: 100%;
+        }
+
+        &.windowed {
+            animation: menu-in 0.2s cubic-bezier(0, 1.14, 0, 1);
         }
     }
 
@@ -93,18 +97,6 @@
         100% {
             opacity: 1;
             transform: scale(1);
-        }
-    }
-
-    @keyframes menu-out {
-        0% {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        100% {
-            opacity: 0;
-            transform: scale(0);
         }
     }
 </style>

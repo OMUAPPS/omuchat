@@ -24,7 +24,7 @@
     onMount(async () => {
         const api = await import('@tauri-apps/api');
         api.invoke<ShareResult>('share_url').then((res) => {
-            console.log(res);
+            console.log(`share_url: ${res.url}`);
             result.set(res);
         });
     });

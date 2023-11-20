@@ -1,6 +1,7 @@
 <script lang="ts">
     import { App } from '@omuchat/client';
     import { WebsocketConnection } from '@omuchat/client/src/connection';
+
     import FlexRowWrapper from './common/FlexRowWrapper.svelte';
     import OmuChatProvider from './common/omuchat/ClientProvider.svelte';
     import StatusBar from './common/omuchat/StatusBar.svelte';

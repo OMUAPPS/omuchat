@@ -13,13 +13,13 @@
     import Screen from '$lib/common/screen/Screen.svelte';
     import ScreenHeader from '$lib/common/screen/ScreenHeader.svelte';
 
-    const {client, chat} = getClient();
+    const { chat } = getClient();
 
     interface Response {
         channels: ChannelJson[];
     }
 
-    let result: Record<string, { channel: Channel; active: boolean }> | null = null;
+    let result: Map<string, { channel: Channel; active: boolean }> | null = null;
 
     let locked = false;
     let url: string = '';
@@ -28,22 +28,21 @@
         if (locked) return;
         locked = true;
         axios
-            .get<Response>('http://localhost:26423/setup/tree', {
-                params: {
-                    url
-                }
+            .post<Response>('http://localhost:26423/setup/tree', {
+                url
             })
             .then((res) => {
                 console.log(res);
-                result = res.data.channels.reduce(
-                    (acc, info) => {
-                        acc[info.url] = {
-                            channel: new Channel(info),
-                            active: false
-                        };
-                        return acc;
-                    },
-                    {} as Record<string, { channel: Channel; active: boolean }>
+                result = new Map(
+                    res.data.channels.map((info) => {
+                        return [
+                            info.url,
+                            {
+                                channel: new Channel(info),
+                                active: false
+                            }
+                        ];
+                    })
                 );
             })
             .catch((err) => {
@@ -59,9 +58,7 @@
         const channels = Object.values(result)
             .filter((v) => v.active)
             .map((v) => v.channel);
-        channels.forEach((channel) => {
-            chat.channels!.add(channel);
-        });
+        chat.channels!.add(...channels);
         screenContext.pop();
     }
 
@@ -71,39 +68,51 @@
 </script>
 
 <Screen title="setup" windowed={false} noDecorated>
-    <Background />
+    <div class="background">
+        <Background />
+    </div>
     <div class="container">
         <ScreenHeader title="setup" />
-        {#if result}
-            <FlexColWrapper>
-                <div class="channels">
-                    {#each Object.keys(result) as url}
-                        <ChannelEntry
-                            channel={result[url].channel}
-                            active={result[url].active}
-                            callback={() => {
-                                if (!result) return;
-                                result[url].active = !result[url].active;
-                            }}
-                        />
-                    {/each}
-                </div>
+        {#if result !== null}
+            {#if result.size > 0}
+                <FlexColWrapper>
+                    <div class="channels">
+                        {#each result.entries() as [, channel]}
+                            <ChannelEntry
+                                channel={channel.channel}
+                                active={channel.active}
+                                callback={() => {
+                                    if (!channel) return;
+                                    channel.active = !channel.active;
+                                }}
+                            />
+                        {/each}
+                    </div>
+                    <div class="buttons">
+                        <Button
+                            outline
+                            rounded
+                            callback={finish}
+                            disabled={locked || Object.values(result).every((v) => !v.active)}
+                        >
+                            追加する
+                            <i class="ti ti-arrow-right" />
+                        </Button>
+                        <Button rounded callback={reset} disabled={locked}>
+                            <i class="ti ti-arrow-left" />
+                            戻る
+                        </Button>
+                    </div>
+                </FlexColWrapper>
+            {:else}
+                <div>チャンネルが見つかりませんでした…</div>
                 <div class="buttons">
-                    <Button
-                        outline
-                        rounded
-                        callback={finish}
-                        disabled={locked || Object.values(result).every((v) => !v.active)}
-                    >
-                        追加する
-                        <i class="ti ti-arrow-right" />
-                    </Button>
                     <Button rounded callback={reset} disabled={locked}>
                         <i class="ti ti-arrow-left" />
                         戻る
                     </Button>
                 </div>
-            </FlexColWrapper>
+            {/if}
         {:else}
             <div>
                 チャンネルurlを入力するだけ
@@ -124,6 +133,15 @@
 </Screen>
 
 <style lang="scss">
+    .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: var(--color-bg-2);
+    }
+
     .container {
         position: fixed;
         top: 40px;

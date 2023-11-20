@@ -7,6 +7,7 @@
     import PageAssets from './page/assets/PageAssets.svelte';
     import { pages } from './page/page';
     import PageChannels from './page/PageChannels.svelte';
+    import PageDev from './page/PageDev.svelte';
     import PageHome from './page/PageHome.svelte';
     import PageMessages from './page/PageMessages.svelte';
     import { currentPage, devMode } from './settings';
@@ -14,7 +15,6 @@
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
     import { t } from '$lib/i18n/i18n-context';
     import { style } from '$lib/util/class-helper';
-    import PageDev from './page/PageDev.svelte';
 
     pages.set({
         main: {
@@ -138,13 +138,9 @@
         border: none;
         outline: none;
 
-        // transition: 0.05s;
-
         &:hover {
             color: color-mix(in srgb, var(--color-bg-1) 10%, var(--color-1));
             background-color: color-mix(in srgb, var(--color-1) 10%, transparent);
-            outline: 1px solid color-mix(in srgb, var(--color-1) 25%, transparent);
-            outline-offset: -3px;
         }
 
         &.active {

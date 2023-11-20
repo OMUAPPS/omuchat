@@ -7,10 +7,6 @@
     import { ClipboardHelper } from '$lib/util/clipboard-helper';
     import './styles.scss';
 
-    function sleep(ms: number) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-    }
-
     async function loadLocale() {
         const lang = await LOCALES[$language].load();
         const fallbackLang = await LOCALES['ja-JP'].load();
@@ -20,7 +16,6 @@
         } else {
             i18n.set(lang);
         }
-        await sleep(1000);
     }
 
     language.subscribe(loadLocale);

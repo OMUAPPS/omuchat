@@ -124,14 +124,6 @@
         width: 100%;
         height: 40px;
         padding-bottom: 10px;
-
-        * {
-            transition: 0.03s;
-        }
-
-        &:hover > * {
-            transition: 0.05s;
-        }
     }
 
     .left {
