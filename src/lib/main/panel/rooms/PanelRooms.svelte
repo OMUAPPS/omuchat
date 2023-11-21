@@ -45,7 +45,7 @@
 
 <div class="rooms">
     {#if $rooms.size > 0}
-        {#each [...$rooms.values()].filter(filter || (() => true)) as room}
+        {#each [...$rooms.values()].filter(filter || (() => true)) as room (room.id)}
             <RoomEntry {room} />
         {/each}
         {#if [...$rooms.values()].some((room) => !room.online)}
@@ -62,7 +62,7 @@
             </Button>
         {/if}
         {#if showOffline}
-            {#each [...$rooms.values()].filter((room) => !room.online) as room}
+            {#each [...$rooms.values()].filter((room) => !room.online) as room (room.id)}
                 <RoomEntry {room} />
             {/each}
         {/if}

@@ -23,7 +23,7 @@
 </script>
 
 <div class="messages">
-    {#each Object.values($messages).reverse().filter(filter) as message}
+    {#each Object.values($messages).reverse().filter(filter) as message (message.id)}
         <div class="message">
             <MessageRenderer {message} />
         </div>

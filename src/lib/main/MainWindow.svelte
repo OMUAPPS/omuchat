@@ -15,7 +15,7 @@
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
     import { t } from '$lib/i18n/i18n-context';
     import { style } from '$lib/util/class-helper';
-
+    
     pages.set({
         main: {
             name: 'main',
@@ -100,7 +100,7 @@
             <ButtonOpenSettings />
         </FlexColWrapper>
     </div>
-    {#each Object.values($pages) as page}
+    {#each Object.entries($pages) as [key, page] (key)}
         <div
             style={style({ display: $currentPage === page.name ? '' : 'none' })}
             class="page-container"

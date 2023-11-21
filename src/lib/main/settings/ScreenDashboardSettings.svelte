@@ -61,7 +61,7 @@
     </div>
     <div class="content">
         <div class="categories">
-            {#each categories as category}
+            {#each categories as category (category.name)}
                 <button
                     class="category"
                     class:active={category === $currentCategory}
@@ -75,7 +75,7 @@
             {/each}
         </div>
         <div class="settings" class:fit={$currentCategory.name === 'credits'}>
-            {#each $currentCategory.settings as setting}
+            {#each $currentCategory.settings as setting (setting.name)}
                 <PropedComponent component={setting.component()} />
             {/each}
         </div>

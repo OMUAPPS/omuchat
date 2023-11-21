@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { Channel } from '@omuchat/client';
-    import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
     import ChannelEntry from './ChannelEntry.svelte';
@@ -19,15 +18,11 @@
 
     chat.channels!.on({
         onCacheUpdate(cache) {
-            channels.update((chans) => {
-                return [...chans, ...cache.values()];
-            });
+            channels.set([...cache.values()]);
         },
     });
 
-    onMount(async () => {
-        channels.set(Object.values(await chat.channels!.fetch(100)));
-    });
+    chat.channels!.fetch(100);
 
     function openSetupScreen() {
         screenContext.push({
@@ -51,11 +46,11 @@
             追加する
         </ButtonMini>
         <ButtonMini callback={openSetupScreen}>
-            <i class="ti ti-plus" />
             簡単セットアップ
+            <i class="ti ti-external-link" />
         </ButtonMini>
     </div>
-    {#each Object.values($channels).filter(filter) as channel}
+    {#each Object.values($channels).filter(filter) as channel (channel.id)}
         <ChannelEntry {channel} />
     {/each}
 </div>

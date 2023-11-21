@@ -10,7 +10,7 @@
     // test
     export const assets: Writable<Asset[]> = writable<Asset[]>(
         Array.from({ length: 100 }, (_, i) => ({
-            id: i,
+            id: `${i}`,
             name: `アセット ${i}`,
             type: ['app', 'image', 'panel'][i % 3] as AssetType,
             thumbnail: `https://picsum.photos/seed/${i}/200/200`,
@@ -79,11 +79,11 @@
     </div>
     <div class="items">
         {#if $search === ''}
-            {#each $assets as asset}
+            {#each $assets as asset (asset.id)}
                 <AssetItem {asset} />
             {/each}
         {:else}
-            {#each searchAssets($search) as asset}
+            {#each searchAssets($search) as asset (asset.id)}
                 <AssetItem {asset} />
             {/each}
         {/if}

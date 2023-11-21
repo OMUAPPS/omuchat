@@ -46,7 +46,7 @@
 </script>
 
 <div class="container">
-    {#each $panels as panel}
+    {#each $panels as panel (panel.name)}
         <Panel {panel} selected={$selected === panel} />
     {/each}
 </div>

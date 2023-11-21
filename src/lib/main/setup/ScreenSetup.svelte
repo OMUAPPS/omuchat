@@ -54,8 +54,8 @@
     }
 
     function finish() {
-        if (!result) return;
-        const channels = Object.values(result)
+        if (!result?.size) return;
+        const channels = [...result.values()]
             .filter((v) => v.active)
             .map((v) => v.channel);
         chat.channels!.add(...channels);
@@ -77,7 +77,7 @@
             {#if result.size > 0}
                 <FlexColWrapper>
                     <div class="channels">
-                        {#each result.entries() as [, channel]}
+                        {#each result.entries() as [url, channel] (url)}
                             <ChannelEntry
                                 channel={channel.channel}
                                 active={channel.active}

@@ -1,6 +1,7 @@
 export type AssetType = 'app' | 'panel' | 'image';
 
 export interface Asset {
+    id: string;
     name: string;
     description: string;
     type: AssetType;
