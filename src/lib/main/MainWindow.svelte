@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { writable } from 'svelte/store';
+
     import Component from '../common/component/PropedComponent.svelte';
     import Tooltip from '../common/tooltip/Tooltip.svelte';
 
@@ -77,6 +79,8 @@
     } else {
         delete $pages.dev;
     }
+
+    let cachedPages = writable<string[]>([$currentPage]);
 </script>
 
 <div class="wrapper">
@@ -86,6 +90,9 @@
                 <button
                     class="page"
                     on:click={() => {
+                        if (!$cachedPages.includes(page.name)) {
+                            $cachedPages = [...$cachedPages, page.name];
+                        }
                         currentPage.set(page.name);
                     }}
                     class:active={$currentPage === page.name}
@@ -105,7 +112,9 @@
             style={style({ display: $currentPage === page.name ? '' : 'none' })}
             class="page-container"
         >
-            <Component component={page.component()} />
+            {#if $cachedPages.includes(page.name)}
+                <Component component={page.component()} />
+            {/if}
         </div>
     {/each}
 </div>
