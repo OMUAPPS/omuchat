@@ -1,0 +1,120 @@
+{
+    "general": {
+        "yes": "はい",
+        "no": "いいえ",
+        "ok": "OK",
+        "cancel": "きゃんせる",
+        "close": "とじる",
+        "save": "ほぞん",
+        "reset": "りせっと",
+        "copy": "こぴー",
+        "copied": "こぴーしました",
+        "error": "えらー",
+        "warning": "けいこく",
+        "info": "じょうほう",
+        "success": "せいこう",
+        "try _ again": "さい しこう",
+        "retry": "さい しこう",
+        "in _ progress": "しんこうちゅう ...",
+        "choose _ file": "ふぁいる を せんたく",
+        "choose _ folder": "ふぉるだ を せんたく",
+        "loading": "よみこみちゅう ...",
+        "search": "けんさく",
+        "searching": "けんさくちゅう ...",
+        "no _ results": "けっか が ありません",
+        "show _ more": "もっと みる",
+        "show _ less": "かくす",
+        "select": "せんたく",
+        "select _ all": "すべて せんたく"
+    },
+    "status": {
+        "connecting": "せつぞくちゅう ...",
+        "reconnecting": "さい せつぞくちゅう ...",
+        "connected": "せつぞくずみ",
+        "disconnected": "せつだんずみ",
+        "connect _ attempt _ count": "せつぞく しこう かいすう : { count }"
+    },
+    "titlebar": {
+        "close": "とじる",
+        "minimize": "さいしょうか",
+        "maximize": "さいだいか"
+    },
+    "pages": {
+        "main": {
+            "name": "めいん",
+            "icon": "ti ti - home"
+        },
+        "message": {
+            "name": "めっせーじ",
+            "icon": "ti ti - message"
+        },
+        "channel": {
+            "name": "ちゃんねる",
+            "icon": "ti ti - plug"
+        },
+        "asset": {
+            "name": "あせっと",
+            "icon": "ti ti - package"
+        },
+        "app": {
+            "name": "あぷり",
+            "icon": "ti ti - player - play"
+        },
+        "dev": {
+            "name": "かいはつ",
+            "icon": "ti ti - bug"
+        },
+        "settings": "せってい",
+        "remote _ connect": "りもーと せつぞく"
+    },
+    "screen": {
+        "settings": {
+            "name": "せってい",
+            "icon": "ti ti - settings",
+            "description": "せってい を へんこう できます。"
+        },
+        "remote _ connect": {
+            "name": "りもーと せつぞく",
+            "icon": "ti ti - qrcode",
+            "description": "りもーと せつぞく を かいしします。"
+        },
+        "setup": {
+            "name": "せっとあっぷ",
+            "icon": "ti ti - settings",
+            "description": "せっとあっぷ を かいしします。"
+        },
+        "add _ channel": {
+            "name": "ちゃんねる を ついか",
+            "icon": "ti ti - plus",
+            "description": "ちゃんねる を ついかします。"
+        }
+    },
+    "settings": {
+        "category": {
+            "general": {
+                "name": "いっぱん",
+                "description": "いっぱんてき な せってい を へんこう できます。"
+            },
+            "language": {
+                "name": "げんご",
+                "description": "げんご を へんこう できます。"
+            },
+            "appearance": {
+                "name": "がいかん",
+                "description": "がいかん を へんこう できます。"
+            },
+            "advanced": {
+                "name": "しょうさい",
+                "description": "しょうさいな せってい を へんこう できます。"
+            },
+            "credits": {
+                "name": "くれじっと",
+                "description": "くれじっと を ひょうじします。"
+            }
+        },
+        "setting": {
+            "devMode": "かいはつしゃ もーど",
+            "language": "げんご"
+        }
+    }
+}

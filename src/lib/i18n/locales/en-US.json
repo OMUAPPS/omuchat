@@ -32,7 +32,7 @@
         "reconnecting": "Reconnecting...",
         "connected": "Connected",
         "disconnected": "Disconnected",
-        "connect_attempt_count": "Connection Attempt Count: {count}"
+        "connect_attempt_count": "Connection Attempts: {count}"
     },
     "titlebar": {
         "close": "Close",
@@ -40,7 +40,30 @@
         "maximize": "Maximize"
     },
     "pages": {
-        "home": "Home",
+        "main": {
+            "name": "Main",
+            "icon": "ti ti-home"
+        },
+        "message": {
+            "name": "Message",
+            "icon": "ti ti-message"
+        },
+        "channel": {
+            "name": "Channel",
+            "icon": "ti ti-plug"
+        },
+        "asset": {
+            "name": "Asset",
+            "icon": "ti ti-package"
+        },
+        "app": {
+            "name": "App",
+            "icon": "ti ti-player-play"
+        },
+        "dev": {
+            "name": "Development",
+            "icon": "ti ti-bug"
+        },
         "settings": "Settings",
         "remote_connect": "Remote Connect"
     },
@@ -48,31 +71,45 @@
         "settings": {
             "name": "Settings",
             "icon": "ti ti-settings",
-            "description": "You can change settings here."
+            "description": "Modify settings."
         },
         "remote_connect": {
             "name": "Remote Connect",
             "icon": "ti ti-qrcode",
-            "description": "Start a remote connection."
+            "description": "Initiate remote connection."
+        },
+        "setup": {
+            "name": "Setup",
+            "icon": "ti ti-settings",
+            "description": "Start setup."
+        },
+        "add_channel": {
+            "name": "Add Channel",
+            "icon": "ti ti-plus",
+            "description": "Add a channel."
         }
     },
     "settings": {
         "category": {
             "general": {
                 "name": "General",
-                "description": "Change general settings."
+                "description": "Modify general settings."
             },
             "language": {
                 "name": "Language",
-                "description": "Change the language."
+                "description": "Modify language settings."
             },
             "appearance": {
                 "name": "Appearance",
-                "description": "Change the appearance."
+                "description": "Modify appearance settings."
             },
             "advanced": {
                 "name": "Advanced",
-                "description": "Change advanced settings."
+                "description": "Modify advanced settings."
+            },
+            "credits": {
+                "name": "Credits",
+                "description": "Display credits."
             }
         },
         "setting": {

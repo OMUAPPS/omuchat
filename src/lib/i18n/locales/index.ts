@@ -11,12 +11,24 @@ async function loadI18n(path: string): Promise<I18n> {
 }
 
 export const LOCALES = {
+    'ja-JP': {
+        name: '日本語',
+        load: () => loadI18n('./ja-JP.json')
+    },
+    'ja-JP-hiragana': {
+        name: 'ひらがな',
+        load: () => loadI18n('./ja-JP-hiragana.json')
+    },
     'en-US': {
         name: 'English (US)',
         load: () => loadI18n('./en-US.json')
     },
-    'ja-JP': {
-        name: '日本語',
-        load: () => loadI18n('./ja-JP.json')
-    }
+    'ar-EG': {
+        name: 'العربية',
+        load: () => loadI18n('./ar-EG.json')
+    },
+    'zh-CN': {
+        name: '简体中文',
+        load: () => loadI18n('./zh-CN.json')
+    },
 };

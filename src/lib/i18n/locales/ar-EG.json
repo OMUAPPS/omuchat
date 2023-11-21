@@ -1,0 +1,120 @@
+{
+    "general": {
+        "yes": "نعم",
+        "no": "لا",
+        "ok": "حسنا",
+        "cancel": "إلغاء",
+        "close": "إغلاق",
+        "save": "حفظ",
+        "reset": "إعادة تعيين",
+        "copy": "نسخ",
+        "copied": "تم النسخ",
+        "error": "خطأ",
+        "warning": "تحذير",
+        "info": "معلومات",
+        "success": "نجاح",
+        "try_again": "حاول مرة أخرى",
+        "retry": "أعد المحاولة",
+        "in_progress": "قيد التقدم...",
+        "choose_file": "اختر ملف",
+        "choose_folder": "اختر مجلد",
+        "loading": "جارٍ التحميل...",
+        "search": "بحث",
+        "searching": "جارٍ البحث...",
+        "no_results": "لا توجد نتائج",
+        "show_more": "عرض المزيد",
+        "show_less": "إظهار أقل",
+        "select": "اختيار",
+        "select_all": "تحديد الكل"
+    },
+    "status": {
+        "connecting": "جارِ الاتصال...",
+        "reconnecting": "إعادة الاتصال...",
+        "connected": "متصل",
+        "disconnected": "منفصل",
+        "connect_attempt_count": "عدد محاولات الاتصال: {count}"
+    },
+    "titlebar": {
+        "close": "إغلاق",
+        "minimize": "تصغير",
+        "maximize": "تكبير"
+    },
+    "pages": {
+        "main": {
+            "name": "الرئيسية",
+            "icon": "ti ti-home"
+        },
+        "message": {
+            "name": "الرسائل",
+            "icon": "ti ti-message"
+        },
+        "channel": {
+            "name": "القنوات",
+            "icon": "ti ti-plug"
+        },
+        "asset": {
+            "name": "الأصول",
+            "icon": "ti ti-package"
+        },
+        "app": {
+            "name": "التطبيق",
+            "icon": "ti ti-player-play"
+        },
+        "dev": {
+            "name": "التطوير",
+            "icon": "ti ti-bug"
+        },
+        "settings": "الإعدادات",
+        "remote_connect": "الاتصال عن بعد"
+    },
+    "screen": {
+        "settings": {
+            "name": "الإعدادات",
+            "icon": "ti ti-settings",
+            "description": "يمكنك تغيير الإعدادات هنا."
+        },
+        "remote_connect": {
+            "name": "الاتصال عن بعد",
+            "icon": "ti ti-qrcode",
+            "description": "ابدأ الاتصال عن بعد هنا."
+        },
+        "setup": {
+            "name": "الإعداد",
+            "icon": "ti ti-settings",
+            "description": "ابدأ الإعداد هنا."
+        },
+        "add_channel": {
+            "name": "إضافة قناة",
+            "icon": "ti ti-plus",
+            "description": "أضف قناة جديدة هنا."
+        }
+    },
+    "settings": {
+        "category": {
+            "general": {
+                "name": "عام",
+                "description": "يمكنك تغيير الإعدادات العامة هنا."
+            },
+            "language": {
+                "name": "اللغة",
+                "description": "يمكنك تغيير اللغة هنا."
+            },
+            "appearance": {
+                "name": "المظهر",
+                "description": "يمكنك تغيير المظهر هنا."
+            },
+            "advanced": {
+                "name": "متقدم",
+                "description": "يمكنك تغيير الإعدادات المتقدمة هنا."
+            },
+            "credits": {
+                "name": "الاعتمادات",
+                "description": "عرض الاعتمادات هنا."
+            }
+        },
+        "setting": {
+            "devMode": "وضع المطور",
+            "language": "اللغة"
+        }
+    }
+}

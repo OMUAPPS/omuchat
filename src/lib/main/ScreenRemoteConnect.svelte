@@ -10,6 +10,7 @@
     import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
     import { screenContext } from '$lib/common/screen/screen';
+    import { t } from '$lib/i18n/i18n-context';
     import { ClipboardHelper } from '$lib/util/clipboard-helper';
 
     const result = writable<ShareResult | null>(null);
@@ -46,12 +47,12 @@
     <div class="container">
         {#if $result}
             <button on:click={copyQrToClipboard} class="qr">
-                <Tooltip>コピー</Tooltip>
+                <Tooltip>{$t('general.copy')}</Tooltip>
                 <QrCode value={$result.url} size={150} bind:qrImage />
             </button>
             このQRコードをスキャンしてください
             <FlexRowWrapper gap between>
-                <Tooltip>コピー</Tooltip>
+                <Tooltip>{$t('general.copy')}</Tooltip>
                 <Button callback={copyUrlToClipboard}>
                     {$result.host}:{$result.port}/
                 </Button>
@@ -60,7 +61,7 @@
         <div class="close">
             <Button callback={close} outline>
                 <JustifyBaselineWrapper>
-                    閉じる
+                    {$t('general.close')}
                     <i class="ti ti-x" />
                 </JustifyBaselineWrapper>
             </Button>
