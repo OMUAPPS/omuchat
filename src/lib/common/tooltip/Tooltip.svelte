@@ -3,7 +3,9 @@
 
     import { style } from '$lib/util/class-helper';
 
-    let element: HTMLDivElement;
+    export let noBackground = false;
+
+    let element: HTMLElement;
     let target: HTMLElement;
     let tooltip: HTMLElement;
     let show = false;
@@ -69,10 +71,11 @@
     });
 </script>
 
-<div class="wrapper" bind:this={element}>
+<span class="wrapper" bind:this={element}>
     {#if show}
         <div
             class="tooltip"
+            class:background={!noBackground}
             style={style({ top: `${tooltipPos.y}px`, left: `${tooltipPos.x}px` })}
             bind:this={tooltip}
         >
@@ -86,21 +89,24 @@
             })}
         />
     {/if}
-</div>
+</span>
 
 <style lang="scss">
     .tooltip {
         position: fixed;
         z-index: 200;
-        padding: 5px 10px;
         font-size: 12px;
         font-weight: 600;
         color: #fff;
         white-space: nowrap;
         pointer-events: none;
         user-select: none;
-        background: #000;
         border-radius: 0;
+
+        &.background {
+            padding: 5px 10px;
+            background: #000;
+        }
     }
 
     .pointer {
