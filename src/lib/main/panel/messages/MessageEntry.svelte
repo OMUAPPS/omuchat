@@ -58,11 +58,13 @@
 
     .author-name {
         font-size: 0.8rem;
+        user-select: text;
         opacity: 0.5;
     }
 
     .message-content {
         font-size: 1rem;
+        user-select: text;
 
         & > img {
             max-height: 30px;
