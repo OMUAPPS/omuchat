@@ -23,7 +23,7 @@
 </script>
 
 <div class="messages">
-    {#each Object.values($messages).filter(filter) as message}
+    {#each Object.values($messages).reverse().filter(filter) as message}
         <div class="message">
             <MessageRenderer {message} />
         </div>
@@ -33,7 +33,9 @@
 <style lang="scss">
     .messages {
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: column;
+        height: 100%;
+        overflow: auto;
     }
 
     .message {
