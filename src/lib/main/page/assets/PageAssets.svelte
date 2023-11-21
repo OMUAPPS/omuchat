@@ -60,7 +60,7 @@
             .map(({ asset }) => asset);
     }
 
-    const search = writable('');
+    let search = '';
 </script>
 
 <div class="container">
@@ -71,19 +71,19 @@
         </div>
         <div>
             {#if $assets.length > 10000}
-                <InputTextLazy placeholder="検索" bind:value={$search} />
+                <InputTextLazy placeholder="検索" bind:value={search} />
             {:else}
-                <InputText placeholder="検索" bind:value={$search} />
+                <InputText placeholder="検索" bind:value={search} />
             {/if}
         </div>
     </div>
     <div class="items">
-        {#if $search === ''}
+        {#if search === ''}
             {#each $assets as asset (asset.id)}
                 <AssetItem {asset} />
             {/each}
         {:else}
-            {#each searchAssets($search) as asset (asset.id)}
+            {#each searchAssets(search) as asset (asset.id)}
                 <AssetItem {asset} />
             {/each}
         {/if}

@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { Channel } from '@omuchat/client';
-    import { writable } from 'svelte/store';
-
+    
     import ChannelEntry from './ChannelEntry.svelte';
     import ScreenAddChannel from './ScreenAddChannel.svelte';
 
@@ -14,11 +13,11 @@
 
     const { chat } = getClient();
 
-    const channels = writable([...chat.channels!.cache.values()]);
+    let channels = [...chat.channels!.cache.values()];
 
     chat.channels!.on({
         onCacheUpdate(cache) {
-            channels.set([...cache.values()]);
+            channels = [...cache.values()];
         },
     });
 
@@ -50,7 +49,7 @@
             <i class="ti ti-external-link" />
         </ButtonMini>
     </div>
-    {#each Object.values($channels).filter(filter) as channel (channel.url)}
+    {#each Object.values(channels).filter(filter) as channel (channel.url)}
         <ChannelEntry {channel} />
     {/each}
 </div>

@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { Room } from '@omuchat/client';
     import { onMount } from 'svelte';
-    import { writable } from 'svelte/store';
 
     import RoomEntry from './RoomEntry.svelte';
 
@@ -14,11 +13,11 @@
     export let filter: (message: Room) => boolean = () => true;
 
     const { chat } = getClient();
-    const rooms = writable(chat.rooms!.cache);
+    let rooms = chat.rooms!.cache;
     let showOffline = false;
 
     function update(newRooms: Map<string, Room>) {
-        rooms.set(newRooms);
+        rooms = newRooms;
     }
 
     chat.rooms!.on({
@@ -44,11 +43,11 @@
 </script>
 
 <div class="rooms">
-    {#if $rooms.size > 0}
-        {#each [...$rooms.values()].filter(filter || (() => true)) as room (room.id)}
+    {#if rooms.size > 0}
+        {#each [...rooms.values()].filter(filter || (() => true)) as room (room.id)}
             <RoomEntry {room} />
         {/each}
-        {#if [...$rooms.values()].some((room) => !room.online)}
+        {#if [...rooms.values()].some((room) => !room.online)}
             <Button callback={toggleOffline}>
                 <FlexRowWrapper widthFull reverse>
                     {#if showOffline}
@@ -62,7 +61,7 @@
             </Button>
         {/if}
         {#if showOffline}
-            {#each [...$rooms.values()].filter((room) => !room.online) as room (room.id)}
+            {#each [...rooms.values()].filter((room) => !room.online) as room (room.id)}
                 <RoomEntry {room} />
             {/each}
         {/if}
