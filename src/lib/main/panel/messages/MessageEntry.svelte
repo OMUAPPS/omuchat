@@ -3,6 +3,7 @@
 
     import MessageComponentRenderer from './MessageContent.svelte';
 
+    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     export let message: Message;
 </script>
 
@@ -10,6 +11,9 @@
     <div class="left">
         {#if message.author && message.author.avatar_url}
             <img src={message.author.avatar_url} alt="avatar" class="author-avatar" />
+            <Tooltip noBackground>
+                <img src={message.author.avatar_url} alt="avatar" class="author-avatar-preview" />
+            </Tooltip>
         {/if}
     </div>
     <div class="right">
@@ -34,15 +38,22 @@
 
     .left {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         gap: 5px;
         align-items: center;
+        margin-top: 4px;
     }
 
     .author-avatar {
         width: 32px;
         height: 32px;
         border-radius: 50%;
+    }
+
+    .author-avatar-preview {
+        width: 128px;
+        height: 128px;
+        outline: 2px solid #000;
     }
 
     .author-name {

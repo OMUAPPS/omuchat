@@ -4,12 +4,24 @@
 
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import Checkbox from '$lib/common/input/Checkbox.svelte';
+    import { getClient } from '$lib/common/omuchat/client';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
+    const { chat } = getClient();
     export let channel: Channel;
 
-    const active = writable(false);
+    let active = writable(channel.active);
+    active.subscribe((value) => {
+        if (value === channel.active)
+            return;
+        channel.active = value;
+        chat.channels!.set(channel);
+    });
+
+    function remove() {
+        chat.channels!.remove(channel);
+    }
 </script>
 
 <div class="container">
@@ -29,7 +41,7 @@
         </div>
     </div>
     <div class="right">
-        <ButtonMini>
+        <ButtonMini callback={remove}>
             <Tooltip>
                 <div class="description">チャンネルを削除します。</div>
             </Tooltip>
@@ -49,7 +61,7 @@
                 <i class="ti ti-external-link" />
             </ButtonMini>
         </a>
-        <Checkbox value={active} />
+        <Checkbox bind:value={$active} />
     </div>
 </div>
 

@@ -50,7 +50,7 @@
             <i class="ti ti-external-link" />
         </ButtonMini>
     </div>
-    {#each Object.values($channels).filter(filter) as channel (channel.id)}
+    {#each Object.values($channels).filter(filter) as channel (channel.url)}
         <ChannelEntry {channel} />
     {/each}
 </div>

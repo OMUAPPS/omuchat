@@ -93,7 +93,7 @@
                             outline
                             rounded
                             callback={finish}
-                            disabled={locked || Object.values(result).every((v) => !v.active)}
+                            disabled={locked || Object.values(result).some((v) => !v.active)}
                         >
                             追加する
                             <i class="ti ti-arrow-right" />

@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { RoomInfo } from '@omuchat/client';
+    import type { Room } from '@omuchat/client';
 
     import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { ClipboardHelper } from '$lib/util/clipboard-helper';
 
-    export let room: RoomInfo;
+    export let room: Room;
 
     function open() {
         window.open(room.url, '_blank');
@@ -20,7 +20,12 @@
 
 <div class="room">
     <div class="top">
-        <img src={room.image_url} alt="thumbnail" class="room-thumbnail" />
+        <div>
+            <img src={room.image_url} alt="thumbnail" class="room-thumbnail">
+            <Tooltip noBackground>
+                <img src={room.image_url} alt="thumbnail" class="room-thumbnail-preview">
+            </Tooltip>
+        </div>
         <div class="buttons">
             <FlexRowWrapper widthFull reverse>
                 <ButtonMini callback={open}>
@@ -92,7 +97,14 @@
     .room-thumbnail {
         width: 100px;
         min-width: 100px;
+        min-height: 56px;
         object-fit: contain;
+    }
+
+    .room-thumbnail-preview {
+        width: 300px;
+        object-fit: contain;
+        outline: 2px solid #000;
     }
 
     .room-name {

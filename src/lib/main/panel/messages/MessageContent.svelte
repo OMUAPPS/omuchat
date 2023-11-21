@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { ImageContent, TextContent, type Content } from "@omuchat/client";
+import { ImageContent, TextContent, type Content } from "@omuchat/client";
 
-    export let component: Content;
+    
+export let component: Content;
 </script>
 
 {#if component instanceof TextContent}
