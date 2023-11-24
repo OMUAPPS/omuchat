@@ -2,10 +2,11 @@
     export let callback = () => {};
     export let outline = false;
     export let rounded = false;
+    export let filled = false;
     export let disabled = false;
 </script>
 
-<button class="button" type="button" on:click={callback} class:outline class:rounded {disabled}>
+<button class="button" type="button" on:click={callback} class:outline class:rounded class:filled {disabled}>
     <slot />
 </button>
 
@@ -45,5 +46,9 @@
 
     .rounded {
         border-radius: 6px;
+    }
+
+    .filled {
+        background: var(--color-bg-2);
     }
 </style>

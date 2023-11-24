@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Channel, type ChannelJson } from '@omuchat/client';
     import axios from 'axios';
+    import { onMount } from 'svelte';
 
     import ChannelEntry from './ChannelEntry.svelte';
 
@@ -12,6 +13,7 @@
     import { screenContext } from '$lib/common/screen/screen';
     import Screen from '$lib/common/screen/Screen.svelte';
     import ScreenHeader from '$lib/common/screen/ScreenHeader.svelte';
+    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
     const { chat } = getClient();
 
@@ -65,6 +67,22 @@
     function reset() {
         result = null;
     }
+
+    let tooltipHint: string;
+    let hints = ['URL', '動画', '配信', 'プロフィール'];
+    
+    function updateHint() {
+        tooltipHint = hints[hints.indexOf(tooltipHint) + 1] || hints[0];
+    }
+
+    onMount(() => {
+        updateHint();
+        const handle = setInterval(updateHint, 1400);
+
+        return () => {
+            clearInterval(handle);
+        };
+    });
 </script>
 
 <Screen title="setup" windowed={false} noDecorated>
@@ -115,7 +133,15 @@
             {/if}
         {:else}
             <div>
-                チャンネルurlを入力するだけ
+                <Tooltip>
+                    <div class="tooltip-container">
+                        <small>あなたの</small>
+                        <div class="tooltip">{tooltipHint}</div>
+                        <small>
+                            を入力！
+                        </small>
+                    </div>
+                </Tooltip>
                 <InputText placeholder="url..." bind:value={url} />
             </div>
             <div class="buttons">
@@ -144,21 +170,57 @@
 
     .container {
         position: fixed;
-        top: 40px;
-        bottom: 0;
-        left: 0;
+        top: 20%;
+        left: 10%;
         display: flex;
         flex-direction: column;
-        gap: 60px;
-        align-items: center;
+        gap: 20px;
+        align-items: flex-start;
         justify-content: flex-start;
-        width: 20%;
+        width: 300px;
         min-width: 300px;
-        padding-top: 60px;
-        padding-right: 40px;
-        padding-left: 40px;
-        background: var(--color-bg-2);
+        height: 60%;
+        padding: 40px;
+        background: #fff;
         outline: 2px solid var(--color-1);
+        box-shadow: 0 8px 0 2px var(--color-2);
+    }
+
+    small {
+        font-weight: 500;
+        opacity: 0.9;
+    }
+
+    .tooltip-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 20px;
+    }
+
+    .tooltip {
+        width: 80px;
+        font-weight: bold;
+        animation: blink 1.4s cubic-bezier(0.43, -0.12, 0.45, 1.13) infinite;
+        animation-delay: -0.15s;
+    }
+
+    @keyframes blink {
+        0% {
+            transform: translateY(1px);
+        }
+        10% {
+            transform: translateY(-1px);
+        }
+
+
+        90% {
+            transform: translateY(-1px);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
     }
 
     .channels {
@@ -178,6 +240,6 @@
         flex-direction: row-reverse;
         justify-content: space-between;
         width: 100%;
-        margin-top: 60px;
+        margin-top: auto;
     }
 </style>

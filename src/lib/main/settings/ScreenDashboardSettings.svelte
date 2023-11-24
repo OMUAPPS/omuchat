@@ -52,7 +52,7 @@
         <div class="description">{$t('screen.settings.description')}</div>
     </div>
     <div class="close-button">
-        <Button callback={screenContext.pop} outline rounded>
+        <Button callback={screenContext.pop} outline rounded filled>
             <JustifyBaselineWrapper>
                 {$t('general.close')}
                 <i class="ti ti-x" />
@@ -67,7 +67,10 @@
                     class:active={category === $currentCategory}
                     on:click={() => currentCategory.set(category)}
                 >
-                    {$t(`settings.category.${category.name}.name`)}
+                    <div class="name">
+                        <i class={`ti ti-${$t(`settings.category.${category.name}.icon`)}`} />
+                        {$t(`settings.category.${category.name}.name`)}
+                    </div>
                     <div class="description">
                         {$t(`settings.category.${category.name}.description`)}
                     </div>
@@ -103,33 +106,38 @@
         gap: 20px;
         width: 100%;
         height: 100%;
-        padding: 20px;
-    }
-
-    .categories {
-        width: 250px;
-        height: calc(100% - 60px);
-        border-right: 1px solid rgb(0 0 0 / 10%);
     }
 
     .settings {
         width: 300px;
-        height: 100%;
+        height: calc(100% - 60px);
+        padding-top: 40px;
+        padding-bottom: 40px;
+        overflow-y: auto;
 
         &.fit {
-            width: calc(100% - 250px);
+            width: calc(100% - 320px);
         }
     }
 
+    .categories {
+        width: 300px;
+        height: 100%;
+        padding-top: 40px;
+        background: var(--color-bg-1);
+        border-right: 1px solid rgb(0 0 0 / 10%);
+    }
+
     .category {
+        position: relative;
         display: flex;
-        flex-direction: row;
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
         justify-content: space-between;
         width: 100%;
-        height: 40px;
-        padding: 0;
-        padding-right: 10px;
+        height: 60px;
+        padding: 10px;
+        padding-left: 40px;
         font-size: 16px;
         color: #666;
         appearance: none;
@@ -138,14 +146,39 @@
         transition: 0.03s;
 
         &:hover {
-            color: var(--color-1);
+            background: var(--color-bg-2);
         }
 
         &.active {
-            padding-left: 10px;
+            z-index: 1;
+            padding-left: 50px;
             font-weight: bold;
             color: var(--color-1);
             background: var(--color-bg-2);
+            outline: 2px solid var(--color-1);
+
+            &::after {
+                position: absolute;
+                top: 50%;
+                right: 0;
+                content: '';
+                border: 8px solid transparent;
+                border-left-color: var(--color-1);
+                transform: translate(100%, -50%);
+            }
+        }
+
+        .name {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+
+            i {
+                font-size: 20px;
+            }
         }
 
         .description {
