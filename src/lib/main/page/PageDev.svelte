@@ -2,6 +2,7 @@
     import { Message, TextContent } from "@omuchat/client";
 
     import { getClient } from "$lib/common/omuchat/client";
+    import { i18n } from "$lib/i18n/i18n-context";
 
     const { chat } = getClient();
     let text = "";
@@ -31,13 +32,18 @@
             </button>
         </div>
     </div>
+    <div class="section">
+        <h3>Language</h3>
+        <div>
+            {$i18n?.locale}
+        </div>
+    </div>
 </div>
 
 <style lang="scss">
     .container {
         display: flex;
         flex-direction: column;
-        gap: 10px;
         width: 100%;
         height: 100%;
         background: var(--color-bg-1);
