@@ -1,61 +1,54 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use local_ip_address::local_ip;
-use tauri::{utils::config::AppUrl, Manager, WindowUrl};
-use window_shadows::set_shadow;
+use anyhow::Result;
+use directories::ProjectDirs;
+use once_cell::sync::Lazy;
+use reqwest::Client;
+use tokio::fs;
+use util::download_file;
 
-#[derive(serde::Serialize)]
-struct ServerState {
-    host: String,
-    port: u16,
+pub mod app;
+
+mod util;
+
+static LAUNCHER_DIRECTORY: Lazy<ProjectDirs> =
+    Lazy::new(|| match ProjectDirs::from("cc", "OMUCHAT", "Dashboard") {
+        Some(proj_dirs) => proj_dirs,
+        None => panic!("Failed to get project directories!"),
+    });
+
+static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"),);
+
+/// HTTP Client with launcher agent
+static HTTP_CLIENT: Lazy<Client> = Lazy::new(|| {
+    let client = reqwest::ClientBuilder::new()
+        .user_agent(APP_USER_AGENT)
+        .build()
+        .unwrap_or_else(|_| Client::new());
+
+    client
+});
+
+async fn setup() -> Result<()> {
+    let data = LAUNCHER_DIRECTORY.data_dir();
+    let runtimes_folder = data.join("runtimes");
+    if !runtimes_folder.exists() {
+        fs::create_dir_all(&runtimes_folder).await?;
+    }
+
+    // test download: write get checkip.amazonaws.com to runtime folder
+    let test_file = runtimes_folder.join("test.txt");
+    download_file("https://checkip.amazonaws.com", &test_file).await?;
+
+    Ok(())
 }
 
-#[derive(serde::Serialize)]
-struct ShareResponse {
-    url: String,
-    host: String,
-    port: u16,
-}
+pub fn main() -> Result<()> {
+    println!("{}", LAUNCHER_DIRECTORY.data_dir().display());
+    tauri::async_runtime::block_on(setup())?;
 
-#[tauri::command]
-async fn share_url(state: tauri::State<'_, ServerState>) -> Result<ShareResponse, String> {
-    Ok(ShareResponse {
-        url: format!("http://{}:{}", state.host, state.port),
-        host: state.host.clone(),
-        port: state.port,
-    })
-}
+    app::gui::gui_main();
 
-fn main() {
-    let mut context = tauri::generate_context!();
-
-    let host = local_ip().expect("failed to get local IP");
-    // cfg!(dev) to dev port
-    let port = if cfg!(dev) {
-        5173u16
-    } else {
-        portpicker::pick_unused_port().expect("failed to find unused port")
-    };
-
-    let url = format!("http://{}:{}", host, port).parse().unwrap();
-    let window_url = WindowUrl::External(url);
-    // rewrite the config so the IPC is enabled on this URL
-    context.config_mut().build.dist_dir = AppUrl::Url(window_url.clone());
-    context.config_mut().build.dev_path = AppUrl::Url(window_url.clone());
-
-    tauri::Builder::default()
-        .manage(ServerState {
-            host: host.to_string(),
-            port,
-        })
-        .plugin(omuchat_tauri_plugin_server::Builder::new(port).build())
-        .setup(move |app| {
-            let window = app.get_window("main").unwrap();
-            set_shadow(&window, true).expect("Unsupported platform!");
-            Ok(())
-        })
-        .invoke_handler(tauri::generate_handler![share_url])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+    Ok(())
 }
