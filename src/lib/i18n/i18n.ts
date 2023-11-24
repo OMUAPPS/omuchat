@@ -55,7 +55,8 @@ export function createI18nUnion(i18ns: I18n[]): I18n {
             return key;
         },
         get locale(): string {
-            return i18ns.map((i18n) => i18n.locale).join(',');
+            const locales = i18ns.map((i18n) => i18n.locale).join(', ');
+            return `union(${locales})`
         }
     };
 }

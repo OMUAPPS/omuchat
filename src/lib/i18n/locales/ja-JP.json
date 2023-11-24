@@ -25,7 +25,8 @@
         "show_more": "もっと見る",
         "show_less": "隠す",
         "select": "選択",
-        "select_all": "すべて選択"
+        "select_all": "すべて選択",
+        "settings": "設定"
     },
     "status": {
         "connecting": "接続中...",

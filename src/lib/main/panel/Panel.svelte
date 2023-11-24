@@ -7,6 +7,7 @@
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import { screenContext } from '$lib/common/screen/screen';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
+    import { t } from '$lib/i18n/i18n-context';
     import { style } from '$lib/util/class-helper';
 
     export let panel: PanelEntry;
@@ -79,7 +80,7 @@
             </button>
             <div class="right">
                 <ButtonMini callback={openSettings}>
-                    <Tooltip>設定</Tooltip>
+                    <Tooltip>{$t("general.settings")}</Tooltip>
                     <i class="ti ti-settings" />
                 </ButtonMini>
             </div>

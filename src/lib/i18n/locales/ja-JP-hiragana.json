@@ -3,117 +3,117 @@
         "yes": "はい",
         "no": "いいえ",
         "ok": "OK",
-        "cancel": "きゃんせる",
+        "cancel": "キャンセル",
         "close": "とじる",
         "save": "ほぞん",
-        "reset": "りせっと",
-        "copy": "こぴー",
-        "copied": "こぴーしました",
-        "error": "えらー",
+        "reset": "リセット",
+        "copy": "コピー",
+        "copied": "コピーしました",
+        "error": "エラー",
         "warning": "けいこく",
         "info": "じょうほう",
         "success": "せいこう",
-        "try _ again": "さい しこう",
-        "retry": "さい しこう",
-        "in _ progress": "しんこうちゅう ...",
-        "choose _ file": "ふぁいる を せんたく",
-        "choose _ folder": "ふぉるだ を せんたく",
-        "loading": "よみこみちゅう ...",
+        "try_again": "さいしょく",
+        "retry": "さいしょく",
+        "in_progress": "しんこうちゅう...",
+        "choose_file": "ファイルをえらぶ",
+        "choose_folder": "フォルダをえらぶ",
+        "loading": "よみこみちゅう...",
         "search": "けんさく",
-        "searching": "けんさくちゅう ...",
-        "no _ results": "けっか が ありません",
-        "show _ more": "もっと みる",
-        "show _ less": "かくす",
+        "searching": "けんさくちゅう...",
+        "no_results": "けっかがありません",
+        "show_more": "もっとみる",
+        "show_less": "かくす",
         "select": "せんたく",
-        "select _ all": "すべて せんたく"
+        "select_all": "すべてせんたく"
     },
     "status": {
-        "connecting": "せつぞくちゅう ...",
-        "reconnecting": "さい せつぞくちゅう ...",
+        "connecting": "せつぞくちゅう...",
+        "reconnecting": "さいせつぞくちゅう...",
         "connected": "せつぞくずみ",
-        "disconnected": "せつだんずみ",
-        "connect _ attempt _ count": "せつぞく しこう かいすう : { count }"
+        "disconnected": "せつぞくきれ",
+        "connect_attempt_count": "せつぞくしこうかいすう: {count}"
     },
     "titlebar": {
         "close": "とじる",
-        "minimize": "さいしょうか",
-        "maximize": "さいだいか"
+        "minimize": "さいしょく",
+        "maximize": "ざだんかい"
     },
     "pages": {
         "main": {
             "name": "めいん",
-            "icon": "ti ti - home"
+            "icon": "ti ti-home"
         },
         "message": {
             "name": "めっせーじ",
-            "icon": "ti ti - message"
+            "icon": "ti ti-message"
         },
         "channel": {
             "name": "ちゃんねる",
-            "icon": "ti ti - plug"
+            "icon": "ti ti-plug"
         },
         "asset": {
             "name": "あせっと",
-            "icon": "ti ti - package"
+            "icon": "ti ti-package"
         },
         "app": {
             "name": "あぷり",
-            "icon": "ti ti - player - play"
+            "icon": "ti ti-player-play"
         },
         "dev": {
             "name": "かいはつ",
-            "icon": "ti ti - bug"
+            "icon": "ti ti-bug"
         },
         "settings": "せってい",
-        "remote _ connect": "りもーと せつぞく"
+        "remote_connect": "りもーとせつぞく"
     },
     "screen": {
         "settings": {
             "name": "せってい",
-            "icon": "ti ti - settings",
-            "description": "せってい を へんこう できます。"
+            "icon": "ti ti-settings",
+            "description": "せっていをへんこうできます。"
         },
-        "remote _ connect": {
-            "name": "りもーと せつぞく",
-            "icon": "ti ti - qrcode",
-            "description": "りもーと せつぞく を かいしします。"
+        "remote_connect": {
+            "name": "りもーとせつぞく",
+            "icon": "ti ti-qrcode",
+            "description": "りもーとせつぞくをかいしします。"
         },
         "setup": {
             "name": "せっとあっぷ",
-            "icon": "ti ti - settings",
-            "description": "せっとあっぷ を かいしします。"
+            "icon": "ti ti-settings",
+            "description": "せっとあっぷをかいしします。"
         },
-        "add _ channel": {
-            "name": "ちゃんねる を ついか",
-            "icon": "ti ti - plus",
-            "description": "ちゃんねる を ついかします。"
+        "add_channel": {
+            "name": "ちゃんねるをついか",
+            "icon": "ti ti-plus",
+            "description": "ちゃんねるをついかします。"
         }
     },
     "settings": {
         "category": {
             "general": {
                 "name": "いっぱん",
-                "description": "いっぱんてき な せってい を へんこう できます。"
+                "description": "いっぱんてきなせっていをへんこうできます。"
             },
             "language": {
                 "name": "げんご",
-                "description": "げんご を へんこう できます。"
+                "description": "げんごをへんこうできます。"
             },
             "appearance": {
                 "name": "がいかん",
-                "description": "がいかん を へんこう できます。"
+                "description": "がいかんをへんこうできます。"
             },
             "advanced": {
                 "name": "しょうさい",
-                "description": "しょうさいな せってい を へんこう できます。"
+                "description": "しょうさいなせっていをへんこうできます。"
             },
             "credits": {
                 "name": "くれじっと",
-                "description": "くれじっと を ひょうじします。"
+                "description": "くれじっとをひょうじします。"
             }
         },
         "setting": {
-            "devMode": "かいはつしゃ もーど",
+            "devMode": "かいはつしゃもーど",
             "language": "げんご"
         }
     }
