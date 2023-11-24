@@ -15,7 +15,7 @@
 
     let channels = [...chat.channels!.cache.values()];
 
-    chat.channels!.on({
+    chat.channels!.addListener({
         onCacheUpdate(cache) {
             channels = [...cache.values()];
         },

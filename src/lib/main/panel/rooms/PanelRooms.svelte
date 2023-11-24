@@ -20,7 +20,7 @@
         rooms = newRooms;
     }
 
-    chat.rooms!.on({
+    chat.rooms!.addListener({
         onCacheUpdate(cache) {
             update(cache);
         },

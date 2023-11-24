@@ -12,7 +12,7 @@
 
     const messages = writable<Message[]>([]);
 
-    chat.messages!.on({
+    chat.messages!.addListener({
         onCacheUpdate(cache) {
             messages.set([...cache.values()]);
         },

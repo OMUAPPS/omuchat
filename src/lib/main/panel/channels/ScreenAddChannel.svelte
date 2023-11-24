@@ -10,7 +10,7 @@
     let providers: Map<string, Provider> | null = null;
     let url: string = '';
 
-    chat.providers!.on({
+    chat.providers!.addListener({
         onCacheUpdate(cache) {
             providers = cache;
         },

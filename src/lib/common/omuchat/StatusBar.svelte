@@ -10,8 +10,8 @@
     const status = writable<ConnectionStatus>(client.connection.status());
 
     onMount(() => {
-        return client.connection.on({
-            onStatusChange: (newStatus) => {
+        return client.connection.addListener({
+            onStatusChanged: (newStatus) => {
                 status.set(newStatus);
             }
         })
@@ -26,7 +26,7 @@
         <i class="ti ti-reload" />
     {/if}
     {#if $status === 'disconnected'}
-        <i class="ti ti-x" />
+    <i class="ti ti-x" />
     {/if}
 </p>
 
