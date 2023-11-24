@@ -4,12 +4,13 @@
 use anyhow::Result;
 use directories::ProjectDirs;
 use once_cell::sync::Lazy;
+use python::PythonRuntime;
 use reqwest::Client;
 use tokio::fs;
-use util::download_file;
 
 pub mod app;
 
+mod python;
 mod util;
 
 static LAUNCHER_DIRECTORY: Lazy<ProjectDirs> =
@@ -37,9 +38,47 @@ async fn setup() -> Result<()> {
         fs::create_dir_all(&runtimes_folder).await?;
     }
 
-    // test download: write get checkip.amazonaws.com to runtime folder
-    let test_file = runtimes_folder.join("test.txt");
-    download_file("https://checkip.amazonaws.com", &test_file).await?;
+    python::download_python(&runtimes_folder).await?;
+    let runtime = PythonRuntime::new(runtimes_folder.join("python-3.12.0/python/python"));
+    runtime
+        .execute(
+            vec![
+                "-m".to_string(),
+                "pip".to_string(),
+                "install".to_string(),
+                "--upgrade".to_string(),
+                "pip".to_string(),
+            ],
+            &data,
+        )
+        .await?;
+    let mut result = runtime
+        .execute(
+            vec![
+                "-m".to_string(),
+                "pip".to_string(),
+                "install".to_string(),
+                "-r".to_string(),
+                "requirements.txt".to_string(),
+            ],
+            &data,
+        )
+        .await?;
+    runtime
+        .handle_io(
+            &mut result,
+            |_, data| {
+                println!("stdout: {}", String::from_utf8_lossy(data));
+                Ok(())
+            },
+            |_, data| {
+                println!("stderr: {}", String::from_utf8_lossy(data));
+                Ok(())
+            },
+            tokio::sync::oneshot::channel().1,
+            &(),
+        )
+        .await?;
 
     Ok(())
 }
