@@ -209,17 +209,20 @@
         0% {
             transform: translateY(1px);
         }
-        10% {
+        5% {
             transform: translateY(-1px);
         }
-
 
         90% {
             transform: translateY(-1px);
         }
 
-        100% {
+        95% {
             transform: translateY(0);
+        }
+
+        100% {
+            transform: translateY(1px);
         }
     }
 

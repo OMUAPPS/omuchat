@@ -91,7 +91,6 @@
         top: 40px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
         align-items: flex-start;
         justify-content: flex-start;
         width: 100%;
