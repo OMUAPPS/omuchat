@@ -19,6 +19,14 @@ export const LOCALES = {
         name: 'ひらがな',
         load: () => loadI18n('./ja-JP-hiragana.json', 'ja-JP-hiragana')
     },
+    'ja-PD': {
+        name: 'Pseudo Japanese',
+        load: () => loadI18n('./ja-PD.json', 'ja-PD')
+    },
+    'ja-EN': {
+        name: 'English Japanese',
+        load: () => loadI18n('./ja-EN.json', 'ja-EN')
+    },
     'en-US': {
         name: 'English (US)',
         load: () => loadI18n('./en-US.json', 'en-US')
@@ -30,13 +38,5 @@ export const LOCALES = {
     'zh-CN': {
         name: '简体中文',
         load: () => loadI18n('./zh-CN.json', 'zh-CN')
-    },
-    'ja-PD': {
-        name: 'Pseudo Japanese',
-        load: () => loadI18n('./ja-PD.json', 'ja-PD')
-    },
-    'ja-GI': {
-        name: '擬音 Japanese',
-        load: () => loadI18n('./ja-GI.json', 'ja-GI')
     },
 };

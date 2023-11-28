@@ -1,0 +1,120 @@
+{
+    "general": {
+        "yes": "イエス",
+        "no": "ノー",
+        "ok": "オーケー",
+        "cancel": "キャンセル",
+        "close": "クローズ",
+        "save": "セーブ",
+        "reset": "リセット",
+        "copy": "コピー",
+        "copied": "コピード",
+        "error": "エラー",
+        "warning": "ウォーニング",
+        "info": "インフォメーション",
+        "success": "サクセス",
+        "try_again": "トライアゲイン",
+        "retry": "リトライ",
+        "in_progress": "インプログレス...",
+        "choose_file": "チューズファイル",
+        "choose_folder": "チューズフォルダ",
+        "loading": "ローディング...",
+        "search": "サーチ",
+        "searching": "サーチング...",
+        "no_results": "ノーリザルツ",
+        "show_more": "ショーモア",
+        "show_less": "ショーレス",
+        "select": "セレクト",
+        "select_all": "セレクトオール"
+    },
+    "status": {
+        "connecting": "コネクティング...",
+        "reconnecting": "リコネクティング...",
+        "connected": "コネクテッド",
+        "disconnected": "ディスコネクテッド",
+        "connect_attempt_count": "コネクションアテンプト: {count}"
+    },
+    "titlebar": {
+        "close": "クローズ",
+        "minimize": "ミニマイズ",
+        "maximize": "マキシマイズ"
+    },
+    "pages": {
+        "main": {
+            "name": "メイン",
+            "icon": "ti ti-home"
+        },
+        "message": {
+            "name": "メッセージ",
+            "icon": "ti ti-message"
+        },
+        "channel": {
+            "name": "チャネル",
+            "icon": "ti ti-plug"
+        },
+        "asset": {
+            "name": "アセット",
+            "icon": "ti ti-package"
+        },
+        "app": {
+            "name": "アップ",
+            "icon": "ti ti-player-play"
+        },
+        "dev": {
+            "name": "デベロップメント",
+            "icon": "ti ti-bug"
+        },
+        "settings": "セッティングス",
+        "remote_connect": "リモートコネクト"
+    },
+    "screen": {
+        "settings": {
+            "name": "セッティングス",
+            "icon": "ti ti-settings",
+            "description": "モディファィセッティングス。"
+        },
+        "remote_connect": {
+            "name": "リモートコネクト",
+            "icon": "ti ti-qrcode",
+            "description": "イニシエートリモートコネクション。"
+        },
+        "setup": {
+            "name": "セットアップ",
+            "icon": "ti ti-settings",
+            "description": "スタートセットアップ。"
+        },
+        "add_channel": {
+            "name": "アドチャネル",
+            "icon": "ti ti-plus",
+            "description": "アドアチャネル。"
+        }
+    },
+    "settings": {
+        "category": {
+            "general": {
+                "name": "ジェネラル",
+                "description": "モディファイジェネラルセッティングス。"
+            },
+            "language": {
+                "name": "ランゲージ",
+                "description": "モディファイランゲージセッティングス。"
+            },
+            "appearance": {
+                "name": "アピアランス",
+                "description": "モディファイアピアランスセッティングス。"
+            },
+            "advanced": {
+                "name": "アドヴァンスド",
+                "description": "モディファイアドヴァンスドセッティングス。"
+            },
+            "credits": {
+                "name": "クレジッツ",
+                "description": "ディスプレイクレジッツ。"
+            }
+        },
+        "setting": {
+            "devMode": "デヴェロッパーモード",
+            "language": "ランゲージ"
+        }
+    }
+}
