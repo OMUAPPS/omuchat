@@ -1,7 +1,8 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    import { getPanelContext, type PanelEntry } from './panel';
+  
+import { getPanelContext, type PanelEntry } from './panel';
 
     import PropedComponent from '$lib/common/component/PropedComponent.svelte';
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';

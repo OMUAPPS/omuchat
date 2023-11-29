@@ -2,6 +2,8 @@
     import { App, Message, TextContent } from "@omuchat/client";
     import { onMount } from "svelte";
 
+  import { layoutInvert } from "../settings";
+
     import { getClient } from "$lib/common/omuchat/client";
     import { i18n } from "$lib/i18n/i18n-context";
 
@@ -38,7 +40,7 @@
     });
 </script>
 
-<div class="container">
+<div class="container" class:invert={$layoutInvert}>
     <div class="section">
         <h3>Message</h3>
         <div>
@@ -88,5 +90,9 @@
             background: var(--color-bg-2);
             outline: 1px solid var(--color-1);
         }
+    }
+
+    .invert {
+        align-items: flex-end;
     }
 </style>

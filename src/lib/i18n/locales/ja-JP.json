@@ -120,7 +120,8 @@
         },
         "setting": {
             "devMode": "開発者モード",
-            "language": "言語"
+            "language": "言語",
+            "layoutInvert": "レイアウトを反転"
         }
     }
 }

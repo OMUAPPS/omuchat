@@ -1,4 +1,6 @@
 <script>
+    import { layoutInvert } from '../settings';
+
     import ExternalLink from '$lib/common/input/ExternalLink.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { LICENCES } from '$lib/licence/licence';
@@ -6,8 +8,8 @@
 
 <div class="container">
     {#each LICENCES as licence}
-        <div class="licence">
-            <div>
+        <div class="licence" class:invert={$layoutInvert}>
+            <div class:invert={$layoutInvert}>
                 <h3>
                     I love {licence.name}
                     <i class={licence.icon} />
@@ -15,7 +17,7 @@
                 <ExternalLink href={licence.url} />
             </div>
             <small>by {licence.author}</small>
-            <div class="content">
+            <div class="content" class:invert={$layoutInvert}>
                 <ExternalLink href={licence.licenceUrl} filled>
                     <Tooltip>
                         {licence.licenceName}
@@ -73,6 +75,16 @@
             font-size: 10px;
             white-space: pre-wrap;
         }
+
+        &.invert {
+            align-items: flex-end;
+        }
+    }
+
+    .invert {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
     }
 
     h3 {

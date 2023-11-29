@@ -1,7 +1,7 @@
 <script lang="ts">
     import { writable } from 'svelte/store';
 
-    import { currentSettingsCategory, SETTING_REGISTRY } from '../settings';
+    import { currentSettingsCategory, layoutInvert, SETTING_REGISTRY } from '../settings';
 
     import SettingsCredits from './SettingsCredits.svelte';
 
@@ -51,7 +51,7 @@
         <ScreenHeader title="settings" />
         <div class="description">{$t('screen.settings.description')}</div>
     </div>
-    <div class="close-button">
+    <div class="close-button" class:invert={$layoutInvert}>
         <Button callback={screenContext.pop} outline rounded filled>
             <JustifyBaselineWrapper>
                 {$t('general.close')}
@@ -59,7 +59,7 @@
             </JustifyBaselineWrapper>
         </Button>
     </div>
-    <div class="content">
+    <div class="content" class:invert={$layoutInvert}>
         <div class="categories">
             {#each categories as category (category.name)}
                 <button
@@ -105,6 +105,10 @@
         gap: 20px;
         width: 100%;
         height: 100%;
+    }
+
+    .invert {
+        flex-direction: row-reverse;
     }
 
     .settings {
@@ -165,6 +169,16 @@
                 border-left-color: var(--color-1);
                 transform: translate(100%, -50%);
             }
+
+            &::before {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                content: '';
+                border: 8px solid transparent;
+                border-right-color: var(--color-1);
+                transform: translate(-100%, -50%);
+            }
         }
 
         .name {
@@ -211,5 +225,10 @@
         position: absolute;
         bottom: 20px;
         left: 20px;
+
+        &.invert {
+            right: 20px;
+            left: auto;
+        }
     }
 </style>

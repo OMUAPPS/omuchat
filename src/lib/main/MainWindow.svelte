@@ -12,7 +12,7 @@
     import PageDev from './page/PageDev.svelte';
     import PageHome from './page/PageHome.svelte';
     import PageMessages from './page/PageMessages.svelte';
-    import { currentPage, devMode } from './settings';
+    import { currentPage, devMode, layoutInvert } from './settings';
 
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
     import { t } from '$lib/i18n/i18n-context';
@@ -83,7 +83,7 @@
     let cachedPages = writable<string[]>([$currentPage]);
 </script>
 
-<div class="wrapper">
+<div class="wrapper" class:invert={$layoutInvert}>
     <div class="tab-container">
         <FlexColWrapper>
             {#each Object.values($pages) as page}
@@ -125,6 +125,10 @@
         flex-direction: row;
         align-items: center;
         height: 100%;
+    }
+
+    .invert {
+        flex-direction: row-reverse;
     }
 
     .tab-container {

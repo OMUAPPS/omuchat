@@ -1,6 +1,7 @@
 <script lang="ts">
     import { TYPE_ICONS, type Asset } from './asset';
 
+    import { layoutInvert } from '$lib/main/settings';
     import { DragHelper } from '$lib/util/drag-helper';
 
     export let asset: Asset;
@@ -12,18 +13,18 @@
     }
 </script>
 
-<div class="container" on:dragstart={handleDragStart} draggable="true" role="form">
-    <div class="header">
+<div class="container" class:invert={$layoutInvert} on:dragstart={handleDragStart} draggable="true" role="form">
+    <div class="header" class:invert={$layoutInvert}>
         <i class={TYPE_ICONS[asset.type]} />
         <div class="asset-name">{asset.name}</div>
     </div>
-    <div class="asset">
+    <div class="asset" class:invert={$layoutInvert}>
         <img src={asset.thumbnail} alt="" />
         <div class="description">
             <div class="tags">
                 {asset.tags.join(', ')}
             </div>
-            <div class="drag-area">
+            <div class="drag-hint" class:invert={$layoutInvert}>
                 <i class="ti ti-drag-drop" />
                 ドラッグアンドドロップして追加できます
             </div>
@@ -80,6 +81,10 @@
         font-weight: 600;
         line-height: 0;
         color: var(--color-1);
+
+        &.invert {
+            flex-direction: row-reverse;
+        }
     }
 
     .asset {
@@ -119,7 +124,7 @@
                 color: var(--color-1);
             }
 
-            .drag-area {
+            .drag-hint {
                 display: none;
                 align-items: center;
                 justify-content: center;
@@ -130,6 +135,10 @@
 
                 i {
                     font-size: 24px;
+                }
+
+                &.invert {
+                    flex-direction: row-reverse;
                 }
             }
         }
@@ -145,9 +154,21 @@
             }
 
             .description {
-                .drag-area {
+                .drag-hint {
                     display: flex;
                 }
+            }
+        }
+
+        &.invert {
+            flex-direction: row-reverse;
+
+            img {
+                margin-left: auto;
+            }
+
+            .description {
+                align-items: flex-end;
             }
         }
     }

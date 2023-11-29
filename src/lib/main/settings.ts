@@ -59,8 +59,19 @@ function createLiteralSetting<T extends string>(key: string, defaultValue: T) {
     );
 }
 
+function shouldInvertLayout(lang: string): boolean {
+    for (const l of ['ar', 'he', 'fa']) {
+        if (lang.startsWith(l)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+const systemLanguage = getSystemLanguage();
+export const language = createLiteralSetting<keyof typeof LOCALES>('language', systemLanguage);
+export const layoutInvert = createBooleanSetting('layoutInvert', shouldInvertLayout(systemLanguage));
 export const devMode = createBooleanSetting('devMode', false);
-export const language = createLiteralSetting<keyof typeof LOCALES>('language', getSystemLanguage());
 export const currentPage = createStringSetting('currentPage', 'main');
 export const currentSettingsCategory = createStringSetting('currentPageSettings', 'general');
 
@@ -109,6 +120,17 @@ export const SETTING_REGISTRY: Record<string, Record<string, Setting>> = {
                         options: Object.keys(LOCALES).sort(
                             (a, b) => calcLanguageScore(b) - calcLanguageScore(a)
                         ) as (keyof typeof LOCALES)[]
+                    }
+                };
+            }
+        },
+        layoutInvert: {
+            component() {
+                return {
+                    component: Checkbox,
+                    props: {
+                        label: 'settings.setting.layoutInvert',
+                        value: layoutInvert
                     }
                 };
             }

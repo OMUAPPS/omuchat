@@ -6,6 +6,7 @@
 
     import InputText from '$lib/common/input/InputText.svelte';
     import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
+    import { layoutInvert } from '$lib/main/settings';
 
     // test
     export const assets: Writable<Asset[]> = writable<Asset[]>(
@@ -64,8 +65,8 @@
 </script>
 
 <div class="container">
-    <div class="header">
-        <div class="title">
+    <div class="header" class:invert={$layoutInvert}>
+        <div class="title" class:invert={$layoutInvert}>
             <i class="ti ti-package" />
             アセット
         </div>
@@ -123,6 +124,16 @@
                 font-size: 18px;
                 font-weight: 600;
                 color: var(--color-1);
+
+                &.invert {
+                    flex-direction: row-reverse;
+                }
+            }
+
+            &.invert {
+                right: 40px;
+                left: auto;
+                flex-direction: row-reverse;
             }
         }
 
