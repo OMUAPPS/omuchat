@@ -7,6 +7,9 @@ import type { PropedComponent } from '$lib/common/component/proped-component';
 import { LOCALES } from '$lib/i18n/locales';
 
 function getSystemLanguage(): keyof typeof LOCALES {
+    if (typeof window === 'undefined') {
+        return 'en-US';
+    }
     if (window.navigator.language in LOCALES) {
         return window.navigator.language as keyof typeof LOCALES;
     }
@@ -25,6 +28,9 @@ export function createSetting<T>(
     deserializer: (value: string) => T,
     defaultValue: T
 ) {
+    if (typeof localStorage === 'undefined') {
+        return writable<T>(defaultValue);
+    }
     const store = writable<T>(
         localStorage.getItem(key) ? deserializer(localStorage.getItem(key)!) : defaultValue
     );

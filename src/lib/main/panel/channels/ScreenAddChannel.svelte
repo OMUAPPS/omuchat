@@ -1,5 +1,5 @@
-<script lang="ts">
-    import { Channel, type Provider } from '@omuchat/client';
+4<script lang="ts">
+    import { models } from '@omuchat/client';
     import { onMount } from 'svelte';
 
     import { getClient } from '$lib/common/omuchat/client';
@@ -7,7 +7,7 @@
     import Screen from '$lib/common/screen/Screen.svelte';
     
     const { chat } = getClient();
-    let providers: Map<string, Provider> | null = null;
+    let providers: Map<string, models.Provider> | null = null;
     let url: string = '';
 
     chat.providers!.addListener({
@@ -18,7 +18,7 @@
     chat.providers!.fetch(100);
 
     let matches: Map<string, {
-        provider: Provider;
+        provider: models.Provider;
         match: RegExpExecArray;
     }> | null = null;
 
@@ -40,13 +40,13 @@
         });
     }
 
-    let selectedProvider: Provider | null = null;
+    let selectedProvider: models.Provider | null = null;
 
     function addChannel() {
         if (!selectedProvider)
             return;
 
-        chat.channels!.add(new Channel({
+        chat.channels!.add(new models.Channel({
             provider_id: selectedProvider.id,
             active: true,
             created_at: Date.now(),

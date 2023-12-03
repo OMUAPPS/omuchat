@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { Channel, type ChannelJson } from '@omuchat/client';
-    import axios from 'axios';
+    import type { Channel } from '@omuchat/client';
     import { onMount } from 'svelte';
 
     import ChannelEntry from './ChannelEntry.svelte';
@@ -17,10 +16,6 @@
 
     const { chat } = getClient();
 
-    interface Response {
-        channels: ChannelJson[];
-    }
-
     let result: Map<string, { channel: Channel; active: boolean }> | null = null;
 
     let locked = false;
@@ -29,21 +24,11 @@
     function fetchChannels() {
         if (locked) return;
         locked = true;
-        axios
-            .post<Response>('http://localhost:26423/setup/tree', {
-                url
-            })
+        chat.fetchChannelsByUrl(url)
             .then((res) => {
-                console.log(res);
                 result = new Map(
-                    res.data.channels.map((info) => {
-                        return [
-                            info.url,
-                            {
-                                channel: new Channel(info),
-                                active: false
-                            }
-                        ];
+                    [...res.entries()].map(([url, channel]) => {
+                        return [url, { channel, active: true }];
                     })
                 );
             })

@@ -1,20 +1,27 @@
 <script lang="ts">
-    import { App, Message, TextContent } from "@omuchat/client";
+    import { App, models } from "@omuchat/client";
     import { onMount } from "svelte";
 
-  import { layoutInvert } from "../settings";
+    import { layoutInvert } from "../settings";
 
     import { getClient } from "$lib/common/omuchat/client";
     import { i18n } from "$lib/i18n/i18n-context";
 
     const { chat, server } = getClient();
     let text = "";
+    let authorName = "";
+    let authorIcon = "";
     function send() {
         console.log(text);
-        chat.messages!.add(new Message({
+        chat.messages!.add(new models.Message({
             room_id: "test",
             id: `test-${Date.now()}`,
-            content: TextContent.of(text),
+            content: models.TextContent.of(text),
+            author: new models.Author({
+                id: "test",
+                name: authorName,
+                avatar_url: authorIcon,
+            })
         }));
     }
     function clear() {
@@ -22,21 +29,10 @@
     }
     let apps: Map<string, App> = new Map();
 
-    function updateApps(cache: Map<string, App>) {
-        apps = cache;
-    }
-
     onMount(() => {
-        const listener = {
-            onCacheUpdate(cache: Map<string, App>) {
-                updateApps(cache);
-            },
-        }
-        server.apps.fetch(100);
-        server.apps.addListener(listener);
-        return () => {
-            server.apps.removeListener(listener);
-        }
+        return server.apps.listen((chache) => {
+            apps = chache;
+        });
     });
 </script>
 
@@ -47,7 +43,12 @@
             <button on:click={send}>
                 send
             </button>
+            Message:
             <input type="text" bind:value={text} />
+            Author:
+            <input type="text" bind:value={authorName} />
+            Icon:
+            <input type="text" bind:value={authorIcon} />
             <button on:click={clear}>
                 clear
             </button>

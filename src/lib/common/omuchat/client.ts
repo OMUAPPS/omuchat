@@ -1,4 +1,5 @@
-import type { ChatExtension, Client, ServerExtension } from '@omuchat/client';
+import type { ChatExtension } from '@omuchat/client/src/chat';
+import type { Client, ServerExtension } from '@omuchat/omu.js';
 import { getContext, setContext } from 'svelte';
 
 import type { DashboardExtension } from './dashboard-ext';

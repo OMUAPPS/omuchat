@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { App } from '@omuchat/client';
-    import { WebsocketConnection } from '@omuchat/client/src/connection';
+    import { App } from '@omuchat/omu.js';
 
     import FlexRowWrapper from './common/FlexRowWrapper.svelte';
     import OmuChatProvider from './common/omuchat/ClientProvider.svelte';
@@ -17,15 +16,10 @@
         version: "0.1.0",
         group: "omu",
     });
-    const connection = new WebsocketConnection({
-        host: 'localhost',
-        port: 26423,
-        secure: false,
-    });
 </script>
 
 <div class="window">
-    <OmuChatProvider {app} {connection}>
+    <OmuChatProvider {app}>
         <div class="drag-area" data-tauri-drag-region>
             <div class="title">
                 <img src={Title} alt="title" width="64" height="10" />

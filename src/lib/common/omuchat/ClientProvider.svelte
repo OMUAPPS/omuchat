@@ -1,29 +1,27 @@
 <script lang="ts">
-    import { App, ChatExtensionType, OmuClient, ServerExtensionType } from '@omuchat/client';
-    import type { Connection } from '@omuchat/client/src/connection';
+    import { Client } from '@omuchat/client';
+    import { ServerExtensionType, type App } from '@omuchat/omu.js';
     import { onDestroy } from 'svelte';
 
     import { setClient } from './client';
     import { DashboardExtensionType } from './dashboard-ext';
 
     export let app: App;
-    export let connection: Connection;
 
-    const client = new OmuClient({
+    const client = new Client({
         app,
-        connection,
     });
-    client.extensions.register(DashboardExtensionType);
+    const omu = client.omu;
+    omu.extensions.register(DashboardExtensionType);
     setClient({
-        client,
-        chat: client.extensions.get(ChatExtensionType),
-        server: client.extensions.get(ServerExtensionType),
-        dashboard: client.extensions.get(DashboardExtensionType),
+        client: client.omu,
+        chat: client.chat,
+        server: omu.extensions.get(ServerExtensionType),
+        dashboard: omu.extensions.get(DashboardExtensionType),
     });
 
-    client.start();
+    client.run();
     onDestroy(() => {
-        client.stop();
     });
 </script>
 

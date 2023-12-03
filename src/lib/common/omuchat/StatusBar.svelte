@@ -1,7 +1,10 @@
 <script lang="ts">
-    import type { ConnectionStatus } from '@omuchat/client/src/connection';
+    import type { ConnectionStatus } from '@omuchat/omu.js/src/connection';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
+
+    import FlexColWrapper from '../FlexColWrapper.svelte';
+    import Tooltip from '../tooltip/Tooltip.svelte';
 
     import { getClient } from './client';
 
@@ -28,6 +31,41 @@
     {#if $status === 'disconnected'}
     <i class="ti ti-x" />
     {/if}
+    <Tooltip>
+        {#if $status === 'connected'}
+            <FlexColWrapper>
+                接続済み
+                <span>
+                    {client.connection.address.host}:{client.connection.address.port}
+                    <small>
+                        に接続済み
+                    </small>
+                </span>
+            </FlexColWrapper>
+        {/if}
+        {#if $status === 'connecting'}
+            <FlexColWrapper>
+                接続中
+                <span>
+                    {client.connection.address.host}:{client.connection.address.port}
+                    <small>
+                        に接続中…
+                    </small>
+                </span>
+            </FlexColWrapper>
+        {/if}
+        {#if $status === 'disconnected'}
+            <FlexColWrapper>
+                接続されていません
+                <span>
+                    {client.connection.address.host}:{client.connection.address.port}
+                    <small>
+                        に接続できませんでした
+                    </small>
+                </span>
+            </FlexColWrapper>
+        {/if}
+    </Tooltip>
 </p>
 
 <style>

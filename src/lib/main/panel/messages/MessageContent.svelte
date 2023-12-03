@@ -1,13 +1,12 @@
 <script lang="ts">
-import { ImageContent, TextContent, type Content } from "@omuchat/client";
-
+    import { models } from "@omuchat/client";
     
-export let component: Content;
+    export let component: models.Content;
 </script>
 
-{#if component instanceof TextContent}
+{#if component instanceof models.TextContent}
     {component.text || ''}
-{:else if component instanceof ImageContent}
+{:else if component instanceof models.ImageContent}
     <img src={component.url} alt={component.id} title={component.id} />
 {/if}
 {#if component.siblings}

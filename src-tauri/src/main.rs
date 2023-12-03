@@ -31,13 +31,7 @@ static HTTP_CLIENT: Lazy<Client> = Lazy::new(|| {
     client
 });
 
-async fn setup() -> Result<()> {
-    let data = LAUNCHER_DIRECTORY.data_dir();
-    let runtimes_folder = data.join("runtimes");
-    if !runtimes_folder.exists() {
-        fs::create_dir_all(&runtimes_folder).await?;
-    }
-
+async fn run_server(runtimes_folder: std::path::PathBuf, data: std::path::PathBuf) -> Result<()> {
     python::download_python(&runtimes_folder).await?;
     let runtime = PythonRuntime::new(runtimes_folder.join("python-3.12.0/python/python"));
     runtime
@@ -53,32 +47,37 @@ async fn setup() -> Result<()> {
         )
         .await?;
     let mut result = runtime
-        .execute(
-            vec![
-                "-m".to_string(),
-                "pip".to_string(),
-                "install".to_string(),
-                "-r".to_string(),
-                "requirements.txt".to_string(),
-            ],
-            &data,
-        )
+        .execute(vec!["-m".to_string(), "omuserver".to_string()], &data)
         .await?;
     runtime
         .handle_io(
             &mut result,
             |_, data| {
-                println!("stdout: {}", String::from_utf8_lossy(data));
+                println!("{}", String::from_utf8_lossy(data));
                 Ok(())
             },
             |_, data| {
-                println!("stderr: {}", String::from_utf8_lossy(data));
+                println!("{}", String::from_utf8_lossy(data));
                 Ok(())
             },
             tokio::sync::oneshot::channel().1,
             &(),
         )
         .await?;
+
+    Ok(())
+}
+
+async fn setup() -> Result<()> {
+    let data = LAUNCHER_DIRECTORY.data_dir().to_path_buf();
+    let runtimes_folder = data.join("runtimes");
+    if !runtimes_folder.exists() {
+        fs::create_dir_all(&runtimes_folder).await?;
+    }
+
+    if !cfg!(dev) {
+        tokio::spawn(run_server(runtimes_folder, data));
+    }
 
     Ok(())
 }

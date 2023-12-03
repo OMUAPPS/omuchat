@@ -1,33 +1,33 @@
-{
-    "parser": "@typescript-eslint/parser",
-    "extends": [
+module.exports = {
+    parser: "@typescript-eslint/parser",
+    extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:svelte/recommended",
         "plugin:import/recommended",
         "plugin:import/warnings"
     ],
-    "plugins": ["@typescript-eslint", "unused-imports"],
-    "overrides": [
+    plugins: ["@typescript-eslint", "unused-imports"],
+    overrides: [
         {
-            "files": ["*.svelte"],
-            "parser": "svelte-eslint-parser",
-            "parserOptions": {
-                "parser": "@typescript-eslint/parser"
+            files: ["*.svelte"],
+            parser: "svelte-eslint-parser",
+            parserOptions: {
+                parser: "@typescript-eslint/parser"
             }
         }
     ],
-    "parserOptions": {
-        "sourceType": "module",
-        "ecmaVersion": 2020,
-        "extraFileExtensions": [".svelte"]
+    parserOptions: {
+        sourceType: "module",
+        ecmaVersion: 2020,
+        extraFileExtensions: [".svelte"]
     },
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true
+    env: {
+        browser: true,
+        es6: true,
+        node: true
     },
-    "rules": {
+    rules: {
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-misused-new": "off",
         "array-bracket-spacing": ["error", "never"],

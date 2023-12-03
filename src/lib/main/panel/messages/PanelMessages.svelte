@@ -12,13 +12,10 @@
 
     const messages = writable<Message[]>([]);
 
-    chat.messages!.addListener({
-        onCacheUpdate(cache) {
-            messages.set([...cache.values()]);
-        },
-    });
-    onMount(async () => {
-        messages.set(Object.values(await chat.messages!.fetch(100)));
+    onMount(() => {
+        return chat.messages.listen((chache) => {
+            messages.set([...chache.values()]);
+        });
     });
 </script>
 

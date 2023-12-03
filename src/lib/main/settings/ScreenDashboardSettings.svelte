@@ -67,11 +67,11 @@
                     class:active={category === $currentCategory}
                     on:click={() => currentCategory.set(category)}
                 >
-                    <div class="name">
+                    <div class="name" class:invert={$layoutInvert}>
                         <i class={`ti ti-${$t(`settings.category.${category.name}.icon`)}`} />
                         {$t(`settings.category.${category.name}.name`)}
                     </div>
-                    <div class="description">
+                    <div class="description" class:invert={$layoutInvert}>
                         {$t(`settings.category.${category.name}.description`)}
                     </div>
                 </button>
@@ -192,12 +192,24 @@
             i {
                 font-size: 20px;
             }
+
+            &.invert {
+                flex-direction: row-reverse;
+                width: 100%;
+                padding-right: 40px;
+            }
         }
 
         .description {
             margin-left: 10px;
             font-size: 10px;
             color: #999;
+
+            &.invert {
+                flex-direction: row-reverse;
+                width: 100%;
+                padding-right: 0;
+            }
         }
     }
 

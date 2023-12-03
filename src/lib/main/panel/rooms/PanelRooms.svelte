@@ -1,6 +1,5 @@
 <script lang="ts">
-    import type { Room } from '@omuchat/client';
-    import { onMount } from 'svelte';
+    import type { models } from '@omuchat/client';
 
     import RoomEntry from './RoomEntry.svelte';
 
@@ -10,29 +9,19 @@
     import { screenContext } from '$lib/common/screen/screen';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
 
-    export let filter: (message: Room) => boolean = () => true;
+    export let filter: (message: models.Room) => boolean = () => true;
 
     const { chat } = getClient();
     let rooms = chat.rooms!.cache;
     let showOffline = false;
 
-    function update(newRooms: Map<string, Room>) {
+    chat.rooms.listen((newRooms: Map<string, models.Room>) => {
         rooms = newRooms;
-    }
-
-    chat.rooms!.addListener({
-        onCacheUpdate(cache) {
-            update(cache);
-        },
     });
 
     function toggleOffline() {
         showOffline = !showOffline;
     }
-
-    onMount(async () => {
-        update(await chat.rooms!.fetch(100));
-    });
 
     function openSetup() {
         screenContext.push({

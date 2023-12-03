@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Channel } from '@omuchat/client';
+    import type { models } from '@omuchat/client';
     
     import ChannelEntry from './ChannelEntry.svelte';
     import ScreenAddChannel from './ScreenAddChannel.svelte';
@@ -9,19 +9,15 @@
     import { screenContext } from '$lib/common/screen/screen';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
 
-    export let filter: (message: Channel) => boolean = () => true;
+    export let filter: (message: models.Channel) => boolean = () => true;
 
     const { chat } = getClient();
 
     let channels = [...chat.channels!.cache.values()];
 
-    chat.channels!.addListener({
-        onCacheUpdate(cache) {
-            channels = [...cache.values()];
-        },
+    chat.channels.listen((newChannels: Map<string, models.Channel>) => {
+        channels = [...newChannels.values()];
     });
-
-    chat.channels!.fetch(100);
 
     function openSetupScreen() {
         screenContext.push({

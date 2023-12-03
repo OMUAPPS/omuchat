@@ -28,7 +28,6 @@ pub fn gui_main() {
     let mut context = tauri::generate_context!();
 
     let host: std::net::IpAddr = local_ip().expect("failed to get local IP");
-    // cfg!(dev) to dev port
     let port = if cfg!(dev) {
         5173u16
     } else {
