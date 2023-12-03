@@ -5,38 +5,38 @@ export interface Entry {
     load: () => Promise<I18n>;
 }
 
-async function loadI18n(path: string, locale: string): Promise<I18n> {
-    const { default: messages } = await import(path /* @vite-ignore */);
+async function loadI18n(load: () => any, locale: string): Promise<I18n> {
+    const { default: messages } = await load();
     return createI18n(messages, locale);
 }
 
 export const LOCALES = {
     'ja-JP': {
         name: '日本語',
-        load: () => loadI18n('./ja-JP.json', 'ja-JP')
+        load: () => loadI18n(() => import('./ja-JP.json'), 'ja-JP')
     },
     'ja-JP-hiragana': {
         name: 'ひらがな',
-        load: () => loadI18n('./ja-JP-hiragana.json', 'ja-JP-hiragana')
+        load: () => loadI18n(() => import('./ja-JP-hiragana.json'), 'ja-JP-hiragana')
     },
     'ja-PD': {
         name: 'Pseudo Japanese',
-        load: () => loadI18n('./ja-PD.json', 'ja-PD')
+        load: () => loadI18n(() => import('./ja-PD.json'), 'ja-PD')
     },
     'ja-EN': {
         name: 'English Japanese',
-        load: () => loadI18n('./ja-EN.json', 'ja-EN')
+        load: () => loadI18n(() => import('./ja-EN.json'), 'ja-EN')
     },
     'en-US': {
         name: 'English (US)',
-        load: () => loadI18n('./en-US.json', 'en-US')
+        load: () => loadI18n(() => import('./en-US.json'), 'en-US')
     },
     'ar-EG': {
         name: 'العربية',
-        load: () => loadI18n('./ar-EG.json', 'ar-EG')
+        load: () => loadI18n(() => import('./ar-EG.json'), 'ar-EG')
     },
     'zh-CN': {
         name: '简体中文',
-        load: () => loadI18n('./zh-CN.json', 'zh-CN')
+        load: () => loadI18n(() => import('./zh-CN.json'), 'zh-CN')
     },
 };
