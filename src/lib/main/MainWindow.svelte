@@ -4,7 +4,6 @@
     import Component from '../common/component/PropedComponent.svelte';
     import Tooltip from '../common/tooltip/Tooltip.svelte';
 
-    import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
     import ButtonOpenSettings from './ButtonOpenSettings.svelte';
     import PageAssets from './page/assets/PageAssets.svelte';
     import { pages } from './page/page';
@@ -12,9 +11,11 @@
     import PageDev from './page/PageDev.svelte';
     import PageHome from './page/PageHome.svelte';
     import PageMessages from './page/PageMessages.svelte';
+    import ScreenRemoteConnect from './ScreenRemoteConnect.svelte';
     import { currentPage, devMode, layoutInvert } from './settings';
 
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
+    import { screenContext } from '$lib/common/screen/screen';
     import { t } from '$lib/i18n/i18n-context';
     import { style } from '$lib/util/class-helper';
     
@@ -81,6 +82,10 @@
     }
 
     let cachedPages = writable<string[]>([$currentPage]);
+
+    function openConnectScreen() {
+        screenContext.push({ component: ScreenRemoteConnect, props: {} });
+    }
 </script>
 
 <div class="wrapper" class:invert={$layoutInvert}>
@@ -103,7 +108,10 @@
             {/each}
         </FlexColWrapper>
         <FlexColWrapper>
-            <ButtonOpenRemoteConnect />
+            <button on:click={openConnectScreen} class="page">
+                <Tooltip>{$t('pages.settings')}</Tooltip>
+                <i class="ti ti-settings" />
+            </button>
             <ButtonOpenSettings />
         </FlexColWrapper>
     </div>
@@ -141,24 +149,28 @@
         height: 100%;
         padding-top: 50px;
         padding-bottom: 40px;
+        background: var(--color-text);
     }
 
     .page {
         width: 40px;
         height: 40px;
         font-size: 16px;
+        color: var(--color-bg-1);
         background: none;
         border: none;
         outline: none;
+        transition: 0.04s;
+        transition-property: color, background-color, border-radius;
 
         &:hover {
-            color: color-mix(in srgb, var(--color-bg-1) 10%, var(--color-1));
-            background-color: color-mix(in srgb, var(--color-1) 10%, transparent);
+            font-weight: bold;
+            color: var(--color-bg-1);
         }
 
         &.active {
-            color: var(--color-bg-1);
-            background: var(--color-1);
+            color: var(--color-text);
+            background: var(--color-bg-1);
         }
     }
 

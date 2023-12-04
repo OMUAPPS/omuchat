@@ -1,4 +1,6 @@
+import { invoke as _invoke } from '@tauri-apps/api';
 import type { WebviewWindow } from '@tauri-apps/api/window';
+
 let appWindow: WebviewWindow | null = null;
 
 export function minimizeWindow() {
@@ -11,6 +13,32 @@ export function maximizeWindow() {
 
 export function closeWindow() {
     appWindow?.close();
+}
+
+type Commands = {
+    share_url: {
+        args: [];
+        return: {
+            host: string;
+            port: number;
+            url: string;
+        }
+    },
+    run_server: {
+        args: [];
+        return: void;
+    },
+    delete_runtime: {
+        args: [];
+        return: void;
+    },
+}
+
+export function invoke<T extends keyof Commands>(
+    command: T,
+    ...args: Commands[T]['args']
+): Promise<Commands[T]['return']> {
+    return _invoke(command, ...args);
 }
 
 if (!import.meta.env.SSR) {

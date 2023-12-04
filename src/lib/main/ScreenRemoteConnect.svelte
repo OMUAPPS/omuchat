@@ -12,6 +12,7 @@
     import { screenContext } from '$lib/common/screen/screen';
     import { t } from '$lib/i18n/i18n-context';
     import { ClipboardHelper } from '$lib/util/clipboard-helper';
+    import { invoke } from '$lib/util/tauri';
 
     const result = writable<ShareResult | null>(null);
     let qrImage: HTMLImageElement;
@@ -23,8 +24,7 @@
     }
 
     onMount(async () => {
-        const api = await import('@tauri-apps/api');
-        api.invoke<ShareResult>('share_url').then((res) => {
+        invoke('share_url').then((res) => {
             console.log(`share_url: ${res.url}`);
             result.set(res);
         });

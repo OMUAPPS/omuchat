@@ -6,8 +6,9 @@
 
     import { getClient } from "$lib/common/omuchat/client";
     import { i18n } from "$lib/i18n/i18n-context";
+    import { invoke } from "$lib/util/tauri";
 
-    const { chat, server } = getClient();
+    const { client, chat, server } = getClient();
     let text = "";
     let authorName = "";
     let authorIcon = "";
@@ -34,9 +35,43 @@
             apps = chache;
         });
     });
+
+    let starting = false;
+    function start() {
+        if (starting) return;
+        starting = true;
+        invoke('run_server').then((res) => {
+            console.log(`run_server: ${res}`);
+        }).finally(() => {
+            starting = false;
+        });
+    }
+    function delete_runtime() {
+        invoke('delete_runtime').then((res) => {
+            console.log(`delete_runtime: ${res}`);
+        });
+    }
 </script>
 
 <div class="container" class:invert={$layoutInvert}>
+    <div class="section">
+        <h3>Server</h3>
+        <span>
+            {client.connection.connected ? 'connected' : 'disconnected'}
+            <small>
+                {client.connection.address.host}:{client.connection.address.port}
+            </small>
+            <div>
+                {starting ? 'starting' : 'stopped'}
+                <button on:click={start}>
+                    start
+                </button>
+                <button on:click={delete_runtime}>
+                    delete runtime
+                </button>
+            </div>
+        </span>
+    </div>
     <div class="section">
         <h3>Message</h3>
         <div>
