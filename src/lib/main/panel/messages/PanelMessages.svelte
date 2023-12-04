@@ -1,16 +1,18 @@
 <script lang="ts">
-    import type { Message } from '@omuchat/client';
+    import type { models } from '@omuchat/client';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
+
+    import type { MessageFilter } from './messages-panel';
 
     import { getClient } from '$lib/common/omuchat/client';
     import MessageRenderer from '$lib/main/panel/messages/MessageEntry.svelte';
 
-    export let filter: (message: Message) => boolean = () => true;
+    export let filter: MessageFilter = () => true;
 
     const { chat } = getClient();
 
-    const messages = writable<Message[]>([]);
+    const messages = writable<models.Message[]>([]);
 
     onMount(() => {
         return chat.messages.listen((chache) => {

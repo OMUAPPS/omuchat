@@ -1,7 +1,7 @@
 <script lang="ts">
     import { writable } from 'svelte/store';
 
-    import { currentSettingsCategory, layoutInvert, SETTING_REGISTRY } from '../settings';
+    import { currentSettingsCategory, SETTING_REGISTRY } from '../settings';
 
     import SettingsCredits from './SettingsCredits.svelte';
 
@@ -51,7 +51,7 @@
         <ScreenHeader title="settings" />
         <div class="description">{$t('screen.settings.description')}</div>
     </div>
-    <div class="close-button" class:invert={$layoutInvert}>
+    <div class="close-button">
         <Button callback={screenContext.pop} outline rounded filled>
             <JustifyBaselineWrapper>
                 {$t('general.close')}
@@ -59,7 +59,7 @@
             </JustifyBaselineWrapper>
         </Button>
     </div>
-    <div class="content" class:invert={$layoutInvert}>
+    <div class="content">
         <div class="categories">
             {#each categories as category (category.name)}
                 <button
@@ -67,11 +67,11 @@
                     class:active={category === $currentCategory}
                     on:click={() => currentCategory.set(category)}
                 >
-                    <div class="name" class:invert={$layoutInvert}>
+                    <div class="name">
                         <i class={`ti ti-${$t(`settings.category.${category.name}.icon`)}`} />
                         {$t(`settings.category.${category.name}.name`)}
                     </div>
-                    <div class="description" class:invert={$layoutInvert}>
+                    <div class="description">
                         {$t(`settings.category.${category.name}.description`)}
                     </div>
                 </button>
@@ -89,6 +89,7 @@
     .container {
         position: relative;
         top: 40px;
+        z-index: 100;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -105,10 +106,6 @@
         gap: 20px;
         width: 100%;
         height: 100%;
-    }
-
-    .invert {
-        flex-direction: row-reverse;
     }
 
     .settings {
@@ -192,24 +189,12 @@
             i {
                 font-size: 20px;
             }
-
-            &.invert {
-                flex-direction: row-reverse;
-                width: 100%;
-                padding-right: 40px;
-            }
         }
 
         .description {
             margin-left: 10px;
             font-size: 10px;
             color: #999;
-
-            &.invert {
-                flex-direction: row-reverse;
-                width: 100%;
-                padding-right: 0;
-            }
         }
     }
 
@@ -237,10 +222,5 @@
         position: absolute;
         bottom: 20px;
         left: 20px;
-
-        &.invert {
-            right: 20px;
-            left: auto;
-        }
     }
 </style>

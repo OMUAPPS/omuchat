@@ -1,11 +1,12 @@
 <script lang="ts">
     import { writable } from 'svelte/store';
 
-    import PanelMessages from '../panel/messages/PanelMessages.svelte';
-    import type { PanelEntry } from '../panel/panel';
-    import PanelProvider from '../panel/PanelProvider.svelte';
-    import PanelRooms from '../panel/rooms/PanelRooms.svelte';
-    import ScreenRoomsSettings from '../panel/rooms/ScreenRoomsSettings.svelte';
+  import PanelMessages from '../panel/messages/PanelMessages.svelte';
+  import PanelMessagesSettings from '../panel/messages/PanelMessagesSettings.svelte';
+  import type { PanelEntry } from '../panel/panel';
+  import PanelProvider from '../panel/PanelProvider.svelte';
+  import PanelRooms from '../panel/rooms/PanelRooms.svelte';
+  import ScreenRoomsSettings from '../panel/rooms/ScreenRoomsSettings.svelte';
 
     const panels = writable<PanelEntry[]>([
         {
@@ -21,7 +22,7 @@
             },
             componentSettings() {
                 return {
-                    component: PanelMessages,
+                    component: PanelMessagesSettings,
                     props: {}
                 };
             }

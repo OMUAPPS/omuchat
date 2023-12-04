@@ -1,12 +1,13 @@
 <script lang="ts">
-    import type { Message } from '@omuchat/client';
+    import type { models } from '@omuchat/client';
     import { writable } from 'svelte/store';
 
-    import PanelMessages from '../panel/messages/PanelMessages.svelte';
-    import type { PanelEntry } from '../panel/panel';
-    import PanelProvider from '../panel/PanelProvider.svelte';
-    import PanelRooms from '../panel/rooms/PanelRooms.svelte';
-    import ScreenRoomsSettings from '../panel/rooms/ScreenRoomsSettings.svelte';
+  import PanelMessages from '../panel/messages/PanelMessages.svelte';
+  import PanelMessagedSettings from '../panel/messages/PanelMessagesSettings.svelte';
+  import type { PanelEntry } from '../panel/panel';
+  import PanelProvider from '../panel/PanelProvider.svelte';
+  import PanelRooms from '../panel/rooms/PanelRooms.svelte';
+  import ScreenRoomsSettings from '../panel/rooms/ScreenRoomsSettings.svelte';
 
     const panels = writable<PanelEntry[]>([
         {
@@ -22,7 +23,7 @@
             },
             componentSettings() {
                 return {
-                    component: PanelMessages,
+                    component: PanelMessagedSettings,
                     props: {}
                 };
             }
@@ -34,13 +35,13 @@
                 return {
                     component: PanelMessages,
                     props: {
-                        filter: (message: Message) => !!(message.gift || message.paid)
+                        filter: (message: models.Message) => !!(message.gift || message.paid)
                     }
                 };
             },
             componentSettings() {
                 return {
-                    component: PanelMessages,
+                    component: PanelMessagedSettings,
                     props: {}
                 };
             }

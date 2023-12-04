@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Channel } from '@omuchat/client';
+    import type { models } from '@omuchat/client';
     import { onMount } from 'svelte';
 
     import ChannelEntry from './ChannelEntry.svelte';
@@ -16,7 +16,7 @@
 
     const { chat } = getClient();
 
-    let result: Map<string, { channel: Channel; active: boolean }> | null = null;
+    let result: Map<string, { channel: models.Channel; active: boolean }> | null = null;
 
     let locked = false;
     let url: string = '';

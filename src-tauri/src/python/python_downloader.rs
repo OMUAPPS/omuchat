@@ -9,7 +9,7 @@ use crate::{
     LAUNCHER_DIRECTORY,
 };
 
-pub async fn download_python(runtimes_folder: &PathBuf) -> Result<(PathBuf)> {
+pub async fn download_python(runtimes_folder: &PathBuf) -> Result<PathBuf> {
     let runtime = runtimes_folder.join("python-3.12.0");
     let python_path =
         runtime
@@ -21,7 +21,7 @@ pub async fn download_python(runtimes_folder: &PathBuf) -> Result<(PathBuf)> {
             });
     if runtime.exists() && python_path.exists() {
         info!("Python already downloaded");
-        return Ok((python_path));
+        return Ok(python_path);
     }
     // println!("{}", LAUNCHER_DIRECTORY.cache_dir().display());
     info!("Downloading Python 3.12.0 ...");
@@ -34,5 +34,5 @@ pub async fn download_python(runtimes_folder: &PathBuf) -> Result<(PathBuf)> {
         anyhow::bail!("Python executable not found");
     }
     info!("Python 3.12.0 downloaded");
-    Ok((python_path))
+    Ok(python_path)
 }

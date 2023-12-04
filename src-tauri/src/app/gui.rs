@@ -2,14 +2,13 @@ use std::fs;
 
 use local_ip_address::local_ip;
 use tauri::{utils::config::AppUrl, Manager, WindowUrl};
+use tracing::info;
 use window_shadows::set_shadow;
 
 use crate::{
     python::{self, PythonRuntime},
     LAUNCHER_DIRECTORY,
 };
-
-use super::app_data::Config;
 
 #[derive(serde::Serialize)]
 struct ServerState {
@@ -35,6 +34,7 @@ async fn share_url(state: tauri::State<'_, ServerState>) -> Result<ShareResponse
 
 #[tauri::command]
 async fn run_server() -> Result<(), String> {
+    info!("Running server...");
     let data = LAUNCHER_DIRECTORY.data_dir();
     let runtimes_folder = data.parent().unwrap().join("runtimes");
     let python = python::download_python(&runtimes_folder)
@@ -62,6 +62,7 @@ async fn run_server() -> Result<(), String> {
                         "-m".to_string(),
                         "pip".to_string(),
                         "install".to_string(),
+                        "git+https://github.com/OMUCHAT/omu.py.git".to_string(),
                         "git+https://github.com/OMUCHAT/server.git".to_string(),
                     ],
                     &data,
@@ -101,6 +102,7 @@ async fn run_server() -> Result<(), String> {
         .await
         .expect("Failed to handle IO");
 
+    info!("Server running");
     Ok(())
 }
 
@@ -108,6 +110,7 @@ async fn run_server() -> Result<(), String> {
 async fn delete_runtime() -> Result<(), String> {
     let runtimes_folder = std::path::PathBuf::from("runtimes");
     fs::remove_dir_all(&runtimes_folder).map_err(|e| e.to_string())?;
+    info!("Deleted runtimes");
     Ok(())
 }
 

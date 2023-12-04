@@ -2,16 +2,14 @@
     import { App, models } from "@omuchat/client";
     import { onMount } from "svelte";
 
-    import { layoutInvert } from "../settings";
-
     import { getClient } from "$lib/common/omuchat/client";
     import { i18n } from "$lib/i18n/i18n-context";
     import { invoke } from "$lib/util/tauri";
 
     const { client, chat, server } = getClient();
-    let text = "";
-    let authorName = "";
-    let authorIcon = "";
+    let text = `test-${Date.now()}`
+    let authorName = `test-author-${Date.now()}`
+    let authorIcon = `https://picsum.photos/seed/${Date.now()}/200/200`
     function send() {
         console.log(text);
         chat.messages!.add(new models.Message({
@@ -24,6 +22,9 @@
                 avatar_url: authorIcon,
             })
         }));
+        text = `test-${Date.now()}`
+        authorName = `test-author-${Date.now()}`
+        authorIcon = `https://picsum.photos/seed/${Date.now()}/200/200`
     }
     function clear() {
         text = "";
@@ -53,7 +54,7 @@
     }
 </script>
 
-<div class="container" class:invert={$layoutInvert}>
+<div class="container">
     <div class="section">
         <h3>Server</h3>
         <span>
@@ -126,9 +127,5 @@
             background: var(--color-bg-2);
             outline: 1px solid var(--color-1);
         }
-    }
-
-    .invert {
-        align-items: flex-end;
     }
 </style>

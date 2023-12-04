@@ -1,7 +1,6 @@
 <script lang="ts">
     import { TYPE_ICONS, type Asset } from './asset';
 
-    import { layoutInvert } from '$lib/main/settings';
     import { DragHelper } from '$lib/util/drag-helper';
 
     export let asset: Asset;
@@ -13,18 +12,18 @@
     }
 </script>
 
-<div class="container" class:invert={$layoutInvert} on:dragstart={handleDragStart} draggable="true" role="form">
-    <div class="header" class:invert={$layoutInvert}>
+<div class="container" on:dragstart={handleDragStart} draggable="true" role="form">
+    <div class="header">
         <i class={TYPE_ICONS[asset.type]} />
         <div class="asset-name">{asset.name}</div>
     </div>
-    <div class="asset" class:invert={$layoutInvert}>
+    <div class="asset">
         <img src={asset.thumbnail} alt="" />
         <div class="description">
             <div class="tags">
                 {asset.tags.join(', ')}
             </div>
-            <div class="drag-hint" class:invert={$layoutInvert}>
+            <div class="drag-hint">
                 <i class="ti ti-drag-drop" />
                 ドラッグアンドドロップして追加できます
             </div>
@@ -136,10 +135,6 @@
                 i {
                     font-size: 24px;
                 }
-
-                &.invert {
-                    flex-direction: row-reverse;
-                }
             }
         }
 
@@ -157,18 +152,6 @@
                 .drag-hint {
                     display: flex;
                 }
-            }
-        }
-
-        &.invert {
-            flex-direction: row-reverse;
-
-            img {
-                margin-left: auto;
-            }
-
-            .description {
-                align-items: flex-end;
             }
         }
     }

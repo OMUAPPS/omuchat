@@ -1,8 +1,6 @@
 <script lang="ts">
     import { get, writable, type Writable } from 'svelte/store';
 
-  import { layoutInvert } from '../settings';
-
     import { setPanelContext, type PanelContext, type PanelEntry } from './panel';
     import Panel from './Panel.svelte';
 
@@ -47,7 +45,7 @@
     $: $panels.forEach((p, i) => (p.index = writable(i)));
 </script>
 
-<div class="container" class:invert={$layoutInvert}>
+<div class="container">
     {#each $panels as panel (panel.name)}
         <Panel {panel} selected={$selected === panel} />
     {/each}
@@ -63,9 +61,5 @@
         padding: 10px;
         overflow-x: scroll;
         background: var(--color-bg-1);
-    }
-
-    .invert {
-        flex-direction: row-reverse;
     }
 </style>
