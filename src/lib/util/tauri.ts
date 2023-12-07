@@ -1,7 +1,7 @@
-import { invoke as _invoke } from '@tauri-apps/api';
 import type { WebviewWindow } from '@tauri-apps/api/window';
 
 let appWindow: WebviewWindow | null = null;
+let _invoke: ((cmd: string, args?: any | undefined) => Promise<any>) | null = null;
 
 export function minimizeWindow() {
     appWindow?.minimize();
@@ -38,11 +38,14 @@ export function invoke<T extends keyof Commands>(
     command: T,
     ...args: Commands[T]['args']
 ): Promise<Commands[T]['return']> {
-    return _invoke(command, ...args);
+    return _invoke!(command, ...args);
 }
 
 if (!import.meta.env.SSR) {
     import('@tauri-apps/api/window').then(({ appWindow: _appWindow }) => {
         appWindow = _appWindow;
+    });
+    import('@tauri-apps/api/tauri').then(({ invoke: i }) => {
+        _invoke = i;
     });
 }
