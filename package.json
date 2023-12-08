@@ -7,7 +7,7 @@
         "dev": "tauri dev",
         "build": "tauri build",
         "ui:dev": "vite --host 0.0.0.0",
-        "ui:build": "node script/tabler-icons.cjs && vite build",
+        "ui:build": "node script/tabler-icons.mjs && vite build",
         "ui:preview": "vite preview",
         "ui:check": "svelte-check --tsconfig ./tsconfig.json",
         "lint:stylelint": "stylelint --ignore-path .gitignore ./**/*.{css,svelte}",
