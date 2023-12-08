@@ -130,15 +130,21 @@ import { getPanelContext, type PanelEntry } from './panel';
 
     .left {
         display: flex;
-        gap: 10px;
+        gap: 8px;
         align-items: center;
         width: 100%;
+        padding-left: 1px;
         font-size: 16px;
         font-weight: 600;
+        color: var(--color-1);
         appearance: none;
         cursor: grab;
         background: none;
         border: none;
+
+        i {
+            font-size: 20px;
+        }
     }
 
     .right {

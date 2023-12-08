@@ -2,12 +2,12 @@
     import type { models } from '@omuchat/client';
     import { writable } from 'svelte/store';
 
-  import PanelMessages from '../panel/messages/PanelMessages.svelte';
-  import PanelMessagedSettings from '../panel/messages/PanelMessagesSettings.svelte';
-  import type { PanelEntry } from '../panel/panel';
-  import PanelProvider from '../panel/PanelProvider.svelte';
-  import PanelRooms from '../panel/rooms/PanelRooms.svelte';
-  import ScreenRoomsSettings from '../panel/rooms/ScreenRoomsSettings.svelte';
+    import PanelMessages from '../panel/messages/PanelMessages.svelte';
+    import PanelMessagedSettings from '../panel/messages/PanelMessagesSettings.svelte';
+    import type { PanelEntry } from '../panel/panel';
+    import PanelProvider from '../panel/PanelProvider.svelte';
+    import PanelRooms from '../panel/rooms/PanelRooms.svelte';
+    import ScreenRoomsSettings from '../panel/rooms/ScreenRoomsSettings.svelte';
 
     const panels = writable<PanelEntry[]>([
         {
@@ -31,6 +31,7 @@
         {
             icon: 'ti ti-message',
             name: 'ギフト／投げ銭',
+            width: 400,
             componentPanel() {
                 return {
                     component: PanelMessages,

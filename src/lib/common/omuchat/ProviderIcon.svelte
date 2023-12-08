@@ -7,14 +7,15 @@
 
     const { chat } = getClient();
 
-    async function getProvider(): Promise<Provider> {
-        const provider = await chat.providers!.get(providerId);
-        if (!provider) throw new Error("Provider not found");
+    async function getProvider(): Promise<Provider | null> {
+        const provider = await chat.providers.get(providerId);
+        // if (!provider) throw new Error(`Provider not found: ${providerId}`);
         return provider;
     }
 </script>
 
 {#await getProvider() then provider}
+    {#if provider}
     <img
         src={provider.image_url || `https://www.google.com/s2/favicons?domain=${provider.url}`}
         alt="icon"
@@ -22,4 +23,5 @@
         width="32"
         height="32"
     />
+    {/if}
 {/await}

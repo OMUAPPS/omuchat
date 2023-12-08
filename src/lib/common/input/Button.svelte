@@ -45,7 +45,7 @@
     }
 
     .rounded {
-        border-radius: 6px;
+        border-radius: 5px;
     }
 
     .filled {

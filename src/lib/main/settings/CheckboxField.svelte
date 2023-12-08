@@ -37,7 +37,7 @@
             appearance: none;
             background: var(--color-bg-2);
             border: none;
-            border-radius: 25%;
+            border-radius: 5px;
             outline: 1px solid var(--color-1);
 
             &:checked {

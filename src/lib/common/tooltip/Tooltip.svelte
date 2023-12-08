@@ -101,7 +101,6 @@
         white-space: nowrap;
         pointer-events: none;
         user-select: none;
-        border-radius: 0;
 
         &.background {
             padding: 5px 10px;
@@ -122,7 +121,7 @@
 
     .wrapper {
         position: fixed;
-        z-index: 10;
+        z-index: 200;
         width: 0;
         height: 0;
         appearance: none;

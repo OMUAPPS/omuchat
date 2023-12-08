@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
 
     import { getClient } from "$lib/common/omuchat/client";
+    import { theme } from "$lib/common/theme";
     import { i18n } from "$lib/i18n/i18n-context";
     import { invoke } from "$lib/util/tauri";
 
@@ -106,6 +107,25 @@
             {/each}
         </div>
     </div>
+    <div class="section">
+        <h3>Theme Color</h3>
+        <div>
+            {#each Object.entries($theme) as [key, value]}
+                <div>
+                    {key}: {value}
+                    <input type="color" value={value} on:change={(e) => {
+                        if (!e.target) return;
+                        const value = e.target.value;
+                        if (!value) return;
+                        $theme = {
+                            ...$theme,
+                            [key]: value,
+                        };
+                    }} />
+                </div>
+            {/each}
+        </div>
+    </div>
 </div>
 
 <style lang="scss">
@@ -114,6 +134,7 @@
         flex-direction: column;
         width: 100%;
         height: 100%;
+        overflow: auto;
         background: var(--color-bg-1);
 
         .section {

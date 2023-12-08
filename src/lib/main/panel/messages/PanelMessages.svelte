@@ -3,12 +3,9 @@
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
-    import type { MessageFilter } from './messages-panel';
-
     import { getClient } from '$lib/common/omuchat/client';
-    import MessageRenderer from '$lib/main/panel/messages/MessageEntry.svelte';
-
-    export let filter: MessageFilter = () => true;
+    import TableList from '$lib/common/omuchat/TableList.svelte';
+    import MessageEntry from '$lib/main/panel/messages/MessageEntry.svelte';
 
     const { chat } = getClient();
 
@@ -22,26 +19,5 @@
 </script>
 
 <div class="messages">
-    {#each Object.values($messages).reverse().filter(filter) as message (message.id)}
-        <div class="message">
-            <MessageRenderer {message} />
-        </div>
-    {/each}
+    <TableList table={chat.messages} component={MessageEntry} />
 </div>
-
-<style lang="scss">
-    .messages {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        overflow: auto;
-    }
-
-    .message {
-        padding: 5px 0;
-
-        &:hover {
-            background: var(--color-bg-1);
-        }
-    }
-</style>
