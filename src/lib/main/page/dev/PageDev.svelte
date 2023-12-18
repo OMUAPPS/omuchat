@@ -1,11 +1,13 @@
 <script lang="ts">
-    import { App, models } from "@omuchat/client";
-    import { onMount } from "svelte";
+    import { models } from "@omuchat/client";
+    
+    import AppEntry from "./AppEntry.svelte";
 
     import { getClient } from "$lib/common/omuchat/client";
-    import { theme } from "$lib/common/theme";
+    import TableList from "$lib/common/omuchat/TableList.svelte";
+    import { theme } from "$lib/common/theme/theme";
     import { i18n } from "$lib/i18n/i18n-context";
-    import { invoke } from "$lib/util/tauri";
+    import { invoke } from "$lib/utils/tauri";
 
     const { client, chat, server } = getClient();
     let text = `test-${Date.now()}`
@@ -13,31 +15,25 @@
     let authorIcon = `https://picsum.photos/seed/${Date.now()}/200/200`
     function send() {
         console.log(text);
-        chat.messages!.add(new models.Message({
+        const author = new models.Author({
+            provider_id: "test",
+            id: "test",
+            name: authorName,
+            avatar_url: authorIcon,
+        })
+        chat.authors.add(author);
+        chat.messages.add(new models.Message({
             room_id: "test",
             id: `test-${Date.now()}`,
             content: models.TextContent.of(text),
-            author: new models.Author({
-                id: "test",
-                name: authorName,
-                avatar_url: authorIcon,
-            })
+            author_id: author.key(),
+            created_at: new Date(),
         }));
-        text = `test-${Date.now()}`
-        authorName = `test-author-${Date.now()}`
-        authorIcon = `https://picsum.photos/seed/${Date.now()}/200/200`
     }
     function clear() {
         text = "";
     }
-    let apps: Map<string, App> = new Map();
-
-    onMount(() => {
-        return server.apps.listen((chache) => {
-            apps = chache;
-        });
-    });
-
+    
     let starting = false;
     function start() {
         if (starting) return;
@@ -75,6 +71,12 @@
         </span>
     </div>
     <div class="section">
+        <h3>Language</h3>
+        <div>
+            {$i18n?.locale}
+        </div>
+    </div>
+    <div class="section">
         <h3>Message</h3>
         <div>
             <button on:click={send}>
@@ -92,19 +94,12 @@
         </div>
     </div>
     <div class="section">
-        <h3>Language</h3>
-        <div>
-            {$i18n?.locale}
-        </div>
-    </div>
-    <div class="section">
         <h3>Apps</h3>
         <div>
-            {#each Array.from(apps.values()) as app}
-                <div>
-                    {app.name}
-                </div>
-            {/each}
+            <TableList
+                table={server.apps}
+                component={AppEntry}
+            />
         </div>
     </div>
     <div class="section">
@@ -114,8 +109,8 @@
                 <div>
                     {key}: {value}
                     <input type="color" value={value} on:change={(e) => {
-                        if (!e.target) return;
-                        const value = e.target.value;
+                        if (!e.currentTarget) return;
+                        const value = e.currentTarget.value;
                         if (!value) return;
                         $theme = {
                             ...$theme,
@@ -131,9 +126,10 @@
 <style lang="scss">
     .container {
         display: flex;
-        flex-direction: column;
+        flex-flow: column;
         width: 100%;
         height: 100%;
+        padding: 10px;
         overflow: auto;
         background: var(--color-bg-1);
 
@@ -141,10 +137,10 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            width: fit-content;
+            width: 100%;
             height: fit-content;
             padding: 10px;
-            margin: 10px;
+            margin-bottom: 10px;
             background: var(--color-bg-2);
             outline: 1px solid var(--color-1);
         }

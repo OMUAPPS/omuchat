@@ -12,11 +12,11 @@ export interface Messages {
 export function createI18n(messages: Messages, locale: string): I18n {
     const getTranslation = (key: string, params?: Record<string, any>): string => {
         const parts = key.split('.');
-        let translation: string | null = null;
+        let translation: string | undefined;
         let result = messages;
         for (const part of parts) {
             if (typeof result !== 'object') return key;
-            translation = result[part] as string | null;
+            translation = result[part] as string | undefined;
             result = result[part] as Messages;
         }
         if (typeof translation === 'object') {

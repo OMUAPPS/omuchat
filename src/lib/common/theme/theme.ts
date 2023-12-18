@@ -25,4 +25,4 @@ const theme2: Theme = {
     "--margin": "10px",
 }
 
-export const theme: Writable<Theme> = writable(theme2 || theme1);
+export const theme: Writable<Theme> = writable(theme1 || theme2);

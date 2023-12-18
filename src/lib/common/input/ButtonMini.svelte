@@ -1,10 +1,9 @@
 <script lang="ts">
-    export let callback: () => void = () => {};
     export let outline = false;
     export let disabled = false;
 </script>
 
-<button class="button" type="button" on:click={callback} class:outline {disabled}>
+<button class="button" type="button" on:click class:outline {disabled}>
     <slot />
 </button>
 
@@ -20,7 +19,7 @@
         font-size: 16px;
         background: transparent;
         border: none;
-        border-radius: 6px;
+        border-radius: 5px;
         outline: none;
 
         &:hover {

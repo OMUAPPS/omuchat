@@ -1,8 +1,4 @@
-<script>
-    export let callback = () => {};
-</script>
-
-<button class="button" type="button" on:click={callback}>
+<button class="button" type="button" on:click>
     <slot />
 </button>
 

@@ -7,7 +7,7 @@
     import Screen from '$lib/common/screen/Screen.svelte';
     
     const { chat } = getClient();
-    let providers: Map<string, models.Provider> | null = null;
+    let providers: Map<string, models.Provider> | undefined;
     let url: string = '';
 
     chat.providers!.addListener({
@@ -20,7 +20,7 @@
     let matches: Map<string, {
         provider: models.Provider;
         match: RegExpExecArray;
-    }> | null = null;
+    }> | undefined;
 
     function filterProvider(url: string) {
         matches = new Map();
@@ -40,7 +40,7 @@
         });
     }
 
-    let selectedProvider: models.Provider | null = null;
+    let selectedProvider: models.Provider | undefined;
 
     function addChannel() {
         if (!selectedProvider)
@@ -112,6 +112,9 @@
                 }}>
                     {provider.name}
                 </button>
+            {/each}
+            {#each providers as [provider_id, provider] (provider_id)}
+                {provider.name}
             {/each}
         {:else}
             プロバイダーが見つかりませんでした。

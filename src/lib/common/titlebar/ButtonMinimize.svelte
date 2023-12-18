@@ -3,10 +3,10 @@
     import Tooltip from '../tooltip/Tooltip.svelte';
 
     import { t } from '$lib/i18n/i18n-context';
-    import { minimizeWindow } from '$lib/util/tauri';
+    import { minimizeWindow } from '$lib/utils/tauri';
 </script>
 
-<Button callback={minimizeWindow}>
+<Button on:click={minimizeWindow}>
     <Tooltip>{$t('titlebar.minimize')}</Tooltip>
     <i class="ti ti-minus" />
 </Button>

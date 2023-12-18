@@ -7,4 +7,4 @@ export interface Page {
     component(): PropedComponent;
 }
 
-export const pages: Writable<Record<string, Page>> = writable({});
+export const pages: Writable<Map<string, Page>> = writable(new Map());

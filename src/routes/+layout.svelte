@@ -1,10 +1,11 @@
 <script lang="ts">
+    import ThemeProvider from '$lib/common/theme/ThemeProvider.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { createI18nUnion } from '$lib/i18n/i18n';
     import { i18n } from '$lib/i18n/i18n-context';
     import { LOCALES } from '$lib/i18n/locales';
     import { language } from '$lib/main/settings';
-    import { ClipboardHelper } from '$lib/util/clipboard-helper';
+    import { ClipboardHelper } from '$lib/utils/clipboard-helper';
     import './styles.scss';
 
     async function loadLocale() {
@@ -20,6 +21,17 @@
 
     language.subscribe(loadLocale);
 </script>
+
+<svelte:head>
+    <title>Dashboard</title>
+    <meta name="description" content="Svelte demo app" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="icons-webfont/tabler-icons.css">
+    <ThemeProvider />
+</svelte:head>
+
 
 <div class="app">
     <main>

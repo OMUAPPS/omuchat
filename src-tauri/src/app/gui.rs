@@ -7,7 +7,7 @@ use window_shadows::set_shadow;
 
 use crate::{
     python::{self, PythonRuntime},
-    LAUNCHER_DIRECTORY,
+    server, LAUNCHER_DIRECTORY,
 };
 
 #[derive(serde::Serialize)]
@@ -135,7 +135,7 @@ pub fn gui_main() {
             host: host.to_string(),
             port,
         })
-        .plugin(omuchat_tauri_plugin_server::Builder::new(port).build())
+        .plugin(server::Builder::new(port).build())
         .setup(move |app| {
             let window = app.get_window("main").unwrap();
             set_shadow(&window, true).expect("Unsupported platform!");

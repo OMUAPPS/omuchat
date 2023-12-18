@@ -8,16 +8,22 @@
 
     export let app: App;
 
+    const address = {
+        host: window.location.hostname,
+        port: 26423,
+        secure: false,
+    }
     const client = new Client({
         app,
+        address,
     });
     const omu = client.omu;
-    omu.extensions.register(DashboardExtensionType);
+    const dashboard = omu.extensions.register(DashboardExtensionType);
     setClient({
         client: client.omu,
         chat: client.chat,
         server: omu.extensions.get(ServerExtensionType),
-        dashboard: omu.extensions.get(DashboardExtensionType),
+        dashboard,
     });
 
     client.run();

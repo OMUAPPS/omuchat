@@ -36,7 +36,7 @@
                 return {
                     component: PanelMessages,
                     props: {
-                        filter: (message: models.Message) => !!(message.gift || message.paid)
+                        filter: (_key: string, message: models.Message) => !!(message.gift || message.paid)
                     }
                 };
             },
@@ -48,7 +48,7 @@
             }
         },
         {
-            icon: 'ti ti-home',
+            icon: 'ti ti-bolt',
             name: '接続中',
             componentPanel() {
                 return {

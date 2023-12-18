@@ -1,12 +1,11 @@
 <script lang="ts">  
-    import type { Channel } from "@omuchat/client";
+    import type { models } from "@omuchat/client";
 
-    export let channel: Channel;
+    export let channel: models.Channel;
     export let active = false;
-    export let callback = () => {};
 </script>
 
-<button class="channel-entry" class:active on:click={callback}>
+<button class="channel-entry" class:active on:click>
     <div class="icon">
         <img src={channel.icon_url} alt="icon" />
     </div>

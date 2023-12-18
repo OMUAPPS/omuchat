@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { App } from '@omuchat/omu.js';
+    import type { App } from '@omuchat/omu.js';
 
     import FlexRowWrapper from './common/FlexRowWrapper.svelte';
     import OmuChatProvider from './common/omuchat/ClientProvider.svelte';
@@ -11,11 +11,7 @@
     import TitleBar from './common/titlebar/TitleBar.svelte';
     import Title from './images/title.svg';
 
-    const app = new App({
-        name: "omu-client",
-        version: "0.1.0",
-        group: "omu",
-    });
+    export let app: App;
 </script>
 
 <div class="window">

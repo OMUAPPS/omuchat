@@ -4,7 +4,7 @@
     export let readonly: boolean = false;
     export let value: string = '';
     let tempValue: string = value;
-    let timer: any | null = null;
+    let timer: any | undefined;
 
     function handleChange(event: Event) {
         tempValue = (event.target as HTMLInputElement).value;
@@ -13,7 +13,7 @@
         }
         timer = setTimeout(() => {
             value = tempValue;
-        }, 500);
+        }, 300);
     }
 
     function exit() {

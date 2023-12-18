@@ -1,15 +1,14 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-  
-import { getPanelContext, type PanelEntry } from './panel';
+    import { getPanelContext, type PanelEntry } from './panel';
 
     import PropedComponent from '$lib/common/component/PropedComponent.svelte';
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import { screenContext } from '$lib/common/screen/screen';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { t } from '$lib/i18n/i18n-context';
-    import { style } from '$lib/util/class-helper';
+    import { style } from '$lib/utils/class-helper';
 
     export let panel: PanelEntry;
     export let dragging = false;
@@ -80,7 +79,7 @@ import { getPanelContext, type PanelEntry } from './panel';
                 </div>
             </button>
             <div class="right">
-                <ButtonMini callback={openSettings}>
+                <ButtonMini on:click={openSettings}>
                     <Tooltip>{$t("general.settings")}</Tooltip>
                     <i class="ti ti-settings" />
                 </ButtonMini>
@@ -125,7 +124,7 @@ import { getPanelContext, type PanelEntry } from './panel';
         justify-content: space-between;
         width: 100%;
         height: 40px;
-        padding-bottom: 10px;
+        padding-bottom: 5px;
     }
 
     .left {
@@ -134,7 +133,7 @@ import { getPanelContext, type PanelEntry } from './panel';
         align-items: center;
         width: 100%;
         padding-left: 1px;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 600;
         color: var(--color-1);
         appearance: none;
@@ -143,11 +142,13 @@ import { getPanelContext, type PanelEntry } from './panel';
         border: none;
 
         i {
-            font-size: 20px;
+            font-size: 18px;
         }
     }
 
     .right {
+        display: flex;
+        align-items: center;
         visibility: hidden;
     }
 
@@ -169,7 +170,8 @@ import { getPanelContext, type PanelEntry } from './panel';
     .panel {
         width: 100%;
         height: calc(100% - 40px);
-        overflow-y: auto;
+        max-height: calc(100% - 40px);
+        overflow: hidden;
         background: var(--color-bg-2);
         outline: 1px solid rgb(0 0 0 / 10%);
     }

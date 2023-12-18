@@ -3,10 +3,10 @@
     import Tooltip from '../tooltip/Tooltip.svelte';
 
     import { t } from '$lib/i18n/i18n-context';
-    import { closeWindow } from '$lib/util/tauri';
+    import { closeWindow } from '$lib/utils/tauri';
 </script>
 
-<Button callback={closeWindow}>
+<Button on:click={closeWindow}>
     <Tooltip>{$t('titlebar.close')}</Tooltip>
     <i class="ti ti-x" />
 </Button>

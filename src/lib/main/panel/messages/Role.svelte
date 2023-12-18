@@ -2,7 +2,7 @@
     import type { models } from '@omuchat/client';
 
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-    import { applyOpacity, style } from '$lib/util/class-helper';
+    import { applyOpacity, style } from '$lib/utils/class-helper';
 
     export let role: models.Role;
 </script>
@@ -11,12 +11,36 @@
     color: role.color,
     background: applyOpacity(role.color, 0.1),
 } : {})}>
-    {role.name}
     {#if role.icon_url}
         <img class="img" src={role.icon_url} alt="role icon" />
+    {:else}
+        {role.name}
     {/if}
     <Tooltip>
-        {role.id}
+        <div class="tooltip">
+            <span class="preview">
+                {role.name}
+                {#if role.icon_url}
+                <img src={role.icon_url} alt="role icon" />
+                {/if}
+            </span>
+            <small>
+                <span>
+                    Color:
+                </span>
+                {role.color}
+            </small>
+            {#if role.is_moderator}
+            <small>
+                Moderator
+            </small>
+            {/if}
+            {#if role.is_owner}
+            <small>
+                Owner
+            </small>
+            {/if}
+        </div>
     </Tooltip>
 </div>
 
@@ -25,20 +49,50 @@
         display: flex;
         flex-direction: row;
         gap: 1px;
-        align-items: center;
-        height: calc(1rem + 4px);
-        padding: 2px 4px;
-        margin-left: 5px;
+        height: calc(1.4rem);
+        padding: 4px;
         font-size: 0.8rem;
-        font-weight: 500;
+        font-weight: bold;
         line-height: 1rem;
+        color: var(--color-1);
         white-space: nowrap;
+        background: color-mix(in srgb, var(--color-1) 10%, transparent 0%);
     }
 
     .img {
-        height: 90%;
+        height: 100%;
         object-fit: contain;
-        margin-left: 2px;
         vertical-align: middle;
+    }
+
+    .preview {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        
+        & > img {
+            height: 42px;
+            padding: 2px;
+            object-fit: contain;
+        }
+    }
+
+    .tooltip {
+        display: flex;
+        flex-direction: column;
+        padding: 2px;
+    }
+
+    small {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        padding: 2px;
+        font-size: 0.6rem;
+        font-weight: normal;
+        color: var(--color-2);
+
     }
 </style>

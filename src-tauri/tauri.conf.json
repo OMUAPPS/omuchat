@@ -1,16 +1,16 @@
 {
-	"$schema": "../node_modules/@tauri-apps/cli/schema.json",
-	"build": {
-		"beforeBuildCommand": "npm run ui:build",
-		"beforeDevCommand": "npm run ui:dev",
-		"devPath": "http://localhost:5173",
-		"distDir": "../build"
-	},
+    "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+    "build": {
+        "beforeBuildCommand": "npm run ui:build",
+        "beforeDevCommand": "npm run ui:dev",
+        "devPath": "http://localhost:5173",
+        "distDir": "../build"
+    },
     "package": {
         "productName": "omuchat",
         "version": "0.1.0"
     },
-	"tauri": {
+    "tauri": {
         "allowlist": {
             "all": false,
             "window": {
@@ -23,7 +23,8 @@
                 "unmaximize": true,
                 "unminimize": true,
                 "startDragging": true,
-                "create": true
+                "create": true,
+                "setFocus": true
             },
             "shell": {
                 "all": false,
@@ -31,16 +32,34 @@
                 "open": true,
                 "scope": [],
                 "sidecar": false
+            },
+            "dialog": {
+                "all": true
+            },
+            "path": {
+                "all": true
+            },
+            "fs": {
+                "all": true,
+                "scope": [
+                    "**"
+                ]
+            },
+            "protocol": {
+                "asset": true,
+                "assetScope": [
+                    "**"
+                ]
             }
         },
-		"bundle": {
-			"active": true,
-			"category": "DeveloperTool",
-			"copyright": "",
-			"deb": {
-				"depends": []
-			},
-			"externalBin": [],
+        "bundle": {
+            "active": true,
+            "category": "DeveloperTool",
+            "copyright": "",
+            "deb": {
+                "depends": []
+            },
+            "externalBin": [],
             "icon": [
                 "icons/32x32.png",
                 "icons/128x128.png",
@@ -49,30 +68,30 @@
                 "icons/icon.ico"
             ],
             "identifier": "cc.omuchat.app",
-			"longDescription": "",
-			"macOS": {
-				"entitlements": null,
-				"exceptionDomain": "",
-				"frameworks": [],
-				"providerShortName": null,
-				"signingIdentity": null
-			},
-			"resources": [],
-			"shortDescription": "",
-			"targets": "all",
-			"windows": {
-				"certificateThumbprint": null,
-				"digestAlgorithm": "sha256",
-				"timestampUrl": ""
-			}
-		},
-		"security": {
-			"csp": null
-		},
-		"updater": {
-			"active": false
-		},
-		"windows": [
+            "longDescription": "",
+            "macOS": {
+                "entitlements": null,
+                "exceptionDomain": "",
+                "frameworks": [],
+                "providerShortName": null,
+                "signingIdentity": null
+            },
+            "resources": [],
+            "shortDescription": "",
+            "targets": "all",
+            "windows": {
+                "certificateThumbprint": null,
+                "digestAlgorithm": "sha256",
+                "timestampUrl": ""
+            }
+        },
+        "security": {
+            "csp": null
+        },
+        "updater": {
+            "active": false
+        },
+        "windows": [
             {
                 "label": "main",
                 "fullscreen": false,
@@ -84,10 +103,10 @@
                 "decorations": false,
                 "title": "OMUCHAT"
             }
-		],
+        ],
         "systemTray": {
             "iconPath": "icons/icon.png",
             "iconAsTemplate": true
         }
-	}
+    }
 }

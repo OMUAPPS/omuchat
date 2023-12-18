@@ -23,7 +23,7 @@
             }
         },
         {
-            icon: 'ti ti-home',
+            icon: 'ti ti-bolt',
             name: 'ルーム',
             componentPanel() {
                 return {

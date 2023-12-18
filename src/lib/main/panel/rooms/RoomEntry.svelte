@@ -1,46 +1,46 @@
 <script lang="ts">
-    import type { Room } from '@omuchat/client';
+    import type { models } from '@omuchat/client';
 
     import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-    import { ClipboardHelper } from '$lib/util/clipboard-helper';
+    import { ClipboardHelper } from '$lib/utils/clipboard-helper';
 
-    export let room: Room;
+    export let entry: models.Room;
 
     function open() {
-        window.open(room.url, '_blank');
+        window.open(entry.url, '_blank');
     }
 
     function copyViewers() {
-        if (!room.viewers) return;
-        ClipboardHelper.writeText(room.viewers.toString());
+        if (!entry.viewers) return;
+        ClipboardHelper.writeText(entry.viewers.toString());
     }
 </script>
 
 <div class="room">
     <div class="top">
         <div>
-            <img src={room.image_url} alt="thumbnail" class="room-thumbnail">
+            <img src={entry.image_url} alt="thumbnail" class="room-thumbnail">
             <Tooltip noBackground>
-                <img src={room.image_url} alt="thumbnail" class="room-thumbnail-preview">
+                <img src={entry.image_url} alt="thumbnail" class="room-thumbnail-preview">
             </Tooltip>
         </div>
         <div class="buttons">
             <FlexRowWrapper widthFull reverse>
-                <ButtonMini callback={open}>
+                <ButtonMini on:click={open}>
                     <Tooltip>見る</Tooltip>
                     <i class="ti ti-external-link" />
                 </ButtonMini>
             </FlexRowWrapper>
             <FlexRowWrapper widthFull reverse between>
-                <ButtonMini callback={copyViewers}>
+                <ButtonMini on:click={copyViewers}>
                     <Tooltip>視聴者数（クリックでコピー）</Tooltip>
-                    {room.viewers}
+                    {entry.viewers}
                     <i class="ti ti-user" />
                 </ButtonMini>
-                <i class={`online-state ti ti-bolt ${room.online ? 'online' : 'offline'}`}>
-                    <Tooltip>{room.online ? 'オンライン' : 'オフライン'}</Tooltip>
+                <i class={`online-state ti ti-bolt ${entry.online ? 'online' : 'offline'}`}>
+                    <Tooltip>{entry.online ? 'オンライン' : 'オフライン'}</Tooltip>
                 </i>
             </FlexRowWrapper>
         </div>
@@ -48,9 +48,9 @@
     <div class="bottom">
         <div class="room-name">
             <Tooltip>
-                {room.name}
+                {entry.name}
             </Tooltip>
-            {room.name}
+            {entry.name}
         </div>
     </div>
 </div>

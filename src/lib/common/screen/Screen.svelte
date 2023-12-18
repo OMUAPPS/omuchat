@@ -2,7 +2,7 @@
     import { screenContext } from './screen';
     import ScreenHeader from './ScreenHeader.svelte';
 
-    import { classes } from '$lib/util/class-helper';
+    import { classes } from '$lib/utils/class-helper';
 
     export let title: string;
     export let windowed: boolean = true;

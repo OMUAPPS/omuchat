@@ -6,10 +6,11 @@
     import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import Button from '$lib/common/input/Button.svelte';
     import { getClient } from '$lib/common/omuchat/client';
+    import TableList from '$lib/common/omuchat/TableList.svelte';
     import { screenContext } from '$lib/common/screen/screen';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
 
-    export let filter: (message: models.Room) => boolean = () => true;
+    export let filter: (key: string, room: models.Room) => boolean = (_, room) => room.online;
 
     const { chat } = getClient();
     let rooms = chat.rooms!.cache;
@@ -33,11 +34,9 @@
 
 <div class="rooms">
     {#if rooms.size > 0}
-        {#each [...rooms.values()].filter(filter || (() => true)) as room (room.id)}
-            <RoomEntry {room} />
-        {/each}
+        <TableList table={chat.rooms} component={RoomEntry} filter={filter} />
         {#if [...rooms.values()].some((room) => !room.online)}
-            <Button callback={toggleOffline}>
+            <Button on:click={toggleOffline}>
                 <FlexRowWrapper widthFull reverse>
                     {#if showOffline}
                         <i class="ti ti-chevron-up" />
@@ -50,14 +49,12 @@
             </Button>
         {/if}
         {#if showOffline}
-            {#each [...rooms.values()].filter((room) => !room.online) as room (room.id)}
-                <RoomEntry {room} />
-            {/each}
+            <TableList table={chat.rooms} component={RoomEntry} filter={(_, room) => !room.online} />
         {/if}
     {:else}
         <div class="empty">
             ルームが見つかりません！
-            <Button callback={openSetup}>
+            <Button on:click={openSetup}>
                 チャンネルを追加しますか？
                 <i class="ti ti-external-link" />
             </Button>
@@ -69,6 +66,8 @@
     .rooms {
         display: flex;
         flex-direction: column;
+        height: 100%;
+        overflow: auto;
     }
 
     .empty {

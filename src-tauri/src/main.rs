@@ -16,6 +16,7 @@ use tracing_subscriber::{fmt, layer::SubscriberExt, EnvFilter};
 pub mod app;
 
 mod python;
+mod server;
 mod util;
 
 static LAUNCHER_DIRECTORY: Lazy<ProjectDirs> =

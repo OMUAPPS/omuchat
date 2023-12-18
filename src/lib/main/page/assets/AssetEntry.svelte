@@ -1,28 +1,27 @@
 <script lang="ts">
-    import { TYPE_ICONS, type Asset } from './asset';
+    import { TYPE_ICONS, type Asset } from '$lib/common/omuchat/asset';
+    import { DragHelper } from '$lib/utils/drag-helper';
 
-    import { DragHelper } from '$lib/util/drag-helper';
-
-    export let asset: Asset;
+    export let entry: Asset;
     let preview: HTMLDivElement;
 
     function handleDragStart(event: DragEvent) {
         DragHelper.setDragImage(event, preview);
-        DragHelper.setUrl(event, asset.url);
+        DragHelper.setUrl(event, entry.url);
     }
 </script>
 
 <div class="container" on:dragstart={handleDragStart} draggable="true" role="form">
     <div class="header">
-        <i class={TYPE_ICONS[asset.type]} />
-        <div class="asset-name">{asset.name}</div>
+        <i class={TYPE_ICONS[entry.type]} />
+        <div class="asset-name">{entry.name}</div>
     </div>
     <div class="asset">
-        <img src={asset.thumbnail} alt="" />
+        <img src={entry.thumbnail} alt="" />
         <div class="description">
             <div class="tags">
-                {asset.tags.join(', ')}
-            </div>
+                {entry.tags.join(', ')}
+        </div>
             <div class="drag-hint">
                 <i class="ti ti-drag-drop" />
                 ドラッグアンドドロップして追加できます
@@ -30,10 +29,10 @@
         </div>
     </div>
     <div class="preview" bind:this={preview}>
-        <img src={asset.thumbnail} alt="" />
+        <img src={entry.thumbnail} alt="" />
         <div>
-            <i class={TYPE_ICONS[asset.type]} />
-            {asset.name}
+            <i class={TYPE_ICONS[entry.type]} />
+            {entry.name}
         </div>
     </div>
 </div>

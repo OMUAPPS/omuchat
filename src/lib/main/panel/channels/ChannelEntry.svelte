@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Channel } from '@omuchat/client';
+    import type { models } from '@omuchat/client';
     import { writable } from 'svelte/store';
 
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
@@ -9,39 +9,39 @@
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
     const { chat } = getClient();
-    export let channel: Channel;
+    export let entry: models.Channel;
 
-    let active = writable(channel.active);
+    let active = writable(entry.active);
     active.subscribe((value) => {
-        if (value === channel.active)
+        if (value === entry.active)
             return;
-        channel.active = value;
-        chat.channels!.set(channel);
+        entry.active = value;
+        chat.channels!.set(entry);
     });
 
     function remove() {
-        chat.channels!.remove(channel);
+        chat.channels!.remove(entry);
     }
 </script>
 
 <div class="container">
     <div class="left">
         <div class="channel-icon">
-            {#if channel.icon_url}
-                <img src={channel.icon_url} alt="icon" />
+            {#if entry.icon_url}
+                <img src={entry.icon_url} alt="icon" />
             {:else}
-                <ProviderIcon providerId={channel.provider_id} />
+                <ProviderIcon providerId={entry.provider_id} />
             {/if}
         </div>
         <div class="description">
-            <div class="channel-name">{channel.name || channel.provider_id}</div>
+            <div class="channel-name">{entry.name || entry.provider_id}</div>
             <small class="channel-url">
-                {channel.url}
+                {entry.url}
             </small>
         </div>
     </div>
     <div class="right">
-        <ButtonMini callback={remove}>
+        <ButtonMini on:click={remove}>
             <Tooltip>
                 <div class="description">チャンネルを削除します。</div>
             </Tooltip>
@@ -53,7 +53,7 @@
             </Tooltip>
             <i class="ti ti-settings" />
         </ButtonMini>
-        <a href={channel.url} target="_blank">
+        <a href={entry.url} target="_blank">
             <ButtonMini>
                 <Tooltip>
                     <div class="description">チャンネルを開きます。</div>

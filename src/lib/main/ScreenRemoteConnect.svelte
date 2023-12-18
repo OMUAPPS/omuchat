@@ -1,20 +1,20 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { writable } from 'svelte/store';
-
-    import Button from '../common/input/Button.svelte';
-    import QrCode from '../common/qrcode/QRCode.svelte';
-    import Screen from '../common/screen/Screen.svelte';
-    import Tooltip from '../common/tooltip/Tooltip.svelte';
+    
+import Button from '../common/input/Button.svelte';
+import QrCode from '../common/qrcode/QRCode.svelte';
+import Screen from '../common/screen/Screen.svelte';
+import Tooltip from '../common/tooltip/Tooltip.svelte';
 
     import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
     import { screenContext } from '$lib/common/screen/screen';
     import { t } from '$lib/i18n/i18n-context';
-    import { ClipboardHelper } from '$lib/util/clipboard-helper';
-    import { invoke } from '$lib/util/tauri';
+    import { ClipboardHelper } from '$lib/utils/clipboard-helper';
+    import { invoke } from '$lib/utils/tauri';
 
-    const result = writable<ShareResult | null>(null);
+    let result: ShareResult | undefined;
+    let url: string = '';
     let qrImage: HTMLImageElement;
 
     interface ShareResult {
@@ -26,12 +26,13 @@
     onMount(async () => {
         invoke('share_url').then((res) => {
             console.log(`share_url: ${res.url}`);
-            result.set(res);
+            result = res;
+            url = `http://${res.host}:${res.port}/remote`;
         });
     });
 
     function copyUrlToClipboard() {
-        ClipboardHelper.writeText($result!.url);
+        ClipboardHelper.writeText(url);
     }
 
     function copyQrToClipboard() {
@@ -45,21 +46,21 @@
 
 <Screen title="remote_connect" windowed={false}>
     <div class="container">
-        {#if $result}
+        {#if result}
             <button on:click={copyQrToClipboard} class="qr">
                 <Tooltip>{$t('general.copy')}</Tooltip>
-                <QrCode value={$result.url} size={150} bind:qrImage />
+                <QrCode value={url} size={150} bind:qrImage />
             </button>
             このQRコードをスキャンしてください
             <FlexRowWrapper gap between>
                 <Tooltip>{$t('general.copy')}</Tooltip>
-                <Button callback={copyUrlToClipboard}>
-                    {$result.host}:{$result.port}/
+                <Button on:click={copyUrlToClipboard}>
+                    {url}
                 </Button>
             </FlexRowWrapper>
         {/if}
         <div class="close">
-            <Button callback={close} outline>
+            <Button on:click={close} outline>
                 <JustifyBaselineWrapper>
                     {$t('general.close')}
                     <i class="ti ti-x" />

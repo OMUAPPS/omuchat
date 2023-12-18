@@ -65,6 +65,10 @@
             "name": "開発",
             "icon": "ti ti-bug"
         },
+        "play-queue": {
+            "name": "参加型管理",
+            "icon": "ti ti-device-gamepad"
+        },
         "settings": "設定",
         "remote_connect": "リモート接続"
     },
@@ -88,6 +92,11 @@
             "name": "チャンネルを追加",
             "icon": "ti ti-plus",
             "description": "チャンネルを追加します。"
+        }
+    },
+    "apps": {
+        "play-queue": {
+            "name": "参加型管理"
         }
     },
     "settings": {

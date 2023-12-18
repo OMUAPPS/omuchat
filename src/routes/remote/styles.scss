@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+a {
+    color: var(--color-1);
+
+    :visited {
+        color: var(--color-2);
+    }
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    background-attachment: fixed;
+    background: var(--color-bg-1);
+    background-size: 100vw 100vh;
+    color: var(--color-text);
+    font-weight: 400;
+}

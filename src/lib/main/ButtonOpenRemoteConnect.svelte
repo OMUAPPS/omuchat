@@ -11,7 +11,7 @@
     }
 </script>
 
-<Button callback={openConnectScreen}>
+<Button on:click={openConnectScreen}>
     <Tooltip>{$t('pages.remote_connect')}</Tooltip>
     <i class="ti ti-qrcode" />
 </Button>

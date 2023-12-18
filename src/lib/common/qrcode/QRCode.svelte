@@ -11,7 +11,7 @@
     export let value: string = '';
     export let padding: number = 0;
     export let className: string = 'qrcode';
-    export let qrImage: HTMLImageElement | null = null;
+    export let qrImage: HTMLImageElement | undefined;
 
     let image = '';
 

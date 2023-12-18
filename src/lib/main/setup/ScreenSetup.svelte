@@ -16,7 +16,7 @@
 
     const { chat } = getClient();
 
-    let result: Map<string, { channel: models.Channel; active: boolean }> | null = null;
+    let result: Map<string, { channel: models.Channel; active: boolean }> | undefined;
 
     let locked = false;
     let url: string = '';
@@ -50,7 +50,7 @@
     }
 
     function reset() {
-        result = null;
+        result = undefined;
     }
 
     let tooltipHint: string;
@@ -76,7 +76,7 @@
     </div>
     <div class="container">
         <ScreenHeader title="setup" />
-        {#if result !== null}
+        {#if result}
             {#if result.size > 0}
                 <FlexColWrapper>
                     <div class="channels">
@@ -84,7 +84,7 @@
                             <ChannelEntry
                                 channel={channel.channel}
                                 active={channel.active}
-                                callback={() => {
+                                on:click={() => {
                                     if (!channel) return;
                                     channel.active = !channel.active;
                                 }}
@@ -95,13 +95,13 @@
                         <Button
                             outline
                             rounded
-                            callback={finish}
+                            on:click={finish}
                             disabled={locked || Object.values(result).some((v) => !v.active)}
                         >
                             追加する
                             <i class="ti ti-arrow-right" />
                         </Button>
-                        <Button rounded callback={reset} disabled={locked}>
+                        <Button rounded on:click={reset} disabled={locked}>
                             <i class="ti ti-arrow-left" />
                             戻る
                         </Button>
@@ -110,7 +110,7 @@
             {:else}
                 <div>チャンネルが見つかりませんでした…</div>
                 <div class="buttons">
-                    <Button rounded callback={reset} disabled={locked}>
+                    <Button rounded on:click={reset} disabled={locked}>
                         <i class="ti ti-arrow-left" />
                         戻る
                     </Button>
@@ -130,11 +130,11 @@
                 <InputText placeholder="url..." bind:value={url} />
             </div>
             <div class="buttons">
-                <Button outline rounded callback={fetchChannels} disabled={!url || locked}>
+                <Button outline rounded on:click={fetchChannels} disabled={!url || locked}>
                     次へ
                     <i class="ti ti-arrow-right" />
                 </Button>
-                <Button rounded callback={screenContext.pop}>
+                <Button rounded on:click{screenContext.pop}>
                     スキップ
                     <i class="ti ti-arrow-right" />
                 </Button>

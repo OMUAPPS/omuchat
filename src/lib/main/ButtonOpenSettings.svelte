@@ -11,7 +11,7 @@
     }
 </script>
 
-<Button callback={openConnectScreen}>
+<Button on:click={openConnectScreen}>
     <Tooltip>{$t('pages.settings')}</Tooltip>
     <i class="ti ti-settings" />
 </Button>

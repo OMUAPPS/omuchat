@@ -1,12 +1,11 @@
 <script>
-    export let callback = () => {};
     export let outline = false;
     export let rounded = false;
     export let filled = false;
     export let disabled = false;
 </script>
 
-<button class="button" type="button" on:click={callback} class:outline class:rounded class:filled {disabled}>
+<button class="button" type="button" on:click class:outline class:rounded class:filled {disabled}>
     <slot />
 </button>
 

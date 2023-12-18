@@ -1,73 +1,75 @@
 <script lang="ts">
-  import { writable } from 'svelte/store';
+    
+    import { writable } from 'svelte/store';
 
     import Component from '../common/component/PropedComponent.svelte';
     import Tooltip from '../common/tooltip/Tooltip.svelte';
 
     import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
     import ButtonOpenSettings from './ButtonOpenSettings.svelte';
+    import PageApps from './page/apps/PageApps.svelte';
     import PageAssets from './page/assets/PageAssets.svelte';
+    import PageDev from './page/dev/PageDev.svelte';
     import { pages } from './page/page';
     import PageChannels from './page/PageChannels.svelte';
-    import PageDev from './page/PageDev.svelte';
     import PageHome from './page/PageHome.svelte';
     import PageMessages from './page/PageMessages.svelte';
     import { currentPage, devMode } from './settings';
 
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
     import { t } from '$lib/i18n/i18n-context';
-    import { style } from '$lib/util/class-helper';
+    import { style } from '$lib/utils/class-helper';
     
-    pages.set({
-        main: {
-            name: 'main',
-            component: () => {
-                return {
-                    component: PageHome,
-                    props: {}
-                };
-            }
-        },
-        message: {
-            name: 'message',
-            component: () => {
-                return {
-                    component: PageMessages,
-                    props: {}
-                };
-            }
-        },
-        channel: {
-            name: 'channel',
-            component: () => {
-                return {
-                    component: PageChannels,
-                    props: {}
-                };
-            }
-        },
-        asset: {
-            name: 'asset',
-            component: () => {
-                return {
-                    component: PageAssets,
-                    props: {}
-                };
-            }
-        },
-        app: {
-            name: 'app',
-            component: () => {
-                return {
-                    component: PageAssets,
-                    props: {}
-                };
-            }
+    pages.set(new Map());
+    $pages.set('main', {
+        name: 'main',
+        component: () => {
+            return {
+                component: PageHome,
+                props: {}
+            };
         }
     });
+    $pages.set('message', {
+        name: 'message',
+        component: () => {
+            return {
+                component: PageMessages,
+                props: {}
+            };
+        }
+    });
+    $pages.set('channel', {
+        name: 'channel',
+        component: () => {
+            return {
+                component: PageChannels,
+                props: {}
+            };
+        }
+    });
+    $pages.set('asset', {
+        name: 'asset',
+        component: () => {
+            return {
+                component: PageAssets,
+                props: {}
+            };
+        }
+    });
+    $pages.set('app', {
+        name: 'app',
+        component: () => {
+            return {
+                component: PageApps,
+                props: {}
+            };
+        }
+    });
+    
 
     $: if ($devMode) {
-        $pages.dev = {
+        $pages.set('dev', {
             name: 'dev',
             component: () => {
                 return {
@@ -75,25 +77,29 @@
                     props: {}
                 };
             }
-        };
+        });
     } else {
-        delete $pages.dev;
+        $pages.delete('dev');
     }
 
-    let cachedPages = writable<string[]>([$currentPage]);
+    let cachedPages = writable(new Set<string>([$currentPage]));
+
+    $: {
+        cachedPages.update((set) => {
+            set.add($currentPage);
+            return set;
+        });
+    }
 </script>
 
 <div class="wrapper">
     <div class="tab-container">
         <FlexColWrapper>
-            {#each Object.values($pages) as page}
+            {#each $pages.entries() as [key, page] (key)}
                 <button
                     class="page"
                     on:click={() => {
-                        if (!$cachedPages.includes(page.name)) {
-                            $cachedPages = [...$cachedPages, page.name];
-                        }
-                        currentPage.set(page.name);
+                        $currentPage = page.name;
                     }}
                     class:active={$currentPage === page.name}
                 >
@@ -107,12 +113,12 @@
             <ButtonOpenSettings />
         </FlexColWrapper>
     </div>
-    {#each Object.entries($pages) as [key, page] (key)}
+    {#each $pages.entries() as [key, page] (key)}
         <div
             style={style({ display: $currentPage === page.name ? '' : 'none' })}
             class="page-container"
         >
-            {#if $cachedPages.includes(page.name)}
+            {#if $cachedPages.has(page.name)}
                 <Component component={page.component()} />
             {/if}
         </div>
@@ -146,7 +152,9 @@
         width: 40px;
         height: 40px;
         font-size: 16px;
-        color: var(--color-1);
+
+        // color: var(--color-1);
+        color: color-mix(in srgb, var(--color-1) 75%, var(--color-bg-2) 0%);
         background: none;
         background-color: var(--color);
         border: none;
@@ -156,7 +164,7 @@
             color: var(--color-1);
             background: var(--color-bg-2);
             outline: 1px solid var(--color-1);
-            outline-offset: -2px;
+            outline-offset: -3px;
         }
 
         &.active {

@@ -28,7 +28,7 @@
             }
         },
         {
-            icon: 'ti ti-home',
+            icon: 'ti ti-bolt',
             name: '接続中',
             componentPanel() {
                 return {

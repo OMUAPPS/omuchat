@@ -52,7 +52,7 @@
         <div class="description">{$t('screen.settings.description')}</div>
     </div>
     <div class="close-button">
-        <Button callback={screenContext.pop} outline rounded filled>
+        <Button on:click={screenContext.pop} outline rounded filled>
             <JustifyBaselineWrapper>
                 {$t('general.close')}
                 <i class="ti ti-x" />
