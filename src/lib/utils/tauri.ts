@@ -1,7 +1,8 @@
-import type { WebviewWindow } from '@tauri-apps/api/window';
+import type { WebviewWindow as _WebviewWindow } from '@tauri-apps/api/window';
 
-let appWindow: WebviewWindow | null = null;
-let _invoke: ((cmd: string, args?: any | undefined) => Promise<any>) | null = null;
+let WebviewWindow: typeof _WebviewWindow | undefined;
+let appWindow: _WebviewWindow | undefined;
+let _invoke: ((cmd: string, args?: any | undefined) => Promise<any>) | undefined;
 
 export function minimizeWindow() {
     appWindow?.minimize();
@@ -41,8 +42,16 @@ export function invoke<T extends keyof Commands>(
     return _invoke!(command, ...args);
 }
 
+export function openWindow(...options: ConstructorParameters<typeof _WebviewWindow>) {
+    if (!WebviewWindow) {
+        throw new Error('WebviewWindow not initialized');
+    }
+    return new WebviewWindow(...options);
+}
+
 if (!import.meta.env.SSR) {
-    import('@tauri-apps/api/window').then(({ appWindow: _appWindow }) => {
+    import('@tauri-apps/api/window').then(({ WebviewWindow: _WebviewWindow, appWindow: _appWindow }) => {
+        WebviewWindow = _WebviewWindow;
         appWindow = _appWindow;
     });
     import('@tauri-apps/api/tauri').then(({ invoke: i }) => {
