@@ -95,7 +95,7 @@
     </div>
     <div class="section">
         <h3>Apps</h3>
-        <div>
+        <div class="apps">
             <TableList
                 table={server.apps}
                 component={AppEntry}
@@ -143,6 +143,10 @@
             margin-bottom: 10px;
             background: var(--color-bg-2);
             outline: 1px solid var(--color-1);
+        }
+
+        .apps {
+            height: fit-content;
         }
     }
 </style>

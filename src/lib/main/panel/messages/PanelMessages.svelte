@@ -20,4 +20,4 @@
     });
 </script>
 
-<TableList table={chat.messages} component={MessageEntry} filter={filter} sort={sort} reverse={true} />
+<TableList table={chat.messages} component={MessageEntry} {filter} {sort} reverse={true} />

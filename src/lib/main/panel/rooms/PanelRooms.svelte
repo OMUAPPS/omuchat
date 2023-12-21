@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { models } from '@omuchat/client';
+    import { onMount } from 'svelte';
 
     import RoomEntry from './RoomEntry.svelte';
 
@@ -12,12 +13,20 @@
 
     export let filter: (key: string, room: models.Room) => boolean = (_, room) => room.online;
 
-    const { chat } = getClient();
+    const { chat, client } = getClient();
     let rooms = chat.rooms!.cache;
     let showOffline = false;
 
-    chat.rooms.listen((newRooms: Map<string, models.Room>) => {
+    const destroy = chat.rooms.listen((newRooms: Map<string, models.Room>) => {
         rooms = newRooms;
+    });
+    client.connection.addListener({
+        onConnect() {
+            chat.rooms.fetch(100);
+        }
+    });
+    onMount(() => {
+        return destroy;
     });
 
     function toggleOffline() {

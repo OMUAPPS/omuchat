@@ -7,7 +7,6 @@
         
     function openApp(app: App) {
         const windowId = `app-${app.id}`;
-        console.log(app);
         let options: WindowOptions = {
             url: `/app?id=${app.id}`,
             title: $t(`apps.${app.id}.name`),

@@ -3,7 +3,7 @@
 
     import LinkableText from "$lib/common/LinkableText.svelte";
     
-export let component: models.Content;
+    export let component: models.Content;
 </script>
 
 {#if component instanceof models.TextContent}

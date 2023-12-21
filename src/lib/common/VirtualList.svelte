@@ -12,11 +12,11 @@
     // read-only, but visible to consumers via bind:start
     export let start = 0;
     export let end = 0;
+    export let viewport: HTMLDivElement;
 
     // local state
     let height_map: number[] = [];
     let rows: HTMLElement[];
-    let viewport: HTMLDivElement;
     let contents: HTMLDivElement;
     let viewport_height = 0;
     let visible: { index: number, data: T }[];
@@ -127,23 +127,6 @@
     });
 </script>
 
-<style>
-    svelte-virtual-list-viewport {
-        position: relative;
-        display: block;
-        overflow-y: auto;
-        -webkit-overflow-scrolling:touch;
-    }
-
-    svelte-virtual-list-contents, svelte-virtual-list-row {
-        display: block;
-    }
-
-    svelte-virtual-list-row {
-        overflow: hidden;
-    }
-</style>
-
 <svelte-virtual-list-viewport
     bind:this={viewport}
     bind:offsetHeight={viewport_height}
@@ -161,3 +144,20 @@
         {/each}
     </svelte-virtual-list-contents>
 </svelte-virtual-list-viewport>
+
+<style>
+    svelte-virtual-list-viewport {
+        position: relative;
+        display: block;
+        overflow-y: auto;
+        -webkit-overflow-scrolling:touch;
+    }
+
+    svelte-virtual-list-contents, svelte-virtual-list-row {
+        display: block;
+    }
+
+    svelte-virtual-list-row {
+        overflow: hidden;
+    }
+</style>

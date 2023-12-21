@@ -3,12 +3,12 @@
     export let disabled = false;
 </script>
 
-<button class="button" type="button" on:click class:outline {disabled}>
+<button type="button" on:click class:outline {disabled}>
     <slot />
 </button>
 
 <style lang="scss">
-    .button {
+    button {
         display: flex;
         align-items: center;
         justify-content: center;

@@ -37,8 +37,6 @@
     <main>
         {#await loadLocale()}
         <div class="loading" data-tauri-drag-region>
-            <i class="ti ti-reload" />
-            Loading...
         </div>
         {:then}
         <slot />

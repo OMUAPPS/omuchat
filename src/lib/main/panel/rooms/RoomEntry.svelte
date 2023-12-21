@@ -3,10 +3,13 @@
 
     import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
+    import { getClient } from '$lib/common/omuchat/client';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper';
 
     export let entry: models.Room;
+
+    const { client } = getClient();
 
     function open() {
         window.open(entry.url, '_blank');
@@ -21,10 +24,12 @@
 <div class="room">
     <div class="top">
         <div>
-            <img src={entry.image_url} alt="thumbnail" class="room-thumbnail">
-            <Tooltip noBackground>
-                <img src={entry.image_url} alt="thumbnail" class="room-thumbnail-preview">
-            </Tooltip>
+            {#if entry.image_url}
+                <img src={client.proxy(entry.image_url)} alt="thumbnail" class="room-thumbnail">
+                <Tooltip noBackground>
+                    <img src={client.proxy(entry.image_url)} alt="thumbnail" class="room-thumbnail-preview">
+                </Tooltip>
+            {/if}
         </div>
         <div class="buttons">
             <FlexRowWrapper widthFull reverse>

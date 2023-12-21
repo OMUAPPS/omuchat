@@ -35,21 +35,6 @@
             },
             "dialog": {
                 "all": true
-            },
-            "path": {
-                "all": true
-            },
-            "fs": {
-                "all": true,
-                "scope": [
-                    "**"
-                ]
-            },
-            "protocol": {
-                "asset": true,
-                "assetScope": [
-                    "**"
-                ]
             }
         },
         "bundle": {

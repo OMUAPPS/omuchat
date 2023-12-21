@@ -18,6 +18,9 @@
     const { client } = getClient();
     let entries: Map<string, T> = new Map();
     let items: [string, T][] = [];
+    let scroll = 0;
+    let update = false;
+    let viewport: HTMLDivElement;
 
     function fetch() {
         table.fetch(table.info.cacheSize ?? 100);
@@ -34,6 +37,7 @@
             fetch();
         }
         return table.listen((chache) => {
+            update = true;
             if (filter) {
                 chache = new Map([...chache.entries()].filter(([key, entry]) => filter(key, entry)));
                 entries = new Map([...entries.entries(), ...chache.entries()].slice(-(table.info.cacheSize ?? 100)));
@@ -43,27 +47,45 @@
         });
     });
 
+    function top() {
+        scroll = 0;
+        viewport.scrollTo({ top: 0 });
+    }
+
     $: {
-        items = Array.from(entries.entries());
-        if (filter) {
-            items = items.filter(([key, entry]) => filter(key, entry));
-        }
-        if (sort) {
-            items = items.sort(([, entryA], [, entryB]) => sort(entryA, entryB));
-        }
-        if (reverse) {
-            items = items.reverse();
+        if (!items.length || scroll === 0 && update) {
+            items = Array.from(entries.entries());
+            if (filter) {
+                items = items.filter(([key, entry]) => filter(key, entry));
+            }
+            if (sort) {
+                items = items.sort(([, entryA], [, entryB]) => sort(entryA, entryB));
+            }
+            if (reverse) {
+                items = items.reverse();
+            }
+            update = false;
         }
     }
 </script>
 
 <div class="list">
-    <VirtualList
-        items={items}
-        let:item
-    >
-        <svelte:component this={component} entry={item} />
-    </VirtualList>
+    <div class="items">
+        <VirtualList
+            items={items}
+            bind:viewport={viewport}
+            bind:start={scroll}
+            let:item
+        >
+            <svelte:component this={component} entry={item} />
+        </VirtualList>
+    </div>
+    {#if update}
+        <button class="loading" on:click={top}>
+            更新があります
+            <i class="ti ti-chevron-up" />
+        </button>
+    {/if}
 </div>
 
 <style lang="scss">
@@ -73,5 +95,37 @@
         flex-direction: column;
         height: 100%;
         overflow-y: auto;
+    }
+
+    .loading {
+        position: absolute;
+        top: 10px;
+        right: 50%;
+        display: flex;
+        gap: 5px;
+        align-items: baseline;
+        justify-content: center;
+        padding: 6px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--color-1);
+        background: var(--color-bg-1);
+        border: none;
+        border-radius: 50px;
+        outline: 1px solid var(--color-1);
+        transform: translateX(50%);
+
+        i {
+            font-size: 14px;
+        }
+
+        &:hover {
+            outline: 2px solid var(--color-1);
+        }
+    }
+
+    .items {
+        width: 100%;
+        height: 100%;
     }
 </style>

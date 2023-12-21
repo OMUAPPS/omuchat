@@ -36,7 +36,7 @@
                 return {
                     component: PanelMessages,
                     props: {
-                        filter: (_key: string, message: models.Message) => !!(message.gift || message.paid)
+                        filter: (_key: string, message: models.Message) => !!(message.gifts?.length || message.paid)
                     }
                 };
             },

@@ -18,6 +18,5 @@ export class DashboardExtension implements Extension {
     }
 
     onInitialized(): void {
-        console.log("DashboardExtension initialized");
     }
 }

@@ -5,6 +5,7 @@
     import { open } from "@tauri-apps/api/dialog";
     import { listen } from '@tauri-apps/api/event';
     import { convertFileSrc } from '@tauri-apps/api/tauri';
+    import { appWindow } from '@tauri-apps/api/window';
     import { onMount } from 'svelte';
 
     import type { Emoji } from './emoji';
@@ -33,33 +34,27 @@
     let search: string = '';
     let fileDrop: boolean = false;
     let dragFiles: string[] = [];
+    let uploading: number = 0;
 
-    function upload(files: string[]) {
-        files.forEach((file: string) => {
-            const regex = /([^\\/]+)\.[^/]+/;
-            const id = regex.exec(file)?.[1];
-            if (!id) return;
-            const emoji: Emoji = {
-                id,
-                name: id,
-                regex: `:${id}:`,
-                image_url: convertFileSrc(file),
-            };
-            emojis.set(id, emoji);
-            client.omu.registry.set({ name: 'emojis', app: 'omu-plugins/emoji-plugin' }, Object.fromEntries(emojis));
-        });
+    async function upload(files: string[]) {
+        uploading ++;
+        await client.omu.endpoints.call({ name: 'upload', app: 'omu-plugins/emoji-plugin' }, files);
+        uploading --;
     }
 
     onMount(() => {
         listen('tauri://file-drop', (event) => {
+            if (event.windowLabel !== appWindow.label) return;
             fileDrop = false;
             upload(event.payload as string[]);
         })
         listen('tauri://file-drop-hover', (event) => {
+            if (event.windowLabel !== appWindow.label) return;
             fileDrop = true;
             dragFiles = event.payload as string[];
         })
-        listen('tauri://file-drop-cancelled', () => {
+        listen('tauri://file-drop-cancelled', (event) => {
+            if (event.windowLabel !== appWindow.label) return;
             fileDrop = false;
         })
     });
@@ -92,7 +87,8 @@
             content: RootContent.of([
                 TextContent.of(`${emoji.name} (${emoji.regex})`),
                 ImageContent.of(emoji.image_url, emoji.id, emoji.name),
-            ])
+            ]),
+            created_at: new Date(),
         }));
     }
 
@@ -134,6 +130,12 @@
                 <i class="ti ti-upload" />
                 もしくはファイルを選択
             </button>
+            {#if uploading > 0}
+                <span>
+                    <i class="ti ti-upload" />
+                    アップロード中…
+                </span>
+            {/if}
         </div>
         {#each Array.from(emojis.values()).filter(emoji => emoji.name.includes(search)) as emoji}
             <EmojiEntry emoji={emoji} on:delete={deleteEmoji} on:edit={editEmoji} on:test={testEmoji} />
@@ -212,12 +214,28 @@
         height: 40px;
 
         button {
-            height: 100%;
+            height: 32px;
             padding: 0 10px;
             color: var(--color-1);
             cursor: pointer;
             background: var(--color-bg-2);
             border: 1px solid var(--color-1);
+
+            &:hover {
+                color: var(--color-bg-2);
+                background: var(--color-1);
+            }
+        }
+
+        span {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--color-1);
         }
     }
 
