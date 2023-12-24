@@ -12,6 +12,10 @@ impl PythonRuntime {
         PythonRuntime(path)
     }
 
+    pub fn set_env(&self, key: &str, value: &str) {
+        std::env::set_var(key, value);
+    }
+
     pub async fn execute(&self, arguments: Vec<String>, run_dir: &Path) -> Result<Child> {
         let mut command = Command::new(&self.0);
         command.current_dir(run_dir);

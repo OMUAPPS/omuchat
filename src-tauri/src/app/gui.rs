@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, thread};
 
 use local_ip_address::local_ip;
 use tauri::{utils::config::AppUrl, Manager, WindowUrl};
@@ -34,83 +34,93 @@ async fn share_url(state: tauri::State<'_, ServerState>) -> Result<ShareResponse
 
 #[tauri::command]
 async fn run_server() -> Result<(), String> {
-    info!("Running server...");
-    let data = LAUNCHER_DIRECTORY.data_dir();
-    let runtimes_folder = data.parent().unwrap().join("runtimes");
-    let python = python::download_python(&runtimes_folder)
-        .await
-        .expect("Failed to download Python");
-    let runtime = PythonRuntime::new(python);
-    runtime
-        .execute(
-            vec![
-                "-m".to_string(),
-                "pip".to_string(),
-                "install".to_string(),
-                "--upgrade".to_string(),
-                "pip".to_string(),
-            ],
-            &data,
-        )
-        .await
-        .expect("Failed to upgrade pip");
-    runtime
-        .handle_io(
-            &mut runtime
-                .execute(
-                    vec![
-                        "-m".to_string(),
-                        "pip".to_string(),
-                        "install".to_string(),
-                        "git+https://github.com/OMUCHAT/omu.py.git".to_string(),
-                        "git+https://github.com/OMUCHAT/server.git".to_string(),
-                    ],
-                    &data,
-                )
-                .await
-                .expect("Failed to start server"),
-            |_, data| {
-                println!("{}", String::from_utf8_lossy(data));
-                Ok(())
-            },
-            |_, data| {
-                println!("{}", String::from_utf8_lossy(data));
-                Ok(())
-            },
-            tokio::sync::oneshot::channel().1,
-            &(),
-        )
-        .await
-        .expect("Failed to install server");
-    runtime
-        .handle_io(
-            &mut runtime
-                .execute(vec!["-m".to_string(), "omuserver".to_string()], &data)
-                .await
-                .expect("Failed to start server"),
-            |_, data| {
-                println!("{}", String::from_utf8_lossy(data));
-                Ok(())
-            },
-            |_, data| {
-                println!("{}", String::from_utf8_lossy(data));
-                Ok(())
-            },
-            tokio::sync::oneshot::channel().1,
-            &(),
-        )
-        .await
-        .expect("Failed to handle IO");
+    thread::spawn(move || {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(async {
+                info!("Running server...");
+                let data = LAUNCHER_DIRECTORY.data_dir();
+                let runtimes_folder = data.parent().unwrap().join("runtimes");
+                let python = python::download_python(&runtimes_folder)
+                    .await
+                    .expect("Failed to download Python");
+                let runtime = PythonRuntime::new(python);
+                runtime.set_env("MULTIDICT_NO_EXTENSIONS", "1");
+                runtime
+                    .execute(
+                        vec![
+                            "-m".to_string(),
+                            "pip".to_string(),
+                            "install".to_string(),
+                            "--upgrade".to_string(),
+                            "pip".to_string(),
+                        ],
+                        &data,
+                    )
+                    .await
+                    .expect("Failed to upgrade pip");
+                runtime
+                    .handle_io(
+                        &mut runtime
+                            .execute(
+                                vec![
+                                    "-m".to_string(),
+                                    "pip".to_string(),
+                                    "install".to_string(),
+                                    "git+https://github.com/OMUCHAT/omu.py.git".to_string(),
+                                    "git+https://github.com/OMUCHAT/server.git".to_string(),
+                                ],
+                                &data,
+                            )
+                            .await
+                            .expect("Failed to start server"),
+                        |_, data| {
+                            println!("{}", String::from_utf8_lossy(data));
+                            Ok(())
+                        },
+                        |_, data| {
+                            println!("{}", String::from_utf8_lossy(data));
+                            Ok(())
+                        },
+                        tokio::sync::oneshot::channel().1,
+                        &(),
+                    )
+                    .await
+                    .expect("Failed to install server");
+                runtime
+                    .handle_io(
+                        &mut runtime
+                            .execute(vec!["-m".to_string(), "omuserver".to_string()], &data)
+                            .await
+                            .expect("Failed to start server"),
+                        |_, data| {
+                            println!("{}", String::from_utf8_lossy(data));
+                            Ok(())
+                        },
+                        |_, data| {
+                            println!("{}", String::from_utf8_lossy(data));
+                            Ok(())
+                        },
+                        tokio::sync::oneshot::channel().1,
+                        &(),
+                    )
+                    .await
+                    .expect("Failed to handle IO");
 
-    info!("Server running");
+                info!("Server running");
+            });
+    });
+
     Ok(())
 }
 
 #[tauri::command]
 async fn delete_runtime() -> Result<(), String> {
-    let runtimes_folder = std::path::PathBuf::from("runtimes");
-    fs::remove_dir_all(&runtimes_folder).map_err(|e| e.to_string())?;
-    info!("Deleted runtimes");
+    let data = LAUNCHER_DIRECTORY.data_dir();
+    let runtimes_folder = data.parent().unwrap().join("runtimes");
+    fs::remove_dir_all(runtimes_folder).unwrap();
     Ok(())
 }
 
