@@ -54,7 +54,7 @@ jobs:
                 if: matrix.platform == 'ubuntu-latest'
                 with:
                     name: omuchat-appimage-linux
-                    path: ./src-tauri/target/release/bundle/appimage/omuchat_**.AppImage.*
+                    path: ./src-tauri/target/release/bundle/appimage/omuchat_**.AppImage
     
             -   uses: actions/upload-artifact@v3
                 if: matrix.platform == 'ubuntu-latest'
