@@ -49,3 +49,27 @@ jobs:
                     releaseBody: "See the assets to download this version and install."
                     releaseDraft: true
                     prerelease: false
+
+            -   uses: actions/upload-artifact@v3
+                if: matrix.platform == 'ubuntu-latest'
+                with:
+                    name: omuchat-appimage-linux
+                    path: ./src-tauri/target/release/bundle/appimage/omuchat_**.AppImage.*
+    
+            -   uses: actions/upload-artifact@v3
+                if: matrix.platform == 'ubuntu-latest'
+                with:
+                    name: omuchat-deb-linux
+                    path: ./src-tauri/target/release/bundle/deb/omuchat_**.deb
+    
+            -   uses: actions/upload-artifact@v3
+                if: matrix.platform == 'windows-latest'
+                with:
+                    name: omuchat-windows
+                    path: ./src-tauri/target/release/bundle/msi/omuchat_**.msi.*
+    
+            -   uses: actions/upload-artifact@v3
+                if: matrix.platform == 'macos-latest'
+                with:
+                    name: omuchat-macos
+                    path: ./src-tauri/target/release/bundle/macos/omuchat.app.tar.*
