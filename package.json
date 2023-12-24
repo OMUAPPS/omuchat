@@ -5,6 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "tauri dev",
+        "prepare": "svelte-kit sync",
         "build": "tauri build",
         "ui:dev": "vite --host 0.0.0.0",
         "ui:build": "node script/tabler-icons.mjs && vite build",
