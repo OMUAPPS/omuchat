@@ -1,17 +1,17 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     
-import Button from '../common/input/Button.svelte';
-import QrCode from '../common/qrcode/QRCode.svelte';
-import Screen from '../common/screen/Screen.svelte';
-import Tooltip from '../common/tooltip/Tooltip.svelte';
+    import Button from '../common/input/Button.svelte';
+    import QrCode from '../common/qrcode/QRCode.svelte';
+    import Screen from '../common/screen/Screen.svelte';
+    import Tooltip from '../common/tooltip/Tooltip.svelte';
 
-    import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
-    import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
-    import { screenContext } from '$lib/common/screen/screen';
-    import { t } from '$lib/i18n/i18n-context';
-    import { ClipboardHelper } from '$lib/utils/clipboard-helper';
-    import { invoke } from '$lib/utils/tauri';
+  import Background from '$lib/common/Background.svelte';
+  import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
+  import { screenContext } from '$lib/common/screen/screen';
+  import { t } from '$lib/i18n/i18n-context';
+  import { ClipboardHelper } from '$lib/utils/clipboard-helper';
+  import { invoke } from '$lib/utils/tauri';
 
     let result: ShareResult | undefined;
     let url: string = '';
@@ -38,29 +38,27 @@ import Tooltip from '../common/tooltip/Tooltip.svelte';
     function copyQrToClipboard() {
         ClipboardHelper.writeImage(qrImage);
     }
-
-    function close() {
-        screenContext.pop();
-    }
 </script>
 
-<Screen title="remote_connect" windowed={false}>
+<Screen title="remote_connect" windowed={false} noDecorated>
+    <Background />
     <div class="container">
-        {#if result}
-            <button on:click={copyQrToClipboard} class="qr">
-                <Tooltip>{$t('general.copy')}</Tooltip>
-                <QrCode value={url} size={150} bind:qrImage />
-            </button>
-            このQRコードをスキャンしてください
-            <FlexRowWrapper gap between>
-                <Tooltip>{$t('general.copy')}</Tooltip>
-                <Button on:click={copyUrlToClipboard}>
-                    {url}
-                </Button>
-            </FlexRowWrapper>
-        {/if}
-        <div class="close">
-            <Button on:click={close} outline>
+        <div class="result">
+            {#if result}
+                <button on:click={copyQrToClipboard} class="qr">
+                    <Tooltip>{$t('general.copy')}</Tooltip>
+                    <QrCode value={url} size={128} bind:qrImage />
+                </button>
+                <div class="copy">
+                    <Button on:click={copyUrlToClipboard}>
+                        <Tooltip>{$t('general.copy')}</Tooltip>
+                        {url}
+                    </Button>
+                </div>
+            {/if}
+        </div>
+        <div class="close-button">
+            <Button on:click={screenContext.pop} outline rounded filled>
                 <JustifyBaselineWrapper>
                     {$t('general.close')}
                     <i class="ti ti-x" />
@@ -73,31 +71,46 @@ import Tooltip from '../common/tooltip/Tooltip.svelte';
 <style lang="scss">
     .container {
         position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-        justify-content: center;
         width: 100%;
         height: 100%;
     }
 
-    .close {
-        position: absolute;
-        bottom: 40px;
+    .result {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        align-items: flex-start;
+        justify-content: center;
+        width: 400px;
+        height: 100%;
+        padding-left: 40px;
+        background: var(--color-bg-1);
+        outline: 2px solid var(--color-1);
     }
 
     .qr {
-        width: 150px;
-        height: 150px;
+        top: 50%;
+        width: 140px;
+        height: 140px;
         padding: 0;
-        margin: 0;
-        background: none;
+        background: var(--color-bg-2);
         border: none;
 
         &:hover {
             outline: 2px solid var(--color-1);
             outline-offset: 4px;
         }
+    }
+
+    .copy {
+        font-weight: bold;
+        background: var(--color-bg-2);
+    }
+    
+    .close-button {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        margin-bottom: 40px;
     }
 </style>

@@ -162,15 +162,15 @@
     }
 
     .message-content {
-        position: relative;
         margin-right: 14px;
         margin-bottom: 5px;
         overflow: clip;
         font-size: 0.9rem;
+        text-wrap: wrap;
         word-break: auto-phrase;
         overflow-wrap: break-word;
+        white-space: pre-line;
         user-select: text;
-        contain: content;
     }
 
     .paid {
@@ -187,5 +187,6 @@
         flex-flow: row nowrap;
         gap: 5px;
         width: 100%;
+        margin: 10px 0 0;
     }
 </style>

@@ -59,7 +59,7 @@
         width: 100%;
         height: 100%;
         padding: 10px;
-        overflow-x: scroll;
+        overflow-x: auto;
         background: var(--color-bg-1);
     }
 </style>

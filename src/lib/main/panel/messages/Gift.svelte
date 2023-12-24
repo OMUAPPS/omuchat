@@ -40,7 +40,7 @@
         width: fit-content;
         min-width: 90px;
         height: 90px;
-        padding: 5px;
+        padding: 5px 10px;
 
         .image {
             display: flex;

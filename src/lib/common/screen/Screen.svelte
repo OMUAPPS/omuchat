@@ -76,14 +76,13 @@
 
         &:not(.windowed) {
             position: absolute;
+            top: 40px;
+            width: 100%;
+            height: calc(100% - 40px);
 
             &:not(.no-decorated) {
                 top: 40px;
             }
-
-            width: 100%;
-            height: calc(100% - 40px);
-            padding-top: 40px;
         }
     }
 

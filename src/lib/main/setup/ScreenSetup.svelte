@@ -24,11 +24,11 @@
     function fetchChannels() {
         if (locked) return;
         locked = true;
-        chat.fetchChannelsByUrl(url)
+        chat.createChannelTree(url)
             .then((res) => {
                 result = new Map(
-                    [...res.entries()].map(([url, channel]) => {
-                        return [url, { channel, active: true }];
+                    res.map((channel) => {
+                        return [channel.url, { channel, active: true }];
                     })
                 );
             })
@@ -134,7 +134,7 @@
                     次へ
                     <i class="ti ti-arrow-right" />
                 </Button>
-                <Button rounded on:click{screenContext.pop}>
+                <Button rounded on:click={screenContext.pop}>
                     スキップ
                     <i class="ti ti-arrow-right" />
                 </Button>

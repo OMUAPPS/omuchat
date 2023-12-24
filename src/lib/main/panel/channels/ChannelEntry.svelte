@@ -8,8 +8,8 @@
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
-    const { chat } = getClient();
     export let entry: models.Channel;
+    const { chat } = getClient();
 
     let active = writable(entry.active);
     active.subscribe((value) => {

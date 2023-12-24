@@ -14,57 +14,94 @@
     export let filter: (key: string, entry: T) => boolean = () => true;
     export let sort: (a: T, b: T) => number = () => 0;
     export let reverse: boolean = false;
+    export let initial: number = 40;
     
     const { client } = getClient();
     let entries: Map<string, T> = new Map();
     let items: [string, T][] = [];
-    let scroll = 0;
-    let update = false;
+    let startIndex = 0;
+    let endIndex = 0;
+    let updated = false;
     let viewport: HTMLDivElement;
+    let last: string | undefined;
 
-    function fetch() {
-        table.fetch(table.info.cacheSize ?? 100);
+    async function fetch() {
+        if (!client.connection.connected) return;
+        if (last) {
+            const items = await table.fetch({
+                cursor: last,
+                before: initial,
+            });
+            updateCache(items);
+            updated = false;
+            update();
+            return;
+        }
+        const items = await table.fetch({
+            before: initial,
+        });
+        updateCache(items);
+    }
+
+    client.connection.addTask(async () => {
+        entries.clear();
+        fetch();
+    });
+
+    function updateCache(cache: Map<string, T>) {
+        if (cache.size === 0) return;
+        last = [...cache.entries()].pop()?.[0];
+        if (filter) {
+            const newItems = [...cache.entries()].filter(([key, entry]) => filter(key, entry)).filter(([key]) => !entries.has(key));
+            if (newItems.length === 0) return;
+            entries = new Map([...entries.entries(), ...newItems]);
+            updated = true;
+            return;
+        }
+        entries = new Map([...entries.entries(), ...cache.entries()]);
+        updated = true;
+    }
+
+    function handleScroll(e: Event) {
+        const target = e.target as HTMLDivElement;
+        const { scrollTop, scrollHeight, clientHeight } = target;
+        if (scrollTop + clientHeight >= scrollHeight - 1000) {
+            fetch();
+        }
     }
 
     onMount(() => {
-        client.connection.addListener({
-            onConnect() {
-                entries.clear();
-                fetch();
-            },
-        });
-        if (client.connection.connected) {
-            fetch();
-        }
-        return table.listen((chache) => {
-            update = true;
-            if (filter) {
-                chache = new Map([...chache.entries()].filter(([key, entry]) => filter(key, entry)));
-                entries = new Map([...entries.entries(), ...chache.entries()].slice(-(table.info.cacheSize ?? 100)));
-                return;
-            }
-            entries = chache;
-        });
+        table.listen(updateCache);
+        viewport.addEventListener("scroll", handleScroll);
+
+        return () => {
+            table.unlisten(updateCache);
+            viewport.removeEventListener("scroll", handleScroll);
+        };
     });
 
     function top() {
-        scroll = 0;
+        startIndex = 0;
         viewport.scrollTo({ top: 0 });
     }
 
+    function update() {
+        items = Array.from(entries.entries());
+        if (filter) {
+            items = items.filter(([key, entry]) => filter(key, entry));
+        }
+        if (sort) {
+            items = items.sort(([, entryA], [, entryB]) => sort(entryA, entryB));
+        }
+        if (reverse) {
+            items = items.reverse();
+        }
+        updated = false;
+    }
+
     $: {
-        if (!items.length || scroll === 0 && update) {
-            items = Array.from(entries.entries());
-            if (filter) {
-                items = items.filter(([key, entry]) => filter(key, entry));
-            }
-            if (sort) {
-                items = items.sort(([, entryA], [, entryB]) => sort(entryA, entryB));
-            }
-            if (reverse) {
-                items = items.reverse();
-            }
-            update = false;
+        if (!items.length || startIndex === 0 && updated) {
+            update();
         }
     }
 </script>
@@ -74,13 +111,14 @@
         <VirtualList
             items={items}
             bind:viewport={viewport}
-            bind:start={scroll}
+            bind:start={startIndex}
+            bind:end={endIndex}
             let:item
         >
             <svelte:component this={component} entry={item} />
         </VirtualList>
     </div>
-    {#if update}
+    {#if updated}
         <button class="loading" on:click={top}>
             更新があります
             <i class="ti ti-chevron-up" />
