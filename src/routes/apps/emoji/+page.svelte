@@ -1,29 +1,17 @@
 <script lang="ts">
-    import { Client } from '@omuchat/client';
     import { ImageContent, Message, RootContent, TextContent } from '@omuchat/client/src/models';
-    import { App } from '@omuchat/omu.js';
     import { open } from "@tauri-apps/api/dialog";
     import { listen } from '@tauri-apps/api/event';
     import { convertFileSrc } from '@tauri-apps/api/tauri';
     import { appWindow } from '@tauri-apps/api/window';
     import { onMount } from 'svelte';
 
-    import type { Emoji } from './emoji';
+    import { client, type Emoji } from './emoji';
     import EmojiEdit from './EmojiEdit.svelte';
     import EmojiEntry from './EmojiEntry.svelte';
 
     import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
     
-
-    const app = new App({
-        name: "emoji",
-        version: "0.1.0",
-        group: "omu-app",
-    });
-    const client = new Client({
-        app,
-    });
-
     let emojis: Map<string, Emoji> = new Map();
     client.omu.registry.listen<Record<string, Emoji>>({ name: 'emojis', app: 'omu-plugins/emoji-plugin' }, (data) => {
         emojis = new Map(Object.entries(data));

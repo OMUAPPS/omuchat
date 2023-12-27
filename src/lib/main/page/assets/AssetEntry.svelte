@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { TYPE_ICONS, type Asset } from '$lib/common/omuchat/asset';
+    import type { Asset } from '$lib/common/omuchat/asset';
+    import { t } from '$lib/i18n/i18n-context';
     import { DragHelper } from '$lib/utils/drag-helper';
 
     export let entry: Asset;
@@ -7,21 +8,26 @@
 
     function handleDragStart(event: DragEvent) {
         DragHelper.setDragImage(event, preview);
-        DragHelper.setUrl(event, entry.url);
+        let url = entry.url;
+        if (!url.startsWith('http')) url = `${window.location.origin}${url}`;
+        DragHelper.setUrl(event, url);
     }
 </script>
 
 <div class="container" on:dragstart={handleDragStart} draggable="true" role="form">
     <div class="header">
-        <i class={TYPE_ICONS[entry.type]} />
-        <div class="asset-name">{entry.name}</div>
+        <i class={$t(`assets.${entry.id}.icon`)} />
+        <class class="asset-name">{$t(`assets.${entry.id}.name`)}</class>
     </div>
     <div class="asset">
         <img src={entry.thumbnail} alt="" />
-        <div class="description">
+        <div class="info">
+            <div class="description">
+                {$t(`assets.${entry.id}.description`)}
+            </div>
             <div class="tags">
                 {entry.tags.join(', ')}
-        </div>
+            </div>
             <div class="drag-hint">
                 <i class="ti ti-drag-drop" />
                 ドラッグアンドドロップして追加できます
@@ -31,7 +37,7 @@
     <div class="preview" bind:this={preview}>
         <img src={entry.thumbnail} alt="" />
         <div>
-            <i class={TYPE_ICONS[entry.type]} />
+            <i class="ti ti-package" />
             {entry.name}
         </div>
     </div>
@@ -62,11 +68,6 @@
         }
     }
 
-    .container {
-        display: flex;
-        flex-direction: column;
-    }
-
     .header {
         position: relative;
         display: flex;
@@ -80,8 +81,13 @@
         line-height: 0;
         color: var(--color-1);
 
-        &.invert {
-            flex-direction: row-reverse;
+        i {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--color-1);
         }
     }
 
@@ -101,12 +107,13 @@
         img {
             top: 0;
             left: 0;
-            width: 300px;
+            width: 240px;
+            min-width: 240px;
             height: 100%;
             object-fit: cover;
         }
 
-        .description {
+        .info {
             top: 0;
             left: 0;
             display: flex;
@@ -122,34 +129,47 @@
                 color: var(--color-1);
             }
 
-            .drag-hint {
-                display: none;
-                align-items: center;
-                justify-content: center;
-                font-size: 12px;
+            .description {
+                font-size: 14px;
                 font-weight: 600;
                 color: var(--color-1);
-                white-space: nowrap;
-
-                i {
-                    font-size: 24px;
-                }
             }
         }
 
-        &:hover {
-            margin-left: -5px;
-            outline: 2px solid var(--color-1);
-            box-shadow: 5px 5px 0 2px var(--color-2);
-            transition: 0.1s;
+        .drag-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-1);
+            white-space: nowrap;
+            visibility: hidden;
 
-            img {
-                opacity: 0.2;
+            i {
+                font-size: 24px;
             }
+        }
+    }
 
-            .description {
+    .container {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+
+        &:hover {
+            .asset {
+                margin-left: -5px;
+                outline: 2px solid var(--color-1);
+                box-shadow: 5px 5px 0 2px var(--color-2);
+                transition: 0.1s;
+
+                img {
+                    opacity: 0.2;
+                }
+                
                 .drag-hint {
-                    display: flex;
+                    visibility: visible;
                 }
             }
         }

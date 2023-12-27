@@ -1,10 +1,9 @@
 <script lang="ts">
     import type { models } from '@omuchat/client';
-    import { onMount } from 'svelte';
-
-    import Gift from './Gift.svelte';
-    import MessageContent from './MessageContent.svelte';
-    import Role from './Role.svelte';
+    
+import Gift from './Gift.svelte';
+import MessageContent from './MessageContent.svelte';
+import Role from './Role.svelte';
 
     import { getClient } from '$lib/common/omuchat/client';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
@@ -18,14 +17,12 @@
         if (!entry.author_id) return null;
         author = await chat.authors.get(entry.author_id);
     }
-    onMount(() => {
-        getAuthor();
-    });
+    getAuthor();
 </script>
 
 <div class={classes("message", !!(entry.paid || entry.gifts?.length) && "special")} style={style(entry.paid || entry.gifts?.length ? {
     borderLeft: `2px solid var(--color-1)`,
-    background: `${applyOpacity(entry.paid ? 'var(--color-2)' : 'var(--color-1)', 0.1)}`,
+    background: `${applyOpacity(entry.paid ? 'var(--color-1)' : 'var(--color-2)', 0.1)}`,
 } : {})}>
     <div class="left">
         {#if author && author.avatar_url}

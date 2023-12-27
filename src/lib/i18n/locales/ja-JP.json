@@ -97,6 +97,9 @@
     "apps": {
         "play-queue": {
             "name": "参加型管理"
+        },
+        "emoji": {
+            "name": "絵文字"
         }
     },
     "settings": {
@@ -131,6 +134,13 @@
             "devMode": "開発者モード",
             "language": "言語",
             "layoutInvert": "レイアウトを反転"
+        }
+    },
+    "assets": {
+        "comment-simple": {
+            "name": "コメント (シンプル)",
+            "description": "シンプルなコメントです。",
+            "icon": "ti ti-message"
         }
     }
 }

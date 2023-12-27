@@ -9,7 +9,7 @@ const theme1: Theme = {
     "--color-bg-2": "#fffefc",
     "--color-1": "#0b6f72",
     "--color-2": "#35dfe1",
-    "--color-text": "#222",
+    "--color-text": "#444",
     "--color-outline": "rgba(0, 0, 0, 0.1)",
     "--margin": "10px",
 }
@@ -20,7 +20,7 @@ const theme2: Theme = {
     // "--color-1": "#404040",
     "--color-1": "#0b6f72",
     "--color-2": "#35dfe1",
-    "--color-text": "#222",
+    "--color-text": "#444",
     "--color-outline": "rgba(0, 0, 0, 0.1)",
     "--margin": "10px",
 }

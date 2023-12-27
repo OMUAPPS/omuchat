@@ -3,16 +3,12 @@
 
     import ClientProvider from '$lib/common/omuchat/ClientProvider.svelte';
     import PanelMessages from '$lib/main/panel/messages/PanelMessages.svelte';
+    import { getTabId } from '$lib/utils/browser-helper';
     import { getBrowser, getOS } from '$lib/utils/device-helper';
     
-    let id = window.sessionStorage.getItem('remote-client-id')
-    if (!id) {
-        id = Math.random().toString(36).substr(2, 4);
-        window.sessionStorage.setItem('remote-client-id', id);
-    }
 
     const app = new App({
-        name: `remote-client-${getOS()}-${getBrowser()}-${id}`,
+        name: `remote-client-${getOS()}-${getBrowser()}-${getTabId()}`,
         version: "0.1.0",
         group: "omu",
     });

@@ -72,7 +72,7 @@
     .container {
         width: 100%;
         height: calc(100vh - 80px);
-        padding: 40px;
+        padding: 30px;
         padding-bottom: 80px;
         margin-top: 80px;
         overflow-y: auto;
@@ -107,7 +107,6 @@
         .items {
             display: flex;
             flex-direction: column;
-            gap: 10px;
         }
     }
 </style>
