@@ -39,7 +39,7 @@ export class ChatApp implements Keyable, Model<ChatAppJson> {
         return this.id;
     }
 
-    public json(): ChatAppJson {
+    toJson(): ChatAppJson {
         return {
             id: this.id,
             name: this.name,

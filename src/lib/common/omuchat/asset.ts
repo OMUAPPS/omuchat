@@ -35,11 +35,11 @@ export class Asset implements Keyable, Model<AssetJson> {
         return new Asset(data);
     }
 
-    public key(): string {
+    key(): string {
         return this.id;
     }
 
-    public json(): AssetJson {
+    toJson(): AssetJson {
         return {
             id: this.id,
             name: this.name,
