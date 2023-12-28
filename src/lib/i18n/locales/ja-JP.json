@@ -94,14 +94,6 @@
             "description": "チャンネルを追加します。"
         }
     },
-    "apps": {
-        "play-queue": {
-            "name": "参加型管理"
-        },
-        "emoji": {
-            "name": "絵文字"
-        }
-    },
     "settings": {
         "category": {
             "general": {
@@ -136,11 +128,29 @@
             "layoutInvert": "レイアウトを反転"
         }
     },
+    "apps": {
+        "play-queue": {
+            "name": "参加型管理"
+        },
+        "emoji": {
+            "name": "絵文字"
+        },
+        "youtube-reaction": {
+            "name": "YouTube リアクション",
+            "description": "YouTube のリアクションです。",
+            "icon": "ti ti-heart"
+        }
+    },
     "assets": {
         "comment-simple": {
             "name": "コメント (シンプル)",
             "description": "シンプルなコメントです。",
             "icon": "ti ti-message"
+        },
+        "youtube-reaction": {
+            "name": "YouTube リアクション",
+            "description": "YouTube のリアクションです。",
+            "icon": "ti ti-heart"
         }
     }
 }

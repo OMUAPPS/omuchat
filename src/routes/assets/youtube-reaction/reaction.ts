@@ -1,6 +1,5 @@
 import { Client } from "@omuchat/client";
 import { App } from "@omuchat/omu.js";
-import { writable, type Writable } from "svelte/store";
 
 import { getTabId } from "$lib/utils/browser-helper";
 
@@ -20,15 +19,28 @@ export const client = new Client({
 });
 export const chat = client.chat;
 
-export const emojis: Map<string, string | undefined> = new Map();
-
-client.omu.registry.listen({
+export const emojis: Map<string, HTMLImageElement | undefined> = new Map();
+export let scale = 1;
+client.omu.registry.listen<Record<string, string>>({
     name: "emojis",
     app: "omu-apps/youtube-reaction",
-}, (data: Record<string, string | undefined>) => {
+}, (data) => {
+    if (!data) {
+        return;
+    }
     for (const [key, value] of Object.entries(data)) {
-        emojis.set(key, value);
+        if (value) {
+            const img = new Image();
+            img.src = value;
+            emojis.set(key, img);
+        } else {
+            emojis.delete(key);
+        }
     }
 });
-
-export const reactions: Writable<Map<number, Reaction>> = writable(new Map());
+client.omu.registry.listen<number>({
+    name: "scale",
+    app: "omu-apps/youtube-reaction",
+}, (data) => {
+    scale = data ?? 1;
+});

@@ -1,6 +1,8 @@
 <script lang="ts">
     import { Client } from '@omuchat/client';
     import { App } from '@omuchat/omu.js';
+    import { onMount } from 'svelte';
+    import { writable } from 'svelte/store';
 
     import EmojiEntry from './EmojiEntry.svelte';
 
@@ -22,7 +24,7 @@
             ['😳', undefined],
             ['🎉', undefined],
             ['😄', undefined],
-            ...Object.entries(data),
+            ...Object.entries(data || {}),
         ])
     });
 
@@ -31,6 +33,20 @@
         emojis.set(key, value);
         client.omu.registry.set({ name: 'emojis' }, Object.fromEntries(emojis));
     }
+
+    let scale = writable(1);
+    client.omu.registry.listen<number>({ name: 'scale' }, (data) => {
+        scale.set(data || 1);
+    });
+
+    onMount(() => {
+        scale.subscribe((value) => {
+            if (!client.omu.connection.connected) return;
+            client.omu.registry.set({ name: 'scale' }, value);
+        });
+    });
+
+
     client.omu.message.register({ name: 'test' });
     function test() {
         client.omu.message.broadcast({
@@ -52,6 +68,11 @@
         </span>
     </div>
     <div class="entries">
+        <span>
+            サイズ
+            {$scale}
+        </span>
+        <input type="range" min="0.5" max="2" step="0.1" bind:value={$scale} />
         {#each emojis.entries() as [key, value] (key)}
             <EmojiEntry {key} {value} on:edit={editEmoji} />
         {/each}

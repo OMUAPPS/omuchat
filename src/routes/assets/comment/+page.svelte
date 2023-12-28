@@ -4,17 +4,16 @@
     import { client } from './chat';
     import Comment from './Comment.svelte';
 
-    
 
     let messages = client.chat.messages.cache;
+    client.omu.addListener({
+        onReady() {
+            client.chat.messages.fetch({
+                before: 100,
+            });
+        }
+    })
     onMount(() => {
-        client.omu.addListener({
-            onReady() {
-                client.chat.messages.fetch({
-                    before: 100,
-                });
-            }
-        })
         client.chat.messages.setCacheSize(40);
         client.chat.messages.listen((data) => {
             messages = data;
