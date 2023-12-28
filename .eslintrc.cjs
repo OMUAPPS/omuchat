@@ -1,26 +1,27 @@
 module.exports = {
-    parser: "@typescript-eslint/parser",
+    parser: '@typescript-eslint/parser',
     extends: [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:svelte/recommended",
-        "plugin:import/recommended",
-        "plugin:import/warnings"
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:svelte/recommended',
+        'plugin:import/recommended',
+        'plugin:import/warnings',
+        'prettier'
     ],
-    plugins: ["@typescript-eslint", "unused-imports"],
+    plugins: ['@typescript-eslint', 'unused-imports', 'prettier'],
     overrides: [
         {
-            files: ["*.svelte"],
-            parser: "svelte-eslint-parser",
+            files: ['*.svelte'],
+            parser: 'svelte-eslint-parser',
             parserOptions: {
-                parser: "@typescript-eslint/parser"
+                parser: '@typescript-eslint/parser'
             }
         }
     ],
     parserOptions: {
-        sourceType: "module",
+        sourceType: 'module',
         ecmaVersion: 2020,
-        extraFileExtensions: [".svelte"]
+        extraFileExtensions: ['.svelte']
     },
     env: {
         browser: true,
@@ -28,44 +29,44 @@ module.exports = {
         node: true
     },
     rules: {
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-misused-new": "off",
-        "array-bracket-spacing": ["error", "never"],
-        "computed-property-spacing": ["error", "never"],
-        "import/default": "off",
-        "import/named": "off",
-        "import/no-named-as-default": "off",
-        "import/no-named-as-default-member": "off",
-        "import/no-unresolved": "off",
-        "import/order": [
-            "error",
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-misused-new': 'off',
+        'array-bracket-spacing': ['error', 'never'],
+        'computed-property-spacing': ['error', 'never'],
+        'import/default': 'off',
+        'import/named': 'off',
+        'import/no-named-as-default': 'off',
+        'import/no-named-as-default-member': 'off',
+        'import/no-unresolved': 'off',
+        'import/order': [
+            'error',
             {
-                "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
-                "pathGroups": [
+                groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+                pathGroups: [
                     {
-                        "pattern": "react",
-                        "group": "external",
-                        "position": "before"
+                        pattern: 'react',
+                        group: 'external',
+                        position: 'before'
                     }
                 ],
-                "pathGroupsExcludedImportTypes": ["react"],
-                "newlines-between": "always",
-                "alphabetize": {
-                    "order": "asc",
-                    "caseInsensitive": true
+                pathGroupsExcludedImportTypes: ['react'],
+                'newlines-between': 'always',
+                alphabetize: {
+                    order: 'asc',
+                    caseInsensitive: true
                 }
             }
         ],
-        "indent": ["error", 4],
-        "no-restricted-imports": [
-            "error",
+        indent: ['error', 4],
+        'no-restricted-imports': [
+            'error',
             {
-                "patterns": ["../lib"]
+                patterns: ['../lib']
             }
         ],
-        "no-unused-vars": "off",
-        "object-curly-spacing": ["error", "always"],
-        "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": "off"
+        'no-unused-vars': 'off',
+        'object-curly-spacing': ['error', 'always'],
+        'unused-imports/no-unused-imports': 'error',
+        'unused-imports/no-unused-vars': 'off'
     }
-}
+};

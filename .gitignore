@@ -1,5 +1,5 @@
 # tabler
-static/@tabler
+static
 
 # sveltekit
 .svelte-kit
@@ -7,6 +7,9 @@ build
 
 # vite
 vite.config.ts.*.mjs
+
+# tauri
+src-tauri/target
 
 # Logs
 logs
