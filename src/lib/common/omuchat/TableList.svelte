@@ -71,11 +71,30 @@
     }
 
     onMount(() => {
-        table.listen(updateCache);
+        table.listen((items) => {
+            updateCache(items);
+        });
+        table.addListener({
+            onRemove(items) {
+                for (const key of items.keys()) {
+                    entries.delete(key);
+                }
+                updated = true;
+            },
+            onUpdate(items) {
+                for (const [key, value] of items.entries()) {
+                    if (filter && !filter(key, value)) {
+                        entries.delete(key);
+                        continue;
+                    }
+                    entries.set(key, value);
+                }
+                updated = true;
+            },
+        });
         viewport.addEventListener("scroll", handleScroll);
 
         return () => {
-            table.unlisten(updateCache);
             viewport.removeEventListener("scroll", handleScroll);
         };
     });
