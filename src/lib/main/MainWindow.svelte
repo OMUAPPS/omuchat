@@ -1,5 +1,4 @@
 <script lang="ts">
-    
     import { writable } from 'svelte/store';
 
     import Component from '../common/component/PropedComponent.svelte';
@@ -14,12 +13,14 @@
     import PageChannels from './page/PageChannels.svelte';
     import PageHome from './page/PageHome.svelte';
     import PageMessages from './page/PageMessages.svelte';
-    import { currentPage, devMode } from './settings';
+    import { currentPage, devMode, isFirstTime } from './settings';
+    import ScreenSetup from './setup/ScreenSetup.svelte';
 
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
+    import { screenContext } from '$lib/common/screen/screen';
     import { t } from '$lib/i18n/i18n-context';
     import { style } from '$lib/utils/class-helper';
-    
+
     pages.set(new Map());
     $pages.set('main', {
         name: 'main',
@@ -66,7 +67,6 @@
             };
         }
     });
-    
 
     $: if ($devMode) {
         $pages.set('dev', {
@@ -88,6 +88,13 @@
         cachedPages.update((set) => {
             set.add($currentPage);
             return set;
+        });
+    }
+
+    if ($isFirstTime) {
+        screenContext.push({
+            component: ScreenSetup,
+            props: {}
         });
     }
 </script>

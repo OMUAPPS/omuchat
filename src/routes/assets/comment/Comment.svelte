@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { models } from "@omuchat/client";
+    import type { models } from '@omuchat/client';
 
-    import { chat } from "./chat";
+    import { chat } from './chat';
 
-    import MessageContent from "$lib/main/panel/messages/MessageContent.svelte";
+    import MessageContent from '$lib/main/panel/messages/MessageContent.svelte';
 
     export let message: models.Message;
 
@@ -41,7 +41,6 @@
     {/if}
 </div>
 
-
 <style lang="scss">
     .message {
         display: flex;
@@ -78,7 +77,7 @@
     }
 
     .author-name {
-        padding: 2px 4px;
+        padding: 2px 6px;
         font-size: 16px;
         font-weight: 500;
         color: var(--color-bg-2);

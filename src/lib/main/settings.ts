@@ -70,6 +70,7 @@ export const language = createLiteralSetting<keyof typeof LOCALES>('language', s
 export const devMode = createBooleanSetting('devMode', false);
 export const currentPage = createStringSetting('currentPage', 'main');
 export const currentSettingsCategory = createStringSetting('currentPageSettings', 'general');
+export const isFirstTime = createBooleanSetting('isFirstTime', true);
 
 export interface Setting {
     component(): PropedComponent;

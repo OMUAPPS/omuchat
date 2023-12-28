@@ -5,9 +5,9 @@
     import Window from '$lib/Window.svelte';
 
     const app = new App({
-        name: "omu-client",
+        name: "dashboard",
         version: "0.1.0",
-        group: "omu",
+        group: "omu.chat",
     });
 </script>
 
