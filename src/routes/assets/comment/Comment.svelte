@@ -105,10 +105,16 @@
         padding: 10px 20px;
         margin-bottom: 40px;
         margin-left: 20px;
+        overflow: clip;
         font-size: 22px;
         font-weight: bold;
         color: var(--color-text);
         text-align: start;
+        text-wrap: wrap;
+        word-break: auto-phrase;
+        overflow-wrap: break-word;
+        white-space: pre-line;
+        user-select: text;
         background: var(--color-bg-2);
     }
 </style>
