@@ -27,7 +27,7 @@
     let average_height: number;
     let first = true;
 
-    $: visible = items.slice(start, end).map((data, i) => {
+    $: visible = items.slice(start, end + 1).map((data, i) => {
         return { index: i + start, data };
     });
 
