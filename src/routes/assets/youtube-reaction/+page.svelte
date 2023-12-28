@@ -185,6 +185,7 @@
         <button on:click={screenshot}>スクリーンショット</button>
         <img src={screenshotImage} alt="" />
     {/if}
+    <div class="font">❤💯😳🎉😄</div>
 </main>
 
 <style lang="scss">
@@ -205,5 +206,13 @@
     canvas {
         width: 100%;
         height: 100%;
+    }
+
+    .font {
+        position: fixed;
+        top: 0;
+        left: 0;
+        font-family: 'Noto Color Emoji', 'Noto Sans JP', sans-serif;
+        opacity: 0;
     }
 </style>
