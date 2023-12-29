@@ -2,6 +2,8 @@
     import type { models } from '@omuchat/client';
     import { onMount } from 'svelte';
 
+    import { isFirstTime } from '../settings';
+
     import Background from '$lib/common/Background.svelte';
     import Button from '$lib/common/input/Button.svelte';
     import InputText from '$lib/common/input/InputText.svelte';
@@ -44,6 +46,7 @@
         const channels = [...result.values()].filter((v) => v.active).map((v) => v.channel);
         chat.channels!.add(...channels);
         screenContext.pop();
+        isFirstTime.set(false);
     }
 
     function reset() {
