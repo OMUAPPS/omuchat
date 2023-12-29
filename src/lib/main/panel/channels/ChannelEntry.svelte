@@ -13,8 +13,7 @@
 
     let active = writable(entry.active);
     active.subscribe((value) => {
-        if (value === entry.active)
-            return;
+        if (value === entry.active) return;
         entry.active = value;
         chat.channels!.set(entry);
     });
@@ -24,11 +23,14 @@
     }
 </script>
 
-<div class="container">
+<div class="entry">
     <div class="left">
         <div class="channel-icon">
             {#if entry.icon_url}
                 <img src={entry.icon_url} alt="icon" />
+                <Tooltip>
+                    <img src={entry.icon_url} alt="icon" class="tooltip-image" />
+                </Tooltip>
             {:else}
                 <ProviderIcon providerId={entry.provider_id} />
             {/if}
@@ -66,7 +68,7 @@
 </div>
 
 <style lang="scss">
-    .container {
+    .entry {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -98,6 +100,20 @@
         height: 32px;
         margin: 5px;
         border-radius: 50%;
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .tooltip-image {
+            width: 200px;
+            height: 200px;
+            padding: 0;
+            margin: 0;
+            border-radius: 0;
+        }
     }
 
     .channel-name {

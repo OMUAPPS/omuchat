@@ -2,16 +2,13 @@
     import type { models } from '@omuchat/client';
     import { onMount } from 'svelte';
 
-    import ChannelEntry from './ChannelEntry.svelte';
-
     import Background from '$lib/common/Background.svelte';
-    import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
     import Button from '$lib/common/input/Button.svelte';
     import InputText from '$lib/common/input/InputText.svelte';
     import { getClient } from '$lib/common/omuchat/client';
+    import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import { screenContext } from '$lib/common/screen/screen';
     import Screen from '$lib/common/screen/Screen.svelte';
-    import ScreenHeader from '$lib/common/screen/ScreenHeader.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
     const { chat } = getClient();
@@ -23,14 +20,16 @@
 
     function fetchChannels() {
         if (locked) return;
+        console.log(`fetching channels from ${url}`);
         locked = true;
         chat.createChannelTree(url)
             .then((res) => {
                 result = new Map(
                     res.map((channel) => {
-                        return [channel.url, { channel, active: true }];
+                        return [channel.url, { channel, active: false }];
                     })
                 );
+                console.log(result);
             })
             .catch((err) => {
                 console.log(err);
@@ -42,9 +41,7 @@
 
     function finish() {
         if (!result?.size) return;
-        const channels = [...result.values()]
-            .filter((v) => v.active)
-            .map((v) => v.channel);
+        const channels = [...result.values()].filter((v) => v.active).map((v) => v.channel);
         chat.channels!.add(...channels);
         screenContext.pop();
     }
@@ -54,8 +51,13 @@
     }
 
     let tooltipHint: string;
-    let hints = ['URL', '動画', '配信', 'プロフィール'];
-    
+    let hints = [
+        'youtu.be/xxxx...',
+        'youtube.com/watch?v=xxxx...',
+        'youtube.com/@xxxx...',
+        'youtube.com/channel/xxxx...'
+    ];
+
     function updateHint() {
         tooltipHint = hints[hints.indexOf(tooltipHint) + 1] || hints[0];
     }
@@ -75,71 +77,62 @@
         <Background />
     </div>
     <div class="container">
-        <ScreenHeader title="setup" />
-        {#if result}
-            {#if result.size > 0}
-                <FlexColWrapper>
-                    <div class="channels">
-                        {#each result.entries() as [url, channel] (url)}
-                            <ChannelEntry
-                                channel={channel.channel}
-                                active={channel.active}
-                                on:click={() => {
-                                    if (!channel) return;
-                                    channel.active = !channel.active;
-                                }}
-                            />
-                        {/each}
-                    </div>
-                    <div class="buttons">
-                        <Button
-                            outline
-                            rounded
-                            on:click={finish}
-                            disabled={locked || Object.values(result).some((v) => !v.active)}
-                        >
-                            追加する
-                            <i class="ti ti-arrow-right" />
-                        </Button>
-                        <Button rounded on:click={reset} disabled={locked}>
-                            <i class="ti ti-arrow-left" />
-                            戻る
-                        </Button>
-                    </div>
-                </FlexColWrapper>
-            {:else}
-                <div>チャンネルが見つかりませんでした…</div>
+        <div class="content">
+            <div class="title">
+                <i class="ti ti-settings" />
+                セットアップ
+            </div>
+            {#if result}
+                <div class="description">どのチャンネルを追加しますか？</div>
+                <div class="list">
+                    {#each result.entries() as [key, { channel, active }] (key)}
+                        <button class="item" class:active on:click={() => (active = !active)}>
+                            <i class="ti ti-check" class:active />
+                            <div class="channel-icon">
+                                {#if channel.icon_url}
+                                    <img src={channel.icon_url} alt="icon" />
+                                    <Tooltip>
+                                        <img
+                                            src={channel.icon_url}
+                                            alt="icon"
+                                            class="tooltip-image"
+                                        />
+                                    </Tooltip>
+                                {:else}
+                                    <ProviderIcon providerId={channel.provider_id} />
+                                {/if}
+                            </div>
+                            <div class="description">
+                                <div class="channel-name">
+                                    {channel.name || channel.provider_id}
+                                </div>
+                                <small class="channel-url">{channel.url}</small>
+                            </div>
+                        </button>
+                    {/each}
+                </div>
                 <div class="buttons">
-                    <Button rounded on:click={reset} disabled={locked}>
-                        <i class="ti ti-arrow-left" />
-                        戻る
-                    </Button>
+                    <Button on:click={finish} disabled={!result?.size} rounded filled
+                        >追加する</Button
+                    >
+                    <Button on:click={reset} rounded filled>やり直す</Button>
+                </div>
+            {:else}
+                <div class="description">URLを入力すると、チャンネルを自動で追加します。</div>
+                <div class="input">
+                    <InputText
+                        bind:value={url}
+                        on:input={fetchChannels}
+                        placeholder={tooltipHint}
+                        disabled={locked}
+                    />
                 </div>
             {/if}
-        {:else}
-            <div>
-                <Tooltip>
-                    <div class="tooltip-container">
-                        <small>あなたの</small>
-                        <div class="tooltip">{tooltipHint}</div>
-                        <small>
-                            を入力！
-                        </small>
-                    </div>
-                </Tooltip>
-                <InputText placeholder="url..." bind:value={url} />
-            </div>
-            <div class="buttons">
-                <Button outline rounded on:click={fetchChannels} disabled={!url || locked}>
-                    次へ
-                    <i class="ti ti-arrow-right" />
-                </Button>
-                <Button rounded on:click={screenContext.pop}>
-                    スキップ
-                    <i class="ti ti-arrow-right" />
-                </Button>
-            </div>
-        {/if}
+        </div>
+        <button on:click={screenContext.pop} class="skip">
+            セットアップをスキップ
+            <i class="ti ti-arrow-right" />
+        </button>
     </div>
 </Screen>
 
@@ -154,80 +147,132 @@
     }
 
     .container {
-        position: fixed;
-        top: 20%;
-        left: 10%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        color: var(--color-text);
+    }
+
+    .skip {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        padding: 5px 0;
+        font-size: 12px;
+        color: var(--color-1);
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--color-1);
+    }
+
+    .content {
         display: flex;
         flex-direction: column;
         gap: 20px;
-        align-items: flex-start;
-        justify-content: flex-start;
-        width: 300px;
-        min-width: 300px;
-        height: 60%;
-        padding: 40px;
-        background: #fff;
-        outline: 2px solid var(--color-1);
-        box-shadow: 0 8px 0 2px var(--color-2);
-    }
-
-    small {
-        font-weight: 500;
-        opacity: 0.9;
-    }
-
-    .tooltip-container {
-        display: flex;
-        flex-direction: row;
         align-items: center;
-        height: 20px;
+        justify-content: center;
+        width: 500px;
+        padding: 20px;
+        background: var(--color-bg-2);
     }
 
-    .tooltip {
-        width: 80px;
+    .title {
+        padding: 5px 10px;
+        font-size: 24px;
         font-weight: bold;
-        animation: blink 1.4s cubic-bezier(0.43, -0.12, 0.45, 1.13) infinite;
-        animation-delay: -0.15s;
     }
 
-    @keyframes blink {
-        0% {
-            transform: translateY(1px);
-        }
-        5% {
-            transform: translateY(-1px);
-        }
-
-        90% {
-            transform: translateY(-1px);
-        }
-
-        95% {
-            transform: translateY(0);
-        }
-
-        100% {
-            transform: translateY(1px);
-        }
+    .description {
+        font-size: 16px;
+        text-align: center;
     }
 
-    .channels {
+    .list {
         display: flex;
         flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
         width: 100%;
-        height: 60%;
-        overflow-y: auto;
+        max-height: 300px;
+        overflow: auto;
 
-        &::-webkit-scrollbar {
-            display: none;
+        .item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 5px 10px;
+            background: var(--color-bg-1);
+            border: 1px solid var(--color-bg-1);
+            border-radius: 5px;
+
+            &:hover {
+                background: var(--color-bg-2);
+            }
+
+            &.active {
+                color: var(--color-bg-1);
+                background: var(--color-1);
+            }
+
+            .channel-icon {
+                width: 32px;
+                min-width: 32px;
+                height: 32px;
+                margin: 10px;
+                border-radius: 50%;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                }
+
+                .tooltip-image {
+                    width: 200px;
+                    height: 200px;
+                    padding: 0;
+                    margin: 0;
+                    border-radius: 0;
+                }
+            }
+
+            .description {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                align-items: flex-start;
+                justify-content: center;
+                width: 100%;
+                overflow: hidden;
+                font-size: 16px;
+                text-overflow: ellipsis;
+            }
+
+            .channel-name {
+                font-size: 1rem;
+                opacity: 1;
+            }
+
+            .channel-url {
+                opacity: 0.5;
+            }
         }
     }
 
     .buttons {
         display: flex;
-        flex-direction: row-reverse;
-        justify-content: space-between;
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
         width: 100%;
-        margin-top: auto;
     }
 </style>

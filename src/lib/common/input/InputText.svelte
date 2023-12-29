@@ -5,7 +5,7 @@
     export let readonly: boolean = false;
 </script>
 
-<input class="input" type="text" {placeholder} bind:value {disabled} {readonly} />
+<input class="input" type="text" {placeholder} bind:value on:input {disabled} {readonly} />
 
 <style lang="scss">
     .input {
@@ -26,8 +26,8 @@
         }
 
         &:disabled {
-            color: var(--color-2);
-            background: var(--color-bg-2);
+            color: color-mix(in srgb, var(--color-text) 50%, transparent 0%);
+            background: var(--color-bg-1);
         }
 
         &:read-only {
@@ -36,7 +36,7 @@
         }
 
         &::placeholder {
-            color: var(--color-1);
+            color: var(--color-text);
         }
     }
 </style>

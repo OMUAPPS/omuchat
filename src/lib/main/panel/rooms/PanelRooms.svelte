@@ -22,7 +22,9 @@
     });
     client.connection.addListener({
         onConnect() {
-            chat.rooms.fetch(100);
+            chat.rooms.fetch({
+                after: 100
+            });
         }
     });
     onMount(() => {
@@ -43,7 +45,7 @@
 
 <div class="rooms">
     {#if rooms.size > 0}
-        <TableList table={chat.rooms} component={RoomEntry} filter={filter} />
+        <TableList table={chat.rooms} component={RoomEntry} {filter} />
         {#if [...rooms.values()].some((room) => !room.online)}
             <Button on:click={toggleOffline}>
                 <FlexRowWrapper widthFull reverse>
@@ -58,7 +60,11 @@
             </Button>
         {/if}
         {#if showOffline}
-            <TableList table={chat.rooms} component={RoomEntry} filter={(_, room) => !room.online} />
+            <TableList
+                table={chat.rooms}
+                component={RoomEntry}
+                filter={(_, room) => !room.online}
+            />
         {/if}
     {:else}
         <div class="empty">
