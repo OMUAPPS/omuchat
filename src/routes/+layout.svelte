@@ -3,14 +3,14 @@
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { createI18nUnion } from '$lib/i18n/i18n';
     import { i18n } from '$lib/i18n/i18n-context';
-    import { LOCALES } from '$lib/i18n/locales';
+    import { DEFAULT_LOCALE, LOCALES } from '$lib/i18n/locales';
     import { language } from '$lib/main/settings';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper';
     import './styles.scss';
 
     async function loadLocale() {
         const lang = await LOCALES[$language].load();
-        const fallbackLang = await LOCALES['ja-JP'].load();
+        const fallbackLang = await LOCALES[DEFAULT_LOCALE].load();
 
         if (lang !== fallbackLang) {
             i18n.set(createI18nUnion([lang, fallbackLang]));
@@ -25,21 +25,22 @@
 <svelte:head>
     <title>Dashboard</title>
     <meta name="description" content="Svelte demo app" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/icons-webfont/tabler-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/icons-webfont/tabler-icons.css" />
     <ThemeProvider />
 </svelte:head>
-
 
 <div class="app">
     <main>
         {#await loadLocale()}
-        <div class="loading" data-tauri-drag-region>
-        </div>
+            <div class="loading" data-tauri-drag-region></div>
         {:then}
-        <slot />
+            <slot />
         {:catch error}
             <div class="error" data-tauri-drag-region>
                 <div class="container">
@@ -47,37 +48,44 @@
                         <div>
                             <i class="ti ti-alert-small" />
                             エラーが発生しました
-                            <small>
-                                よければdiscordにてお問い合わせいただければ幸いです。
-                            </small>
+                            <small> よければdiscordにてお問い合わせいただければ幸いです。 </small>
                         </div>
                         <small>
                             <b>error occurred</b>
                             please contact us on discord.
                         </small>
                     </div>
-                        <button on:click={() => {
-                            ClipboardHelper.writeText(JSON.stringify({
-                                message: error.message,
-                                stack: error.stack,
-                            }));
-                        }} class="message">
-                            <Tooltip>
-                                <div class="description">クリックしてエラー情報をクリップボードにコピーします。</div>
-                            </Tooltip>
-                            {error.message}
-                            {#if error.stack}
-                                <pre>{error.stack}</pre>
-                            {/if}
-                        </button>
+                    <button
+                        on:click={() => {
+                            ClipboardHelper.writeText(
+                                JSON.stringify({
+                                    message: error.message,
+                                    stack: error.stack
+                                })
+                            );
+                        }}
+                        class="message"
+                    >
+                        <Tooltip>
+                            <div class="description">
+                                クリックしてエラー情報をクリップボードにコピーします。
+                            </div>
+                        </Tooltip>
+                        {error.message}
+                        {#if error.stack}
+                            <pre>{error.stack}</pre>
+                        {/if}
+                    </button>
                     <div class="buttons">
                         <button on:click={loadLocale}>
                             <i class="ti ti-reload" />
                             Retry
                         </button>
-                        <button on:click={() => {
-                            window.close();
-                        }}>
+                        <button
+                            on:click={() => {
+                                window.close();
+                            }}
+                        >
                             <i class="ti ti-x" />
                             Close
                         </button>

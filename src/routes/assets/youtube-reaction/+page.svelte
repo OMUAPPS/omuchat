@@ -1,53 +1,59 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount } from 'svelte';
 
-    import { client, emojis, scale, type Reaction } from "./reaction";
-    
+    import { client, emojis, scale, type Reaction } from './reaction';
+
     interface ReactionMessage {
         room_id: string;
         reactions: Record<string, number>;
     }
     const queue: Reaction[] = [];
     let id = 0;
-    client.omu.message.listen<ReactionMessage>({
-        name: "youtube-reaction",
-        app: "omu/chatprovider",
-    }, (data) => {
-        for (const [key, value] of Object.entries(data.reactions)) {
-            for (let i = 0; i < value; i++) {
-                id++;
-                queue.push({
-                    id,
-                    key,
-                });
+    client.omu.message.listen<ReactionMessage>(
+        {
+            name: 'youtube-reaction',
+            app: 'omu.chat/provider'
+        },
+        (data) => {
+            for (const [key, value] of Object.entries(data.reactions)) {
+                for (let i = 0; i < value; i++) {
+                    id++;
+                    queue.push({
+                        id,
+                        key
+                    });
+                }
             }
         }
-    });
-    client.omu.message.listen({
-        name: "test",
-        app: "omu-apps/youtube-reaction",
-    }, () => {
-        queue.push({
-            id: id++,
-            key: "❤",
-        });
-        queue.push({
-            id: id++,
-            key: "💯",
-        });
-        queue.push({
-            id: id++,
-            key: "😳",
-        });
-        queue.push({
-            id: id++,
-            key: "🎉",
-        });
-        queue.push({
-            id: id++,
-            key: "😄",
-        });
-    });
+    );
+    client.omu.message.listen(
+        {
+            name: 'test',
+            app: 'omu.chat.apps/youtube-reaction'
+        },
+        () => {
+            queue.push({
+                id: id++,
+                key: '❤'
+            });
+            queue.push({
+                id: id++,
+                key: '💯'
+            });
+            queue.push({
+                id: id++,
+                key: '😳'
+            });
+            queue.push({
+                id: id++,
+                key: '🎉'
+            });
+            queue.push({
+                id: id++,
+                key: '😄'
+            });
+        }
+    );
 
     interface Particle {
         spawnTime: number;
@@ -66,9 +72,9 @@
     let lastSpawnTime = 0;
     function spawnParticle() {
         let item = queue.shift();
-        if(item) {
+        if (item) {
             const reaction = item;
-            particles.set(reaction.id,{
+            particles.set(reaction.id, {
                 spawnTime: Date.now(),
                 id: reaction.id,
                 key: reaction.key,
@@ -77,7 +83,7 @@
                 vx: Math.random() - 0.5,
                 vy: 0,
                 opacity: 0,
-                rotation: 0,
+                rotation: 0
             });
         }
     }
@@ -108,7 +114,7 @@
         animationFrameHandle = requestAnimationFrame(render);
 
         updateQueue();
-        
+
         ctx.clearRect(0, 0, width, height);
         for (const particle of particles.values()) {
             const elapsed = (Date.now() - particle.spawnTime) / 16;
@@ -126,7 +132,7 @@
             ctx.save();
             ctx.globalAlpha = particle.opacity;
             ctx.translate(particle.x, particle.y);
-            ctx.rotate(particle.rotation * Math.PI / 180);
+            ctx.rotate((particle.rotation * Math.PI) / 180);
             ctx.scale(scale, scale);
             if (emojis.has(particle.key)) {
                 const emoji = emojis.get(particle.key);
@@ -144,13 +150,13 @@
             ctx.restore();
         }
     }
-    
+
     onMount(() => {
         animationFrameHandle = requestAnimationFrame(render);
 
         return () => {
             cancelAnimationFrame(animationFrameHandle);
-        }
+        };
     });
 
     client.run();
@@ -159,12 +165,12 @@
     let ctx: CanvasRenderingContext2D;
     let width: number;
     let height: number;
-    
+
     $: {
         if (canvas) {
-            const context = canvas.getContext("2d");
+            const context = canvas.getContext('2d');
             if (!context) {
-                throw new Error("Failed to get canvas context");
+                throw new Error('Failed to get canvas context');
             }
             ctx = context;
             width = canvas.width = canvas.clientWidth;

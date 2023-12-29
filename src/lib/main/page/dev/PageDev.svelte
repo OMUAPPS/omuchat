@@ -1,48 +1,52 @@
 <script lang="ts">
-    import { models } from "@omuchat/client";
-    
-    import AppEntry from "./AppEntry.svelte";
+    import { models } from '@omuchat/client';
 
-    import { getClient } from "$lib/common/omuchat/client";
-    import TableList from "$lib/common/omuchat/TableList.svelte";
-    import { theme } from "$lib/common/theme/theme";
-    import { i18n } from "$lib/i18n/i18n-context";
-    import { invoke } from "$lib/utils/tauri";
+    import AppEntry from './AppEntry.svelte';
+
+    import { getClient } from '$lib/common/omuchat/client';
+    import TableList from '$lib/common/omuchat/TableList.svelte';
+    import { theme } from '$lib/common/theme/theme';
+    import { i18n } from '$lib/i18n/i18n-context';
+    import { invoke } from '$lib/utils/tauri';
 
     const { client, chat, server } = getClient();
-    let text = `test-${Date.now()}`
-    let authorName = `test-author-${Date.now()}`
-    let authorIcon = `https://picsum.photos/seed/${Date.now()}/200/200`
+    let text = `test-${Date.now()}`;
+    let authorName = `test-author-${Date.now()}`;
+    let authorIcon = `https://picsum.photos/seed/${Date.now()}/200/200`;
     function send() {
         console.log(text);
         const author = new models.Author({
-            provider_id: "test",
-            id: "test",
+            provider_id: 'test',
+            id: 'test',
             name: authorName,
-            avatar_url: authorIcon,
-        })
+            avatar_url: authorIcon
+        });
         chat.authors.add(author);
-        chat.messages.add(new models.Message({
-            room_id: "test",
-            id: `test-${Date.now()}`,
-            content: models.TextContent.of(text),
-            author_id: author.key(),
-            created_at: new Date(),
-        }));
+        chat.messages.add(
+            new models.Message({
+                room_id: 'test',
+                id: `test-${Date.now()}`,
+                content: models.TextContent.of(text),
+                author_id: author.key(),
+                created_at: new Date()
+            })
+        );
     }
     function clear() {
-        text = "";
+        text = '';
     }
-    
+
     let starting = false;
     function start() {
         if (starting) return;
         starting = true;
-        invoke('run_server').then((res) => {
-            console.log(`run_server: ${res}`);
-        }).finally(() => {
-            starting = false;
-        });
+        invoke('run_server')
+            .then((res) => {
+                console.log(`run_server: ${res}`);
+            })
+            .finally(() => {
+                starting = false;
+            });
     }
     function delete_runtime() {
         invoke('delete_runtime').then((res) => {
@@ -61,12 +65,15 @@
             </small>
             <div>
                 {starting ? 'starting' : 'stopped'}
-                <button on:click={start}>
-                    start
+                <button on:click={start}> start </button>
+                <button
+                    on:click={() => {
+                        server.shutdown();
+                    }}
+                >
+                    stop
                 </button>
-                <button on:click={delete_runtime}>
-                    delete runtime
-                </button>
+                <button on:click={delete_runtime}> delete runtime </button>
             </div>
         </span>
     </div>
@@ -79,27 +86,20 @@
     <div class="section">
         <h3>Message</h3>
         <div>
-            <button on:click={send}>
-                send
-            </button>
+            <button on:click={send}> send </button>
             Message:
             <input type="text" bind:value={text} />
             Author:
             <input type="text" bind:value={authorName} />
             Icon:
             <input type="text" bind:value={authorIcon} />
-            <button on:click={clear}>
-                clear
-            </button>
+            <button on:click={clear}> clear </button>
         </div>
     </div>
     <div class="section">
         <h3>Apps</h3>
         <div class="apps">
-            <TableList
-                table={server.apps}
-                component={AppEntry}
-            />
+            <TableList table={server.apps} component={AppEntry} />
         </div>
     </div>
     <div class="section">
@@ -108,15 +108,19 @@
             {#each Object.entries($theme) as [key, value]}
                 <div>
                     {key}: {value}
-                    <input type="color" value={value} on:change={(e) => {
-                        if (!e.currentTarget) return;
-                        const value = e.currentTarget.value;
-                        if (!value) return;
-                        $theme = {
-                            ...$theme,
-                            [key]: value,
-                        };
-                    }} />
+                    <input
+                        type="color"
+                        {value}
+                        on:change={(e) => {
+                            if (!e.currentTarget) return;
+                            const value = e.currentTarget.value;
+                            if (!value) return;
+                            $theme = {
+                                ...$theme,
+                                [key]: value
+                            };
+                        }}
+                    />
                 </div>
             {/each}
         </div>

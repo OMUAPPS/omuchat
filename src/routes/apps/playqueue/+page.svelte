@@ -9,12 +9,12 @@
     import InputText from '$lib/common/input/InputText.svelte';
 
     const app = new App({
-        name: "play-queue",
-        version: "0.1.0",
-        group: "omu-apps",
+        name: 'play-queue',
+        version: '0.1.0',
+        group: 'omu.chat.apps'
     });
     const client = new Client({
-        app,
+        app
     });
 
     client.chat.authors.listen();
@@ -25,11 +25,14 @@
         if (regex.test(message.text)) {
             const author = await client.chat.authors.get(message.author_id);
             if (!author) return;
-            entries = [...entries, {
-                author,
-                message,
-                element: null,
-            }];
+            entries = [
+                ...entries,
+                {
+                    author,
+                    message,
+                    element: null
+                }
+            ];
         }
     });
 
@@ -38,7 +41,7 @@
     let joinWord = '参加';
     let leaveWord = '辞退';
     let entries: Entry[] = [];
-    
+
     client.run();
 </script>
 
@@ -50,7 +53,7 @@
                 <span>参加型管理</span>
             </div>
             <div class="actions">
-                <Button on:click={() => settingOpen = !settingOpen} rounded>
+                <Button on:click={() => (settingOpen = !settingOpen)} rounded>
                     {#if settingOpen}
                         設定を閉じる
                     {:else}
@@ -62,7 +65,7 @@
                     <span>
                         {active ? `終了する` : `開始する`}
                     </span>
-                    <button class="toggle" on:click={() => active = !active} class:active={active}>
+                    <button class="toggle" on:click={() => (active = !active)} class:active>
                         <i class="ti ti-check" />
                     </button>
                 </div>
@@ -98,7 +101,7 @@
     {/if}
     <div class="entries">
         {#each entries as entry}
-            <PlayQueueEntry entry={entry} />
+            <PlayQueueEntry {entry} />
         {/each}
     </div>
 </main>
@@ -140,7 +143,7 @@
                 font-weight: 600;
                 color: var(--color-1);
             }
-        
+
             .actions {
                 display: flex;
                 flex-direction: row;

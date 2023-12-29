@@ -6,14 +6,13 @@
 
     import EmojiEntry from './EmojiEntry.svelte';
 
-    
     const app = new App({
-        name: "youtube-reaction",
-        version: "0.1.0",
-        group: "omu-apps",
+        name: 'youtube-reaction',
+        version: '0.1.0',
+        group: 'omu.chat.apps'
     });
     const client = new Client({
-        app,
+        app
     });
 
     let emojis: Map<string, string | undefined> = new Map();
@@ -24,8 +23,8 @@
             ['😳', undefined],
             ['🎉', undefined],
             ['😄', undefined],
-            ...Object.entries(data || {}),
-        ])
+            ...Object.entries(data || {})
+        ]);
     });
 
     function editEmoji(event: CustomEvent<[string, string | undefined]>) {
@@ -46,12 +45,14 @@
         });
     });
 
-
     client.omu.message.register({ name: 'test' });
     function test() {
-        client.omu.message.broadcast({
-            name: "test",
-        }, {});
+        client.omu.message.broadcast(
+            {
+                name: 'test'
+            },
+            {}
+        );
     }
 
     client.run();

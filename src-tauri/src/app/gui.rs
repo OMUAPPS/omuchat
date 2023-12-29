@@ -53,10 +53,10 @@ async fn run_server() -> Result<(), String> {
 async fn run_server_internal() -> anyhow::Result<()> {
     info!("Running server...");
     let data = LAUNCHER_DIRECTORY.data_dir();
-    // download https://github.com/OMUCHAT/omuchat-plugins/zipball/master/ into data/plugins
     let plugins_folder = data.join("plugins");
 
     if !plugins_folder.exists() {
+        fs::create_dir_all(&plugins_folder).await?;
         info!("Downloading plugins...");
         fs::create_dir_all(LAUNCHER_DIRECTORY.cache_dir()).await?;
         let archive = LAUNCHER_DIRECTORY.cache_dir().join("plugins.tar.gz");
@@ -65,7 +65,6 @@ async fn run_server_internal() -> anyhow::Result<()> {
             &archive,
         )
         .await?;
-        // extract to cache/plugins and move inside items to data/plugins
         let cache_plugins_folder = LAUNCHER_DIRECTORY.cache_dir().join("plugins");
         fs::create_dir_all(&cache_plugins_folder).await?;
         zip_extract(&archive, &cache_plugins_folder).await?;
@@ -76,7 +75,6 @@ async fn run_server_internal() -> anyhow::Result<()> {
         fs::remove_dir_all(&cache_plugins_folder).await?;
     }
 
-    fs::create_dir_all(&plugins_folder).await?;
     let runtimes_folder = data.parent().unwrap().join("runtimes");
     let python = python::download_python(&runtimes_folder)
         .await
@@ -106,6 +104,8 @@ async fn run_server_internal() -> anyhow::Result<()> {
                         "install".to_string(),
                         "git+https://github.com/OMUCHAT/omu.py.git".to_string(),
                         "git+https://github.com/OMUCHAT/server.git".to_string(),
+                        "git+https://github.com/OMUCHAT/provider.git".to_string(),
+                        "git+https://github.com/OMUCHAT/omuchat.py.git".to_string(),
                     ],
                     &data,
                 )

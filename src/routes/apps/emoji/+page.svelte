@@ -1,6 +1,6 @@
 <script lang="ts">
     import { ImageContent, Message, RootContent, TextContent } from '@omuchat/client/src/models';
-    import { open } from "@tauri-apps/api/dialog";
+    import { open } from '@tauri-apps/api/dialog';
     import { listen } from '@tauri-apps/api/event';
     import { convertFileSrc } from '@tauri-apps/api/tauri';
     import { appWindow } from '@tauri-apps/api/window';
@@ -11,11 +11,14 @@
     import EmojiEntry from './EmojiEntry.svelte';
 
     import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
-    
+
     let emojis: Map<string, Emoji> = new Map();
-    client.omu.registry.listen<Record<string, Emoji>>({ name: 'emojis', app: 'omu-plugins/emoji-plugin' }, (data) => {
-        emojis = new Map(Object.entries(data));
-    });
+    client.omu.registry.listen<Record<string, Emoji>>(
+        { name: 'emojis', app: 'omu.chat.plugins/emoji-plugin' },
+        (data) => {
+            emojis = new Map(Object.entries(data || {}));
+        }
+    );
     client.run();
 
     let selectedEmoji: Emoji | undefined;
@@ -25,9 +28,12 @@
     let uploading: number = 0;
 
     async function upload(files: string[]) {
-        uploading ++;
-        await client.omu.endpoints.call({ name: 'upload', app: 'omu-plugins/emoji-plugin' }, files);
-        uploading --;
+        uploading++;
+        await client.omu.endpoints.call(
+            { name: 'upload', app: 'omu.chat.plugins/emoji-plugin' },
+            files
+        );
+        uploading--;
     }
 
     onMount(() => {
@@ -35,22 +41,25 @@
             if (event.windowLabel !== appWindow.label) return;
             fileDrop = false;
             upload(event.payload as string[]);
-        })
+        });
         listen('tauri://file-drop-hover', (event) => {
             if (event.windowLabel !== appWindow.label) return;
             fileDrop = true;
             dragFiles = event.payload as string[];
-        })
+        });
         listen('tauri://file-drop-cancelled', (event) => {
             if (event.windowLabel !== appWindow.label) return;
             fileDrop = false;
-        })
+        });
     });
 
     function deleteEmoji(event: CustomEvent<Emoji>) {
         const emoji = event.detail;
         emojis.delete(emoji.id);
-        client.omu.registry.set({ name: 'emojis', app: 'omu-plugins/emoji-plugin' }, Object.fromEntries(emojis));
+        client.omu.registry.set(
+            { name: 'emojis', app: 'omu.chat.plugins/emoji-plugin' },
+            Object.fromEntries(emojis)
+        );
         if (selectedEmoji?.id === emoji.id) {
             selectedEmoji = undefined;
         }
@@ -59,7 +68,10 @@
     function saveEmoji(event: CustomEvent<Emoji>) {
         const emoji = event.detail;
         emojis.set(emoji.id, emoji);
-        client.omu.registry.set({ name: 'emojis', app: 'omu-plugins/emoji-plugin' }, Object.fromEntries(emojis));
+        client.omu.registry.set(
+            { name: 'emojis', app: 'omu.chat.plugins/emoji-plugin' },
+            Object.fromEntries(emojis)
+        );
         selectedEmoji = undefined;
     }
 
@@ -69,24 +81,28 @@
 
     function testEmoji(event: CustomEvent<Emoji>) {
         const emoji = event.detail;
-        client.chat.messages.add(new Message({
-            id: Date.now().toString(),
-            room_id: 'test',
-            content: RootContent.of([
-                TextContent.of(`${emoji.name} (${emoji.regex})`),
-                ImageContent.of(emoji.image_url, emoji.id, emoji.name),
-            ]),
-            created_at: new Date(),
-        }));
+        client.chat.messages.add(
+            new Message({
+                id: Date.now().toString(),
+                room_id: 'test',
+                content: RootContent.of([
+                    TextContent.of(`${emoji.name} (${emoji.regex})`),
+                    ImageContent.of(emoji.image_url, emoji.id, emoji.name)
+                ]),
+                created_at: new Date()
+            })
+        );
     }
 
     async function openFile() {
         const selected = await open({
             multiple: true,
-            filters: [{
-                name: "Images",
-                extensions: ["png", "webp", "jpg", "jpeg"]
-            }]
+            filters: [
+                {
+                    name: 'Images',
+                    extensions: ['png', 'webp', 'jpg', 'jpeg']
+                }
+            ]
         });
         if (!selected) return;
         upload(Array.from(selected));
@@ -125,8 +141,8 @@
                 </span>
             {/if}
         </div>
-        {#each Array.from(emojis.values()).filter(emoji => emoji.name.includes(search)) as emoji}
-            <EmojiEntry emoji={emoji} on:delete={deleteEmoji} on:edit={editEmoji} on:test={testEmoji} />
+        {#each Array.from(emojis.values()).filter((emoji) => emoji.name.includes(search)) as emoji}
+            <EmojiEntry {emoji} on:delete={deleteEmoji} on:edit={editEmoji} on:test={testEmoji} />
         {/each}
     </div>
     <div class="drop" class:active={fileDrop}>

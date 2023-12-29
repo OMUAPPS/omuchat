@@ -6,7 +6,7 @@ import { getTabId } from "$lib/utils/browser-helper";
 const app = new App({
     name: `emoji-${getTabId()}`,
     version: "0.1.0",
-    group: "omu-assets",
+    group: "omu.chat.assets",
 });
 export const client = new Client({
     app,

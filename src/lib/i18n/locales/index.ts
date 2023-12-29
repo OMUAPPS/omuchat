@@ -16,3 +16,5 @@ export const LOCALES = {
         load: () => loadI18n(() => import('./ja-JP.json'), 'ja-JP')
     }
 };
+
+export const DEFAULT_LOCALE = 'ja-JP';

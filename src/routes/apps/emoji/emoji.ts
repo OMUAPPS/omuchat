@@ -11,7 +11,7 @@ export interface Emoji {
 const app = new App({
     name: "emoji",
     version: "0.1.0",
-    group: "omu-app",
+    group: "omu.chat.apps",
 });
 export const client = new Client({
     app,

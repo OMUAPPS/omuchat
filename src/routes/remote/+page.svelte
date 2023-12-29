@@ -5,12 +5,11 @@
     import PanelMessages from '$lib/main/panel/messages/PanelMessages.svelte';
     import { getTabId } from '$lib/utils/browser-helper';
     import { getBrowser, getOS } from '$lib/utils/device-helper';
-    
 
     const app = new App({
         name: `remote-client-${getOS()}-${getBrowser()}-${getTabId()}`,
-        version: "0.1.0",
-        group: "omu",
+        version: '0.1.0',
+        group: 'omu.chat'
     });
 </script>
 

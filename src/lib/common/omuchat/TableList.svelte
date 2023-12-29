@@ -1,21 +1,20 @@
 <script lang="ts" generics="_T extends Keyable">
+    import type { Keyable, Table } from '@omuchat/omu.js';
+    import { onMount, type ComponentType, type SvelteComponent } from 'svelte';
 
-    import type { Keyable, Table } from "@omuchat/omu.js";
-    import { onMount, type ComponentType, type SvelteComponent } from "svelte";
+    import { getClient } from './client';
 
-    import { getClient } from "./client";
-
-    import VirtualList from "$lib/common/VirtualList.svelte";
+    import VirtualList from '$lib/common/VirtualList.svelte';
 
     type T = _T & Keyable; // TODO: 後悔
 
     export let table: Table<T>;
-    export let component: ComponentType<SvelteComponent<{entry: T}>>;
+    export let component: ComponentType<SvelteComponent<{ entry: T }>>;
     export let filter: (key: string, entry: T) => boolean = () => true;
     export let sort: (a: T, b: T) => number = () => 0;
     export let reverse: boolean = false;
     export let initial: number = 40;
-    
+
     const { client } = getClient();
     let entries: Map<string, T> = new Map();
     let items: [string, T][] = [];
@@ -30,7 +29,7 @@
         if (last) {
             const items = await table.fetch({
                 cursor: last,
-                before: initial,
+                before: initial
             });
             updateCache(items);
             updated = false;
@@ -38,7 +37,7 @@
             return;
         }
         const items = await table.fetch({
-            before: initial,
+            before: initial
         });
         updateCache(items);
     }
@@ -52,7 +51,9 @@
         if (cache.size === 0) return;
         last = [...cache.entries()].pop()?.[0];
         if (filter) {
-            const newItems = [...cache.entries()].filter(([key, entry]) => filter(key, entry)).filter(([key]) => !entries.has(key));
+            const newItems = [...cache.entries()]
+                .filter(([key, entry]) => filter(key, entry))
+                .filter(([key]) => !entries.has(key));
             if (newItems.length === 0) return;
             entries = new Map([...entries.entries(), ...newItems]);
             updated = true;
@@ -90,12 +91,12 @@
                     entries.set(key, value);
                 }
                 updated = true;
-            },
+            }
         });
-        viewport.addEventListener("scroll", handleScroll);
+        viewport.addEventListener('scroll', handleScroll);
 
         return () => {
-            viewport.removeEventListener("scroll", handleScroll);
+            viewport.removeEventListener('scroll', handleScroll);
         };
     });
 
@@ -119,7 +120,7 @@
     }
 
     $: {
-        if (!items.length || startIndex === 0 && updated) {
+        if (!items.length || (startIndex === 0 && updated)) {
             update();
         }
     }
@@ -127,13 +128,7 @@
 
 <div class="list">
     <div class="items">
-        <VirtualList
-            items={items}
-            bind:viewport={viewport}
-            bind:start={startIndex}
-            bind:end={endIndex}
-            let:item
-        >
+        <VirtualList {items} bind:viewport bind:start={startIndex} bind:end={endIndex} let:item>
             <svelte:component this={component} entry={item} />
         </VirtualList>
     </div>

@@ -8,7 +8,7 @@ import { LOCALES } from '$lib/i18n/locales';
 
 function getSystemLanguage(): keyof typeof LOCALES {
     if (typeof window === 'undefined') {
-        return 'en-US';
+        return 'ja-JP';
     }
     if (window.navigator.language in LOCALES) {
         return window.navigator.language as keyof typeof LOCALES;
@@ -18,7 +18,7 @@ function getSystemLanguage(): keyof typeof LOCALES {
             return lang as keyof typeof LOCALES;
         }
     }
-    return 'en-US';
+    return 'ja-JP';
 }
 
 // TODO: omuchat storage apiに移行
