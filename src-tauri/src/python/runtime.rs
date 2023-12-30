@@ -20,7 +20,10 @@ impl PythonRuntime {
         let mut command = Command::new(&self.0);
         command.current_dir(run_dir);
         command.args(arguments);
-        command.creation_flags(0x08000000); // CREATE_NO_WINDOW https://learn.microsoft.com/ja-jp/windows/win32/procthread/process-creation-flags?redirectedfrom=MSDN#create_no_window
+
+        // CREATE_NO_WINDOW https://learn.microsoft.com/ja-jp/windows/win32/procthread/process-creation-flags?redirectedfrom=MSDN#create_no_window
+        #[cfg(target_os = "windows")]
+        command.creation_flags(0x08000000);
 
         command.stderr(Stdio::piped()).stdout(Stdio::piped());
 
