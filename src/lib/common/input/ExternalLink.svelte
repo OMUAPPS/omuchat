@@ -1,12 +1,18 @@
 <script>
     export let href = '';
     export let filled = false;
+
+    if (href?.length && !href.startsWith('http')) {
+        href = `https://${href}`;
+    }
 </script>
 
-<a {href} target="_blank" class:filled>
-    {href}
-    <slot />
-</a>
+{#if href}
+    <a {href} target="_blank" class:filled>
+        {href}
+        <slot />
+    </a>
+{/if}
 
 <style lang="scss">
     a {

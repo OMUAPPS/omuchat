@@ -1,10 +1,8 @@
 export const name = 'Tabler Icons';
-export const icon = 'ti ti-brand-tabler';
-export const author = 'Tabler Icons';
+export const repository = 'https://github.com/tabler/tabler-icons/';
 export const url = 'https://tabler-icons.io/';
-export const licenceName = 'MIT License';
-export const licenceUrl = 'https://github.com/tabler/tabler-icons/blob/master/LICENSE';
-export const licence = `
+export const license = 'MIT License';
+export const licenseText = `
 MIT License
 
 Copyright (c) 2020-2023 Paweł Kuna
