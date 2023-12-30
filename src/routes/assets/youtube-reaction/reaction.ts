@@ -32,7 +32,9 @@ client.omu.registry.listen<Record<string, string>>({
         if (value) {
             const img = new Image();
             img.src = value;
-            emojis.set(key, img);
+            img.onload = () => {
+                emojis.set(key, img);
+            }
         } else {
             emojis.delete(key);
         }

@@ -14,7 +14,7 @@
 
     let emojis: Map<string, Emoji> = new Map();
     client.omu.registry.listen<Record<string, Emoji>>(
-        { name: 'emojis', app: 'omu.chat.plugins/emoji-plugin' },
+        { name: 'emojis', app: 'omu.chat.plugins/emoji' },
         (data) => {
             emojis = new Map(Object.entries(data || {}));
         }
@@ -29,10 +29,7 @@
 
     async function upload(files: string[]) {
         uploading++;
-        await client.omu.endpoints.call(
-            { name: 'upload', app: 'omu.chat.plugins/emoji-plugin' },
-            files
-        );
+        await client.omu.endpoints.call({ name: 'upload', app: 'omu.chat.plugins/emoji' }, files);
         uploading--;
     }
 
@@ -57,7 +54,7 @@
         const emoji = event.detail;
         emojis.delete(emoji.id);
         client.omu.registry.set(
-            { name: 'emojis', app: 'omu.chat.plugins/emoji-plugin' },
+            { name: 'emojis', app: 'omu.chat.plugins/emoji' },
             Object.fromEntries(emojis)
         );
         if (selectedEmoji?.id === emoji.id) {
@@ -69,7 +66,7 @@
         const emoji = event.detail;
         emojis.set(emoji.id, emoji);
         client.omu.registry.set(
-            { name: 'emojis', app: 'omu.chat.plugins/emoji-plugin' },
+            { name: 'emojis', app: 'omu.chat.plugins/emoji' },
             Object.fromEntries(emojis)
         );
         selectedEmoji = undefined;

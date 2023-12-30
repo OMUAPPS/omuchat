@@ -180,6 +180,7 @@
         align-items: center;
         justify-content: center;
         width: 500px;
+        min-height: 250px;
         padding: 20px;
         background: var(--color-bg-2);
     }
