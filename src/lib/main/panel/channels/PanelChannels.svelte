@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { models } from '@omuchat/client';
-    
-import ChannelEntry from './ChannelEntry.svelte';
-import ScreenAddChannel from './ScreenAddChannel.svelte';
+
+    import ChannelEntry from './ChannelEntry.svelte';
+    import ScreenAddChannel from './ScreenAddChannel.svelte';
 
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import { getClient } from '$lib/common/omuchat/client';
@@ -40,7 +40,7 @@ import ScreenAddChannel from './ScreenAddChannel.svelte';
             <i class="ti ti-external-link" />
         </ButtonMini>
     </div>
-    <TableList table={chat.channels} component={ChannelEntry} filter={filter} />
+    <TableList table={chat.channels} component={ChannelEntry} {filter} />
 </div>
 
 <style lang="scss">
