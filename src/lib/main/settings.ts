@@ -21,56 +21,26 @@ function getSystemLanguage(): keyof typeof LOCALES {
     return 'ja-JP';
 }
 
-// TODO: omuchat storage apiに移行
 export function createSetting<T>(
     key: string,
-    serializer: (value: T) => string,
-    deserializer: (value: string) => T,
     defaultValue: T
 ) {
     if (typeof localStorage === 'undefined') {
         return writable<T>(defaultValue);
     }
     const store = writable<T>(
-        localStorage.getItem(key) ? deserializer(localStorage.getItem(key)!) : defaultValue
+        localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)!) : defaultValue
     );
-    store.subscribe((value) => localStorage.setItem(key, serializer(value)));
+    store.subscribe((value) => localStorage.setItem(key, JSON.stringify(value)));
     return store;
 }
 
-function createBooleanSetting(key: string, defaultValue: boolean) {
-    return createSetting(
-        key,
-        (value) => value.toString(),
-        (value) => value === 'true',
-        defaultValue
-    );
-}
-
-function createStringSetting(key: string, defaultValue: string) {
-    return createSetting(
-        key,
-        (value) => value,
-        (value) => value,
-        defaultValue
-    );
-}
-
-function createLiteralSetting<T extends string>(key: string, defaultValue: T) {
-    return createSetting(
-        key,
-        (value) => value,
-        (value) => value as T,
-        defaultValue
-    );
-}
-
 const systemLanguage = getSystemLanguage();
-export const language = createLiteralSetting<keyof typeof LOCALES>('language', systemLanguage);
-export const devMode = createBooleanSetting('devMode', false);
-export const currentPage = createStringSetting('currentPage', 'main');
-export const currentSettingsCategory = createStringSetting('currentPageSettings', 'general');
-export const isFirstTime = createBooleanSetting('isFirstTime', true);
+export const language = createSetting<keyof typeof LOCALES>('language', systemLanguage);
+export const devMode = createSetting('devMode', false);
+export const currentPage = createSetting('currentPage', 'main');
+export const currentSettingsCategory = createSetting('currentPageSettings', 'general');
+export const isFirstTime = createSetting('isFirstTime', true);
 
 export interface Setting {
     component(): PropedComponent;
