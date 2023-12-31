@@ -62,7 +62,6 @@
             entries = new Map([...entries.entries(), ...newItems]);
         }
         updated = true;
-        console.log(entries.size);
         return;
     }
 
