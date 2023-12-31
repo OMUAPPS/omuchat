@@ -35,11 +35,6 @@ export class DashboardExtension implements Extension, ClientListener {
             tags: []
         }));
         this.apps.add(ChatApp.fromJson({
-            id: "playqueue",
-            url: "/apps/playqueue",
-            tags: []
-        }));
-        this.apps.add(ChatApp.fromJson({
             id: "youtube-reaction",
             url: "/apps/youtube-reaction",
             tags: []
