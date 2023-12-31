@@ -28,6 +28,14 @@ export function createSetting<T>(
     if (typeof localStorage === 'undefined') {
         return writable<T>(defaultValue);
     }
+    let value = localStorage.getItem(key);
+    if (value) {
+        try {
+            value = JSON.parse(value);
+        } catch (e) {
+            localStorage.removeItem(key);
+        }
+    }
     const store = writable<T>(
         localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)!) : defaultValue
     );
