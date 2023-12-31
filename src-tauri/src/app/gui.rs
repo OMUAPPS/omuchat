@@ -50,84 +50,15 @@ async fn run_server() -> Result<(), String> {
     Ok(())
 }
 
-async fn run_server_internal() -> anyhow::Result<()> {
-    info!("Running server...");
-    let data = LAUNCHER_DIRECTORY.data_dir();
-    let plugins_folder = data.join("plugins");
-
-    if !plugins_folder.exists() {
-        fs::create_dir_all(&plugins_folder).await?;
-        info!("Downloading plugins...");
-        fs::create_dir_all(LAUNCHER_DIRECTORY.cache_dir()).await?;
-        let archive = LAUNCHER_DIRECTORY.cache_dir().join("plugins.tar.gz");
-        download_file(
-            "https://github.com/OMUCHAT/omuchat-plugins/zipball/master/",
-            &archive,
-        )
-        .await?;
-        let cache_plugins_folder = LAUNCHER_DIRECTORY.cache_dir().join("plugins");
-        fs::create_dir_all(&cache_plugins_folder).await?;
-        zip_extract(&archive, &cache_plugins_folder).await?;
-        let mut items = std::fs::read_dir(&cache_plugins_folder).unwrap();
-        let item = items.next().unwrap()?;
-        let item_path = item.path();
-        fs::rename(item_path, &plugins_folder).await?;
-        fs::remove_dir_all(&cache_plugins_folder).await?;
-    }
-
-    let runtimes_folder = data.parent().unwrap().join("runtimes");
-    let python = python::download_python(&runtimes_folder)
-        .await
-        .expect("Failed to download Python");
-    let runtime = PythonRuntime::new(python);
-    runtime.set_env("MULTIDICT_NO_EXTENSIONS", "1");
-    runtime
-        .execute(
-            vec![
-                "-m".to_string(),
-                "pip".to_string(),
-                "install".to_string(),
-                "--upgrade".to_string(),
-                "pip".to_string(),
-            ],
-            &data,
-        )
-        .await
-        .expect("Failed to upgrade pip");
+async fn handle_runtime_io(
+    runtime: &PythonRuntime,
+    commands: Vec<String>,
+    data_directory: &std::path::PathBuf,
+) -> Result<(), String> {
     runtime
         .handle_io(
             &mut runtime
-                .execute(
-                    vec![
-                        "-m".to_string(),
-                        "pip".to_string(),
-                        "install".to_string(),
-                        "git+https://github.com/OMUCHAT/omu.py.git".to_string(),
-                        "git+https://github.com/OMUCHAT/server.git".to_string(),
-                        "git+https://github.com/OMUCHAT/provider.git".to_string(),
-                        "git+https://github.com/OMUCHAT/omuchat.py.git".to_string(),
-                    ],
-                    &data,
-                )
-                .await
-                .expect("Failed to start server"),
-            |_, data| {
-                println!("{}", String::from_utf8_lossy(data));
-                Ok(())
-            },
-            |_, data| {
-                println!("{}", String::from_utf8_lossy(data));
-                Ok(())
-            },
-            tokio::sync::oneshot::channel().1,
-            &(),
-        )
-        .await
-        .expect("Failed to install server");
-    runtime
-        .handle_io(
-            &mut runtime
-                .execute(vec!["-m".to_string(), "omuserver".to_string()], &data)
+                .execute(commands, data_directory)
                 .await
                 .expect("Failed to start server"),
             |_, data| {
@@ -143,6 +74,93 @@ async fn run_server_internal() -> anyhow::Result<()> {
         )
         .await
         .expect("Failed to handle IO");
+    Ok(())
+}
+
+async fn prepare_plugins(plugins_folder: &std::path::PathBuf) -> Result<(), String> {
+    info!("Running server...");
+
+    if !plugins_folder.exists() {
+        fs::create_dir_all(&plugins_folder).await.unwrap();
+        info!("Downloading plugins...");
+        fs::create_dir_all(LAUNCHER_DIRECTORY.cache_dir())
+            .await
+            .unwrap();
+        let archive = LAUNCHER_DIRECTORY.cache_dir().join("plugins.tar.gz");
+        download_file(
+            "https://github.com/OMUCHAT/omuchat-plugins/zipball/master/",
+            &archive,
+        )
+        .await
+        .unwrap();
+        let cache_plugins_folder = LAUNCHER_DIRECTORY.cache_dir().join("plugins");
+        fs::create_dir_all(&cache_plugins_folder).await.unwrap();
+        zip_extract(&archive, &cache_plugins_folder).await.unwrap();
+        let mut items = std::fs::read_dir(&cache_plugins_folder).unwrap();
+        let item = items.next().unwrap().unwrap();
+        let item_path = item.path();
+        fs::rename(item_path, &plugins_folder).await.unwrap();
+        fs::remove_dir_all(&cache_plugins_folder).await.unwrap();
+    }
+    Ok(())
+}
+
+async fn prepare_runtime(
+    runtime: &PythonRuntime,
+    data_directory: &std::path::PathBuf,
+) -> Result<(), String> {
+    runtime.set_env("MULTIDICT_NO_EXTENSIONS", "1");
+    runtime
+        .execute(
+            vec![
+                "-m".to_string(),
+                "pip".to_string(),
+                "install".to_string(),
+                "--upgrade".to_string(),
+                "pip".to_string(),
+            ],
+            data_directory,
+        )
+        .await
+        .expect("Failed to upgrade pip");
+
+    handle_runtime_io(
+        &runtime,
+        vec![
+            "-m".to_string(),
+            "pip".to_string(),
+            "install".to_string(),
+            "git+https://github.com/OMUCHAT/omu.py.git".to_string(),
+            "git+https://github.com/OMUCHAT/server.git".to_string(),
+            "git+https://github.com/OMUCHAT/provider.git".to_string(),
+            "git+https://github.com/OMUCHAT/omuchat.py.git".to_string(),
+        ],
+        data_directory,
+    )
+    .await?;
+    Ok(())
+}
+
+async fn run_server_internal() -> anyhow::Result<()> {
+    let data = LAUNCHER_DIRECTORY.data_dir().to_path_buf();
+    let runtimes_folder = data.parent().unwrap().join("runtimes");
+    let python = python::download_python(&runtimes_folder)
+        .await
+        .expect("Failed to download Python");
+    let runtime = PythonRuntime::new(python);
+
+    let plugins_folder = data.join("plugins");
+    if !plugins_folder.exists() {
+        prepare_plugins(&plugins_folder).await.unwrap();
+        prepare_runtime(&runtime, &data).await.unwrap();
+    }
+    handle_runtime_io(
+        &runtime,
+        vec!["-m".to_string(), "omuserver".to_string()],
+        &data,
+    )
+    .await
+    .unwrap();
 
     info!("Server running");
     Ok(())
