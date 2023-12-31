@@ -14,6 +14,7 @@
     export let sort: (a: T, b: T) => number = () => 0;
     export let reverse: boolean = false;
     export let initial: number = 40;
+    export let limit = 400;
 
     const { client } = getClient();
     let entries: Map<string, T> = new Map();
@@ -32,7 +33,6 @@
                 before: initial
             });
             updateCache(items);
-            updated = false;
             update();
             return;
         }
@@ -40,6 +40,7 @@
             before: initial
         });
         updateCache(items);
+        updated = false;
     }
 
     client.connection.addTask(async () => {
@@ -50,17 +51,19 @@
     function updateCache(cache: Map<string, T>) {
         if (cache.size === 0) return;
         last = [...cache.entries()].pop()?.[0];
+        let newItems = [...cache.entries()];
         if (filter) {
-            const newItems = [...cache.entries()]
-                .filter(([key, entry]) => filter(key, entry))
-                .filter(([key]) => !entries.has(key));
-            if (newItems.length === 0) return;
-            entries = new Map([...entries.entries(), ...newItems]);
-            updated = true;
-            return;
+            newItems = newItems.filter(([key, entry]) => filter(key, entry));
         }
-        entries = new Map([...entries.entries(), ...cache.entries()]);
+        if (newItems.length === 0) return;
+        if (startIndex === 0) {
+            entries = new Map([...entries.entries(), ...newItems].slice(-limit));
+        } else {
+            entries = new Map([...entries.entries(), ...newItems]);
+        }
         updated = true;
+        console.log(entries.size);
+        return;
     }
 
     function handleScroll(e: Event) {
@@ -74,6 +77,7 @@
     onMount(() => {
         table.listen((items) => {
             updateCache(items);
+            updated = true;
         });
         table.addListener({
             onRemove(items) {
