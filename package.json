@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "tauri dev",
+        "dev": "set RUST_BACKTRACE=1 && tauri dev",
         "prepare": "svelte-kit sync && node script/license.mjs",
         "build": "tauri build",
         "ui:dev": "vite --host 0.0.0.0",
