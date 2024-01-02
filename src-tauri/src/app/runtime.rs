@@ -128,7 +128,7 @@ pub async fn run_server_internal() -> anyhow::Result<()> {
     .await
     .unwrap();
 
-    info!("Server running");
+    info!("Server stopped");
     Ok(())
 }
 
