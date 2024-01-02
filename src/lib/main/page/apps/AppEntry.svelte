@@ -21,7 +21,7 @@
             alwaysOnTop: false
         };
         // if (app.options) options = Object.assign(options, app.options);
-        const window = tauriWindow.openWindow(windowId, options);
+        const window = new tauriWindow.WebviewWindow(windowId, options);
         window.setFocus();
     }
 </script>

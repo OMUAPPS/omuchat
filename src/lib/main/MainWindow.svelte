@@ -100,9 +100,13 @@
     onMount(async () => {
         await waitForLoad();
 
-        listen('server-state', (state) => {
-            console.log(state);
-        });
+        if ($isFirstTime) {
+            screenContext.push({
+                component: ScreenSetup,
+                props: {}
+            });
+        }
+
         const state = await invoke('get_server_state');
         console.log(state);
         if (state == 'Installed') {
@@ -112,12 +116,10 @@
                 component: ScreenInstalling,
                 props: {}
             });
-        }
-
-        if ($isFirstTime) {
-            screenContext.push({
-                component: ScreenSetup,
-                props: {}
+            listen('server-state', (state) => {
+                if (state === 'Installed') {
+                    client.start();
+                }
             });
         }
     });

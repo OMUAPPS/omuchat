@@ -7,7 +7,14 @@
     import EmojiEntry from './EmojiEntry.svelte';
 
     import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
-    import { listen, tauriApi, tauriDialog, tauriEvent, tauriWindow } from '$lib/utils/tauri';
+    import {
+        listen,
+        tauriApi,
+        tauriDialog,
+        tauriEvent,
+        tauriWindow,
+        waitForLoad
+    } from '$lib/utils/tauri';
 
     let emojis: Map<string, Emoji> = new Map();
     client.omu.registry.listen<Record<string, Emoji>>(
@@ -30,7 +37,8 @@
         uploading--;
     }
 
-    onMount(() => {
+    onMount(async () => {
+        await waitForLoad();
         listen(tauriEvent.TauriEvent.WINDOW_FILE_DROP, (event) => {
             if (event.windowLabel !== tauriWindow.appWindow.label) return;
             fileDrop = false;
