@@ -8,8 +8,14 @@ use tracing::debug;
 pub struct PythonRuntime(PathBuf);
 
 impl PythonRuntime {
-    pub fn new(path: PathBuf) -> PythonRuntime {
-        PythonRuntime(path)
+    pub fn new(path: PathBuf) -> Result<Self, String> {
+        if !path.exists() {
+            Err(format!("Python runtime does not exist: {:?}", path))?;
+        }
+        if !path.is_file() {
+            Err(format!("Python runtime is not a file: {:?}", path))?;
+        }
+        Ok(Self(path))
     }
 
     pub fn set_env(&self, key: &str, value: &str) {

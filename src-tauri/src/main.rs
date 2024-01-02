@@ -43,7 +43,6 @@ pub fn main() -> Result<()> {
     let file_appender = tracing_appender::rolling::hourly(&log_folder, "launcher.log");
 
     let subscriber = tracing_subscriber::registry()
-        .with(EnvFilter::from("dashboard=debug"))
         .with(
             fmt::Layer::new()
                 .pretty()

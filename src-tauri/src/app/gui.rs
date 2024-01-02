@@ -1,42 +1,37 @@
-use std::thread;
+use std::{
+    sync::{Arc, Mutex},
+    thread,
+};
 
 use local_ip_address::local_ip;
 use tauri::{utils::config::AppUrl, Manager, WindowUrl};
+use window_shadows::set_shadow;
+
+use crate::server;
+
+use super::runtime::{check_installed, prepare_server, run_server_internal};
+use super::state::{AppState, ServerState, ShareState};
+
 use tokio::fs;
 use tracing::info;
-use window_shadows::set_shadow;
 
 use crate::{
     python::{self, PythonRuntime},
-    server,
-    util::{download_file, zip_extract},
     LAUNCHER_DIRECTORY,
 };
 
-#[derive(serde::Serialize)]
-struct ServerState {
-    host: String,
-    port: u16,
-}
-
-#[derive(serde::Serialize)]
-struct ShareResponse {
-    url: String,
-    host: String,
-    port: u16,
-}
+use super::runtime::prepare_libraries;
 
 #[tauri::command]
-async fn share_url(state: tauri::State<'_, ServerState>) -> Result<ShareResponse, String> {
-    Ok(ShareResponse {
-        url: format!("http://{}:{}", state.host, state.port),
+pub async fn share_url(state: tauri::State<'_, ShareState>) -> Result<ShareState, String> {
+    Ok(ShareState {
         host: state.host.clone(),
         port: state.port,
     })
 }
 
 #[tauri::command]
-async fn run_server() -> Result<(), String> {
+pub async fn run_server() -> Result<(), String> {
     thread::spawn(move || {
         tokio::runtime::Builder::new_current_thread()
             .enable_all()
@@ -50,127 +45,67 @@ async fn run_server() -> Result<(), String> {
     Ok(())
 }
 
-async fn handle_runtime_io(
-    runtime: &PythonRuntime,
-    commands: Vec<String>,
-    data_directory: &std::path::PathBuf,
-) -> Result<(), String> {
-    runtime
-        .handle_io(
-            &mut runtime
-                .execute(commands, data_directory)
-                .await
-                .expect("Failed to start server"),
-            |_, data| {
-                println!("{}", String::from_utf8_lossy(data));
-                Ok(())
-            },
-            |_, data| {
-                println!("{}", String::from_utf8_lossy(data));
-                Ok(())
-            },
-            tokio::sync::oneshot::channel().1,
-            &(),
-        )
-        .await
-        .expect("Failed to handle IO");
-    Ok(())
-}
-
-async fn prepare_plugins(plugins_folder: &std::path::PathBuf) -> Result<(), String> {
-    info!("Running server...");
-
-    if !plugins_folder.exists() {
-        fs::create_dir_all(&plugins_folder).await.unwrap();
-        info!("Downloading plugins...");
-        fs::create_dir_all(LAUNCHER_DIRECTORY.cache_dir())
-            .await
-            .unwrap();
-        let archive = LAUNCHER_DIRECTORY.cache_dir().join("plugins.tar.gz");
-        download_file(
-            "https://github.com/OMUCHAT/omuchat-plugins/zipball/master/",
-            &archive,
-        )
-        .await
-        .unwrap();
-        let cache_plugins_folder = LAUNCHER_DIRECTORY.cache_dir().join("plugins");
-        fs::create_dir_all(&cache_plugins_folder).await.unwrap();
-        zip_extract(&archive, &cache_plugins_folder).await.unwrap();
-        let mut items = std::fs::read_dir(&cache_plugins_folder).unwrap();
-        let item = items.next().unwrap().unwrap();
-        let item_path = item.path();
-        fs::rename(item_path, &plugins_folder).await.unwrap();
-        fs::remove_dir_all(&cache_plugins_folder).await.unwrap();
+#[tauri::command]
+pub async fn delete_runtime(app_state: tauri::State<'_, AppState>) -> Result<(), String> {
+    let data = LAUNCHER_DIRECTORY.data_dir();
+    let runtimes_folder = data.parent().unwrap().join("runtimes");
+    if runtimes_folder.exists() {
+        fs::remove_dir_all(&runtimes_folder).await.unwrap();
     }
+    info!("Server deleted");
+    app_state
+        .server_state
+        .lock()
+        .unwrap()
+        .clone_from(&ServerState::NotInstalled);
+    let window = app_state.window.lock().unwrap();
+    let _ = window.as_ref().unwrap().emit(
+        "server-state",
+        app_state.server_state.lock().unwrap().clone(),
+    );
     Ok(())
 }
 
-async fn prepare_runtime(
-    runtime: &PythonRuntime,
-    data_directory: &std::path::PathBuf,
-) -> Result<(), String> {
-    runtime.set_env("MULTIDICT_NO_EXTENSIONS", "1");
-    runtime
-        .execute(
-            vec![
-                "-m".to_string(),
-                "pip".to_string(),
-                "install".to_string(),
-                "--upgrade".to_string(),
-                "pip".to_string(),
-            ],
-            data_directory,
-        )
-        .await
-        .expect("Failed to upgrade pip");
+#[tauri::command]
+pub async fn install_runtime(app_state: tauri::State<'_, AppState>) -> Result<(), String> {
+    let server_state = app_state.server_state.clone();
+    let window = app_state.window.clone();
+    thread::spawn(move || {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(async {
+                prepare_server().await.unwrap();
+                server_state
+                    .lock()
+                    .unwrap()
+                    .clone_from(&ServerState::Installed);
 
-    handle_runtime_io(
-        &runtime,
-        vec![
-            "-m".to_string(),
-            "pip".to_string(),
-            "install".to_string(),
-            "git+https://github.com/OMUCHAT/omu.py.git".to_string(),
-            "git+https://github.com/OMUCHAT/server.git".to_string(),
-            "git+https://github.com/OMUCHAT/provider.git".to_string(),
-            "git+https://github.com/OMUCHAT/omuchat.py.git".to_string(),
-        ],
-        data_directory,
-    )
-    .await?;
+                let window = window.lock().unwrap();
+                let _ = window
+                    .as_ref()
+                    .unwrap()
+                    .emit("server-state", server_state.lock().unwrap().clone());
+            });
+    });
     Ok(())
 }
 
-async fn run_server_internal() -> anyhow::Result<()> {
+#[tauri::command]
+pub async fn get_server_state(state: tauri::State<'_, AppState>) -> Result<ServerState, String> {
+    Ok(state.server_state.lock().unwrap().clone())
+}
+
+#[tauri::command]
+pub async fn update_libraries() -> Result<(), String> {
     let data = LAUNCHER_DIRECTORY.data_dir().to_path_buf();
     let runtimes_folder = data.parent().unwrap().join("runtimes");
     let python = python::download_python(&runtimes_folder)
         .await
         .expect("Failed to download Python");
-    let runtime = PythonRuntime::new(python);
-
-    let plugins_folder = data.join("plugins");
-    if !plugins_folder.exists() {
-        prepare_plugins(&plugins_folder).await.unwrap();
-        prepare_runtime(&runtime, &data).await.unwrap();
-    }
-    handle_runtime_io(
-        &runtime,
-        vec!["-m".to_string(), "omuserver".to_string()],
-        &data,
-    )
-    .await
-    .unwrap();
-
-    info!("Server running");
-    Ok(())
-}
-
-#[tauri::command]
-async fn delete_runtime() -> Result<(), String> {
-    let data = LAUNCHER_DIRECTORY.data_dir();
-    let runtimes_folder = data.parent().unwrap().join("runtimes");
-    fs::remove_dir_all(runtimes_folder).await.unwrap();
+    let runtime = PythonRuntime::new(python).expect("Failed to create Python runtime");
+    prepare_libraries(&runtime, &data).await.unwrap();
     Ok(())
 }
 
@@ -190,35 +125,67 @@ pub fn gui_main() {
     context.config_mut().build.dist_dir = AppUrl::Url(window_url.clone());
     context.config_mut().build.dev_path = AppUrl::Url(window_url.clone());
 
-    if !cfg!(dev) {
+    let server_state = if check_installed() {
+        ServerState::Installed
+    } else {
+        ServerState::NotInstalled
+    };
+    let app_state = AppState {
+        server_state: Arc::new(Mutex::new(server_state)),
+        window: Arc::new(Mutex::new(None::<tauri::Window>)),
+    };
+
+    {
+        let server_state = app_state.server_state.clone();
+        let window = app_state.window.clone();
         thread::spawn(move || {
             tokio::runtime::Builder::new_current_thread()
                 .enable_all()
                 .build()
                 .unwrap()
                 .block_on(async {
+                    if server_state.lock().unwrap().clone() == ServerState::NotInstalled {
+                        server_state
+                            .lock()
+                            .unwrap()
+                            .clone_from(&ServerState::Installing);
+                        prepare_server().await.unwrap();
+                        server_state
+                            .lock()
+                            .unwrap()
+                            .clone_from(&ServerState::Installed);
+                        let window = window.lock().unwrap();
+                        let _ = window
+                            .as_ref()
+                            .unwrap()
+                            .emit("server-state", server_state.lock().unwrap().clone());
+                    }
                     run_server_internal().await.unwrap();
                 });
         });
     }
-
     tauri::Builder::default()
-        .manage(ServerState {
+        .manage(ShareState {
             host: host.to_string(),
             port,
         })
+        .manage(app_state.clone())
         .plugin(server::Builder::new(port).build())
         .setup(move |app| {
             let window = app.get_window("main").unwrap();
             set_shadow(&window, true).expect("Unsupported platform!");
+            let window = window.clone();
+            app_state.window.lock().unwrap().replace(window);
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
             share_url,
             run_server,
             delete_runtime,
+            install_runtime,
+            get_server_state,
+            update_libraries,
         ])
-        // run async run_server() in a background thread
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
