@@ -4,15 +4,15 @@
     import { client } from './chat';
     import Comment from './Comment.svelte';
 
-
     let messages = client.chat.messages.cache;
     client.omu.addListener({
         onReady() {
             client.chat.messages.fetch({
-                before: 100,
+                before: 100
             });
         }
-    })
+    });
+
     onMount(() => {
         client.chat.messages.setCacheSize(40);
         client.chat.messages.listen((data) => {
@@ -20,6 +20,8 @@
         });
         client.chat.authors.listen();
     });
+
+    client.run();
 </script>
 
 <main>

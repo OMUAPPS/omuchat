@@ -1,9 +1,5 @@
 <script lang="ts">
     import { ImageContent, Message, RootContent, TextContent } from '@omuchat/client/src/models';
-    import { open } from '@tauri-apps/api/dialog';
-    import { listen } from '@tauri-apps/api/event';
-    import { convertFileSrc } from '@tauri-apps/api/tauri';
-    import { appWindow } from '@tauri-apps/api/window';
     import { onMount } from 'svelte';
 
     import { client, type Emoji } from './emoji';
@@ -11,6 +7,7 @@
     import EmojiEntry from './EmojiEntry.svelte';
 
     import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
+    import { listen, tauriApi, tauriDialog, tauriEvent, tauriWindow } from '$lib/utils/tauri';
 
     let emojis: Map<string, Emoji> = new Map();
     client.omu.registry.listen<Record<string, Emoji>>(
@@ -34,18 +31,18 @@
     }
 
     onMount(() => {
-        listen('tauri://file-drop', (event) => {
-            if (event.windowLabel !== appWindow.label) return;
+        listen(tauriEvent.TauriEvent.WINDOW_FILE_DROP, (event) => {
+            if (event.windowLabel !== tauriWindow.appWindow.label) return;
             fileDrop = false;
-            upload(event.payload as string[]);
+            upload(event.payload);
         });
-        listen('tauri://file-drop-hover', (event) => {
-            if (event.windowLabel !== appWindow.label) return;
+        listen(tauriEvent.TauriEvent.WINDOW_FILE_DROP_HOVER, (event) => {
+            if (event.windowLabel !== tauriWindow.appWindow.label) return;
             fileDrop = true;
             dragFiles = event.payload as string[];
         });
-        listen('tauri://file-drop-cancelled', (event) => {
-            if (event.windowLabel !== appWindow.label) return;
+        listen(tauriEvent.TauriEvent.WINDOW_FILE_DROP_CANCELLED, (event) => {
+            if (event.windowLabel !== tauriWindow.appWindow.label) return;
             fileDrop = false;
         });
     });
@@ -92,7 +89,7 @@
     }
 
     async function openFile() {
-        const selected = await open({
+        const selected = await tauriDialog.open({
             multiple: true,
             filters: [
                 {
@@ -149,7 +146,7 @@
         </div>
         <div class="preview">
             {#each dragFiles as file}
-                <img src={convertFileSrc(file)} alt="" />
+                <img src={tauriApi.convertFileSrc(file)} alt="" />
             {/each}
         </div>
     </div>

@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { WindowOptions } from "@tauri-apps/api/window";
+    import type { WindowOptions } from '@tauri-apps/api/window';
 
-    import type { ChatApp } from "$lib/common/omuchat/chatapp";
-    import { t } from "$lib/i18n/i18n-context";
-    import { openWindow } from "$lib/utils/tauri";
+    import type { ChatApp } from '$lib/common/omuchat/chatapp';
+    import { t } from '$lib/i18n/i18n-context';
+    import { tauriWindow } from '$lib/utils/tauri';
 
     export let entry: ChatApp;
 
@@ -18,10 +18,10 @@
             maximizable: true,
             transparent: false,
             decorations: true,
-            alwaysOnTop: false,
+            alwaysOnTop: false
         };
         // if (app.options) options = Object.assign(options, app.options);
-        const window = openWindow(windowId, options);
+        const window = tauriWindow.openWindow(windowId, options);
         window.setFocus();
     }
 </script>
@@ -44,9 +44,7 @@
         </span>
     </div>
     <div class="app-body">
-        <button>
-
-        </button>
+        <button> </button>
     </div>
 </button>
 

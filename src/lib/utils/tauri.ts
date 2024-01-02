@@ -1,23 +1,8 @@
 import type * as event from '@tauri-apps/api/event';
 import type * as api from '@tauri-apps/api/tauri';
-import type { WebviewWindow as _WebviewWindow } from '@tauri-apps/api/window';
 
-let WebviewWindow: typeof _WebviewWindow | undefined;
-let appWindow: _WebviewWindow | undefined;
-let _invoke: typeof api.invoke;
-let _listen: typeof event.listen;
-
-export function minimizeWindow() {
-    appWindow?.minimize();
-}
-
-export function maximizeWindow() {
-    appWindow?.maximize();
-}
-
-export function closeWindow() {
-    appWindow?.close();
-}
+let _invoke: typeof api.invoke | undefined;
+let _listen: typeof event.listen | undefined;
 
 type Commands = {
     share_url: {
@@ -49,13 +34,18 @@ type Commands = {
     },
 }
 
-export function invoke<T extends keyof Commands>(
+export async function invoke<T extends keyof Commands>(
     command: T,
     ...args: Commands[T]['args']
 ): Promise<Commands[T]['return']> {
-    return _invoke!(command, ...args);
+    if (!_invoke) {
+        throw new Error('Tauri not loaded yet');
+    }
+    return _invoke(command, ...args);
 }
-
+type TauriEvent<T> = {
+    return: event.Event<T>;
+}
 type Events = {
     'server-state': {
         return: 'NotInstalled' | 'Installing' | 'Installed';
@@ -67,39 +57,80 @@ type Events = {
             progress_text: string;
         }
     },
+    [event.TauriEvent.WINDOW_RESIZED]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_MOVED]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_CLOSE_REQUESTED]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_CREATED]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_DESTROYED]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_FOCUS]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_BLUR]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_SCALE_FACTOR_CHANGED]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_THEME_CHANGED]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_FILE_DROP]: TauriEvent<string[]>,
+    [event.TauriEvent.WINDOW_FILE_DROP_HOVER]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_FILE_DROP_CANCELLED]: TauriEvent<unknown>,
+    [event.TauriEvent.MENU]: TauriEvent<unknown>,
+    [event.TauriEvent.CHECK_UPDATE]: TauriEvent<unknown>,
+    [event.TauriEvent.UPDATE_AVAILABLE]: TauriEvent<unknown>,
+    [event.TauriEvent.INSTALL_UPDATE]: TauriEvent<unknown>,
+    [event.TauriEvent.STATUS_UPDATE]: TauriEvent<unknown>,
+    [event.TauriEvent.DOWNLOAD_PROGRESS]: TauriEvent<unknown>,
 }
 
 export function listen<T extends keyof Events>(
     command: T,
     callback: (event: Events[T]['return']) => void,
 ): void {
+    if (!_listen) {
+        throw new Error('Tauri not loaded yet');
+    }
     _listen<Events[T]['return']>(command, (event) => {
         callback(event.payload);
     })
 }
 
-export function openWindow(...options: ConstructorParameters<typeof _WebviewWindow>) {
-    if (!WebviewWindow) {
-        throw new Error('WebviewWindow not initialized');
-    }
-    return new WebviewWindow(...options);
-}
-
 let loaded = false;
 const loadHandlers: (() => void)[] = [];
+const loadPromises: (() => Promise<void>)[] = [];
+
+
+function loadLazy<T>(load: () => Promise<T>): T {
+    let obj: T | any = {};
+    loadPromises.push(async () => {
+        obj = await load();
+    });
+    return new Proxy(obj, {
+        get(target, prop) {
+            if (!loaded) {
+                throw new Error('Tauri not loaded yet');
+            }
+            if (prop in obj) {
+                return obj[prop];
+            } else {
+                throw new Error(`Property ${prop.toString()} not found`);
+            }
+        }
+    });
+}
+
+export const tauriWindow = loadLazy(() => import('@tauri-apps/api/window'));
+export const tauriDialog = loadLazy(() => import('@tauri-apps/api/dialog'));
+export const tauriApi = loadLazy(() => import('@tauri-apps/api/tauri'));
+export const tauriEvent = loadLazy(() => import('@tauri-apps/api/event'));
 
 async function load() {
-    const [{ WebviewWindow: _WebviewWindow, appWindow: _appWindow }, { invoke }, { listen }] = await Promise.all([
-        import('@tauri-apps/api/window'),
+    if (loaded) {
+        throw new Error('Tauri already loaded');
+    }
+    const [{ invoke }, { listen }] = await Promise.all([
         import('@tauri-apps/api/tauri'),
         import('@tauri-apps/api/event'),
     ]);
-    WebviewWindow = _WebviewWindow;
-    appWindow = _appWindow;
     _invoke = invoke;
     _listen = listen;
-    loaded = true;
+    await Promise.all(loadPromises.map(it => it()));
     loadHandlers.forEach(handler => handler());
+    loaded = true;
 }
 
 export function waitForLoad() {

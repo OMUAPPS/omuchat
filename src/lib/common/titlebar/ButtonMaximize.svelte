@@ -3,11 +3,14 @@
     import Tooltip from '../tooltip/Tooltip.svelte';
 
     import { t } from '$lib/i18n/i18n-context';
-    import { maximizeWindow } from '$lib/utils/tauri';
+    import { tauriWindow } from '$lib/utils/tauri';
 
+    function maximize() {
+        tauriWindow.appWindow.maximize();
+    }
 </script>
 
-<Button on:click={maximizeWindow}>
+<Button on:click={maximize}>
     <Tooltip>{$t('titlebar.maximize')}</Tooltip>
     <i class="ti ti-rectangle" />
 </Button>

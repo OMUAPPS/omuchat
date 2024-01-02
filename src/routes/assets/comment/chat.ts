@@ -12,4 +12,3 @@ export const client = new Client({
     app,
 });
 export const chat = client.chat;
-client.run();

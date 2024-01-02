@@ -2,8 +2,9 @@
     import { onMount } from 'svelte';
 
     import Background from '$lib/common/Background.svelte';
+    import { screenContext } from '$lib/common/screen/screen';
     import Screen from '$lib/common/screen/Screen.svelte';
-    import { listen } from '$lib/utils/tauri';
+    import { invoke, listen } from '$lib/utils/tauri';
 
     let progress: {
         progress: number;
@@ -11,9 +12,19 @@
         progress_text: string;
     } | null = null;
 
-    onMount(() => {
+    onMount(async () => {
         listen('install-progress', (progress) => {
             console.log(progress);
+            progress = progress;
+        });
+        const state = await invoke('get_server_state');
+        if (state === 'Installed') {
+            screenContext.pop();
+        }
+        listen('server-state', (state) => {
+            if (state === 'Installed') {
+                screenContext.pop();
+            }
         });
     });
 </script>
