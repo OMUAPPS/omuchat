@@ -11,7 +11,7 @@ use directories::ProjectDirs;
 use once_cell::sync::Lazy;
 use reqwest::Client;
 use tracing::debug;
-use tracing_subscriber::{fmt, layer::SubscriberExt, EnvFilter};
+use tracing_subscriber::{fmt, layer::SubscriberExt};
 
 pub mod app;
 
@@ -40,7 +40,7 @@ static HTTP_CLIENT: Lazy<Client> = Lazy::new(|| {
 pub fn main() -> Result<()> {
     let log_folder = LAUNCHER_DIRECTORY.data_dir().join("logs");
 
-    let file_appender = tracing_appender::rolling::hourly(&log_folder, "launcher.log");
+    let file_appender = tracing_appender::rolling::hourly(&log_folder, "dashoboard.log");
 
     let subscriber = tracing_subscriber::registry()
         .with(
