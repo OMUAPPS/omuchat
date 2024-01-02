@@ -80,11 +80,11 @@ type Events = {
 export function listen<T extends keyof Events>(
     command: T,
     callback: (event: Events[T]['return']) => void,
-): void {
+): Promise<() => void> {
     if (!_listen) {
         throw new Error('Tauri not loaded yet');
     }
-    _listen<Events[T]['return']>(command, (event) => {
+    return _listen<Events[T]['return']>(command, (event) => {
         callback(event.payload);
     })
 }
