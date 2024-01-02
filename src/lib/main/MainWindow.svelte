@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
     import Component from '../common/component/PropedComponent.svelte';
@@ -14,12 +15,17 @@
     import PageHome from './page/PageHome.svelte';
     import PageMessages from './page/PageMessages.svelte';
     import { currentPage, devMode, isFirstTime } from './settings';
+    import ScreenInstalling from './setup/ScreenInstalling.svelte';
     import ScreenSetup from './setup/ScreenSetup.svelte';
 
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
+    import { getClient } from '$lib/common/omuchat/client';
     import { screenContext } from '$lib/common/screen/screen';
     import { t } from '$lib/i18n/i18n-context';
     import { style } from '$lib/utils/class-helper';
+    import { invoke, listen, waitForLoad } from '$lib/utils/tauri';
+
+    const { client } = getClient();
 
     pages.set(new Map());
     $pages.set('main', {
@@ -91,12 +97,30 @@
         });
     }
 
-    if ($isFirstTime) {
-        screenContext.push({
-            component: ScreenSetup,
-            props: {}
+    onMount(async () => {
+        await waitForLoad();
+
+        listen('server-state', (state) => {
+            console.log(state);
         });
-    }
+        const state = await invoke('get_server_state');
+        console.log(state);
+        if (state == 'Installed') {
+            client.start();
+        } else {
+            screenContext.push({
+                component: ScreenInstalling,
+                props: {}
+            });
+        }
+
+        if ($isFirstTime) {
+            screenContext.push({
+                component: ScreenSetup,
+                props: {}
+            });
+        }
+    });
 </script>
 
 <div class="wrapper">

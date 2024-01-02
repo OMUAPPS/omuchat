@@ -48,9 +48,22 @@
                 starting = false;
             });
     }
+
     function delete_runtime() {
         invoke('delete_runtime').then((res) => {
             console.log(`delete_runtime: ${res}`);
+        });
+    }
+
+    function install_runtime() {
+        invoke('install_runtime').then((res) => {
+            console.log(`install_runtime: ${res}`);
+        });
+    }
+
+    function update_libraries() {
+        invoke('update_libraries').then((res) => {
+            console.log(`update_libraries: ${res}`);
         });
     }
 </script>
@@ -73,7 +86,9 @@
                 >
                     stop
                 </button>
-                <button on:click={delete_runtime}> delete runtime </button>
+                <button on:click={delete_runtime}>delete runtime</button>
+                <button on:click={install_runtime}>install runtime</button>
+                <button on:click={update_libraries}>update libraries</button>
             </div>
         </span>
     </div>

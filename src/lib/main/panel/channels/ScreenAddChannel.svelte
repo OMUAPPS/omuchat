@@ -1,11 +1,11 @@
-4<script lang="ts">
+<script lang="ts">
     import { models } from '@omuchat/client';
     import { onMount } from 'svelte';
 
     import { getClient } from '$lib/common/omuchat/client';
     import { screenContext } from '$lib/common/screen/screen';
     import Screen from '$lib/common/screen/Screen.svelte';
-    
+
     const { chat } = getClient();
     let providers: Map<string, models.Provider> | undefined;
     let url: string = '';
@@ -13,14 +13,19 @@
     chat.providers!.addListener({
         onCacheUpdate(cache) {
             providers = cache;
-        },
+        }
     });
-    chat.providers!.fetch(100);
+    chat.providers!.fetch({});
 
-    let matches: Map<string, {
-        provider: models.Provider;
-        match: RegExpExecArray;
-    }> | undefined;
+    let matches:
+        | Map<
+              string,
+              {
+                  provider: models.Provider;
+                  match: RegExpExecArray;
+              }
+          >
+        | undefined;
 
     function filterProvider(url: string) {
         matches = new Map();
@@ -31,7 +36,7 @@
                 if (options) {
                     matches!.set(provider.id, {
                         provider: provider,
-                        match: options,
+                        match: options
                     });
                 }
                 return true;
@@ -43,19 +48,20 @@
     let selectedProvider: models.Provider | undefined;
 
     function addChannel() {
-        if (!selectedProvider)
-            return;
+        if (!selectedProvider) return;
 
-        chat.channels!.add(new models.Channel({
-            provider_id: selectedProvider.id,
-            active: true,
-            created_at: Date.now(),
-            url: url,
-            description: '',
-            id: '',
-            icon_url: '',
-            name: '',
-        }));
+        chat.channels!.add(
+            new models.Channel({
+                provider_id: selectedProvider.id,
+                active: true,
+                created_at: Date.now(),
+                url: url,
+                description: '',
+                id: '',
+                icon_url: '',
+                name: ''
+            })
+        );
         screenContext.pop();
     }
 
@@ -97,27 +103,21 @@
     });
 </script>
 
-<Screen title="add_channel">
+4<Screen title="add_channel">
     <div class="container">
-        {url}
-        <input
-            type="text"
-            bind:value={url}
-        />
+        <input type="text" bind:value={url} placeholder="..." />
         {#if providers && providers.size}
             {#each filterProvider(url) as [provider_id, provider] (provider_id)}
-                <button class:active={selectedProvider === provider} on:click={() => {
-                    selectedProvider = provider;
-                    addChannel();
-                }}>
+                <button
+                    class:active={selectedProvider === provider}
+                    on:click={() => {
+                        selectedProvider = provider;
+                        addChannel();
+                    }}
+                >
                     {provider.name}
                 </button>
             {/each}
-            {#each providers as [provider_id, provider] (provider_id)}
-                {provider.name}
-            {/each}
-        {:else}
-            プロバイダーが見つかりませんでした。
         {/if}
     </div>
 </Screen>
@@ -137,5 +137,38 @@
     .active {
         color: #fff;
         background-color: #000;
+    }
+
+    input {
+        width: 100%;
+        height: 40px;
+        padding: 0 10px;
+        font-size: 16px;
+        background: var(--color-bg-2);
+        border: 1px solid var(--color-1);
+        border-radius: 0;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    button {
+        width: 100%;
+        height: 40px;
+        padding: 0 10px;
+        font-size: 16px;
+        color: var(--color-1);
+        text-align: left;
+        cursor: pointer;
+        background: var(--color-bg-2);
+        border: 1px solid var(--color-1);
+        border-radius: 0;
+        outline: none;
+
+        &:hover {
+            color: #fff;
+            background-color: #000;
+        }
     }
 </style>
