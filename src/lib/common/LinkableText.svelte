@@ -9,16 +9,16 @@
 
     let parts: Part[] = [];
 
-    parts = text.split(/(https?:\/\/[^\s]+)/g).map((part) => {
+    parts = text.split(/(https?:\/\/[^()\s]+)/g).map((part) => {
         if (part.startsWith('http')) {
             return {
                 type: 'url',
-                content: part,
+                content: part
             };
         } else {
             return {
                 type: 'text',
-                content: part,
+                content: part
             };
         }
     });
