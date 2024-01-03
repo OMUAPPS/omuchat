@@ -1,8 +1,8 @@
 import type * as event from '@tauri-apps/api/event';
 import type * as api from '@tauri-apps/api/tauri';
 
-let _invoke: typeof api.invoke | undefined;
-let _listen: typeof event.listen | undefined;
+let _invoke: typeof api.invoke;
+let _listen: typeof event.listen;
 
 type Commands = {
     share_url: {
@@ -38,9 +38,7 @@ export async function invoke<T extends keyof Commands>(
     command: T,
     ...args: Commands[T]['args']
 ): Promise<Commands[T]['return']> {
-    if (!_invoke) {
-        throw new Error('Tauri not loaded yet');
-    }
+    assertTauri();
     return _invoke(command, ...args);
 }
 type TauriEvent<T> = {
@@ -81,9 +79,7 @@ export function listen<T extends keyof Events>(
     command: T,
     callback: (event: Events[T]['return']) => void,
 ): Promise<() => void> {
-    if (!_listen) {
-        throw new Error('Tauri not loaded yet');
-    }
+    assertTauri();
     return _listen<Events[T]['return']>(command, (event) => {
         callback(event.payload);
     })
@@ -92,7 +88,6 @@ export function listen<T extends keyof Events>(
 let loaded = false;
 const loadHandlers: (() => void)[] = [];
 const loadPromises: (() => Promise<void>)[] = [];
-
 
 function loadLazy<T>(load: () => Promise<T>): T {
     let obj: T | any = {};
@@ -113,12 +108,24 @@ function loadLazy<T>(load: () => Promise<T>): T {
     });
 }
 
+export function assertTauri() {
+    if (!checkOnTauri) {
+        throw new Error('Not on Tauri');
+    }
+    if (!loaded) {
+        throw new Error('Tauri not loaded yet');
+    }
+}
+
 export const tauriWindow = loadLazy(() => import('@tauri-apps/api/window'));
 export const tauriDialog = loadLazy(() => import('@tauri-apps/api/dialog'));
 export const tauriApi = loadLazy(() => import('@tauri-apps/api/tauri'));
 export const tauriEvent = loadLazy(() => import('@tauri-apps/api/event'));
 
 async function load() {
+    if (!checkOnTauri) {
+        return;
+    }
     if (loaded) {
         throw new Error('Tauri already loaded');
     }
@@ -133,7 +140,15 @@ async function load() {
     loaded = true;
 }
 
+export function checkOnTauri() {
+    return typeof window.__TAURI_IPC__ !== 'undefined';
+}
+export const isOnTauri = checkOnTauri();
+
 export function waitForLoad() {
+    if (!checkOnTauri) {
+        return Promise.resolve();
+    }
     if (loaded) {
         return Promise.resolve();
     }
