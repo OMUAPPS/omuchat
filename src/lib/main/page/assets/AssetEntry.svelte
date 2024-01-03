@@ -1,22 +1,19 @@
 <script lang="ts">
+    import { origin } from './assets-page';
+
     import type { Asset } from '$lib/common/omuchat/asset';
     import { t } from '$lib/i18n/i18n-context';
     import { DragHelper } from '$lib/utils/drag-helper';
-    import { invoke } from '$lib/utils/tauri';
 
     export let entry: Asset;
     let preview: HTMLDivElement;
 
-    async function handleDragStart(event: DragEvent) {
+    function handleDragStart(event: DragEvent) {
         DragHelper.setDragImage(event, preview);
         let url = entry.url;
 
-        let host = window.location.origin;
-        if (typeof window.__TAURI_IPC__ == 'undefined') {
-            const res = await invoke('share_url');
-            host = `${res.host}:${res.port}`;
-        }
-        if (!url.startsWith('http')) url = `${host}${url}`;
+        if (!url.startsWith('http')) url = `${$origin}${url}`;
+        console.log(url);
         DragHelper.setUrl(event, url);
     }
 </script>
