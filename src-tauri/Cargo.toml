@@ -17,7 +17,7 @@ tauri-build = { version = "1.4.0", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.4.0", features = [ "dialog-all", "window-set-focus", "shell-open", "window-create", "system-tray", "window-show", "window-hide", "window-close", "window-minimize", "window-maximize", "window-start-dragging", "window-unmaximize", "window-unminimize"] }
+tauri = { version = "1.4.0", features = [ "updater", "dialog-all", "window-set-focus", "shell-open", "window-create", "system-tray", "window-show", "window-hide", "window-close", "window-minimize", "window-maximize", "window-start-dragging", "window-unmaximize", "window-unminimize"] }
 window-shadows = "0.2.1"
 portpicker = "0.1" # used in the example to pick a random free port
 local-ip-address = "0.4"

@@ -74,7 +74,12 @@
             "csp": null
         },
         "updater": {
-            "active": false
+            "active": true,
+            "endpoints": [
+                "https://gist.githubusercontent.com/am230/950b1da90a3b644265f36f809707f276/raw/06cd10a38b7da9a98643a284e1d99ff610a904ee/omuchat-version.json"
+            ],
+            "dialog": true,
+            "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEI1NTg0NTQyNkYyRTE3OTUKUldTVkZ5NXZRa1ZZdGRKVEJ2YnFiZ3V1NWx3S0J4QlAvYXFoOHpiMkYvL3IySjdwNVJqL2EyTVgK"
         },
         "windows": [
             {

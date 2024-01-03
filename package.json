@@ -1,9 +1,10 @@
 {
-    "name": "dashboard-new",
+    "name": "dashboard",
     "private": true,
     "version": "0.0.0",
     "type": "module",
     "scripts": {
+        "tauri": "tauri",
         "dev": "set RUST_BACKTRACE=1 && tauri dev",
         "prepare": "svelte-kit sync && node script/license.mjs",
         "build": "tauri build",
