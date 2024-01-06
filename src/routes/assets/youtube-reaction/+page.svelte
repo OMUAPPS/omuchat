@@ -137,8 +137,9 @@
             if (emojis.has(particle.key)) {
                 const emoji = emojis.get(particle.key);
                 if (emoji) {
-                    const size = Math.min(64, emoji.width);
-                    ctx.drawImage(emoji, -size / 2, -size / 2, size, size);
+                    const size = Math.min(64, emoji.height);
+                    const ratio = emoji.width / emoji.height;
+                    ctx.drawImage(emoji, -size / 2 * ratio, -size / 2, size * ratio, size);
                 } else {
                     ctx.font = "32px 'Noto Color Emoji', 'Noto Sans JP', sans-serif";
                     ctx.fillText(particle.key, 0, 0);
