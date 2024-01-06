@@ -2,10 +2,10 @@
     import type { models } from '@omuchat/client';
     import { onMount } from 'svelte';
 
-    import { getClient } from '$lib/common/omuchat/client';
+    import { getClient } from '$lib/common/omuchat/client.js';
     import TableList from '$lib/common/omuchat/TableList.svelte';
     import MessageEntry from '$lib/main/panel/messages/MessageEntry.svelte';
-    
+
     const { chat } = getClient();
 
     export let filter: (key: string, message: models.Message) => boolean = () => true;

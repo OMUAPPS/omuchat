@@ -1,12 +1,12 @@
 <script lang="ts">
     import ExternalLink from '$lib/common/input/ExternalLink.svelte';
-    import { LICENSES } from '$lib/license/license';
+    import { LICENSES } from '$lib/license/license.js';
 
     let selected: string | undefined;
 </script>
 
 <div class="container">
-    {#each LICENSES as license}
+    {#each LICENSES as license (license.name)}
         <button
             class="license"
             on:click={() => (selected = license.name === selected ? undefined : license.name)}

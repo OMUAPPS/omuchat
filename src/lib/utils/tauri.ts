@@ -81,8 +81,32 @@ export function listen<T extends keyof Events>(
 ): Promise<() => void> {
     assertTauri();
     return _listen<Events[T]['return']>(command, (event) => {
-        callback(event.payload);
+        callback(event);
     })
+}
+
+export function listenSync<T extends keyof Events>(
+    command: T,
+    callback: (event: Events[T]['return']) => void,
+): () => void {
+    assertTauri();
+    let destroy = () => {};
+    _listen<Events[T]['return']>(command, (event) => {
+        callback(event);
+    }).then((func) => {
+        destroy = func;
+    });
+    return () => {
+        destroy();
+    };
+}
+
+export async function readFile(file: string): Promise<[string, ArrayBuffer]> {
+    assertTauri();
+    const name = file.split(/[\\/]/).pop();
+    if (!name) throw new Error('Invalid file path');
+    const buffer = await tauriFs.readBinaryFile(file);
+    return [name, buffer];
 }
 
 let loaded = false;
@@ -109,7 +133,7 @@ function loadLazy<T>(load: () => Promise<T>): T {
 }
 
 export function assertTauri() {
-    if (!checkOnTauri) {
+    if (!checkOnTauri()) {
         throw new Error('Not on Tauri');
     }
     if (!loaded) {
@@ -121,6 +145,7 @@ export const tauriWindow = loadLazy(() => import('@tauri-apps/api/window'));
 export const tauriDialog = loadLazy(() => import('@tauri-apps/api/dialog'));
 export const tauriApi = loadLazy(() => import('@tauri-apps/api/tauri'));
 export const tauriEvent = loadLazy(() => import('@tauri-apps/api/event'));
+export const tauriFs = loadLazy(() => import('@tauri-apps/api/fs'));
 
 async function load() {
     if (!checkOnTauri) {
@@ -146,7 +171,7 @@ export function checkOnTauri() {
 export const isOnTauri = checkOnTauri();
 
 export function waitForLoad() {
-    if (!checkOnTauri) {
+    if (!checkOnTauri()) {
         return Promise.resolve();
     }
     if (loaded) {

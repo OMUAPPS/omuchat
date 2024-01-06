@@ -1,20 +1,25 @@
 <script lang="ts">
-    import { ImageContent, Message, RootContent, TextContent } from '@omuchat/client/src/models';
+    import {
+        models
+    } from '@omuchat/client';
     import { onMount } from 'svelte';
 
-    import { client, type Emoji } from './emoji';
+    import { client, type Emoji } from './emoji.js';
     import EmojiEdit from './EmojiEdit.svelte';
     import EmojiEntry from './EmojiEntry.svelte';
 
     import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
     import {
+        isOnTauri,
         listen,
+        readFile,
         tauriApi,
         tauriDialog,
         tauriEvent,
+        tauriFs,
         tauriWindow,
         waitForLoad
-    } from '$lib/utils/tauri';
+    } from '$lib/utils/tauri.js';
 
     let emojis: Map<string, Emoji> = new Map();
     client.omu.registry.listen<Record<string, Emoji>>(
@@ -31,18 +36,35 @@
     let dragFiles: string[] = [];
     let uploading: number = 0;
 
-    async function upload(files: string[]) {
+    async function upload(files: Array<{ key: string; buffer: ArrayBuffer }>) {
         uploading++;
-        await client.omu.endpoints.call({ name: 'upload', app: 'omu.chat.plugins/emoji' }, files);
+        files = files.map(({ key, buffer }) => ({ key: `emoji/${key}`, buffer }));
+        await client.omu.assets.upload(...files);
+        files.forEach(({ key }) => {
+            const name = key.split('/')[1].split('.')[0];
+            const emoji = {
+                id: key,
+                name: name,
+                regex: `${name}`,
+                image_url: client.omu.asset(key)
+            };
+            emojis.set(emoji.id, emoji);
+        });
+        client.omu.registry.set(
+            { name: 'emojis', app: 'omu.chat.plugins/emoji' },
+            Object.fromEntries(emojis)
+        );
         uploading--;
     }
 
     onMount(async () => {
         await waitForLoad();
-        listen(tauriEvent.TauriEvent.WINDOW_FILE_DROP, (event) => {
+        listen(tauriEvent.TauriEvent.WINDOW_FILE_DROP, async (event) => {
+            console.log(event);
             if (event.windowLabel !== tauriWindow.appWindow.label) return;
             fileDrop = false;
-            upload(event.payload);
+            const files = await Promise.all(event.payload.map((path) => readFile(path)));
+            upload(files.map(([key, buffer]) => ({ key, buffer })));
         });
         listen(tauriEvent.TauriEvent.WINDOW_FILE_DROP_HOVER, (event) => {
             if (event.windowLabel !== tauriWindow.appWindow.label) return;
@@ -83,17 +105,39 @@
 
     function testEmoji(event: CustomEvent<Emoji>) {
         const emoji = event.detail;
+        const room = new models.Room({
+            id: 'test',
+            name: 'テスト',
+            provider_id: 'test',
+            online: false,
+            url: window.location.href
+        });
+        client.chat.rooms.set(room);
         client.chat.messages.add(
-            new Message({
+            new models.Message({
                 id: Date.now().toString(),
-                room_id: 'test',
-                content: RootContent.of([
-                    TextContent.of(`${emoji.name} (${emoji.regex})`),
-                    ImageContent.of(emoji.image_url, emoji.id, emoji.name)
+                room_id: room.key(),
+                content: models.RootContent.of([
+                    models.TextContent.of(`${emoji.name} (${emoji.regex})`),
+                    models.ImageContent.of(emoji.image_url, emoji.id, emoji.name)
                 ]),
                 created_at: new Date()
             })
         );
+    }
+
+    let files: FileList | undefined;
+
+    async function uploadFiles() {
+        if (!files) return;
+        const selected = await Promise.all(
+            Array.from(files).map(async (file) => {
+                const name = file.name;
+                const buffer = await file.arrayBuffer();
+                return { key: name, buffer: buffer };
+            })
+        );
+        upload(selected);
     }
 
     async function openFile() {
@@ -107,7 +151,15 @@
             ]
         });
         if (!selected) return;
-        upload(Array.from(selected));
+        const files = await Promise.all(
+            [...selected].map(async (file) => {
+                const name = file.split(/[\\/]/).pop();
+                if (!name) throw new Error('Invalid file path');
+                const buffer = await tauriFs.readBinaryFile(file);
+                return { key: name, buffer };
+            })
+        );
+        upload(files);
     }
 </script>
 
@@ -132,10 +184,21 @@
                 <i class="ti ti-upload" />
                 画像をドラッグ&ドロップして追加できます。
             </small>
-            <button class="button" on:click={openFile}>
-                <i class="ti ti-upload" />
-                もしくはファイルを選択
-            </button>
+            {#if isOnTauri}
+                <button class="upload-button" on:click={openFile}>
+                    <i class="ti ti-upload" />
+                    もしくはファイルを選択
+                </button>
+            {:else}
+                <input
+                    type="file"
+                    multiple
+                    hidden
+                    bind:files
+                    on:change={uploadFiles}
+                    accept="image/*"
+                />
+            {/if}
             {#if uploading > 0}
                 <span>
                     <i class="ti ti-upload" />
@@ -219,7 +282,7 @@
         width: 100%;
         height: 40px;
 
-        button {
+        .upload-button {
             height: 32px;
             padding: 0 10px;
             color: var(--color-1);

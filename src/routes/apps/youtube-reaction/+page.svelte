@@ -1,19 +1,10 @@
 <script lang="ts">
-    import { Client } from '@omuchat/client';
-    import { App } from '@omuchat/omu.js';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
     import EmojiEntry from './EmojiEntry.svelte';
+    import { client } from './youtube-reaction.js';
 
-    const app = new App({
-        name: 'youtube-reaction',
-        version: '0.1.0',
-        group: 'omu.chat.apps'
-    });
-    const client = new Client({
-        app
-    });
 
     let emojis: Map<string, string | undefined> = new Map();
     client.omu.registry.listen<Record<string, string | undefined>>({ name: 'emojis' }, (data) => {

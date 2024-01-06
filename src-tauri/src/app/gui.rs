@@ -113,11 +113,7 @@ pub fn gui_main() {
     let mut context = tauri::generate_context!();
 
     let host: std::net::IpAddr = local_ip().expect("failed to get local IP");
-    let port = if cfg!(dev) {
-        5173u16
-    } else {
-        portpicker::pick_unused_port().expect("failed to find unused port")
-    };
+    let port = 26420u16;
 
     let url = format!("http://{}:{}", host, port).parse().unwrap();
     let window_url = WindowUrl::External(url);
@@ -173,9 +169,8 @@ pub fn gui_main() {
         .plugin(server::Builder::new(port).build())
         .setup(move |app| {
             let window = app.get_window("main").unwrap();
+            app_state.window.lock().unwrap().replace(window.clone());
             set_shadow(&window, true).expect("Unsupported platform!");
-            let window = window.clone();
-            app_state.window.lock().unwrap().replace(window);
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

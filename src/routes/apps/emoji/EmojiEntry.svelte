@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
 
-    import type { Emoji } from "./emoji";
+    import type { Emoji } from "./emoji.js";
 
     import Button from "$lib/common/input/Button.svelte";
     import Tooltip from "$lib/common/tooltip/Tooltip.svelte";
@@ -95,6 +95,7 @@
         }
 
         img {
+            width: 50px;
             height: 50px;
             object-fit: contain;
             margin-right: 10px;

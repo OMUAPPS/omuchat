@@ -3,7 +3,7 @@
 
     import type { ChatApp } from '$lib/common/omuchat/chatapp';
     import { t } from '$lib/i18n/i18n-context';
-    import { tauriWindow } from '$lib/utils/tauri';
+    import { isOnTauri, tauriWindow } from '$lib/utils/tauri';
 
     export let entry: ChatApp;
 
@@ -20,9 +20,12 @@
             decorations: true,
             alwaysOnTop: false
         };
-        // if (app.options) options = Object.assign(options, app.options);
-        const window = new tauriWindow.WebviewWindow(windowId, options);
-        window.setFocus();
+        if (isOnTauri) {
+            const window = new tauriWindow.WebviewWindow(windowId, options);
+            window.setFocus();
+        } else {
+            window.open(app.url, windowId);
+        }
     }
 </script>
 

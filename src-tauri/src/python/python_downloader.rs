@@ -9,16 +9,6 @@ use crate::{
     LAUNCHER_DIRECTORY,
 };
 
-pub async fn check_python(runtimes_folder: &PathBuf) -> Result<bool> {
-    let runtime = runtimes_folder.join("python-3.12.0");
-    let python_path = runtime.join("python");
-    if runtime.exists() && python_path.exists() {
-        info!("Python already downloaded");
-        return Ok(true);
-    }
-    Ok(false)
-}
-
 pub async fn download_python(runtimes_folder: &PathBuf) -> Result<PathBuf> {
     let runtime = runtimes_folder.join("python-3.12.0");
     let python_path = runtime.join("python").join(if cfg!(target_os = "windows") {

@@ -36,7 +36,7 @@
     </OmuChatProvider>
 </div>
 
-<style>
+<style lang="scss">
     .drag-area {
         position: fixed;
         top: 0;
@@ -60,6 +60,7 @@
         align-items: center;
         justify-content: center;
         margin-left: 10px;
+        pointer-events: none;
     }
 
     .window {

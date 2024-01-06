@@ -23,7 +23,7 @@
     import { screenContext } from '$lib/common/screen/screen';
     import { t } from '$lib/i18n/i18n-context';
     import { style } from '$lib/utils/class-helper';
-    import { invoke, listen, waitForLoad } from '$lib/utils/tauri';
+    import { invoke, isOnTauri, listen, waitForLoad } from '$lib/utils/tauri';
 
     const { client } = getClient();
 
@@ -107,20 +107,24 @@
             });
         }
 
-        const state = await invoke('get_server_state');
-        console.log(state);
-        if (state == 'Installed') {
-            client.start();
+        if (isOnTauri) {
+            const state = await invoke('get_server_state');
+            console.log(state);
+            if (state == 'Installed') {
+                client.start();
+            } else {
+                screenContext.push({
+                    component: ScreenInstalling,
+                    props: {}
+                });
+                listen('server-state', (state) => {
+                    if (state === 'Installed') {
+                        client.start();
+                    }
+                });
+            }
         } else {
-            screenContext.push({
-                component: ScreenInstalling,
-                props: {}
-            });
-            listen('server-state', (state) => {
-                if (state === 'Installed') {
-                    client.start();
-                }
-            });
+            client.start();
         }
     });
 </script>

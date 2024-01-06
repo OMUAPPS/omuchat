@@ -1,6 +1,7 @@
 // Copyright 2019-2021 Tauri Programme within The Commons Conservancy
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-License-Identifier: MIT
+// https://github.com/tauri-apps/tauri-plugin-localhost
 
 use std::collections::HashMap;
 
@@ -10,16 +11,6 @@ use tauri::{
     Runtime,
 };
 use tiny_http::{Header, Response as HttpResponse, Server};
-
-pub struct Request {
-    url: String,
-}
-
-impl Request {
-    pub fn url(&self) -> &str {
-        &self.url
-    }
-}
 
 pub struct Response {
     headers: HashMap<String, String>,
@@ -31,32 +22,17 @@ impl Response {
     }
 }
 
-type OnRequest = Option<Box<dyn Fn(&Request, &mut Response) + Send + Sync>>;
-
 pub struct Builder {
     port: u16,
-    on_request: OnRequest,
 }
 
 impl Builder {
     pub fn new(port: u16) -> Self {
-        Self {
-            port,
-            on_request: None,
-        }
+        Self { port }
     }
 
-    pub fn on_request<F: Fn(&Request, &mut Response) + Send + Sync + 'static>(
-        mut self,
-        f: F,
-    ) -> Self {
-        self.on_request.replace(Box::new(f));
-        self
-    }
-
-    pub fn build<R: Runtime>(mut self) -> TauriPlugin<R> {
+    pub fn build<R: Runtime>(self) -> TauriPlugin<R> {
         let port = self.port;
-        let on_request = self.on_request.take();
 
         PluginBuilder::new("server")
             .setup(move |app| {
@@ -73,9 +49,6 @@ impl Builder {
 
                         #[allow(unused_mut)]
                         if let Some(mut asset) = asset_resolver.get(path) {
-                            let request = Request {
-                                url: req.url().into(),
-                            };
                             let mut response = Response {
                                 headers: Default::default(),
                             };
@@ -85,10 +58,6 @@ impl Builder {
                                 response
                                     .headers
                                     .insert("Content-Security-Policy".into(), csp);
-                            }
-
-                            if let Some(on_request) = &on_request {
-                                on_request(&request, &mut response);
                             }
 
                             #[cfg(target_os = "linux")]

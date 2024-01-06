@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    import { client, emojis, scale, type Reaction } from './reaction';
+    import { client, emojis, scale, type Reaction } from './reaction.js';
 
     interface ReactionMessage {
         room_id: string;
@@ -151,11 +151,18 @@
         }
     }
 
+    function resize() {
+        width = canvas.width = canvas.clientWidth;
+        height = canvas.height = canvas.clientHeight;
+    }
+
     onMount(() => {
         animationFrameHandle = requestAnimationFrame(render);
+        window.addEventListener('resize', resize);
 
         return () => {
             cancelAnimationFrame(animationFrameHandle);
+            window.removeEventListener('resize', resize);
         };
     });
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
 
-    import type { Emoji } from "./emoji";
+    import type { Emoji } from "./emoji.js";
 
     import Button from "$lib/common/input/Button.svelte";
 

@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { Client } from '@omuchat/client';
-    import { ServerExtensionType, type App } from '@omuchat/omu.js';
+    import { App, Client } from '@omuchat/client';
+    import { ServerExtensionType } from '@omuchat/omu.js/extension/server/server-extension.js';
 
-    import { setClient } from './client';
-    import { DashboardExtensionType } from './dashboard-ext';
+    import { setClient } from './client.js';
+    import { DashboardExtensionType } from './dashboard-ext.js';
 
     export let app: App;
 

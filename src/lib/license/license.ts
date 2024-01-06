@@ -7,7 +7,7 @@ interface License {
 }
 
 import licenses from './licenses.json';
-import * as TablerIcons from './tabler-icons';
+import * as TablerIcons from './tabler-icons.js';
 
 export const LICENSES: License[] = [
     TablerIcons,

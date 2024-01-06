@@ -1,8 +1,8 @@
 <script lang="ts">
-    import type { models } from "@omuchat/client";
+    import type { models } from '@omuchat/client';
 
-    import { getClient } from "$lib/common/omuchat/client";
-    import Tooltip from "$lib/common/tooltip/Tooltip.svelte";
+    import { getClient } from '$lib/common/omuchat/client.js';
+    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
     export let gift: models.Gift;
 

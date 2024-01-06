@@ -1,10 +1,12 @@
-import { ExtensionInfo, ModelTableType, TableExtensionType, defineExtensionType, type Client, type ClientListener, type Extension, type Table } from "@omuchat/omu.js";
+import type { Client, ClientListener } from "@omuchat/omu.js";
+import { defineExtensionType, type Extension } from "@omuchat/omu.js/extension/extension.js";
+import { TableExtensionType } from "@omuchat/omu.js/extension/table/table-extension.js";
+import { ModelTableType, type Table } from "@omuchat/omu.js/extension/table/table.js";
 
-import { Asset } from "./asset";
-import { ChatApp } from "./chatapp";
+import { Asset } from "./asset.js";
+import { ChatApp } from "./chatapp.js";
 
-export const DashboardExtensionType = defineExtensionType({
-    info: ExtensionInfo.create("dashboard"),
+export const DashboardExtensionType = defineExtensionType('dashboard', {
     create: (client: Client) => new DashboardExtension(client),
     dependencies: () => [TableExtensionType],
 });

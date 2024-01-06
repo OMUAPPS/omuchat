@@ -8,7 +8,7 @@
         "dev": "set RUST_BACKTRACE=1 && tauri dev",
         "prepare": "svelte-kit sync && node script/license.mjs",
         "build": "tauri build",
-        "ui:dev": "vite --host 0.0.0.0",
+        "ui:dev": "vite --host 0.0.0.0 --port 26420",
         "ui:build": "node script/tabler-icons.mjs && vite build",
         "ui:preview": "vite preview",
         "ui:check": "svelte-check --tsconfig ./tsconfig.json",
@@ -60,7 +60,7 @@
         "svelte": "^4.0.5",
         "svelte-check": "^3.4.6",
         "tslib": "^2.6.0",
-        "typescript": "^5.0.2",
+        "typescript": "^5.3.3",
         "vite": "^4.5.0",
         "vitest": "^0.34.0"
     }

@@ -1,13 +1,13 @@
 <script lang="ts">
     import type { models } from '@omuchat/client';
-    
-import Gift from './Gift.svelte';
-import MessageContent from './MessageContent.svelte';
-import Role from './Role.svelte';
 
-    import { getClient } from '$lib/common/omuchat/client';
+    import Gift from './Gift.svelte';
+    import MessageContent from './MessageContent.svelte';
+    import Role from './Role.svelte';
+
+    import { getClient } from '$lib/common/omuchat/client.js';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-    import { applyOpacity, classes, style } from '$lib/utils/class-helper';
+    import { applyOpacity, classes, style } from '$lib/utils/class-helper.js';
     export let entry: models.Message;
 
     const { chat } = getClient();
@@ -20,13 +20,29 @@ import Role from './Role.svelte';
     getAuthor();
 </script>
 
-<div class={classes("message", !!(entry.paid || entry.gifts?.length) && "special")} style={style(entry.paid || entry.gifts?.length ? {
-    borderLeft: `2px solid var(--color-1)`,
-    background: `${applyOpacity(entry.paid ? 'var(--color-1)' : 'var(--color-2)', 0.1)}`,
-} : {})}>
+<div
+    class={classes('message', !!(entry.paid || entry.gifts?.length) && 'special')}
+    style={style(
+        entry.paid || entry.gifts?.length
+            ? {
+                borderLeft: `2px solid var(--color-1)`,
+                background: `${applyOpacity(
+                    entry.paid ? 'var(--color-1)' : 'var(--color-2)',
+                    0.1
+                )}`
+            }
+            : {}
+    )}
+>
     <div class="left">
         {#if author && author.avatar_url}
-            <img src={author.avatar_url} alt="avatar" class="author-avatar" width="32" height="32" />
+            <img
+                src={author.avatar_url}
+                alt="avatar"
+                class="author-avatar"
+                width="32"
+                height="32"
+            />
             <Tooltip noBackground>
                 <img src={author.avatar_url} alt="avatar" class="author-avatar-preview" />
             </Tooltip>
@@ -40,7 +56,7 @@ import Role from './Role.svelte';
                     {#if author.roles}
                         <div class="roles">
                             {#each author.roles as role}
-                                <Role role={role} />
+                                <Role {role} />
                             {/each}
                         </div>
                     {/if}
@@ -52,9 +68,13 @@ import Role from './Role.svelte';
             {#if entry.created_at}
                 <span class="time">
                     <Tooltip>
-                        {entry.created_at.toLocaleDateString()} {entry.created_at.toLocaleTimeString()}
+                        {entry.created_at.toLocaleDateString()}
+                        {entry.created_at.toLocaleTimeString()}
                     </Tooltip>
-                    {entry.created_at.getHours()}:{entry.created_at.getMinutes().toString().padStart(2, '0')}
+                    {entry.created_at.getHours()}:{entry.created_at
+                        .getMinutes()
+                        .toString()
+                        .padStart(2, '0')}
                 </span>
             {/if}
         </div>
@@ -71,7 +91,7 @@ import Role from './Role.svelte';
         {#if entry.gifts?.length}
             <div class="gifts">
                 {#each entry.gifts as gift}
-                    <Gift gift={gift} />
+                    <Gift {gift} />
                 {/each}
             </div>
         {/if}
