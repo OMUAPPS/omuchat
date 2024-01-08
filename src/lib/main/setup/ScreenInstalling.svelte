@@ -1,10 +1,14 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
+    import { isFirstTime } from '../settings.js';
+
+    import ScreenSetup from './ScreenSetup.svelte';
+
     import Background from '$lib/common/Background.svelte';
-    import { screenContext } from '$lib/common/screen/screen';
+    import { screenContext } from '$lib/common/screen/screen.js';
     import Screen from '$lib/common/screen/Screen.svelte';
-    import { invoke, listen } from '$lib/utils/tauri';
+    import { invoke, listen } from '$lib/utils/tauri.js';
 
     let progress: {
         progress: number;
@@ -12,18 +16,28 @@
         progress_text: string;
     } | null = null;
 
+    function close() {
+        screenContext.pop();
+        if ($isFirstTime) {
+            screenContext.push({
+                component: ScreenSetup,
+                props: {}
+            });
+        }
+    }
+
     onMount(async () => {
         listen('install-progress', (progress) => {
             console.log(progress);
             progress = progress;
         });
         const state = await invoke('get_server_state');
-        if (state === 'Installed') {
-            screenContext.pop();
+        if (state === 'Installed' || state === 'AlreadyRunning') {
+            close();
         }
         listen('server-state', (state) => {
             if (state === 'Installed') {
-                screenContext.pop();
+                close();
             }
         });
     });

@@ -3,7 +3,7 @@ import type * as api from '@tauri-apps/api/tauri';
 
 let _invoke: typeof api.invoke;
 let _listen: typeof event.listen;
-
+type ServerStatus = 'NotInstalled' | 'Installing' | 'Installed' | 'AlreadyRunning';
 type Commands = {
     share_url: {
         args: [];
@@ -30,7 +30,7 @@ type Commands = {
     },
     get_server_state: {
         args: [];
-        return: 'NotInstalled' | 'Installing' | 'Installed';
+        return: ServerStatus;
     },
     update_libraries: {
         args: [];
@@ -50,13 +50,13 @@ type TauriEvent<T> = {
 }
 type Events = {
     'server-state': {
-        return: 'NotInstalled' | 'Installing' | 'Installed';
+        return: ServerStatus;
     },
     'install-progress': {
         return: {
             progress: number;
             total: number;
-            progress_text: string;
+            message: string;
         }
     },
     [event.TauriEvent.WINDOW_RESIZED]: TauriEvent<unknown>,

@@ -1,3 +1,6 @@
+use std::thread;
+
+use rand::Rng;
 use tokio::fs;
 use tracing::info;
 
@@ -6,6 +9,8 @@ use crate::{
     util::{download_file, zip_extract},
     LAUNCHER_DIRECTORY,
 };
+
+use super::state::{AppState, ServerStatus};
 
 pub async fn handle_runtime_io(
     runtime: &PythonRuntime,
@@ -113,7 +118,8 @@ pub async fn prepare_server() -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn run_server_internal() -> anyhow::Result<()> {
+pub async fn run_server_internal(app_state: AppState) -> anyhow::Result<()> {
+    let token = app_state.token.clone();
     let data = LAUNCHER_DIRECTORY.data_dir().to_path_buf();
     let runtimes_folder = data.parent().unwrap().join("runtimes");
     let python = python::download_python(&runtimes_folder)
@@ -122,7 +128,12 @@ pub async fn run_server_internal() -> anyhow::Result<()> {
     let runtime = PythonRuntime::new(python).expect("Failed to create Python runtime");
     handle_runtime_io(
         &runtime,
-        vec!["-m".to_string(), "omuserver".to_string()],
+        vec![
+            "-m".to_string(),
+            "omuserver".to_string(),
+            "--token".to_string(),
+            token.unwrap_or_default(),
+        ],
         &data,
     )
     .await
@@ -132,8 +143,69 @@ pub async fn run_server_internal() -> anyhow::Result<()> {
     Ok(())
 }
 
-pub fn check_installed() -> bool {
+pub fn is_installed() -> bool {
     let data = LAUNCHER_DIRECTORY.data_dir();
     let runtimes_folder = data.parent().unwrap().join("runtimes");
     runtimes_folder.exists()
+}
+
+pub fn run_server(app_state: AppState) -> anyhow::Result<()> {
+    thread::spawn(move || {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(async {
+                let server_state = app_state.server_state.clone();
+                let window = app_state.window.clone();
+                if server_state.lock().unwrap().clone() == ServerStatus::NotInstalled {
+                    server_state
+                        .lock()
+                        .unwrap()
+                        .clone_from(&ServerStatus::Installing);
+                    prepare_server().await.unwrap();
+                    server_state
+                        .lock()
+                        .unwrap()
+                        .clone_from(&ServerStatus::Installed);
+                    let _ = window
+                        .lock()
+                        .unwrap()
+                        .as_ref()
+                        .unwrap()
+                        .emit("server-state", server_state.lock().unwrap().clone());
+                }
+                run_server_internal(app_state.clone()).await.unwrap();
+            });
+    });
+    Ok(())
+}
+
+pub fn is_already_running() -> bool {
+    // check 26423 port is open
+    portpicker::is_free(26423)
+}
+
+pub fn get_status() -> ServerStatus {
+    let installed = is_installed();
+    let running = is_already_running();
+    if running {
+        ServerStatus::AlreadyRunning
+    } else if installed {
+        ServerStatus::Installed
+    } else {
+        ServerStatus::NotInstalled
+    }
+}
+
+pub fn generate_token() -> String {
+    if cfg!(dev) {
+        "dev-admin-token".to_string()
+    } else {
+        rand::thread_rng()
+            .sample_iter(&rand::distributions::Alphanumeric)
+            .take(32)
+            .map(char::from)
+            .collect::<String>()
+    }
 }

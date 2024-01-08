@@ -32,6 +32,7 @@ async-compression = { version= "0.3.15", features = ["gzip", "brotli", "zstd"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter"] }
 tracing-appender = "0.2"
+rand = "0.8"
 
 # server
 log = "0.4"
