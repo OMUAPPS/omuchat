@@ -9,6 +9,7 @@ export interface AssetJson {
     description?: string;
     thumbnail?: string;
     url: string;
+    settingsUrl?: string;
     tags: string[];
 }
 
@@ -19,6 +20,7 @@ export class Asset implements Keyable, Model<AssetJson> {
     public description?: string;
     public thumbnail?: string;
     public url: string;
+    public settingsUrl?: string;
     public tags: string[];
 
     public constructor(data: AssetJson) {
@@ -28,6 +30,7 @@ export class Asset implements Keyable, Model<AssetJson> {
         this.description = data.description;
         this.thumbnail = data.thumbnail;
         this.url = data.url;
+        this.settingsUrl = data.settingsUrl;
         this.tags = data.tags;
     }
 
@@ -47,6 +50,7 @@ export class Asset implements Keyable, Model<AssetJson> {
             description: this.description,
             thumbnail: this.thumbnail,
             url: this.url,
+            settingsUrl: this.settingsUrl,
             tags: this.tags
         };
     }

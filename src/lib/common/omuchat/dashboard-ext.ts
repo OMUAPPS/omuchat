@@ -36,11 +36,6 @@ export class DashboardExtension implements Extension, ClientListener {
             url: "/apps/emoji",
             tags: []
         }));
-        this.apps.add(ChatApp.fromJson({
-            id: "youtube-reaction",
-            url: "/apps/youtube-reaction",
-            tags: []
-        }));
         this.assets.add(Asset.fromJson({
             id: "comment-simple",
             thumbnail: "/img/assets/comment-thumbnail.png",
@@ -51,6 +46,7 @@ export class DashboardExtension implements Extension, ClientListener {
             id: "youtube-reaction",
             thumbnail: "/img/assets/youtube-reaction-thumbnail.png",
             url: "/assets/youtube-reaction",
+            settingsUrl: "/assets/youtube-reaction/settings",
             tags: []
         }));
     }

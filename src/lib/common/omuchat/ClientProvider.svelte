@@ -19,9 +19,12 @@
     const tokenKey = `omu-chat-token-${app.key()}`;
     const token = {
         async get() {
-            let token = window.localStorage.getItem(tokenKey);
+            let token = null;
             if (isOnTauri) {
                 token = await invoke('get_token');
+            }
+            if (!token) {
+                token = window.localStorage.getItem(tokenKey);
             }
             return token;
         },

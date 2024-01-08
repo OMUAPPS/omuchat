@@ -14,6 +14,7 @@
         {gift.name}
         <small>
             id: {gift.id}
+            amount: {gift.amount}
         </small>
     </Tooltip>
     <div class="image">

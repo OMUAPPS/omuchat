@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Writable } from 'svelte/store';
 
-    import { t } from '$lib/i18n/i18n-context';
+    import { t } from '$lib/i18n/i18n-context.js';
 
     export let label: string;
     export let value: Writable<string>;

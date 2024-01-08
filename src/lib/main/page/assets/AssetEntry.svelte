@@ -1,9 +1,11 @@
 <script lang="ts">
-    import { origin } from './assets-page';
+    import { origin } from './assets-page.js';
 
-    import type { Asset } from '$lib/common/omuchat/asset';
-    import { t } from '$lib/i18n/i18n-context';
-    import { DragHelper } from '$lib/utils/drag-helper';
+    import type { Asset } from '$lib/common/omuchat/asset.js';
+    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
+    import { t } from '$lib/i18n/i18n-context.js';
+    import { DragHelper } from '$lib/utils/drag-helper.js';
+    import { tauriWindow } from '$lib/utils/tauri.js';
 
     export let entry: Asset;
     let preview: HTMLDivElement;
@@ -16,12 +18,29 @@
         console.log(url);
         DragHelper.setUrl(event, url);
     }
+
+    function openSettings() {
+        if (!entry.settingsUrl) return;
+        new tauriWindow.WebviewWindow(entry.settingsUrl, {
+            url: entry.settingsUrl,
+        });
+    }
 </script>
 
 <div class="container" on:dragstart={handleDragStart} draggable="true" role="form">
     <div class="header">
         <i class={$t(`assets.${entry.id}.icon`)} />
         <class class="asset-name">{$t(`assets.${entry.id}.name`)}</class>
+        <div class="buttons">
+            {#if entry.settingsUrl}
+                <button class="button" type="button" on:click={openSettings}>
+                    <Tooltip>
+                        {$t('general.settings')}
+                    </Tooltip>
+                    <i class="ti ti-settings" />
+                </button>
+            {/if}
+        </div>
     </div>
     <div class="asset">
         <img src={entry.thumbnail} alt="" />
@@ -78,7 +97,7 @@
         flex-direction: row;
         gap: 10px;
         align-items: baseline;
-        padding: 10px;
+        padding-bottom: 10px;
         padding-left: 0;
         font-size: 14px;
         font-weight: 600;
@@ -92,6 +111,29 @@
             justify-content: center;
             font-size: 18px;
             color: var(--color-1);
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            margin-left: auto;
+
+            .button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                color: var(--color-1);
+                cursor: pointer;
+                background: var(--color-bg-2);
+                border: none;
+
+                &:hover {
+                    background: var(--color-bg-1);
+                }
+            }
         }
     }
 

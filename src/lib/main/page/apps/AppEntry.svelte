@@ -1,32 +1,11 @@
 <script lang="ts">
-    import type { WindowOptions } from '@tauri-apps/api/window';
+    
+    import { openApp } from './index.js';
 
     import type { ChatApp } from '$lib/common/omuchat/chatapp';
     import { t } from '$lib/i18n/i18n-context';
-    import { isOnTauri, tauriWindow } from '$lib/utils/tauri';
-
+    
     export let entry: ChatApp;
-
-    function openApp(app: ChatApp) {
-        const windowId = `app-${app.id}`;
-        let options: WindowOptions = {
-            url: app.url,
-            title: $t(`apps.${app.id}.name`),
-            width: 800,
-            height: 600,
-            resizable: true,
-            maximizable: true,
-            transparent: false,
-            decorations: true,
-            alwaysOnTop: false
-        };
-        if (isOnTauri) {
-            const window = new tauriWindow.WebviewWindow(windowId, options);
-            window.setFocus();
-        } else {
-            window.open(app.url, windowId);
-        }
-    }
 </script>
 
 <button class="app" on:click={() => openApp(entry)}>

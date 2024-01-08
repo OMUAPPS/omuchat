@@ -3,11 +3,11 @@
 
     import AppEntry from './AppEntry.svelte';
 
-    import { getClient } from '$lib/common/omuchat/client';
+    import { getClient } from '$lib/common/omuchat/client.js';
     import TableList from '$lib/common/omuchat/TableList.svelte';
-    import { theme } from '$lib/common/theme/theme';
-    import { i18n } from '$lib/i18n/i18n-context';
-    import { invoke } from '$lib/utils/tauri';
+    import { theme } from '$lib/common/theme/theme.js';
+    import { i18n } from '$lib/i18n/i18n-context.js';
+    import { invoke } from '$lib/utils/tauri.js';
 
     const { client, chat, server } = getClient();
     let text = `test-${Date.now()}`;
@@ -66,6 +66,10 @@
             console.log(`update_libraries: ${res}`);
         });
     }
+
+    function clearSettings() {
+        window.localStorage.clear();
+    }
 </script>
 
 <div class="container">
@@ -89,6 +93,7 @@
                 <button on:click={delete_runtime}>delete runtime</button>
                 <button on:click={install_runtime}>install runtime</button>
                 <button on:click={update_libraries}>update libraries</button>
+                <button on:click={clearSettings}>clear settings</button>
             </div>
         </span>
     </div>
