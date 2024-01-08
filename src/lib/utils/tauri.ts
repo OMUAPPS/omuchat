@@ -84,7 +84,7 @@ export function listen<T extends keyof Events>(
     callback: (event: Events[T]['return']) => void,
 ): Promise<() => void> {
     assertTauri();
-    return _listen<Events[T]['return']>(command, (event) => {
+    return _listen(command, (event: Events[T]['return']) => {
         callback(event);
     })
 }
@@ -95,7 +95,7 @@ export function listenSync<T extends keyof Events>(
 ): () => void {
     assertTauri();
     let destroy = () => {};
-    _listen<Events[T]['return']>(command, (event) => {
+    _listen(command, (event: Events[T]['return']) => {
         callback(event);
     }).then((func) => {
         destroy = func;

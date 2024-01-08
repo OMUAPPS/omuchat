@@ -14,8 +14,8 @@
         "ui:check": "svelte-check --tsconfig ./tsconfig.json",
         "lint:stylelint": "stylelint --ignore-path .gitignore ./**/*.{css,svelte}",
         "fix:stylelint": "stylelint --fix --ignore-path .gitignore ./**/*.{css,svelte}",
-        "lint:eslint": "eslint . --ext .ts,.svelte",
-        "fix:eslint": "eslint . --ext .ts,.svelte --fix",
+        "lint:eslint": "eslint . --ext .ts,.svelte --ignore-path .gitignore",
+        "fix:eslint": "eslint . --ext .ts,.svelte --fix --ignore-path .gitignore",
         "lint": "npm run lint:stylelint && npm run lint:eslint",
         "fix": "npm run fix:stylelint && npm run fix:eslint"
     },

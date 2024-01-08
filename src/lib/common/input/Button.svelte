@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     export let outline = false;
     export let rounded = false;
     export let filled = false;
