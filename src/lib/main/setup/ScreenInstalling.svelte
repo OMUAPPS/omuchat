@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    import { isFirstTime } from '../settings.js';
+    import { installed } from '../settings.js';
 
     import ScreenSetup from './ScreenSetup.svelte';
 
@@ -18,7 +18,7 @@
 
     function close() {
         screenContext.pop();
-        if ($isFirstTime) {
+        if (!$installed) {
             screenContext.push({
                 component: ScreenSetup,
                 props: {}

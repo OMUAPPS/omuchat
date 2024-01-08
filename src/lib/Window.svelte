@@ -15,7 +15,7 @@
 </script>
 
 <div class="window">
-    <OmuChatProvider {app}>
+    <OmuChatProvider {app} connect={false}>
         <div class="drag-area" data-tauri-drag-region>
             <div class="title">
                 <img src={Title} alt="title" width="64" height="10" />

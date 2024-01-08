@@ -1,7 +1,7 @@
 import { Client } from "@omuchat/client";
 import { App } from "@omuchat/omu.js";
 
-import { getTabId } from "$lib/utils/browser-helper";
+import { getTabId } from "$lib/utils/browser-helper.js";
 
 
 export interface Reaction {

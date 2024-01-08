@@ -3,8 +3,8 @@
 
     import ClientProvider from '$lib/common/omuchat/ClientProvider.svelte';
     import PanelMessages from '$lib/main/panel/messages/PanelMessages.svelte';
-    import { getTabId } from '$lib/utils/browser-helper';
-    import { getBrowser, getOS } from '$lib/utils/device-helper';
+    import { getTabId } from '$lib/utils/browser-helper.js';
+    import { getBrowser, getOS } from '$lib/utils/device-helper.js';
 
     const app = new App({
         name: `remote-client-${getOS()}-${getBrowser()}-${getTabId()}`,

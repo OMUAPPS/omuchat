@@ -48,7 +48,7 @@ export const language = createSetting<keyof typeof LOCALES>('language', systemLa
 export const devMode = createSetting('devMode', false);
 export const currentPage = createSetting('currentPage', 'main');
 export const currentSettingsCategory = createSetting('currentPageSettings', 'general');
-export const isFirstTime = createSetting('isFirstTime', true);
+export const installed = createSetting('installed', false);
 
 export interface Setting {
     component(): PropedComponent;

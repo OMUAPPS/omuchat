@@ -2,14 +2,14 @@
     import type { models } from '@omuchat/client';
     import { onMount } from 'svelte';
 
-    import { isFirstTime } from '../settings';
+    import { installed } from '../settings.js';
 
     import Background from '$lib/common/Background.svelte';
     import Button from '$lib/common/input/Button.svelte';
     import InputText from '$lib/common/input/InputText.svelte';
-    import { getClient } from '$lib/common/omuchat/client';
+    import { getClient } from '$lib/common/omuchat/client.js';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
-    import { screenContext } from '$lib/common/screen/screen';
+    import { screenContext } from '$lib/common/screen/screen.js';
     import Screen from '$lib/common/screen/Screen.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
@@ -46,7 +46,7 @@
         const channels = [...result.values()].filter((v) => v.active).map((v) => v.channel);
         chat.channels!.add(...channels);
         screenContext.pop();
-        isFirstTime.set(false);
+        $installed = true;
     }
 
     function reset() {
@@ -90,7 +90,8 @@
                 <div class="list">
                     {#each result.entries() as [key, { channel, active }] (key)}
                         <button class="item" class:active on:click={() => (active = !active)}>
-                            <i class="ti ti-check" class:active />
+                            <!-- <i class="ti ti-check" class:active /> -->
+                            <i class="ti ti-{active ? 'check' : 'close'}" />
                             <div class="channel-icon">
                                 {#if channel.icon_url}
                                     <img src={channel.icon_url} alt="icon" />
@@ -115,7 +116,8 @@
                     {/each}
                 </div>
                 <div class="buttons">
-                    <Button on:click={finish} disabled={!result?.size} rounded filled
+                    <Button on:click={finish} disabled={![...result.values()].some((v) => v.active)}
+                    rounded filled
                         >追加する</Button
                     >
                     <Button on:click={reset} rounded filled>やり直す</Button>

@@ -1,4 +1,4 @@
-import type { Author, Message } from "@omuchat/client/src/models";
+import type { Author, Message } from "@omuchat/client/models/index.js";
 
 export interface Entry {
     author: Author;

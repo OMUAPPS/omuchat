@@ -5,9 +5,10 @@
     import { setClient } from './client.js';
     import { DashboardExtensionType } from './dashboard-ext.js';
 
-    import { invoke } from '$lib/utils/tauri.js';
+    import { invoke, isOnTauri } from '$lib/utils/tauri.js';
 
     export let app: App;
+    export let connect = true;
 
     const address = {
         host: window.location.hostname,
@@ -15,16 +16,17 @@
         secure: false
     };
 
+    const tokenKey = `omu-chat-token-${app.key()}`;
     const token = {
         async get() {
-            const token = await invoke('get_token') ?? window.localStorage.getItem('token');
-            if (!token) {
-                throw new Error('No token found');
+            let token = window.localStorage.getItem(tokenKey);
+            if (isOnTauri) {
+                token = await invoke('get_token');
             }
             return token;
         },
         async set(token: string) {
-            window.localStorage.setItem('token', token);
+            window.localStorage.setItem(tokenKey, token);
         }
     }
 
@@ -41,6 +43,10 @@
         server: omu.extensions.get(ServerExtensionType),
         dashboard
     });
+
+    if (connect) {
+        client.run();
+    }
 </script>
 
 <slot />
