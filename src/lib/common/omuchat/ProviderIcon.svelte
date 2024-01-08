@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { Provider } from "@omuchat/client/src/models";
+    import type { Provider } from "@omuchat/client/models/index.js";
 
-    import { getClient } from "./client";
+    import { getClient } from "./client.js";
 
-  import { classes } from "$lib/utils/class-helper";
+    import { classes } from "$lib/utils/class-helper.js";
 
     export let providerId: string;
 
@@ -19,7 +19,7 @@
 {#await getProvider() then provider}
     {#if provider}
     <img
-    src={provider.image_url || `https://www.google.com/s2/favicons?domain=${provider.url}`}
+    src={provider.image_url || `https://${provider.url}/favicon.ico`}
     alt="icon"
     class={classes("provider-icon", provider.image_url && "custom")}
         width="16"

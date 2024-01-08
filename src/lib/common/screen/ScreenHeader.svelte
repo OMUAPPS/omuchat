@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { t } from '$lib/i18n/i18n-context';
+    import { t } from '$lib/i18n/i18n-context.js';
 
     export let title = '';
 </script>

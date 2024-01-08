@@ -4,12 +4,25 @@
 
     import PanelMessages from '../panel/messages/PanelMessages.svelte';
     import PanelMessagedSettings from '../panel/messages/PanelMessagesSettings.svelte';
-    import type { PanelEntry } from '../panel/panel';
+    import type { PanelEntry } from '../panel/panel.js';
     import PanelProvider from '../panel/PanelProvider.svelte';
     import PanelRooms from '../panel/rooms/PanelRooms.svelte';
     import ScreenRoomsSettings from '../panel/rooms/ScreenRoomsSettings.svelte';
 
     const panels = writable<PanelEntry[]>([
+        {
+            icon: 'ti ti-bolt',
+            name: '接続中',
+            componentPanel() {
+                return {
+                    component: PanelRooms,
+                    props: {}
+                };
+            },
+            componentSettings() {
+                return { component: ScreenRoomsSettings, props: {} };
+            }
+        },
         {
             icon: 'ti ti-message',
             name: 'コメント／メッセージ',
@@ -47,19 +60,6 @@
                 };
             }
         },
-        {
-            icon: 'ti ti-bolt',
-            name: '接続中',
-            componentPanel() {
-                return {
-                    component: PanelRooms,
-                    props: {}
-                };
-            },
-            componentSettings() {
-                return { component: ScreenRoomsSettings, props: {} };
-            }
-        }
     ]);
 </script>
 

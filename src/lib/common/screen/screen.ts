@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-import type { PropedComponent } from '$lib/common/component/proped-component';
+import type { PropedComponent } from '$lib/common/component/proped-component.js';
 
 const stack = writable<PropedComponent[]>([]);
 const current = writable<PropedComponent | null>(null);

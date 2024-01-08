@@ -22,7 +22,7 @@
             key: `youtube-reaction/${key}.png`,
             buffer: file
         });
-        dispatcher("edit", [key, client.omu.asset(url)]);
+        dispatcher("edit", [key, `${client.omu.asset(url)}&${Date.now()}`]);
     }
 </script>
 

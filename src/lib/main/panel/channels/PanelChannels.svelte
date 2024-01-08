@@ -56,18 +56,13 @@
             </Tooltip>
             <i class="ti ti-external-link" />
         </ButtonMini>
-        <ButtonMini on:click={() => {}}>
-            <Tooltip>
-                今すぐチャンネルを再チェックする
-            </Tooltip>
-            <i class="ti ti-reload"/>
-        </ButtonMini>
         <small>
             <Tooltip>
                 再チェックまであと
                 {Math.floor(checkIntervalLeft)}秒
             </Tooltip>
             {Math.floor(checkIntervalLeft)}
+            <i class="ti ti-reload"/>
         </small>
     </div>
     <TableList table={chat.channels} component={ChannelEntry} {filter} />

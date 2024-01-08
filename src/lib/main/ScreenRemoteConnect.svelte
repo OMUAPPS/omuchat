@@ -6,26 +6,25 @@
     import Screen from '../common/screen/Screen.svelte';
     import Tooltip from '../common/tooltip/Tooltip.svelte';
 
-  import Background from '$lib/common/Background.svelte';
-  import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
-  import { screenContext } from '$lib/common/screen/screen';
-  import { t } from '$lib/i18n/i18n-context';
-  import { ClipboardHelper } from '$lib/utils/clipboard-helper';
-  import { invoke } from '$lib/utils/tauri';
+    import Background from '$lib/common/Background.svelte';
+    import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
+    import { screenContext } from '$lib/common/screen/screen.js';
+    import { t } from '$lib/i18n/i18n-context.js';
+    import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
+    import { invoke } from '$lib/utils/tauri.js';
 
-    let result: ShareResult | undefined;
+    let result: ShareResnponse | undefined;
     let url: string = '';
     let qrImage: HTMLImageElement;
 
-    interface ShareResult {
+    interface ShareResnponse {
         host: string;
         port: number;
-        url: string;
     }
 
     onMount(async () => {
         invoke('share_url').then((res) => {
-            console.log(`share_url: ${res.url}`);
+            console.log(`share_url: ${res}`);
             result = res;
             url = `http://${res.host}:${res.port}/remote`;
         });

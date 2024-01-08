@@ -78,7 +78,7 @@
                 spawnTime: Date.now(),
                 id: reaction.id,
                 key: reaction.key,
-                x: Math.random() * (width - 100 * scale),
+                x: Math.random() * (width - 140 * scale) + 40 * scale,
                 y: Math.random() * (height - 300 * scale) + 250 * scale,
                 vx: Math.random() - 0.5,
                 vy: 0,

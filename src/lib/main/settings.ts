@@ -3,8 +3,8 @@ import { writable } from 'svelte/store';
 import Checkbox from './settings/CheckboxField.svelte';
 import Combobox from './settings/ComboboxField.svelte';
 
-import type { PropedComponent } from '$lib/common/component/proped-component';
-import { LOCALES } from '$lib/i18n/locales';
+import type { PropedComponent } from '$lib/common/component/proped-component.js';
+import { LOCALES } from '$lib/i18n/locales/index.js';
 
 function getSystemLanguage(): keyof typeof LOCALES {
     if (typeof window === 'undefined') {
@@ -70,34 +70,33 @@ function calcLanguageScore(lang: string): number {
     return score;
 }
 
-export const SETTING_REGISTRY: Record<string, Record<string, Setting>> = {
-    general: {
-        devMode: {
-            component() {
-                return {
-                    component: Checkbox,
-                    props: {
-                        label: 'settings.setting.devMode',
-                        value: devMode
-                    }
-                };
-            }
+export const SETTING_REGISTRY: Map<string, Record<string, Setting>> = new Map();
+SETTING_REGISTRY.set('general', {
+    devMode: {
+        component() {
+            return {
+                component: Checkbox,
+                props: {
+                    label: 'settings.setting.devMode',
+                    value: devMode
+                }
+            };
+        }
+    }
+});
+SETTING_REGISTRY.set('language', {
+    language: {
+        component() {
+            return {
+                component: Combobox,
+                props: {
+                    label: 'settings.setting.language',
+                    value: language,
+                    options: Object.keys(LOCALES).sort(
+                        (a, b) => calcLanguageScore(b) - calcLanguageScore(a)
+                    ) as (keyof typeof LOCALES)[]
+                }
+            };
         }
     },
-    language: {
-        language: {
-            component() {
-                return {
-                    component: Combobox,
-                    props: {
-                        label: 'settings.setting.language',
-                        value: language,
-                        options: Object.keys(LOCALES).sort(
-                            (a, b) => calcLanguageScore(b) - calcLanguageScore(a)
-                        ) as (keyof typeof LOCALES)[]
-                    }
-                };
-            }
-        },
-    }
-};
+});

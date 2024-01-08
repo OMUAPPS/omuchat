@@ -1,18 +1,19 @@
 <script lang="ts">
     import { writable } from 'svelte/store';
 
-    import { currentSettingsCategory, SETTING_REGISTRY } from '../settings';
+    import { currentSettingsCategory, SETTING_REGISTRY } from '../settings.js';
 
-    import SettingsCredits from './SettingsCredits.svelte';
+    import Licenses from './Licenses.svelte';
 
     import PropedComponent from '$lib/common/component/PropedComponent.svelte';
     import Button from '$lib/common/input/Button.svelte';
     import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
-    import { screenContext } from '$lib/common/screen/screen';
+    import { screenContext } from '$lib/common/screen/screen.js';
     import ScreenHeader from '$lib/common/screen/ScreenHeader.svelte';
-    import { t } from '$lib/i18n/i18n-context';
+    import { t } from '$lib/i18n/i18n-context.js';
+    
     const categories = [
-        ...Object.entries(SETTING_REGISTRY).map(([name, settings]) => {
+        ...[...SETTING_REGISTRY.entries()].map(([name, settings]) => {
             return {
                 name,
                 settings: Object.entries(settings).map(([name, setting]) => {
@@ -24,13 +25,13 @@
             };
         }),
         {
-            name: 'credits',
+            name: 'licenses',
             settings: [
                 {
-                    name: 'credits',
+                    name: 'licenses',
                     component() {
                         return {
-                            component: SettingsCredits,
+                            component: Licenses,
                             props: {}
                         };
                     }
@@ -41,7 +42,7 @@
 
     const currentCategory = writable(categories[0]);
     currentSettingsCategory.subscribe((category) => {
-        currentCategory.set(categories.find((c) => c.name === category)!);
+        currentCategory.set(categories.find((c) => c && c.name === category)!);
     });
     $: $currentSettingsCategory = $currentCategory.name;
 </script>
@@ -77,7 +78,7 @@
                 </button>
             {/each}
         </div>
-        <div class="settings" class:fit={$currentCategory.name === 'credits'}>
+        <div class="settings" class:fit={$currentCategory.name === 'licenses'}>
             {#each $currentCategory.settings as setting (setting.name)}
                 <PropedComponent component={setting.component()} />
             {/each}

@@ -2,8 +2,8 @@
     import AssetItem from './AssetEntry.svelte';
 
     import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
-    import type { Asset } from '$lib/common/omuchat/asset';
-    import { getClient } from '$lib/common/omuchat/client';
+    import type { Asset } from '$lib/common/omuchat/asset.js';
+    import { getClient } from '$lib/common/omuchat/client.js';
     import TableList from '$lib/common/omuchat/TableList.svelte';
 
     const { dashboard } = getClient();

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    import { theme } from "./theme";
+    import { theme } from "./theme.js";
 
     let styleDiv: HTMLElement;
 

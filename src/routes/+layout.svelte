@@ -1,11 +1,11 @@
 <script lang="ts">
     import ThemeProvider from '$lib/common/theme/ThemeProvider.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-    import { createI18nUnion } from '$lib/i18n/i18n';
-    import { i18n } from '$lib/i18n/i18n-context';
-    import { DEFAULT_LOCALE, LOCALES } from '$lib/i18n/locales';
-    import { language } from '$lib/main/settings';
-    import { ClipboardHelper } from '$lib/utils/clipboard-helper';
+    import { i18n } from '$lib/i18n/i18n-context.js';
+    import { createI18nUnion } from '$lib/i18n/i18n.js';
+    import { DEFAULT_LOCALE, LOCALES } from '$lib/i18n/locales/index.js';
+    import { language } from '$lib/main/settings.js';
+    import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
     import './styles.scss';
 
     async function loadLocale() {

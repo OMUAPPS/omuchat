@@ -10,20 +10,19 @@
     import PageApps from './page/apps/PageApps.svelte';
     import PageAssets from './page/assets/PageAssets.svelte';
     import PageDev from './page/dev/PageDev.svelte';
-    import { pages } from './page/page';
+    import { pages } from './page/page.js';
     import PageChannels from './page/PageChannels.svelte';
     import PageHome from './page/PageHome.svelte';
     import PageMessages from './page/PageMessages.svelte';
-    import { currentPage, devMode, isFirstTime } from './settings';
+    import { currentPage, devMode } from './settings.js';
     import ScreenInstalling from './setup/ScreenInstalling.svelte';
-    import ScreenSetup from './setup/ScreenSetup.svelte';
-
+    
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
-    import { getClient } from '$lib/common/omuchat/client';
-    import { screenContext } from '$lib/common/screen/screen';
-    import { t } from '$lib/i18n/i18n-context';
-    import { style } from '$lib/utils/class-helper';
-    import { invoke, isOnTauri, listen, waitForLoad } from '$lib/utils/tauri';
+    import { getClient } from '$lib/common/omuchat/client.js';
+    import { screenContext } from '$lib/common/screen/screen.js';
+    import { t } from '$lib/i18n/i18n-context.js';
+    import { style } from '$lib/utils/class-helper.js';
+    import { invoke, isOnTauri, listen, waitForLoad } from '$lib/utils/tauri.js';
 
     const { client } = getClient();
 
@@ -100,29 +99,21 @@
     onMount(async () => {
         await waitForLoad();
 
-        if ($isFirstTime) {
-            screenContext.push({
-                component: ScreenSetup,
-                props: {}
-            });
-        }
-
         if (isOnTauri) {
             const state = await invoke('get_server_state');
-            console.log(state);
-            if (state == 'Installed') {
+            if (state == 'Installed' || state == 'AlreadyRunning') {
                 client.start();
-            } else {
-                screenContext.push({
-                    component: ScreenInstalling,
-                    props: {}
-                });
-                listen('server-state', (state) => {
-                    if (state === 'Installed') {
-                        client.start();
-                    }
-                });
+                return;
             }
+            screenContext.push({
+                component: ScreenInstalling,
+                props: {}
+            });
+            listen('server-state', (state) => {
+                if (state === 'Installed') {
+                    client.start();
+                }
+            });
         } else {
             client.start();
         }

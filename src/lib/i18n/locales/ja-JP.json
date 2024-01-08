@@ -116,9 +116,9 @@
                 "description": "詳細な設定を変更できます。",
                 "icon": "ti ti-settings"
             },
-            "credits": {
-                "name": "クレジット",
-                "description": "クレジットを表示します。",
+            "licenses": {
+                "name": "ライセンス",
+                "description": "ライセンスを表示します。",
                 "icon": "ti ti-license"
             }
         },
