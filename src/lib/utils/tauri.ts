@@ -16,6 +16,10 @@ type Commands = {
         args: [];
         return: void;
     },
+    get_token: {
+        args: [];
+        return: string;
+    },
     delete_runtime: {
         args: [];
         return: void;
@@ -166,7 +170,9 @@ async function load() {
 }
 
 export function checkOnTauri() {
-    return typeof window.__TAURI_IPC__ !== 'undefined';
+    if (typeof window === 'undefined') return false;
+    if (typeof window.__TAURI_IPC__ === 'undefined') return false;
+    return true;
 }
 export const isOnTauri = checkOnTauri();
 
@@ -182,6 +188,7 @@ export function waitForLoad() {
     });
 }
 
-if (!import.meta.env.SSR) {
+export const SSR = import.meta.env.SSR;
+if (!SSR) {
     load();
 }
