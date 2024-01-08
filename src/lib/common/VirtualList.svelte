@@ -1,3 +1,5 @@
+<!-- Modified version of https://github.com/sveltejs/svelte-virtual-list -->
+
 <script lang="ts" generics="_T">
     import { onMount, tick } from 'svelte';
 
@@ -114,10 +116,6 @@
 
         while (i < items.length) height_map[i++] = average_height;
         bottom = remaining * average_height;
-
-        // TODO if we overestimated the space these
-        // rows would occupy we may need to add some
-        // more. maybe we can just call handle_scroll again?
     }
 
     // trigger initial refresh
