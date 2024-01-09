@@ -143,12 +143,14 @@ pub fn gui_main() {
         Some(generate_token())
     };
     let app_state = AppState {
-        server_state: Arc::new(Mutex::new(server_state)),
+        server_state: Arc::new(Mutex::new(server_state.clone())),
         window: Arc::new(Mutex::new(None::<tauri::Window>)),
         token,
     };
 
-    runtime::run_server(app_state.clone()).unwrap();
+    if server_state != ServerStatus::AlreadyRunning {
+        runtime::run_server(app_state.clone()).unwrap();
+    }
 
     tauri::Builder::default()
         .manage(ShareState {
