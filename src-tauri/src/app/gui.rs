@@ -134,6 +134,9 @@ pub fn gui_main() {
     context.config_mut().build.dev_path = AppUrl::Url(window_url.clone());
 
     let server_state = get_status();
+    if server_state == ServerStatus::AlreadyRunning {
+        info!("Server already running");
+    }
     let token = if server_state == ServerStatus::AlreadyRunning {
         None
     } else {
