@@ -110,7 +110,8 @@
                 props: {}
             });
             listen('server-state', (state) => {
-                if (state === 'Installed') {
+                console.log(state);
+                if (state.payload === 'Installed') {
                     client.start();
                 }
             });

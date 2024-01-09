@@ -13,7 +13,7 @@
     let progress: {
         progress: number;
         total: number;
-        progress_text: string;
+        message: string;
     } | null = null;
 
     function close() {
@@ -27,16 +27,15 @@
     }
 
     onMount(async () => {
-        listen('install-progress', (progress) => {
-            console.log(progress);
-            progress = progress;
+        listen('install-progress', (event) => {
+            progress = event.payload;
         });
         const state = await invoke('get_server_state');
         if (state === 'Installed' || state === 'AlreadyRunning') {
             close();
         }
         listen('server-state', (state) => {
-            if (state === 'Installed') {
+            if (state.payload === 'Installed') {
                 close();
             }
         });
@@ -59,7 +58,7 @@
                             style="width: {(progress.progress / progress.total) * 100}%"
                         ></div>
                     </div>
-                    <div class="progress-text">{progress.progress_text}</div>
+                    <div class="progress-text">{progress.message}</div>
                 {/if}
             </div>
         </div>

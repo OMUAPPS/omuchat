@@ -161,6 +161,12 @@ pub fn gui_main() {
             let window = app.get_window("main").unwrap();
             app_state.window.lock().unwrap().replace(window.clone());
             set_shadow(&window, true).expect("Unsupported platform!");
+            window
+                .emit(
+                    "server-state",
+                    app_state.server_state.lock().unwrap().clone(),
+                )
+                .unwrap();
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

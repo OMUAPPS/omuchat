@@ -46,7 +46,7 @@ export async function invoke<T extends keyof Commands>(
     return _invoke(command, ...args);
 }
 type TauriEvent<T> = {
-    return: event.Event<T>;
+    return: T;
 }
 type Events = {
     'server-state': {
@@ -81,21 +81,21 @@ type Events = {
 
 export function listen<T extends keyof Events>(
     command: T,
-    callback: (event: Events[T]['return']) => void,
+    callback: (event: event.Event<Events[T]['return']>) => void,
 ): Promise<() => void> {
     assertTauri();
-    return _listen(command, (event: Events[T]['return']) => {
+    return _listen(command, (event: event.Event<Events[T]['return']>) => {
         callback(event);
     })
 }
 
 export function listenSync<T extends keyof Events>(
     command: T,
-    callback: (event: Events[T]['return']) => void,
+    callback: (event: event.Event<Events[T]['return']>) => void,
 ): () => void {
     assertTauri();
     let destroy = () => {};
-    _listen(command, (event: Events[T]['return']) => {
+    _listen(command, (event: event.Event<Events[T]['return']>) => {
         callback(event);
     }).then((func) => {
         destroy = func;
