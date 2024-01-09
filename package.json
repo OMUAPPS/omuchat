@@ -6,7 +6,7 @@
     "scripts": {
         "tauri": "tauri",
         "dev": "set RUST_BACKTRACE=1 && tauri dev",
-        "prepare": "svelte-kit sync && node script/license.mjs",
+        "prepare": "npm run build -w packages/omu -w packages/omuchat && svelte-kit sync && node script/license.mjs",
         "build": "tauri build",
         "ui:dev": "vite --host 0.0.0.0 --port 26420",
         "ui:build": "node script/tabler-icons.mjs && vite build",
