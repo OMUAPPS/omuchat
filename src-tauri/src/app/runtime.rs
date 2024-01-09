@@ -150,6 +150,7 @@ pub fn is_installed() -> bool {
 }
 
 pub fn run_server(app_state: AppState) -> anyhow::Result<()> {
+    let app_state = app_state.clone();
     thread::spawn(move || {
         tokio::runtime::Builder::new_current_thread()
             .enable_all()
@@ -182,8 +183,7 @@ pub fn run_server(app_state: AppState) -> anyhow::Result<()> {
 }
 
 pub fn is_already_running() -> bool {
-    // check 26423 port is open
-    portpicker::is_free(26423)
+    !portpicker::is_free(26423)
 }
 
 pub fn get_status() -> ServerStatus {
