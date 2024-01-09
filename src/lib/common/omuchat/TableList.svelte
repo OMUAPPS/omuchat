@@ -1,8 +1,8 @@
 <script lang="ts" generics="_T extends Keyable">
-    import type { Keyable, Table } from '@omuchat/omu.js';
+    import type { Keyable } from '@omuchat/omu.js/interface/keyable.js';
     import { onMount, type ComponentType, type SvelteComponent } from 'svelte';
 
-    import { getClient } from './client';
+    import { getClient } from './client.js';
 
     import VirtualList from '$lib/common/VirtualList.svelte';
 
