@@ -1,6 +1,0 @@
-[submodule "packages/omu"]
-	path = packages/omu
-	url = https://github.com/OMUCHAT/omu.js.git
-[submodule "packages/omuchat"]
-	path = packages/omuchat
-	url = https://github.com/OMUCHAT/omuchat.js.git
