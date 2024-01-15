@@ -2,7 +2,7 @@
     import { Client, events } from '@omuchat/client';
     import { App } from '@omuchat/omu.js';
 
-    import type { Entry } from './playqueue';
+    import type { Entry } from './playqueue.js';
     import PlayQueueEntry from './PlayQueueEntry.svelte';
 
     import Button from '$lib/common/input/Button.svelte';

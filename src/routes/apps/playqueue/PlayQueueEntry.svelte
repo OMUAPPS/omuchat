@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher, onMount } from "svelte";
 
-    import type { Entry } from "./playqueue";
+    import type { Entry } from "./playqueue.js";
 
     import Button from "$lib/common/input/Button.svelte";
     import Tooltip from "$lib/common/tooltip/Tooltip.svelte";

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { classes } from '$lib/utils/class-helper';
+    import { classes } from '$lib/utils/class-helper.js';
 
     export let between = false;
     export let reverse = false;

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    import { client } from './chat';
+    import { client } from './chat.js';
     import Comment from './Comment.svelte';
 
     let messages = client.chat.messages.cache;

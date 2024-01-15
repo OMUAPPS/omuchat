@@ -40,7 +40,7 @@
         justify-content: center;
         overflow: hidden;
         appearance: none;
-        background: color-mix(in srgb, var(--color-bg-1) 90%, transparent);
+        background: color-mix(in srgb, var(--color-bg-1) 97%, transparent);
         border: none;
     }
 

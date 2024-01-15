@@ -1,4 +1,5 @@
 <script lang="ts" generics="_T extends Keyable">
+    import type { Table } from '@omuchat/omu.js/extension/table/table.js';
     import type { Keyable } from '@omuchat/omu.js/interface/keyable.js';
     import { onMount, type ComponentType, type SvelteComponent } from 'svelte';
 

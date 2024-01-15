@@ -3,9 +3,9 @@
 
     import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
-    import { getClient } from '$lib/common/omuchat/client';
+    import { getClient } from '$lib/common/omuchat/client.js';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-    import { ClipboardHelper } from '$lib/utils/clipboard-helper';
+    import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
 
     export let entry: models.Room;
 

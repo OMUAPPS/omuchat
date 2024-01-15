@@ -6,9 +6,9 @@
 
     import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import Button from '$lib/common/input/Button.svelte';
-    import { getClient } from '$lib/common/omuchat/client';
+    import { getClient } from '$lib/common/omuchat/client.js';
     import TableList from '$lib/common/omuchat/TableList.svelte';
-    import { screenContext } from '$lib/common/screen/screen';
+    import { screenContext } from '$lib/common/screen/screen.js';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
 
     export let filter: (key: string, room: models.Room) => boolean = (_, room) => room.online;

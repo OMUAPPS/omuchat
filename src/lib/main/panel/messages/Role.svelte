@@ -2,7 +2,7 @@
     import type { models } from '@omuchat/client';
 
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-    import { applyOpacity, style } from '$lib/utils/class-helper';
+    import { applyOpacity, style } from '$lib/utils/class-helper.js';
 
     export let role: models.Role;
 </script>

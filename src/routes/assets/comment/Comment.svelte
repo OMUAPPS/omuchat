@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { models } from '@omuchat/client';
 
-    import { chat } from './chat';
+    import { chat } from './chat.js';
 
     import MessageContent from '$lib/main/panel/messages/MessageContent.svelte';
 

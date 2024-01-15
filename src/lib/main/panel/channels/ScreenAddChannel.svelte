@@ -2,8 +2,8 @@
     import { models } from '@omuchat/client';
     import { onMount } from 'svelte';
 
-    import { getClient } from '$lib/common/omuchat/client';
-    import { screenContext } from '$lib/common/screen/screen';
+    import { getClient } from '$lib/common/omuchat/client.js';
+    import { screenContext } from '$lib/common/screen/screen.js';
     import Screen from '$lib/common/screen/Screen.svelte';
 
     const { chat } = getClient();

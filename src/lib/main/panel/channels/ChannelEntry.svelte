@@ -4,7 +4,7 @@
 
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import Checkbox from '$lib/common/input/Checkbox.svelte';
-    import { getClient } from '$lib/common/omuchat/client';
+    import { getClient } from '$lib/common/omuchat/client.js';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 

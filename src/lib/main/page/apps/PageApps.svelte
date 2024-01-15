@@ -1,7 +1,7 @@
 <script lang="ts">
-  import AppEntry from "./AppEntry.svelte";
+    import AppEntry from "./AppEntry.svelte";
 
-    import { getClient } from "$lib/common/omuchat/client";
+    import { getClient } from "$lib/common/omuchat/client.js";
     import TableList from "$lib/common/omuchat/TableList.svelte";
     
     const { dashboard } = getClient();

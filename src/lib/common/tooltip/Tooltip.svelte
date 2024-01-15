@@ -1,7 +1,7 @@
 <script lang="ts">
     import { afterUpdate, onDestroy } from 'svelte';
 
-    import { style } from '$lib/utils/class-helper';
+    import { style } from '$lib/utils/class-helper.js';
 
     export let noBackground = false;
 

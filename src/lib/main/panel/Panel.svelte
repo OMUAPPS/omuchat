@@ -1,14 +1,14 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    import { getPanelContext, type PanelEntry } from './panel';
+    import { getPanelContext, type PanelEntry } from './panel.js';
 
     import PropedComponent from '$lib/common/component/PropedComponent.svelte';
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
-    import { screenContext } from '$lib/common/screen/screen';
+    import { screenContext } from '$lib/common/screen/screen.js';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-    import { t } from '$lib/i18n/i18n-context';
-    import { style } from '$lib/utils/class-helper';
+    import { t } from '$lib/i18n/i18n-context.js';
+    import { style } from '$lib/utils/class-helper.js';
 
     export let panel: PanelEntry;
     export let dragging = false;
@@ -104,7 +104,7 @@
 
         &.dragging {
             pointer-events: none;
-            opacity: 0.6;
+            opacity: 1;
             transform: translateY(-10px);
 
             .drag-wrapper {
@@ -113,8 +113,8 @@
         }
 
         &.selected {
-            outline: 2px solid var(--color-1);
-            outline-offset: 2px;
+            pointer-events: none;
+            opacity: 0.3;
         }
     }
 
@@ -158,12 +158,7 @@
         }
     }
 
-    .header:hover {
-        color: var(--color-1);
-    }
-
     .dragging {
-        color: var(--color-1);
         cursor: grabbing;
     }
 
@@ -173,6 +168,6 @@
         max-height: calc(100% - 40px);
         overflow: hidden;
         background: var(--color-bg-2);
-        outline: 1px solid rgb(0 0 0 / 10%);
+        outline: 1px solid var(--color-outline);
     }
 </style>

@@ -126,7 +126,7 @@
         height: 100%;
         padding-top: 40px;
         background: var(--color-bg-1);
-        border-right: 1px solid rgb(0 0 0 / 10%);
+        border-right: 1px solid var(--color-outline);
     }
 
     .category {

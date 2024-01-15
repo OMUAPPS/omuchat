@@ -1,7 +1,7 @@
 <script lang="ts">
     import { get, writable, type Writable } from 'svelte/store';
 
-    import { setPanelContext, type PanelContext, type PanelEntry } from './panel';
+    import { setPanelContext, type PanelContext, type PanelEntry } from './panel.js';
     import Panel from './Panel.svelte';
 
     export let panels: Writable<PanelEntry[]> = writable([]);
