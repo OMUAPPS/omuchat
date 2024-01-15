@@ -24,9 +24,9 @@ export class AssetExtension {
 
     // TODO: バイト列を直接渡せるようにイベントをバイナリで送るようにする
     private async encode(array: ArrayBuffer): Promise<string> {
-        if (typeof Buffer !== 'undefined') {
-            return Buffer.from(array).toString('base64');
-        }
+        // if (typeof Buffer !== 'undefined') {
+        //     return Buffer.from(array).toString('base64');
+        // }
         // fast base64 encode method: https://gist.github.com/fonsp/a4a2d127f35e72deec14227c1bdf3d04#file-measure_performance-js
         const base64url = await new Promise<string>((resolve) => {
             const reader = new FileReader();
