@@ -5,7 +5,7 @@ on:
     - master
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,6 +24,6 @@ jobs:
         run: npx lerna run build
 
       - name: Publish to npmjs
-        run: npx lerna run publish
+        run: npx lerna publish --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
