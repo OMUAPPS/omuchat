@@ -18,7 +18,7 @@ jobs:
         run: npx lerna run ci
 
       - name: Build
-        run: npx lerna run run build
+        run: npx lerna run build
 
       - name: Publish to npmjs
         run: npx lerna run publish
