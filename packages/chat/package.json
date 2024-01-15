@@ -25,7 +25,7 @@
         "fix": "eslint . --ext .js,.ts --fix"
     },
     "devDependencies": {
-        "@types/node": "^20.10.6",
+        "@types/node": "^20.11.2",
         "@types/websocket": "1.0.2",
         "@types/ws": "7.4.6",
         "@typescript-eslint/eslint-plugin": "^6.6.0",
