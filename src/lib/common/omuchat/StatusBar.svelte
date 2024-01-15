@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { ConnectionStatus } from '@omuchat/omu.js/connection/index.js';
+    import type { ConnectionStatus } from '@omuchatjs/omu/connection/index.js';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 

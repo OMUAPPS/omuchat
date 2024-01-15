@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { models } from "@omuchat/client";
+    import { models } from "@omuchatjs/chat";
 
     import LinkableText from "$lib/common/LinkableText.svelte";
     import Tooltip from "$lib/common/tooltip/Tooltip.svelte";

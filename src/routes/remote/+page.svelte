@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { App } from '@omuchat/omu.js';
+    import { App } from '@omuchatjs/omu';
 
     import ClientProvider from '$lib/common/omuchat/ClientProvider.svelte';
     import PanelMessages from '$lib/main/panel/messages/PanelMessages.svelte';

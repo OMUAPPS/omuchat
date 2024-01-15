@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { App } from "@omuchat/omu.js";
+    import type { App } from "@omuchatjs/omu";
 
     export let entry: App;
 </script>

@@ -1,4 +1,4 @@
-import { App, Client } from "@omuchat/client";
+import { App, Client } from "@omuchatjs/chat";
 
 export const app = new App({
     name: 'youtube-reaction',

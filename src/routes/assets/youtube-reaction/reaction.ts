@@ -1,5 +1,5 @@
-import { Client } from "@omuchat/client";
-import { App } from "@omuchat/omu.js";
+import { Client } from "@omuchatjs/chat";
+import { App } from "@omuchatjs/omu";
 
 import { getTabId } from "$lib/utils/browser-helper.js";
 

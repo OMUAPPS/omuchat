@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { models } from '@omuchat/client';
+    import type { models } from '@omuchatjs/chat';
     import { writable } from 'svelte/store';
 
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';

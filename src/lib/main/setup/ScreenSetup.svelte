@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { models } from '@omuchat/client';
+    import type { models } from '@omuchatjs/chat';
     import { onMount } from 'svelte';
 
     import { installed } from '../settings.js';

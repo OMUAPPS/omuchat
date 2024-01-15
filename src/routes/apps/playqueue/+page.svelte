@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Client, events } from '@omuchat/client';
-    import { App } from '@omuchat/omu.js';
+    import { Client, events } from '@omuchatjs/chat';
+    import { App } from '@omuchatjs/omu';
 
     import type { Entry } from './playqueue.js';
     import PlayQueueEntry from './PlayQueueEntry.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { models } from '@omuchat/client';
+    import { models } from '@omuchatjs/chat';
 
     import AppEntry from './AppEntry.svelte';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { App, Client } from '@omuchat/client';
-    import { ServerExtensionType } from '@omuchat/omu.js/extension/server/server-extension.js';
+    import { App, Client } from '@omuchatjs/chat';
+    import { ServerExtensionType } from '@omuchatjs/omu/extension/server/server-extension.js';
 
     import { setClient } from './client.js';
     import { DashboardExtensionType } from './dashboard-ext.js';

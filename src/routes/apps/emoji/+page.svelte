@@ -1,7 +1,7 @@
 <script lang="ts">
     import {
         models
-    } from '@omuchat/client';
+    } from '@omuchatjs/chat';
     import { onMount } from 'svelte';
 
     import { client, type Emoji } from './emoji.js';

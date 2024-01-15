@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Provider } from "@omuchat/client/models/index.js";
+    import type { Provider } from "@omuchatjs/chat/models/index.js";
 
     import { getClient } from "./client.js";
 

@@ -1,5 +1,5 @@
 <script lang="ts">  
-    import type { models } from "@omuchat/client";
+    import type { models } from "@omuchatjs/chat";
 
     export let channel: models.Channel;
     export let active = false;

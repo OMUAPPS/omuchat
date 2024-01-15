@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { models } from '@omuchat/client';
+    import type { models } from '@omuchatjs/chat';
 
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { applyOpacity, style } from '$lib/utils/class-helper.js';

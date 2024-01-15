@@ -1,7 +1,7 @@
-import type { Client, ClientListener } from "@omuchat/omu.js";
-import { defineExtensionType, type Extension } from "@omuchat/omu.js/extension/extension.js";
-import { TableExtensionType } from "@omuchat/omu.js/extension/table/table-extension.js";
-import { ModelTableType, type Table } from "@omuchat/omu.js/extension/table/table.js";
+import type { Client, ClientListener } from "@omuchatjs/omu";
+import { defineExtensionType, type Extension } from "@omuchatjs/omu/extension/extension.js";
+import { TableExtensionType } from "@omuchatjs/omu/extension/table/table-extension.js";
+import { ModelTableType, type Table } from "@omuchatjs/omu/extension/table/table.js";
 
 import { Asset } from "./asset.js";
 import { ChatApp } from "./chatapp.js";

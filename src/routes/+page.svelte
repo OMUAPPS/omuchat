@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { App } from '@omuchat/omu.js';
+    import { App } from '@omuchatjs/omu';
 
     import MainWindow from '$lib/main/MainWindow.svelte';
     import Window from '$lib/Window.svelte';
