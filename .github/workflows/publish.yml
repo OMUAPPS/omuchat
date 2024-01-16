@@ -4,6 +4,11 @@ on:
     branches:
     - master
 
+permissions:
+  contents: write # for checkout and tag
+  pull-requests: write  # for comments
+  packages: write # for publish
+
 jobs:
   publish:
     runs-on: ubuntu-latest
