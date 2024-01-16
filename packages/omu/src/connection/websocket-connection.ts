@@ -19,20 +19,25 @@ export class WebsocketConnection implements Connection {
         client.addListener(this);
     }
 
-    connect(): void {
+    connect(): Promise<void> {
         if (this.socket && !this.connected) {
             throw new Error('Already connecting');
         }
-        this.disconnect();
-        this.socket = new WebSocket(this.wsEndpoint());
-        this.socket.onopen = this.onOpen.bind(this);
-        this.socket.onclose = this.onClose.bind(this);
-        this.socket.onmessage = this.onMessage.bind(this);
+        return new Promise((resolve, reject) => {
+            this.disconnect();
+            this.socket = new WebSocket(this.wsEndpoint());
+            this.socket.onclose = this.onClose.bind(this);
+            this.socket.onmessage = this.onMessage.bind(this);
+            this.socket.onopen = (): void => {
+                this.onOpen().then(resolve).catch(reject);
+            };
+            this.socket.onerror = reject;
+        });
     }
 
     private async onOpen(): Promise<void> {
         this.connected = true;
-        this.send(EVENTS.Connect, new ConnectEvent(this.client.app, await this.client.token.get()));
+        this.send(EVENTS.Connect, new ConnectEvent(this.client.app, await this.client.token.get(this.client.app)));
         this.listeners.forEach((listener) => {
             listener.onConnect?.();
             listener.onStatusChanged?.('connected');

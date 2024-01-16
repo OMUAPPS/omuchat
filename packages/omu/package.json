@@ -41,5 +41,6 @@
         "typescript": "^5.3.3",
         "websocket": "1.0.34",
         "ws": "7.5.2"
-    }
+    },
+    "gitHead": "04559d5aec52117d707e0d554ee429b858da522a"
 }

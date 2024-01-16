@@ -1,5 +1,6 @@
 <script lang="ts">
     import { App, Client } from '@omuchatjs/chat';
+    import type { TokenProvider } from '@omuchatjs/omu/client/token.js';
     import { ServerExtensionType } from '@omuchatjs/omu/extension/server/server-extension.js';
 
     import { setClient } from './client.js';
@@ -17,7 +18,7 @@
     };
 
     const tokenKey = `omu-chat-token-${app.key()}`;
-    const token = {
+    const token: TokenProvider = {
         async get() {
             let token = null;
             if (isOnTauri) {
@@ -28,7 +29,7 @@
             }
             return token;
         },
-        async set(token: string) {
+        async set(_: App, token: string) {
             window.localStorage.setItem(tokenKey, token);
         }
     }

@@ -49,16 +49,14 @@ export class Client {
     }
 }
 
-class BrowserTokenProvider implements TokenProvider {
-    constructor(
-        private readonly key: string,
-    ) {}
+export class BrowserTokenProvider implements TokenProvider {
+    constructor(private readonly prefix: string) {}
 
-    async get(): Promise<string | null> {
-        return localStorage.getItem(this.key);
+    async get(app: omu.App): Promise<string | null> {
+        return localStorage.getItem(`${this.prefix}${app.key()}`);
     }
 
-    async set(token: string): Promise<void> {
-        localStorage.setItem(this.key, token);
+    async set(app: omu.App, token: string): Promise<void> {
+        localStorage.setItem(`${this.prefix}${app.key()}`, token);
     }
 }

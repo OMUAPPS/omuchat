@@ -8,7 +8,7 @@ export interface Connection {
     readonly address: Address;
     readonly connected: boolean;
 
-    connect(): void;
+    connect(): Promise<void>;
     disconnect(): void;
     send<T>(event: EventType<T, unknown>, data: T): void;
     status(): ConnectionStatus;
