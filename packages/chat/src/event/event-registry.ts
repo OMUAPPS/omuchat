@@ -5,11 +5,9 @@ import type { EventKey } from './event.js';
 export type EventHandler<T extends unknown[]> = (...event: T) => void;
 
 export class EventRegistry {
-    private readonly handlers: Map<string, EventHandler<any>[]>;
+    private readonly handlers: Map<string, EventHandler<any>[]> = new Map();
 
-    constructor(private readonly client: Client) {
-        this.handlers = new Map();
-    }
+    constructor(private readonly client: Client) {}
 
     on<T extends unknown[]>(event: EventKey<T>, handler: EventHandler<T>): void {
         if (!this.handlers.has(event.name)) {

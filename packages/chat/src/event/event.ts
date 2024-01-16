@@ -1,3 +1,6 @@
+import type { Table } from '@omuchatjs/omu/extension/table/table.js';
+import type { Keyable } from '@omuchatjs/omu/interface/keyable.js';
+
 import type { Client } from '../client/index.js';
 import type { Author, Channel, Message, Provider, Room } from '../models/index.js';
 
@@ -8,156 +11,37 @@ export class EventKey<T extends unknown[]> {
     ) {}
 }
 
+function initTableEvent<T extends Keyable>(
+    consumer: (client: Client) => Table<T>,
+) {
+    return (client: Client, invoke: (...data: T[]) => void): void => {
+        const table = consumer(client);
+        table.listen();
+        table.addListener({
+            onAdd: (items) => {
+                for (const item of items.values()) {
+                    invoke(item);
+                }
+            },
+        });
+    };
+}
+
 export const events = {
     Ready: new EventKey<[]>('ready'),
-    MessageCreate: new EventKey<[Message]>('on_message', (client, invoke) => {
-        client.chat.messages.listen();
-        client.chat.messages.addListener({
-            onAdd: (messages) => {
-                for (const message of messages.values()) {
-                    invoke(message);
-                }
-            },
-        });
-    }),
-    MessageUpdate: new EventKey<[Message]>('on_message_update', (client, invoke) => {
-        client.chat.messages.listen();
-        client.chat.messages.addListener({
-            onUpdate: (messages) => {
-                for (const message of messages.values()) {
-                    invoke(message);
-                }
-            },
-        });
-    }),
-    MessageDelete: new EventKey<[Message]>('on_message_delete', (client, invoke) => {
-        client.chat.messages.listen();
-        client.chat.messages.addListener({
-            onRemove: (messages) => {
-                for (const message of messages.values()) {
-                    invoke(message);
-                }
-            },
-        });
-    }),
-    AuthorCreate: new EventKey<[Author]>('on_author_create', (client, invoke) => {
-        client.chat.authors.listen();
-        client.chat.authors.addListener({
-            onAdd: (authors) => {
-                for (const author of authors.values()) {
-                    invoke(author);
-                }
-            },
-        });
-    }),
-    AuthorUpdate: new EventKey<[Author]>('on_author_update', (client, invoke) => {
-        client.chat.authors.listen();
-        client.chat.authors.addListener({
-            onUpdate: (authors) => {
-                for (const author of authors.values()) {
-                    invoke(author);
-                }
-            },
-        });
-    }),
-    AuthorDelete: new EventKey<[Author]>('on_author_delete', (client, invoke) => {
-        client.chat.authors.listen();
-        client.chat.authors.addListener({
-            onRemove: (authors) => {
-                for (const author of authors.values()) {
-                    invoke(author);
-                }
-            },
-        });
-    }),
-    ChannelCreate: new EventKey<[Channel]>('on_channel_create', (client, invoke) => {
-        client.chat.channels.listen();
-        client.chat.channels.addListener({
-            onAdd: (channels) => {
-                for (const channel of channels.values()) {
-                    invoke(channel);
-                }
-            },
-        });
-    }),
-    ChannelUpdate: new EventKey<[Channel]>('on_channel_update', (client, invoke) => {
-        client.chat.channels.listen();
-        client.chat.channels.addListener({
-            onUpdate: (channels) => {
-                for (const channel of channels.values()) {
-                    invoke(channel);
-                }
-            },
-        });
-    }),
-    ChannelDelete: new EventKey<[Channel]>('on_channel_delete', (client, invoke) => {
-        client.chat.channels.listen();
-        client.chat.channels.addListener({
-            onRemove: (channels) => {
-                for (const channel of channels.values()) {
-                    invoke(channel);
-                }
-            },
-        });
-    }),
-    ProviderCreate: new EventKey<[Provider]>('on_provider_create', (client, invoke) => {
-        client.chat.providers.listen();
-        client.chat.providers.addListener({
-            onAdd: (providers) => {
-                for (const provider of providers.values()) {
-                    invoke(provider);
-                }
-            },
-        });
-    }),
-    ProviderUpdate: new EventKey<[Provider]>('on_provider_update', (client, invoke) => {
-        client.chat.providers.listen();
-        client.chat.providers.addListener({
-            onUpdate: (providers) => {
-                for (const provider of providers.values()) {
-                    invoke(provider);
-                }
-            },
-        });
-    }),
-    ProviderDelete: new EventKey<[Provider]>('on_provider_delete', (client, invoke) => {
-        client.chat.providers.listen();
-        client.chat.providers.addListener({
-            onRemove: (providers) => {
-                for (const provider of providers.values()) {
-                    invoke(provider);
-                }
-            },
-        });
-    }),
-    RoomCreate: new EventKey<[Room]>('on_room_create', (client, invoke) => {
-        client.chat.rooms.listen();
-        client.chat.rooms.addListener({
-            onAdd: (rooms) => {
-                for (const room of rooms.values()) {
-                    invoke(room);
-                }
-            },
-        });
-    }),
-    RoomUpdate: new EventKey<[Room]>('on_room_update', (client, invoke) => {
-        client.chat.rooms.listen();
-        client.chat.rooms.addListener({
-            onUpdate: (rooms) => {
-                for (const room of rooms.values()) {
-                    invoke(room);
-                }
-            },
-        });
-    }),
-    RoomDelete: new EventKey<[Room]>('on_room_delete', (client, invoke) => {
-        client.chat.rooms.listen();
-        client.chat.rooms.addListener({
-            onRemove: (rooms) => {
-                for (const room of rooms.values()) {
-                    invoke(room);
-                }
-            },
-        });
-    }),
+    MessageCreate: new EventKey<[Message]>('on_message', initTableEvent((client) => client.chat.messages)),
+    MessageUpdate: new EventKey<[Message]>('on_message_update', initTableEvent((client) => client.chat.messages)),
+    MessageDelete: new EventKey<[Message]>('on_message_delete', initTableEvent((client) => client.chat.messages)),
+    AuthorCreate: new EventKey<[Author]>('on_author_create', initTableEvent((client) => client.chat.authors)),
+    AuthorUpdate: new EventKey<[Author]>('on_author_update', initTableEvent((client) => client.chat.authors)),
+    AuthorDelete: new EventKey<[Author]>('on_author_delete', initTableEvent((client) => client.chat.authors)),
+    ChannelCreate: new EventKey<[Channel]>('on_channel_create', initTableEvent((client) => client.chat.channels)),
+    ChannelUpdate: new EventKey<[Channel]>('on_channel_update', initTableEvent((client) => client.chat.channels)),
+    ChannelDelete: new EventKey<[Channel]>('on_channel_delete', initTableEvent((client) => client.chat.channels)),
+    ProviderCreate: new EventKey<[Provider]>('on_provider_create', initTableEvent((client) => client.chat.providers)),
+    ProviderUpdate: new EventKey<[Provider]>('on_provider_update', initTableEvent((client) => client.chat.providers)),
+    ProviderDelete: new EventKey<[Provider]>('on_provider_delete', initTableEvent((client) => client.chat.providers)),
+    RoomCreate: new EventKey<[Room]>('on_room_create', initTableEvent((client) => client.chat.rooms)),
+    RoomUpdate: new EventKey<[Room]>('on_room_update', initTableEvent((client) => client.chat.rooms)),
+    RoomDelete: new EventKey<[Room]>('on_room_delete', initTableEvent((client) => client.chat.rooms)),
 };
