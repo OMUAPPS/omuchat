@@ -6,10 +6,10 @@
     "scripts": {
         "tauri": "tauri",
         "dev": "set RUST_BACKTRACE=1 && tauri dev",
-        "prepare": "npx lerna run build && svelte-kit sync && node script/license.mjs",
+        "prepare": "svelte-kit sync && node script/dev-setup.mjs && npx lerna run build",
         "build": "tauri build",
         "ui:dev": "vite --host 0.0.0.0 --port 26420",
-        "ui:build": "node script/tabler-icons.mjs && vite build",
+        "ui:build": "vite build",
         "ui:preview": "vite preview",
         "ui:check": "svelte-check --tsconfig ./tsconfig.json",
         "lint:stylelint": "stylelint --ignore-path .gitignore ./**/*.{css,svelte}",
