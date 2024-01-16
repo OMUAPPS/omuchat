@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5](https://github.com/OMUCHAT/omuchat.js/compare/v0.0.4...v0.0.5) (2024-01-16)
+
+
+### Bug Fixes
+
+* prepare時にセットアップが正しく行われない問題 ([ee53d7e](https://github.com/OMUCHAT/omuchat.js/commit/ee53d7efbf07c999376130c7d624c2b65648e5cc))
+
+
+
+
+
 ## 0.0.4 (2024-01-15)
 
 
