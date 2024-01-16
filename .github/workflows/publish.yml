@@ -10,7 +10,6 @@ jobs:
     env:
       NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
       - uses: actions/checkout@v4
       # Setup .npmrc file to publish to npm
@@ -38,3 +37,5 @@ jobs:
 
       - name: Publish to npmjs
         run: npx lerna publish --yes --no-private
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
