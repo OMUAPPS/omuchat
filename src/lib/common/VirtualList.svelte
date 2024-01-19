@@ -143,12 +143,31 @@
     </svelte-virtual-list-contents>
 </svelte-virtual-list-viewport>
 
-<style>
+<style lang="scss">
     svelte-virtual-list-viewport {
         position: relative;
         display: block;
         overflow-y: auto;
         -webkit-overflow-scrolling:touch;
+        scrollbar-width: auto;
+        scrollbar-color: var(--color-1) var(--color-bg-2);
+
+        &::-webkit-scrollbar-track {
+            background: var(--color-bg-2);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: color-mix(in srgb, var(--color-1) 10%, transparent 0%);
+            border: 3px solid var(--color-bg-2);
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background-color: var(--color-1);
+        }
+
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
     }
 
     svelte-virtual-list-contents, svelte-virtual-list-row {
