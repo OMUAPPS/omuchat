@@ -168,6 +168,5 @@
         max-height: calc(100% - 40px);
         overflow: hidden;
         background: var(--color-bg-2);
-        outline: 1px solid var(--color-outline);
     }
 </style>
