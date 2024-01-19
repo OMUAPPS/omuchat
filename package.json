@@ -6,7 +6,7 @@
     "scripts": {
         "tauri": "tauri",
         "dev": "set RUST_BACKTRACE=1 && tauri dev",
-        "prepare": "svelte-kit sync && node script/dev-setup.mjs && npx lerna run build",
+        "prepare": "svelte-kit sync && node script/setup.mjs && npx lerna run build",
         "build": "tauri build",
         "ui:dev": "vite --host 0.0.0.0 --port 26420",
         "ui:build": "vite build",
@@ -23,12 +23,12 @@
         "packages/*"
     ],
     "dependencies": {
+        "@fontsource/noto-sans-jp": "^5.0.17",
         "@tauri-apps/api": "^1.4.0",
         "axios": "^1.6.0",
         "qrious": "^4.0.2"
     },
     "devDependencies": {
-        "@sveltejs/adapter-auto": "^2.1.1",
         "@sveltejs/adapter-static": "^2.0.3",
         "@sveltejs/kit": "^1.27.5",
         "@sveltejs/vite-plugin-svelte": "^2.5.2",
@@ -45,7 +45,6 @@
         "eslint-plugin-prettier": "^5.0.0",
         "eslint-plugin-svelte": "^2.35.1",
         "eslint-plugin-unused-imports": "^3.0.0",
-        "fs-extra": "^11.2.0",
         "lerna": "^8.0.2",
         "license-checker": "^25.0.1",
         "postcss-html": "^1.5.0",

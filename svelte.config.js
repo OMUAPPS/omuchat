@@ -7,7 +7,7 @@ const config = {
     // for more information about preprocessors
     preprocess: vitePreprocess({
         postcss: true,
-        scss: { includePaths: ['src', 'node_modules'] },
+        scss: { includePaths: ['src'] },
     }),
 
     kit: {
