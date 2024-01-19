@@ -171,7 +171,7 @@
         justify-content: space-between;
         width: 40px;
         height: 100%;
-        padding-top: 50px;
+        padding-top: 45px;
         padding-bottom: 40px;
         background: var(--color-bg-2);
         outline: 1px solid var(--color-outline);
