@@ -1,7 +1,7 @@
 {
     "type": "module",
     "name": "@omuchatjs/chat",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "repository": "https://github.com/OMUCHAT/omuchat.js.git",
     "publishConfig": {
         "access": "public"
@@ -43,7 +43,7 @@
         "ws": "7.5.2"
     },
     "dependencies": {
-        "@omuchatjs/omu": "^0.0.6"
+        "@omuchatjs/omu": "^0.0.7"
     },
     "gitHead": "04559d5aec52117d707e0d554ee429b858da522a"
 }
