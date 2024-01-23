@@ -23,12 +23,12 @@
         "packages/*"
     ],
     "dependencies": {
+    },
+    "devDependencies": {
         "@fontsource/noto-sans-jp": "^5.0.17",
         "@tauri-apps/api": "^1.4.0",
         "axios": "^1.6.0",
-        "qrious": "^4.0.2"
-    },
-    "devDependencies": {
+        "qrious": "^4.0.2",
         "@sveltejs/adapter-static": "^2.0.3",
         "@sveltejs/kit": "^1.27.5",
         "@sveltejs/vite-plugin-svelte": "^2.5.2",
