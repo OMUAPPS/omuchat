@@ -109,11 +109,8 @@
 
         &:hover {
             background: var(--color-bg-1);
-
-            &.special {
-                outline: 1px solid var(--color-1);
-                outline-offset: -1px;
-            }
+            outline: 1px solid var(--color-1);
+            outline-offset: -4px;
         }
     }
 
