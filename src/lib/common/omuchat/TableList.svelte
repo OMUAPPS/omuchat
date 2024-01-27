@@ -7,6 +7,7 @@
 
     import VirtualList from '$lib/common/VirtualList.svelte';
 
+    // eslint-disable-next-line no-undef
     type T = _T & Keyable; // TODO: 後悔
 
     export let table: Table<T>;
@@ -16,6 +17,7 @@
     export let reverse: boolean = false;
     export let initial: number = 40;
     export let limit = 400;
+    export let fitHeight = false;
 
     const { client } = getClient();
     let entries: Map<string, T> = new Map();
@@ -130,7 +132,7 @@
     }
 </script>
 
-<div class="list">
+<div class="list" class:full={!fitHeight}>
     <div class="items">
         <VirtualList {items} bind:viewport bind:start={startIndex} bind:end={endIndex} let:item>
             <svelte:component this={component} entry={item} />
@@ -149,6 +151,10 @@
         position: relative;
         display: flex;
         flex-direction: column;
+    }
+
+    .full {
+        width: 100%;
         height: 100%;
     }
 

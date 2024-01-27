@@ -3,6 +3,7 @@
 <script lang="ts" generics="_T">
     import { onMount, tick } from 'svelte';
 
+    // eslint-disable-next-line no-undef
     type T = [string, _T];
 
     // props
@@ -120,7 +121,7 @@
 
     // trigger initial refresh
     onMount(() => {
-        rows = contents.getElementsByTagName('svelte-virtual-list-row');
+        rows = contents.getElementsByTagName('svelte-virtual-list-row') as unknown as HTMLElement[];
         mounted = true;
     });
 </script>
