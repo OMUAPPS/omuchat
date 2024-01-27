@@ -3,6 +3,7 @@
     import { onMount } from 'svelte';
 
     import { getClient } from '$lib/common/omuchat/client.js';
+    import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import { screenContext } from '$lib/common/screen/screen.js';
     import Screen from '$lib/common/screen/Screen.svelte';
 
@@ -95,7 +96,10 @@
         }
     }
 
+    let input: HTMLInputElement | undefined;
+
     onMount(() => {
+        input?.focus();
         window.addEventListener('keydown', onKeyPress);
         return () => {
             window.removeEventListener('keydown', onKeyPress);
@@ -103,22 +107,33 @@
     });
 </script>
 
-4<Screen title="add_channel">
+<Screen title="add_channel">
     <div class="container">
-        <input type="text" bind:value={url} placeholder="..." />
-        {#if providers && providers.size}
-            {#each filterProvider(url) as [provider_id, provider] (provider_id)}
-                <button
-                    class:active={selectedProvider === provider}
-                    on:click={() => {
-                        selectedProvider = provider;
-                        addChannel();
-                    }}
-                >
-                    {provider.name}
-                </button>
-            {/each}
-        {/if}
+        <!-- svelte-ignore a11y-autofocus -->
+        <span>
+            <i class="ti ti-link" />
+            <input type="text" bind:this={input} bind:value={url} placeholder="チャンネルURL..." autofocus={true}/>
+        </span>
+        <div class="providers">
+            {#if providers && providers.size}
+                {#each filterProvider(url) as [provider_id, provider] (provider_id)}
+                    <button
+                        class:active={selectedProvider === provider}
+                        on:click={() => {
+                            selectedProvider = provider;
+                            addChannel();
+                        }}
+                    >
+                        <ProviderIcon providerId={provider.id} />
+                        {provider.name}
+                        <small>
+                            {provider.name}として追加
+                        </small>
+                        <i class="ti ti-arrow-right" />
+                    </button>
+                {/each}
+            {/if}
+        </div>
     </div>
 </Screen>
 
@@ -127,25 +142,41 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 10px;
         align-items: flex-start;
         justify-content: flex-start;
         width: 100%;
         height: 100%;
     }
 
-    .active {
-        color: #fff;
-        background-color: #000;
+    span {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        height: 40px;
+        padding: 0 0 0 10px;
+        font-size: 16px;
+        color: var(--color-1);
+        background: var(--color-bg-1);
+        border: none;
+        border-bottom: 1px solid var(--color-outline);
+        border-radius: 0;
+
+        i {
+            margin-right: 10px;
+            margin-left: 5px;
+        }
     }
 
     input {
         width: 100%;
         height: 40px;
-        padding: 0 10px;
+        min-height: 40px;
         font-size: 16px;
-        background: var(--color-bg-2);
-        border: 1px solid var(--color-1);
+        background: var(--color-bg-1);
+        border: none;
+        border-bottom: 1px solid var(--color-outline);
         border-radius: 0;
 
         &:focus {
@@ -153,22 +184,69 @@
         }
     }
 
+    .providers {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        overflow-y: auto;
+        background: var(--color-bg-2);
+        border: none;
+        border-bottom: 1px solid var(--color-outline);
+        border-radius: 0;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: var(--color-bg-2);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--color-outline);
+            border-radius: 10px;
+        }
+    }
+
     button {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        justify-content: flex-start;
         width: 100%;
         height: 40px;
-        padding: 0 10px;
+        padding: 0 10px 0 5px;
         font-size: 16px;
         color: var(--color-1);
         text-align: left;
         cursor: pointer;
         background: var(--color-bg-2);
-        border: 1px solid var(--color-1);
+        border: none;
+        border-bottom: 1px solid var(--color-outline);
         border-radius: 0;
         outline: none;
 
         &:hover {
-            color: #fff;
-            background-color: #000;
+            color: var(--color-1);
+            background: var(--color-bg-1);
+            outline: 1px solid var(--color-1);
+            outline-offset: -3px;
         }
+
+        small {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--color-1);
+        }
+    }
+
+    .active {
+        color: var(--color-bg-1);
+        background: var(--color-1);
     }
 </style>
