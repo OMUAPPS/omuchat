@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
+
     import { screenContext } from './screen.js';
     import ScreenHeader from './ScreenHeader.svelte';
 
@@ -7,6 +9,7 @@
     export let title: string;
     export let windowed: boolean = true;
     export let noDecorated: boolean = false;
+    export let noClose: boolean = false;
     let container: HTMLButtonElement;
 
     function onClick(event: MouseEvent) {
@@ -14,6 +17,19 @@
             screenContext.pop();
         }
     }
+
+    function onKeyPress(e: KeyboardEvent) {
+        if (!noClose && e.key === 'Escape') {
+            screenContext.pop();
+        }
+    }
+
+    onMount(() => {
+        window.addEventListener('keydown', onKeyPress);
+        return () => {
+            window.removeEventListener('keydown', onKeyPress);
+        };
+    });
 </script>
 
 <button class="container" class:windowed on:click={onClick} bind:this={container}>
