@@ -22,7 +22,7 @@
         &.filled {
             color: var(--color-bg-1);
             text-decoration: none;
-            background-color: var(--color-1);
+            background: var(--color-1);
         }
     }
 </style>

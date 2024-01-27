@@ -185,7 +185,7 @@
         // color: var(--color-1);
         color: color-mix(in srgb, var(--color-1) 75%, var(--color-bg-2) 0%);
         background: none;
-        background-color: var(--color);
+        background: var(--color);
         border: none;
         outline: none;
 
