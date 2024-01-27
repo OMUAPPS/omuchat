@@ -10,9 +10,9 @@
     import PageApps from './page/apps/PageApps.svelte';
     import PageAssets from './page/assets/PageAssets.svelte';
     import PageDev from './page/dev/PageDev.svelte';
+    import PageHome from './page/home/PageHome.svelte';
     import { pages } from './page/page.js';
     import PageChannels from './page/PageChannels.svelte';
-    import PageHome from './page/PageHome.svelte';
     import PageMessages from './page/PageMessages.svelte';
     import { currentPage, devMode } from './settings.js';
     import ScreenInstalling from './setup/ScreenInstalling.svelte';
