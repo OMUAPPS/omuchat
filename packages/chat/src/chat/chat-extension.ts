@@ -22,8 +22,8 @@ export class ChatExtension implements Extension {
         this.channels = tables.get(ChannelsTableKey);
         this.providers = tables.get(ProvidersTableKey);
         this.rooms = tables.get(RoomsTableKey);
-        this.messages.setCacheSize(10);
-        this.authors.setCacheSize(10);
+        this.messages.setCacheSize(200);
+        this.authors.setCacheSize(200);
     }
 
     async createChannelTree(provider: string): Promise<Channel[]> {
