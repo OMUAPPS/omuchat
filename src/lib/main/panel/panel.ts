@@ -2,15 +2,15 @@ import { getContext, setContext } from 'svelte';
 import type { Readable } from 'svelte/motion';
 import type { Writable } from 'svelte/store';
 
-import type { PropedComponent } from '$lib/common/component/proped-component';
+import type { PropedComponent } from '$lib/common/component/proped-component.js';
 
 export interface PanelEntry {
+    panel(): PropedComponent;
+    settings?(): PropedComponent;
     icon: string;
     name: string;
     width?: number;
     fit?: boolean;
-    componentPanel(): PropedComponent;
-    componentSettings(): PropedComponent;
     element?: HTMLElement;
     dragging?: boolean;
     index?: Writable<number>;

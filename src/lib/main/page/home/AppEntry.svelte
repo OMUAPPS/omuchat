@@ -54,7 +54,7 @@ export let entry: ChatApp;
     .right {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 5px;
         align-items: flex-end;
         margin-right: 10px;
         visibility: hidden;

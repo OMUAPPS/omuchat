@@ -44,7 +44,8 @@
     }
 
     function openSettings() {
-        screenContext.push(panel.componentSettings());
+        if (!panel.settings) throw new Error('Panel does not have settings');
+        screenContext.push(panel.settings());
     }
 
     onMount(() => {
@@ -78,15 +79,17 @@
                     {panel.name}
                 </div>
             </button>
-            <div class="right">
-                <ButtonMini on:click={openSettings}>
-                    <Tooltip>{$t("general.settings")}</Tooltip>
-                    <i class="ti ti-settings" />
-                </ButtonMini>
-            </div>
+            {#if panel.settings}
+                <div class="right">
+                    <ButtonMini on:click={openSettings}>
+                        <Tooltip>{$t("general.settings")}</Tooltip>
+                        <i class="ti ti-settings" />
+                    </ButtonMini>
+                </div>
+            {/if}
         </div>
         <div class="panel">
-            <PropedComponent component={panel.componentPanel()} />
+            <PropedComponent component={panel.panel()} />
         </div>
     </div>
 </div>
