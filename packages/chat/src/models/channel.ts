@@ -1,6 +1,6 @@
 import type { Keyable, Model } from '@omuchatjs/omu/interface/index.js';
 
-export interface ChannelJson {
+export type ChannelJson = {
     provider_id: string;
     id: string;
     url: string;

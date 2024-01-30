@@ -2,7 +2,7 @@ import type { Keyable, Model } from "@omuchatjs/omu/interface/index.js";
 
 export type AssetType = 'app' | 'panel' | 'image';
 
-export interface AssetJson {
+export type AssetJson = {
     id: string;
     name?: string;
     icon?: string;

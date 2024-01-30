@@ -1,6 +1,6 @@
 import type { Keyable, Model } from '@omuchatjs/omu/interface/index.js';
 
-export interface ProviderJson {
+export type ProviderJson = {
     id: string;
     url: string;
     name: string;

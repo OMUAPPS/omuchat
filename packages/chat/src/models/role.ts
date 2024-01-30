@@ -1,6 +1,6 @@
 import type { Model } from '@omuchatjs/omu/interface/index.js';
 
-export interface RoleJson {
+export type RoleJson = {
     id?: string;
     name: string;
     is_owner: boolean;

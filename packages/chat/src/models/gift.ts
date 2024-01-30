@@ -1,6 +1,6 @@
 import type { Model } from '@omuchatjs/omu/interface/index.js';
 
-export interface GiftJson {
+export type GiftJson = {
     id: string;
     name: string;
     amount: number;

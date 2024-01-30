@@ -1,6 +1,6 @@
 import type { Model } from '@omuchatjs/omu/interface/index.js';
 
-export interface PaidJson {
+export type PaidJson = {
     amount: number;
     currency: string;
 }

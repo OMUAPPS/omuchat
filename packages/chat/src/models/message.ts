@@ -7,7 +7,7 @@ import { Gift } from './gift.js';
 import type { PaidJson } from './paid.js';
 import { Paid } from './paid.js';
 
-export interface MessageJson {
+export type MessageJson = {
     room_id: string;
     id: string;
     created_at: string; // ISO 8601 date string
