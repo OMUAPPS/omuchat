@@ -75,7 +75,7 @@
     });
 </script>
 
-<Screen title="setup" windowed={false} noDecorated>
+<Screen title="setup" windowed={false} noDecorated noClose>
     <div class="background">
         <Background />
     </div>
@@ -90,8 +90,7 @@
                 <div class="list">
                     {#each result.entries() as [key, { channel, active }] (key)}
                         <button class="item" class:active on:click={() => (active = !active)}>
-                            <!-- <i class="ti ti-check" class:active /> -->
-                            <i class="ti ti-{active ? 'check' : 'close'}" />
+                            <i class="ti ti-{active ? 'check' : 'plus'}" />
                             <div class="channel-icon">
                                 {#if channel.icon_url}
                                     <img src={channel.icon_url} alt="icon" />
@@ -116,7 +115,9 @@
                     {/each}
                 </div>
                 <div class="buttons">
-                    <Button on:click={finish} disabled={![...result.values()].some((v) => v.active)}
+                    <Button
+                    on:click={finish}
+                    disabled={![...result.values()].some((v) => v.active)}
                     rounded filled
                         >追加する</Button
                     >
@@ -193,11 +194,6 @@
         font-weight: bold;
     }
 
-    .description {
-        font-size: 16px;
-        text-align: center;
-    }
-
     .list {
         display: flex;
         flex-direction: column;
@@ -207,70 +203,72 @@
         width: 100%;
         max-height: 300px;
         overflow: auto;
+    }
 
-        .item {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 5px 10px;
-            background: var(--color-bg-1);
-            border: 1px solid var(--color-bg-1);
-            border-radius: 5px;
+    .item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 5px 10px;
+        background: var(--color-bg-1);
+        border: 1px solid var(--color-bg-1);
+        border-radius: 5px;
 
-            &:hover {
-                background: var(--color-bg-2);
-            }
-
-            &.active {
-                color: var(--color-bg-1);
-                background: var(--color-1);
-            }
-
-            .channel-icon {
-                width: 32px;
-                min-width: 32px;
-                height: 32px;
-                margin: 10px;
-                border-radius: 50%;
-
-                img {
-                    width: 100%;
-                    height: 100%;
-                    border-radius: 50%;
-                }
-
-                .tooltip-image {
-                    width: 200px;
-                    height: 200px;
-                    padding: 0;
-                    margin: 0;
-                    border-radius: 0;
-                }
-            }
-
-            .description {
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
-                align-items: flex-start;
-                justify-content: center;
-                width: 100%;
-                overflow: hidden;
-                font-size: 16px;
-                text-overflow: ellipsis;
-            }
-
-            .channel-name {
-                font-size: 1rem;
-                opacity: 1;
-            }
-
-            .channel-url {
-                opacity: 0.5;
-            }
+        &:hover {
+            background: var(--color-bg-2);
         }
+
+        &.active {
+            color: var(--color-bg-1);
+            background: var(--color-1);
+        }
+    }
+
+    .channel-icon {
+        width: 32px;
+        min-width: 32px;
+        height: 32px;
+        margin: 10px;
+        border-radius: 50%;
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .tooltip-image {
+            width: 200px;
+            height: 200px;
+            padding: 0;
+            margin: 0;
+            border-radius: 0;
+        }
+    }
+
+
+    .description {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+        overflow: hidden;
+        font-size: 16px;
+        text-align: center;
+        text-overflow: ellipsis;
+    }
+
+    .channel-name {
+        font-size: 1rem;
+        opacity: 1;
+    }
+
+    .channel-url {
+        opacity: 0.5;
     }
 
     .buttons {
