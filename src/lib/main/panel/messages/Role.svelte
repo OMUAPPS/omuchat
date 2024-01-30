@@ -14,6 +14,11 @@
     {#if role.icon_url}
         <img class="img" src={role.icon_url} alt="role icon" />
     {:else}
+        {#if role.is_owner}
+            <i class="ti ti-crown" />
+        {:else if role.is_moderator}
+            <i class="ti ti-shield" />
+        {/if}
         {role.name}
     {/if}
     <Tooltip>
@@ -48,7 +53,8 @@
     .role {
         display: flex;
         flex-direction: row;
-        gap: 1px;
+        gap: 2px;
+        align-items: center;
         height: calc(1.4rem);
         padding: 4px;
         font-size: 0.8rem;
