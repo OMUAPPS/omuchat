@@ -166,14 +166,14 @@
         gap: 5px;
         align-items: baseline;
         justify-content: center;
-        padding: 6px 10px;
+        padding: 10px 14px;
         font-size: 12px;
         font-weight: 600;
-        color: var(--color-1);
-        background: var(--color-bg-1);
+        color: var(--color-bg-1);
+        background: var(--color-1);
         border: none;
         border-radius: 50px;
-        outline: 1px solid var(--color-1);
+        outline: none;
         transform: translateX(50%);
 
         i {
@@ -181,7 +181,8 @@
         }
 
         &:hover {
-            outline: 2px solid var(--color-1);
+            outline: 2px solid var(--color-bg-1);
+            outline-offset: -4px;
         }
     }
 
