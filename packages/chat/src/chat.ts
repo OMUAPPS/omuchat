@@ -6,7 +6,7 @@ import { TableExtensionType } from '@omuchatjs/omu/extension/table/table-extensi
 import { ModelTableType, type Table } from '@omuchatjs/omu/extension/table/table.js';
 import { Serializer } from '@omuchatjs/omu/interface/serializable.js';
 
-import { Author, Channel, Message, Provider, Room } from '../models/index.js';
+import { Author, Channel, Message, Provider, Room } from './models/index.js';
 
 export class ChatExtension implements Extension {
     messages: Table<Message>;

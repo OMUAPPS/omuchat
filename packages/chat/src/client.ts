@@ -2,10 +2,10 @@ import * as omu from '@omuchatjs/omu';
 import type { TokenProvider } from '@omuchatjs/omu/client/token.js';
 import type { Address } from '@omuchatjs/omu/connection/index.js';
 
-import type { ChatExtension } from '../chat/index.js';
-import { ChatExtensionType } from '../chat/index.js';
-import type { EventHandler, EventKey } from '../event/index.js';
-import { EventRegistry } from '../event/index.js';
+import type { ChatExtension } from './chat.js';
+import { ChatExtensionType } from './chat.js';
+import type { EventHandler, EventKey } from './event/index.js';
+import { EventRegistry } from './event/index.js';
 
 export class Client {
     app: omu.App;

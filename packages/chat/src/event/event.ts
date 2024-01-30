@@ -1,7 +1,7 @@
 import type { Table } from '@omuchatjs/omu/extension/table/table.js';
 import type { Keyable } from '@omuchatjs/omu/interface/keyable.js';
 
-import type { Client } from '../client/index.js';
+import type { Client } from '../client.js';
 import type { Author, Channel, Message, Provider, Room } from '../models/index.js';
 
 export class EventKey<T extends unknown[]> {

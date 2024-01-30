@@ -1,4 +1,4 @@
-import type { Client } from '../client/index.js';
+import type { Client } from '../client.js';
 
 import type { EventKey } from './event.js';
 
