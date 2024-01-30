@@ -98,10 +98,10 @@
             {
                 "label": "main",
                 "fullscreen": false,
-                "width": 890,
-                "height": 540,
-                "minWidth": 890,
-                "minHeight": 540,
+                "width": 1280,
+                "height": 720,
+                "minWidth": 800,
+                "minHeight": 600,
                 "resizable": true,
                 "decorations": false,
                 "title": "OMUCHAT"
