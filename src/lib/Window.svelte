@@ -50,7 +50,8 @@
         height: 40px;
         user-select: none;
         background: var(--color-bg-2);
-        outline: 1px solid var(--color-1);
+        outline: 1px solid var(--color-outline);
+        outline-offset: -1px;
     }
 
     .title {
