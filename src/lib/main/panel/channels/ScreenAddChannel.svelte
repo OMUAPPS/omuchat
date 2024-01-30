@@ -232,16 +232,17 @@
         outline: none;
 
         &:hover {
-            color: var(--color-1);
-            background: var(--color-bg-1);
             outline: 1px solid var(--color-1);
             outline-offset: -3px;
+
+            &.active {
+                outline: 1px solid var(--color-bg-1);
+            }
         }
 
         small {
             margin-left: auto;
             font-size: 12px;
-            color: var(--color-1);
         }
     }
 
