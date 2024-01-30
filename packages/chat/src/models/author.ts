@@ -3,11 +3,12 @@ import type { Keyable, Model } from '@omuchatjs/omu/interface/index.js';
 import type { RoleJson } from './role.js';
 import { Role } from './role.js';
 
-export interface AuthorJson {
+export type AuthorJson = {
     provider_id: string;
     id: string;
     name: string;
-    avatar_url: string;
+    screen_id?: string;
+    avatar_url?: string;
     roles?: RoleJson[];
 }
 
@@ -15,19 +16,22 @@ export class Author implements Keyable, Model<AuthorJson> {
     provider_id: string;
     id: string;
     name: string;
-    avatar_url: string;
+    screen_id?: string;
+    avatar_url?: string;
     roles?: Role[];
 
     constructor(options: {
         provider_id: string;
         id: string;
         name: string;
-        avatar_url: string;
+        screen_id?: string;
+        avatar_url?: string;
         roles?: Role[];
     }) {
         this.provider_id = options.provider_id;
         this.id = options.id;
         this.name = options.name;
+        this.screen_id = options.screen_id;
         this.avatar_url = options.avatar_url;
         this.roles = options.roles;
     }
@@ -37,6 +41,7 @@ export class Author implements Keyable, Model<AuthorJson> {
             provider_id: info.provider_id,
             id: info.id,
             name: info.name,
+            screen_id: info.screen_id,
             avatar_url: info.avatar_url,
             roles: info.roles?.map(role => new Role(role)),
         });
@@ -51,6 +56,7 @@ export class Author implements Keyable, Model<AuthorJson> {
             provider_id: this.provider_id,
             id: this.id,
             name: this.name,
+            screen_id: this.screen_id,
             avatar_url: this.avatar_url,
             roles: this.roles?.map(role => role.toJson()),
         };
