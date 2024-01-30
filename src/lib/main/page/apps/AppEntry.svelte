@@ -96,8 +96,6 @@
         &:hover {
             .app-body {
                 outline: 2px solid var(--color-1);
-
-                // box-shadow: 0 8px 0 2px var(--color-2);
                 transition: 0.02s;
             }
 

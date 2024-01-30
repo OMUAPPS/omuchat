@@ -181,8 +181,6 @@
         width: 40px;
         height: 40px;
         font-size: 16px;
-
-        // color: var(--color-1);
         color: color-mix(in srgb, var(--color-1) 75%, var(--color-bg-2) 0%);
         background: none;
         background: var(--color);

@@ -39,8 +39,6 @@
 
     .outline {
         border: 1px solid var(--color-1);
-
-        // box-shadow: 0 1px 0 0 var(--color-1);
     }
 
     .rounded {
