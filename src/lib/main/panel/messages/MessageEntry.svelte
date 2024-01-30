@@ -12,20 +12,21 @@
 
     const { chat } = getClient();
 
-    let author: models.Author | undefined;
+    let author: models.Author | undefined = entry.author_id && chat.authors.cache.get(entry.author_id) || undefined;
     async function getAuthor() {
         if (!entry.author_id) return null;
         author = await chat.authors.get(entry.author_id);
     }
-    getAuthor();
+    if (!author)
+        getAuthor();
 </script>
 
 <div
     class={classes('message', !!(entry.paid || entry.gifts?.length) && 'special')}
+    class:special={!!(entry.paid || entry.gifts?.length)}
     style={style(
         entry.paid || entry.gifts?.length
             ? {
-                borderLeft: `2px solid var(--color-1)`,
                 background: `${applyOpacity(
                     entry.paid ? 'var(--color-1)' : 'var(--color-2)',
                     0.1
@@ -112,6 +113,10 @@
             outline: 1px solid var(--color-1);
             outline-offset: -4px;
         }
+    }
+
+    .special {
+        border-left: 2px solid var(--color-1);
     }
 
     .left {
