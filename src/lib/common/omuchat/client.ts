@@ -1,4 +1,4 @@
-import type { ChatExtension } from '@omuchatjs/chat/chat/index.js';
+import type { ChatExtension } from '@omuchatjs/chat/chat.js';
 import type { Client } from '@omuchatjs/omu';
 import type { ServerExtension } from '@omuchatjs/omu/extension/server/index.js';
 import { getContext, setContext } from 'svelte';
