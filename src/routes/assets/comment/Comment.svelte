@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { models } from '@omuchatjs/chat';
 
-    import { chat } from './chat.js';
+    import { chat, client } from './chat.js';
 
     import MessageContent from '$lib/main/panel/messages/MessageContent.svelte';
 
@@ -25,7 +25,7 @@
             {#if author}
                 {#if author.avatar_url}
                     <div class="author-icon">
-                        <img src={author.avatar_url} alt="" />
+                        <img src={client.omu.proxy(author.avatar_url)} alt="" />
                     </div>
                 {/if}
                 <div class="author-name">

@@ -9,7 +9,7 @@
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
     export let entry: models.Channel;
-    const { chat } = getClient();
+    const { chat, client } = getClient();
 
     let active = writable(entry.active);
     active.subscribe((value) => {
@@ -27,9 +27,9 @@
     <div class="left">
         <div class="channel-icon">
             {#if entry.icon_url}
-                <img src={entry.icon_url} alt="icon" />
+                <img src={client.proxy(entry.icon_url)} alt="icon" />
                 <Tooltip>
-                    <img src={entry.icon_url} alt="icon" class="tooltip-image" />
+                    <img src={client.proxy(entry.icon_url)} alt="icon" class="tooltip-image" />
                 </Tooltip>
             {:else}
                 <ProviderIcon providerId={entry.provider_id} />

@@ -7,7 +7,7 @@
 
     export let providerId: string;
 
-    const { chat } = getClient();
+    const { chat, client } = getClient();
 
     async function getProvider(): Promise<Provider | undefined> {
         const provider = await chat.providers.get(providerId);
@@ -19,9 +19,9 @@
 {#await getProvider() then provider}
     {#if provider}
     <img
-    src={provider.image_url || `https://${provider.url}/favicon.ico`}
+    src={provider.image_url ? client.proxy(provider.image_url) : `https://${provider.url}/favicon.ico`}
     alt="icon"
-    class={classes("provider-icon", provider.image_url && "custom")}
+    class={classes("provider-icon", provider.image_url ? client.proxy(provider.image_url) : "custom")}
         width="16"
         height="16"
     />

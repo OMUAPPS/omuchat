@@ -1,8 +1,11 @@
 <script lang="ts">
     import type { models } from '@omuchatjs/chat';
 
+    import { getClient } from '$lib/common/omuchat/client.js';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { applyOpacity, style } from '$lib/utils/class-helper.js';
+
+    const { client } = getClient();
 
     export let role: models.Role;
 </script>
@@ -26,7 +29,7 @@
             <span class="preview">
                 {role.name}
                 {#if role.icon_url}
-                <img src={role.icon_url} alt="role icon" />
+                    <img src={client.proxy(role.icon_url)} alt="role icon" />
                 {/if}
             </span>
             <small>

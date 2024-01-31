@@ -10,7 +10,7 @@
     import { applyOpacity, classes, style } from '$lib/utils/class-helper.js';
     export let entry: models.Message;
 
-    const { chat } = getClient();
+    const { chat, client } = getClient();
 
     let author: models.Author | undefined = entry.author_id && chat.authors.cache.get(entry.author_id) || undefined;
     async function getAuthor() {
@@ -38,14 +38,14 @@
     <div class="left">
         {#if author && author.avatar_url}
             <img
-                src={author.avatar_url}
+                src={client.proxy(author.avatar_url)}
                 alt="avatar"
                 class="author-avatar"
                 width="32"
                 height="32"
             />
             <Tooltip noBackground>
-                <img src={author.avatar_url} alt="avatar" class="author-avatar-preview" />
+                <img src={client.proxy(author.avatar_url)} alt="avatar" class="author-avatar-preview" />
             </Tooltip>
         {/if}
     </div>

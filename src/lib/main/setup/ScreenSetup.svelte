@@ -13,7 +13,7 @@
     import Screen from '$lib/common/screen/Screen.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
-    const { chat } = getClient();
+    const { chat, client } = getClient();
 
     let result: Map<string, { channel: models.Channel; active: boolean }> | undefined;
 
@@ -93,10 +93,10 @@
                             <i class="ti ti-{active ? 'check' : 'plus'}" />
                             <div class="channel-icon">
                                 {#if channel.icon_url}
-                                    <img src={channel.icon_url} alt="icon" />
+                                    <img src={client.proxy(channel.icon_url)} alt="icon" />
                                     <Tooltip>
                                         <img
-                                            src={channel.icon_url}
+                                            src={client.proxy(channel.icon_url)}
                                             alt="icon"
                                             class="tooltip-image"
                                         />
