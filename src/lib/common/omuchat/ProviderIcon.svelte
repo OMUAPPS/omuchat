@@ -19,9 +19,9 @@
 {#await getProvider() then provider}
     {#if provider}
     <img
-    src={provider.image_url ? client.proxy(provider.image_url) : `https://${provider.url}/favicon.ico`}
+    src={client.proxy(provider.image_url || `https://${provider.url}/favicon.ico`)}
     alt="icon"
-    class={classes("provider-icon", provider.image_url ? client.proxy(provider.image_url) : "custom")}
+    class={classes("provider-icon", provider.image_url && "custom")}
         width="16"
         height="16"
     />
