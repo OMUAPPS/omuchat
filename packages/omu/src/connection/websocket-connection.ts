@@ -1,3 +1,4 @@
+import { textDecoder, textEncoder } from '../const.js';
 import { ConnectEvent } from '../event/event-registry.js';
 import { EVENTS, type EventType } from '../event/index.js';
 import type { Client } from '../index.js';
@@ -54,11 +55,30 @@ export class WebsocketConnection implements Connection {
         });
     }
 
-    private onMessage(event: MessageEvent<string>): void {
-        const message = JSON.parse(event.data);
-        this.listeners.forEach((listener) => {
-            listener.onEvent?.(message);
-        });
+    private onMessage(event: MessageEvent<string | Blob>): void {
+        if (typeof event.data === 'string') {
+            const message = JSON.parse(event.data);
+            this.listeners.forEach((listener) => {
+                listener.onEvent?.(message);
+            });
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (): void => {
+            const buffer = new Uint8Array(reader.result as ArrayBuffer);
+            const typeLength = buffer[0];
+            const typeArray = buffer.slice(1, typeLength + 1);
+            const type = textDecoder.decode(typeArray);
+            const dataArray = buffer.slice(typeLength + 1);
+            const data = textDecoder.decode(dataArray);
+            this.listeners.forEach((listener) => {
+                listener.onEvent?.({
+                    type,
+                    data: JSON.parse(data),
+                });
+            });
+        };
+        reader.readAsArrayBuffer(event.data);
     }
 
     proxy(url: string): string {
@@ -83,6 +103,12 @@ export class WebsocketConnection implements Connection {
     send<T>(event: EventType<T, unknown>, data: T): void {
         if (!this.connected || !this.socket) {
             throw new Error('Not connected');
+        }
+        if (data instanceof Uint8Array) {
+            const typeArray = textEncoder.encode(event.type);
+            const buffer = new Uint8Array([typeArray.length, ...typeArray, data.length, ...data]);
+            this.socket.send(buffer);
+            return;
         }
         this.socket.send(JSON.stringify({
             type: event.type,
