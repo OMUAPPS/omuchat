@@ -37,7 +37,7 @@
     // whenever `items` changes, invalidate the current heightmap
     $: if (mounted) {
         refresh(items, viewport_height, itemHeight);
-        handleScroll();
+        handleUpdate();
     }
 
     async function refresh(items: T[], viewport_height: number, itemHeight: number | undefined) {
@@ -83,7 +83,7 @@
         height_map.length = items.length;
     }
 
-    async function handleScroll() {
+    async function handleUpdate() {
         const { scrollTop } = viewport;
 
         for (let v = 0; v < rows.length; v += 1) {
@@ -132,7 +132,8 @@
 <svelte-virtual-list-viewport
     bind:this={viewport}
     bind:offsetHeight={viewport_height}
-    on:scroll={handleScroll}
+    on:scroll={handleUpdate}
+    on:resize={handleUpdate}
     style="height: {height};"
 >
     <svelte-virtual-list-contents
