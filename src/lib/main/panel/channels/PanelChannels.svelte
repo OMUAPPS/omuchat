@@ -61,8 +61,8 @@
                 再チェックまであと
                 {Math.floor(checkIntervalLeft)}秒
             </Tooltip>
-            {Math.floor(checkIntervalLeft)}
             <i class="ti ti-reload"/>
+            {Math.floor(checkIntervalLeft)}
         </small>
     </div>
     <TableList table={chat.channels} component={ChannelEntry} {filter} />
