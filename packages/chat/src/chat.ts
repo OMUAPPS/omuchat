@@ -1,5 +1,5 @@
 import type { Client } from '@omuchatjs/omu';
-import { SerializeEndpointType } from '@omuchatjs/omu/extension/endpoint/endpoint.js';
+import { JsonEndpointType } from '@omuchatjs/omu/extension/endpoint/endpoint.js';
 import type { Extension } from '@omuchatjs/omu/extension/extension.js';
 import { defineExtensionType } from '@omuchatjs/omu/extension/extension.js';
 import { TableExtensionType } from '@omuchatjs/omu/extension/table/table-extension.js';
@@ -50,9 +50,8 @@ const ProvidersTableKey = ModelTableType.ofExtension(ChatExtensionType, {
 const RoomsTableKey = ModelTableType.ofExtension(ChatExtensionType, {
     name: 'rooms', model: Room,
 });
-
-const CreateChannelTreeEndpoint = SerializeEndpointType.ofExtension(ChatExtensionType, {
+const CreateChannelTreeEndpoint = JsonEndpointType.ofExtension(ChatExtensionType, {
     name: 'create_channel_tree',
-    requestSerializer: Serializer.noop(),
-    responseSerializer: Serializer.array(Serializer.model(Channel)),
+    requestSerializer: Serializer.noop<string>(),
+    responseSerializer: Serializer.model(Channel).array(),
 });
