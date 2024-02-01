@@ -35,7 +35,10 @@
     });
 
     // whenever `items` changes, invalidate the current heightmap
-    $: if (mounted) refresh(items, viewport_height, itemHeight);
+    $: if (mounted) {
+        refresh(items, viewport_height, itemHeight);
+        handle_scroll();
+    }
 
     async function refresh(items: T[], viewport_height: number, itemHeight: number | undefined) {
         if (first) {
