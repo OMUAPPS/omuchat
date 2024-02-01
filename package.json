@@ -6,6 +6,7 @@
     "scripts": {
         "tauri": "tauri",
         "dev": "set RUST_BACKTRACE=1 && tauri dev",
+        "watch": "concurrently \"npx lerna run watch --stream --parallel\" \"npm run dev\"",
         "prepare": "svelte-kit sync && node script/setup.mjs && npx lerna run build",
         "build": "tauri build",
         "ui:dev": "vite --host 0.0.0.0 --port 26420",
@@ -22,22 +23,20 @@
     "workspaces": [
         "packages/*"
     ],
-    "dependencies": {
-    },
     "devDependencies": {
         "@fontsource/noto-sans-jp": "^5.0.17",
-        "@tauri-apps/api": "^1.4.0",
-        "axios": "^1.6.0",
-        "qrious": "^4.0.2",
         "@sveltejs/adapter-static": "^2.0.3",
         "@sveltejs/kit": "^1.27.5",
         "@sveltejs/vite-plugin-svelte": "^2.5.2",
         "@tabler/icons-webfont": "^2.40.0",
+        "@tauri-apps/api": "^1.4.0",
         "@tauri-apps/cli": "^1.5.6",
         "@tsconfig/svelte": "^5.0.0",
         "@types/node": "^20.11.2",
         "@typescript-eslint/eslint-plugin": "^6.6.0",
         "@typescript-eslint/parser": "^6.6.0",
+        "axios": "^1.6.0",
+        "concurrently": "^8.2.2",
         "csstype": "^3.1.2",
         "eslint": "^8.48.0",
         "eslint-config-prettier": "^9.0.0",
@@ -50,6 +49,7 @@
         "postcss-html": "^1.5.0",
         "prettier": "^3.0.3",
         "prettier-plugin-svelte": "^3.1.0",
+        "qrious": "^4.0.2",
         "sass": "^1.68.0",
         "stylelint": "^15.11.0",
         "stylelint-config-html": "^1.1.0",
