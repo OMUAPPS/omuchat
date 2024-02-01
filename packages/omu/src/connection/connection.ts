@@ -1,4 +1,4 @@
-import type { EventJson, EventType } from '../event/index.js';
+import type { EventData, EventType } from '../event/index.js';
 
 import type { Address } from './address.js';
 
@@ -10,7 +10,7 @@ export interface Connection {
 
     connect(): Promise<void>;
     disconnect(): void;
-    send<T>(event: EventType<T, unknown>, data: T): void;
+    send<T>(event: EventType<T>, data: T): void;
     status(): ConnectionStatus;
 
     proxy(url: string): string;
@@ -25,6 +25,6 @@ export interface Connection {
 export interface ConnectionListener {
     onConnect?(): void;
     onDisconnect?(): void;
-    onEvent?(event: EventJson): void;
+    onEvent?(event: EventData): void;
     onStatusChanged?(status: ConnectionStatus): void;
 }

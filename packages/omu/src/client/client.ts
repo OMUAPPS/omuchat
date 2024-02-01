@@ -34,7 +34,7 @@ export interface Client {
 
     start(): void;
     stop(): void;
-    send<T, D>(type: EventType<T, D>, data: T): void;
+    send<T>(type: EventType<T>, data: T): void;
     proxy(url: string): string;
     asset(url: string): string;
 

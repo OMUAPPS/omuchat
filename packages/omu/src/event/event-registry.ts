@@ -5,23 +5,23 @@ import type { Model } from '../interface/model.js';
 import type { Serializable } from '../interface/serializable.js';
 import { Serializer } from '../interface/serializable.js';
 
-import type { EventJson, EventType } from './event.js';
+import type { EventData, EventType } from './event.js';
 
 export interface EventRegistry {
-    register(...types: EventType[]): void;
-    addListener<T, D>(eventType: EventType<T, D>, listener: (event: T) => void): void;
-    removeListener(eventType: EventType, listener: (event: any) => void): void;
+    register(...types: EventType<unknown>[]): void;
+    addListener<T>(eventType: EventType<T>, listener: (event: T) => void): void;
+    removeListener(eventType: EventType<unknown>, listener: (event: any) => void): void;
 }
 
-interface EventEntry<T = unknown, D = unknown> {
-    type: EventType<T, D>;
+interface EventEntry<T = unknown> {
+    type: EventType<T>;
     listeners: ((data: T) => void)[];
 }
 
 export function createEventRegistry(client: Client): EventRegistry {
     const eventMap: Map<string, EventEntry> = new Map();
 
-    function register(...types: EventType<unknown, unknown>[]): void {
+    function register(...types: EventType<unknown>[]): void {
         types.forEach((type) => {
             if (eventMap.has(type.type)) {
                 throw new Error(`Event type ${type.type} already registered`);
@@ -33,15 +33,15 @@ export function createEventRegistry(client: Client): EventRegistry {
         });
     }
 
-    function addListener<T, D>(eventType: EventType<T, D>, listener: (event: T) => void): void {
-        const eventInfo = eventMap.get(eventType.type) as EventEntry<T, D> | undefined;
+    function addListener<T>(eventType: EventType<T>, listener: (event: T) => void): void {
+        const eventInfo = eventMap.get(eventType.type) as EventEntry<T> | undefined;
         if (!eventInfo) {
             throw new Error(`No event for type ${eventType.type}`);
         }
         eventInfo.listeners.push(listener);
     }
 
-    function removeListener(eventType: EventType, listener: (event: any) => void): void {
+    function removeListener(eventType: EventType<unknown>, listener: (event: any) => void): void {
         const eventInfo = eventMap.get(eventType.type);
         if (!eventInfo) {
             throw new Error(`No event for type ${eventType.type}`);
@@ -49,7 +49,7 @@ export function createEventRegistry(client: Client): EventRegistry {
         eventInfo.listeners.splice(eventInfo.listeners.indexOf(listener), 1);
     }
 
-    function onEvent(eventJson: EventJson<unknown>): void {
+    function onEvent(eventJson: EventData): void {
         const event = eventMap.get(eventJson.type);
         if (!event) {
             console.warn(`Received unknown event type ${eventJson.type}`);
@@ -72,10 +72,10 @@ export function createEventRegistry(client: Client): EventRegistry {
     return registry;
 }
 
-function defineEvent<T, D>(type: string, serializer: Serializable<T, D>): EventType<T, D> {
+function defineEvent<T>(type: string, serializer: Serializable<T, any>): EventType<T> {
     return {
         type: `:${type}`,
-        serializer,
+        serializer: Serializer.noop<T>().pipe(serializer).pipe(Serializer.json()),
     };
 }
 
@@ -100,5 +100,5 @@ export class ConnectEvent implements Model<ConnectEventData> {
 export const EVENTS = {
     Connect: defineEvent('connect', Serializer.model(ConnectEvent)),
     Token: defineEvent('token', Serializer.noop<string>()),
-    Ready: defineEvent<undefined, undefined>('ready', Serializer.noop()),
+    Ready: defineEvent('ready', Serializer.noop()),
 };

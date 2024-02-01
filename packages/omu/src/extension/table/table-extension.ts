@@ -1,11 +1,10 @@
 import type { Client } from '../../client/index.js';
-import { JsonEventType, SerializeEventType } from '../../event/event.js';
+import { JsonEventType } from '../../event/event.js';
 import { Serializer, type Keyable } from '../../interface/index.js';
 import { JsonEndpointType } from '../endpoint/endpoint.js';
 import type { Extension, ExtensionType } from '../extension.js';
 import { defineExtensionType } from '../extension.js';
 
-import type { TableInfoJson } from './model/table-info.js';
 import { TableInfo } from './model/table-info.js';
 import type { Table, TableListener, TableType } from './table.js';
 import { ModelTableType } from './table.js';
@@ -16,8 +15,7 @@ export const TableExtensionType: ExtensionType<TableExtension> = defineExtension
 type TableEventData = { type: string; }
 type TableItemsEventData = TableEventData & { items: Record<string, any> };
 type TableProxyEventData = TableEventData & { items: Record<string, any>, key: number };
-export const TableRegisterEvent = SerializeEventType.ofExtension<TableInfo, TableInfoJson>({
-    extension: TableExtensionType,
+export const TableRegisterEvent = JsonEventType.ofExtension<TableInfo>(TableExtensionType, {
     name: 'register',
     serializer: Serializer.model(TableInfo),
 });

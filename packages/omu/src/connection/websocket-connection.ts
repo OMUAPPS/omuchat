@@ -69,12 +69,11 @@ export class WebsocketConnection implements Connection {
             const typeLength = buffer[0];
             const typeArray = buffer.slice(1, typeLength + 1);
             const type = textDecoder.decode(typeArray);
-            const dataArray = buffer.slice(typeLength + 1);
-            const data = textDecoder.decode(dataArray);
+            const data = buffer.slice(typeLength + 1);
             this.listeners.forEach((listener) => {
                 listener.onEvent?.({
                     type,
-                    data: JSON.parse(data),
+                    data,
                 });
             });
         };
@@ -100,20 +99,17 @@ export class WebsocketConnection implements Connection {
         }
     }
 
-    send<T>(event: EventType<T, unknown>, data: T): void {
+    send<T>(event: EventType<T>, data: T): void {
         if (!this.connected || !this.socket) {
             throw new Error('Not connected');
         }
-        if (data instanceof Uint8Array) {
-            const typeArray = textEncoder.encode(event.type);
-            const buffer = new Uint8Array([typeArray.length, ...typeArray, data.length, ...data]);
-            this.socket.send(buffer);
-            return;
+        const typeArray = textEncoder.encode(event.type);
+        const dataBuffer = event.serializer.serialize(data);
+        if (!(dataBuffer instanceof Uint8Array)) {
+            throw new Error('Data must be Uint8Array');
         }
-        this.socket.send(JSON.stringify({
-            type: event.type,
-            data: event.serializer.serialize(data),
-        }));
+        const buffer = new Uint8Array([typeArray.length, ...typeArray, ...dataBuffer]);
+        this.socket.send(buffer);
     }
 
     status(): ConnectionStatus {
