@@ -159,11 +159,9 @@
 
     onMount(() => {
         animationFrameHandle = requestAnimationFrame(render);
-        window.addEventListener('resize', resize);
 
         return () => {
             cancelAnimationFrame(animationFrameHandle);
-            window.removeEventListener('resize', resize);
         };
     });
 
@@ -192,6 +190,8 @@
         screenshotImage = canvas.toDataURL();
     }
 </script>
+
+<svelte:window on:resize={resize} />
 
 <main>
     <canvas bind:this={canvas} />

@@ -1,7 +1,6 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-
-    import { getPanelContext, type PanelEntry } from './panel.js';
+    
+import { getPanelContext, type PanelEntry } from './panel.js';
 
     import PropedComponent from '$lib/common/component/PropedComponent.svelte';
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
@@ -47,18 +46,9 @@
         if (!panel.settings) throw new Error('Panel does not have settings');
         screenContext.push(panel.settings());
     }
-
-    onMount(() => {
-        window.addEventListener('mouseup', handleMouseUp);
-        window.addEventListener('mousemove', handleMouseMove);
-        panel.element = dragElement;
-
-        return () => {
-            window.removeEventListener('mouseup', handleMouseUp);
-            window.removeEventListener('mousemove', handleMouseMove);
-        };
-    });
 </script>
+
+<svelte:window on:mouseup={handleMouseUp} on:mousemove={handleMouseMove} />
 
 <div
     class="container"

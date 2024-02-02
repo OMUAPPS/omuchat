@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount } from "svelte";
+    import { createEventDispatcher } from "svelte";
 
     import type { Entry } from "./playqueue.js";
 
@@ -34,17 +34,9 @@
         dragging = false;
         dispatcher("drop", entry);
     }
-
-    onMount(() => {
-        window.addEventListener("mouseup", handleMouseUp);
-        window.addEventListener("mousemove", handleMouseMove);
-
-        return () => {
-            window.removeEventListener("mouseup", handleMouseUp);
-            window.removeEventListener("mousemove", handleMouseMove);
-        };
-    });
 </script>
+
+<svelte:window on:mouseup={handleMouseUp} on:mousemove={handleMouseMove} />
 
 <div class="container">
     <div class="entry" bind:this={entry.element} class:dragging={dragging}>

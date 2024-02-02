@@ -1,8 +1,7 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-
-    import { screenContext } from './screen.js';
-    import ScreenHeader from './ScreenHeader.svelte';
+    
+import { screenContext } from './screen.js';
+import ScreenHeader from './ScreenHeader.svelte';
 
     import { classes } from '$lib/utils/class-helper.js';
 
@@ -23,14 +22,9 @@
             screenContext.pop();
         }
     }
-
-    onMount(() => {
-        window.addEventListener('keydown', onKeyPress);
-        return () => {
-            window.removeEventListener('keydown', onKeyPress);
-        };
-    });
 </script>
+
+<svelte:window on:keydown={onKeyPress} />
 
 <button class="container" class:windowed on:click={onClick} bind:this={container}>
     <div class="screen" class:windowed>

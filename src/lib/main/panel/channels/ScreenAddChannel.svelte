@@ -100,12 +100,10 @@
 
     onMount(() => {
         input?.focus();
-        window.addEventListener('keydown', onKeyPress);
-        return () => {
-            window.removeEventListener('keydown', onKeyPress);
-        };
     });
 </script>
+
+<svelte:window on:keydown={onKeyPress} />
 
 <Screen title="add_channel">
     <div class="container">
