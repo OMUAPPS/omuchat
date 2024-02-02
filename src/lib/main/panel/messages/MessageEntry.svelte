@@ -7,6 +7,7 @@
 
     import { getClient } from '$lib/common/omuchat/client.js';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
+    import { dateTimeFormats } from '$lib/const.js';
     import { applyOpacity, classes, style } from '$lib/utils/class-helper.js';
     export let entry: models.Message;
 
@@ -69,13 +70,9 @@
             {#if entry.created_at}
                 <span class="time">
                     <Tooltip>
-                        {entry.created_at.toLocaleDateString()}
-                        {entry.created_at.toLocaleTimeString()}
+                        {$dateTimeFormats.full.format(entry.created_at)}
                     </Tooltip>
-                    {entry.created_at.getHours()}:{entry.created_at
-                        .getMinutes()
-                        .toString()
-                        .padStart(2, '0')}
+                    {$dateTimeFormats.time.format(entry.created_at)}
                 </span>
             {/if}
         </div>
