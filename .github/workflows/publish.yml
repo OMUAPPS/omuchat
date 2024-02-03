@@ -26,12 +26,18 @@ jobs:
       GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
       - uses: actions/checkout@v4
-      # Setup .npmrc file to publish to npm
-      - uses: actions/setup-node@v3
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: false
+
+      - uses: actions/setup-node@v4.0.1
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
-          cache: npm
+          cache: 'pnpm'
 
       - name: Git Identity
         run: |
@@ -41,10 +47,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: npm ci
-
       - name: Install dependencies
-        run: npx lerna run ci
+        run: pnpm i --frozen-lockfile
 
       - name: Build
         run: npx lerna run build

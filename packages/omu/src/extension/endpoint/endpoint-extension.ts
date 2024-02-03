@@ -1,6 +1,6 @@
 import type { Client } from '../../client/index.js';
-import { textDecoder, textEncoder } from '../../const.js';
 import { JsonEventType, SerializeEventType } from '../../event/index.js';
+import { ByteReader, ByteWriter } from '../../helper.js';
 import { Serializer } from '../../interface/serializable.js';
 import { defineExtensionType } from '../extension.js';
 import type { Table } from '../table/index.js';
@@ -78,80 +78,27 @@ type EndpointReq = {
     id: number;
 }
 
-// python side:
-// class CallSerializer(Serializable[EndpointDataReq, bytes]):
-//     def serialize(self, data: EndpointDataReq) -> bytes:
-//         # type_length, type, id_length, id, data
-//         type_buff = data["type"].encode("utf-8")
-//         type_length = struct.pack("B", len(type_buff))
-//         id_buff = struct.pack("I", data["id"])
-//         id_length = struct.pack("B", len(id_buff))
-//         return type_length + type_buff + id_length + id_buff + data["data"]
-
-//     def deserialize(self, data: bytes) -> EndpointDataReq:
-//         type_length = struct.unpack("B", data[:1])[0]
-//         type_buff = data[1 : type_length + 1]
-//         type = type_buff.decode("utf-8")
-//         id_length = struct.unpack("B", data[type_length + 1 : type_length + 2])[0]
-//         id_buff = data[type_length + 2 : type_length + 2 + id_length]
-//         id = struct.unpack("I", id_buff)[0]
-//         data = data[type_length + 2 + id_length :]
-//         return EndpointDataReq(type=type, id=id, data=data)
-
-// CALL_SERIALIZER = CallSerializer()
-
-// EndpointCallEvent = SerializeEventType[EndpointDataReq].of_extension(
-//     EndpointExtensionType,
-//     "call",
-//     CALL_SERIALIZER,
-// )
-// EndpointReceiveEvent = SerializeEventType[EndpointDataReq].of_extension(
-//     EndpointExtensionType,
-//     "receive",
-//     CALL_SERIALIZER,
-// )
-// EndpointErrorEvent = JsonEventType[EndpointError].of_extension(
-//     EndpointExtensionType,
-//     "error",
-// )
-// EndpointsTableType = ModelTableType.of_extension(
-//     EndpointExtensionType,
-//     "endpoints",
-//     EndpointInfo,
-// )
 type EndpointReqData = {
     type: string;
     id: number;
     data: Uint8Array;
 }
+
 const serializer = new Serializer<EndpointReqData, Uint8Array>(
     (data) => {
-        const typeBuff = textEncoder.encode(data.type);
-        const typeLength = new Uint8Array([typeBuff.length]);
-        const idBuff = new Uint8Array(4);
-        new DataView(idBuff.buffer).setUint32(0, data.id, true);
-        const idLength = new Uint8Array([idBuff.length]);
-        return new Uint8Array([
-            ...typeLength,
-            ...typeBuff,
-            ...idLength,
-            ...idBuff,
-            ...data.data,
-        ]);
+        const writer = new ByteWriter();
+        writer.writeString(data.type);
+        writer.writeInt(data.id);
+        writer.writeByteArray(data.data);
+        return writer.finish();
     },
-    (data) => {
-        const typeLength = data[0];
-        const typeBuff = data.slice(1, typeLength + 1);
-        const type = textDecoder.decode(typeBuff);
-        const idLength = data[typeLength + 1];
-        const idBuff = data.slice(typeLength + 2, typeLength + 2 + idLength);
-        const id = new DataView(idBuff.buffer).getUint32(0, true);
-        const dataBuff = data.slice(typeLength + 2 + idLength);
-        return {
-            type,
-            id,
-            data: dataBuff,
-        };
+    (item) => {
+        const reader = new ByteReader(item);
+        const type = reader.readString();
+        const id = reader.readInt();
+        const data = reader.readByteArray();
+        reader.finish();
+        return { type, id, data };
     },
 );
 

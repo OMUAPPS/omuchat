@@ -12,7 +12,7 @@
 <div class="container">
     <TableList
         table={dashboard.apps}
-        component={AppEntry} 
+        component={AppEntry}
         fitHeight={true}
     />
     <a href="https://omuchat.github.io/apps" target="_blank">

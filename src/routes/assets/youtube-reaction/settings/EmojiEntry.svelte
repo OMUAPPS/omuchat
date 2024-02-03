@@ -54,8 +54,8 @@
 </div>
 
 <style lang="scss">
-    @import 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap';
-    @import 'https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap';
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
 
     .entry {
         display: flex;

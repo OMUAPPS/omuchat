@@ -14,15 +14,15 @@ export function createExtensionRegistry(client: Client): ExtensionRegistry {
 
     function register<T extends Extension>(type: ExtensionType<T>): T {
         if (has(type)) {
-            throw new Error(`Extension type ${type.key} already registered`);
+            throw new Error(`Extension type ${type.name} already registered`);
         }
         type.dependencies?.().forEach((dependency) => {
             if (!has(dependency)) {
-                throw new Error(`Extension type ${type.key} depends on ${dependency.key} which is not registered`);
+                throw new Error(`Extension type ${type.name} depends on ${dependency.name} which is not registered`);
             }
         });
         const extension = type.create(client);
-        extensionMap.set(type.key, extension);
+        extensionMap.set(type.name, extension);
         return extension;
     }
 
@@ -31,15 +31,15 @@ export function createExtensionRegistry(client: Client): ExtensionRegistry {
     }
 
     function get<Ext extends Extension>(extensionType: ExtensionType<Ext>): Ext {
-        const extension = extensionMap.get(extensionType.key);
+        const extension = extensionMap.get(extensionType.name);
         if (!extension) {
-            throw new Error(`Extension type ${extensionType.key} not registered`);
+            throw new Error(`Extension type ${extensionType.name} not registered`);
         }
         return extension as Ext;
     }
 
     function has<T extends Extension>(extensionType: ExtensionType<T>): boolean {
-        return extensionMap.has(extensionType.key);
+        return extensionMap.has(extensionType.name);
     }
 
     return {

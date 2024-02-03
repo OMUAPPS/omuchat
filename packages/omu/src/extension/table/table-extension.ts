@@ -1,7 +1,8 @@
 import type { Client } from '../../client/index.js';
-import { JsonEventType } from '../../event/event.js';
+import { JsonEventType, SerializeEventType } from '../../event/event.js';
+import { ByteReader, ByteWriter } from '../../helper.js';
 import { Serializer, type Keyable } from '../../interface/index.js';
-import { JsonEndpointType } from '../endpoint/endpoint.js';
+import { JsonEndpointType, SerializeEndpointType } from '../endpoint/endpoint.js';
 import type { Extension, ExtensionType } from '../extension.js';
 import { defineExtensionType } from '../extension.js';
 
@@ -13,8 +14,62 @@ export const TableExtensionType: ExtensionType<TableExtension> = defineExtension
     create: (client: Client) => new TableExtension(client),
 });
 type TableEventData = { type: string; }
-type TableItemsEventData = TableEventData & { items: Record<string, any> };
-type TableProxyEventData = TableEventData & { items: Record<string, any>, key: number };
+type TableItemsData = TableEventData & { items: Record<string, Uint8Array> };
+type TableProxyData = TableEventData & { items: Record<string, Uint8Array>, key: number };
+
+const itemsSerializer = new Serializer<TableItemsData, Uint8Array>(
+    (data) => {
+        const writer = new ByteWriter();
+        writer.writeString(data.type);
+        writer.writeInt(Object.keys(data.items).length);
+        for (const [key, value] of Object.entries(data.items)) {
+            writer.writeString(key);
+            writer.writeByteArray(value);
+        }
+        return writer.finish();
+    },
+    (data) => {
+        const reader = new ByteReader(data);
+        const type = reader.readString();
+        const itemCount = reader.readInt();
+        const items = {};
+        for (let i = 0; i < itemCount; i++) {
+            const key = reader.readString();
+            const value = reader.readByteArray();
+            items[key] = value;
+        }
+        reader.finish();
+        return { type, items };
+    },
+);
+const proxySerializer = new Serializer<TableProxyData, Uint8Array>(
+    (data) => {
+        const writer = new ByteWriter();
+        writer.writeString(data.type);
+        writer.writeInt(data.key);
+        writer.writeInt(Object.keys(data.items).length);
+        for (const [key, value] of Object.entries(data.items)) {
+            writer.writeString(key);
+            writer.writeByteArray(value);
+        }
+        return writer.finish();
+    },
+    (data) => {
+        const reader = new ByteReader(data);
+        const type = reader.readString();
+        const key = reader.readInt();
+        const itemCount = reader.readInt();
+        const items = {};
+        for (let i = 0; i < itemCount; i++) {
+            const key = reader.readString();
+            const value = reader.readByteArray();
+            items[key] = value;
+        }
+        reader.finish();
+        return { type, key, items };
+    },
+);
+
 export const TableRegisterEvent = JsonEventType.ofExtension<TableInfo>(TableExtensionType, {
     name: 'register',
     serializer: Serializer.model(TableInfo),
@@ -25,30 +80,40 @@ export const TableListenEvent = JsonEventType.ofExtension<string>(TableExtension
 export const TableProxyListenEvent = JsonEventType.ofExtension<string>(TableExtensionType, {
     name: 'proxy_listen',
 });
-export const TableProxyEvent = JsonEventType.ofExtension<TableProxyEventData>(TableExtensionType, {
+export const TableProxyEvent = SerializeEventType.ofExtension<TableProxyData>(TableExtensionType, {
     name: 'proxy',
+    serializer: proxySerializer,
 });
-export const TableProxyEndpoint = JsonEndpointType.ofExtension<TableProxyEventData, void>(TableExtensionType, {
+export const TableProxyEndpoint = SerializeEndpointType.ofExtension<TableProxyData, void>(TableExtensionType, {
     name: 'proxy',
+    requestSerializer: proxySerializer,
+    responseSerializer: Serializer.noop(),
 });
 
-export const TableItemAddEvent = JsonEventType.ofExtension<TableItemsEventData>(TableExtensionType, {
+export const TableItemAddEvent = SerializeEventType.ofExtension<TableItemsData>(TableExtensionType, {
     name: 'item_add',
+    serializer: itemsSerializer,
 });
-export const TableItemUpdateEvent = JsonEventType.ofExtension<TableItemsEventData>(TableExtensionType, {
+export const TableItemUpdateEvent = SerializeEventType.ofExtension<TableItemsData>(TableExtensionType, {
     name: 'item_update',
+    serializer: itemsSerializer,
 });
-export const TableItemRemoveEvent = JsonEventType.ofExtension<TableItemsEventData>(TableExtensionType, {
+export const TableItemRemoveEvent = SerializeEventType.ofExtension<TableItemsData>(TableExtensionType, {
     name: 'item_remove',
+    serializer: itemsSerializer,
 });
 export const TableItemClearEvent = JsonEventType.ofExtension<TableEventData>(TableExtensionType, {
     name: 'item_clear',
 });
-export const TableItemGetEndpoint = JsonEndpointType.ofExtension<TableEventData & { items: string[] }, Record<string, any>>(TableExtensionType, {
+export const TableItemGetEndpoint = SerializeEndpointType.ofExtension<TableEventData & { keys: string[] }, TableItemsData>(TableExtensionType, {
     name: 'item_get',
+    requestSerializer: Serializer.json(),
+    responseSerializer: itemsSerializer,
 });
-export const TableItemFetchEndpoint = JsonEndpointType.ofExtension<TableEventData & { before?: number, after?: number, cursor?: string }, Record<string, any>>(TableExtensionType, {
+export const TableItemFetchEndpoint = SerializeEndpointType.ofExtension<TableEventData & { before?: number, after?: number, cursor?: string }, TableItemsData>(TableExtensionType, {
     name: 'item_fetch',
+    requestSerializer: Serializer.json(),
+    responseSerializer: itemsSerializer,
 });
 export const TableItemSizeEndpoint = JsonEndpointType.ofExtension<TableEventData, number>(TableExtensionType, {
     name: 'item_size',
@@ -256,7 +321,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
         }
         const res = await this.client.endpoints.call(TableItemGetEndpoint, {
             type: this.key,
-            items: [key],
+            keys: [key],
         });
         const items = this.parseItems(res.items);
         this.updateCache(items);
@@ -266,7 +331,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
     async getMany(keys: string[]): Promise<Map<string, T>> {
         const res = await this.client.endpoints.call(TableItemGetEndpoint, {
             type: this.key,
-            items: keys,
+            keys,
         });
         const items = this.parseItems(res.items);
         this.updateCache(items);
@@ -316,7 +381,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
             after,
             cursor,
         });
-        const items = this.parseItems(res);
+        const items = this.parseItems(res.items);
         this.updateCache(items);
         return items;
     }
@@ -345,7 +410,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
         });
     }
 
-    private parseItems(items: Record<string, T>): Map<string, T> {
+    private parseItems(items: Record<string, Uint8Array>): Map<string, T> {
         return new Map(Object.entries(items).map(([key, data]) => {
             const item = this.type.serializer.deserialize(data);
             this.cache.set(key, item);

@@ -3,11 +3,9 @@ node_modules
 /build
 /.svelte-kit
 /package
-/static
 .env
 .env.*
 !.env.example
-/src-tauri
 
 # Ignore files for PNPM, NPM and YARN
 pnpm-lock.yaml

@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ChatApp } from "$lib/common/omuchat/chatapp.js";
     
-export let entry: ChatApp;
+    export let entry: ChatApp;
 </script>
 
 <a href={entry.url} target="_blank">
@@ -95,10 +95,12 @@ export let entry: ChatApp;
         display: flex;
         flex-direction: column;
         gap: 5px;
+
         .app-name {
             font-size: 16px;
             font-weight: 700;
         }
+
         .app-url {
             font-size: 12px;
             font-weight: 400;

@@ -48,7 +48,7 @@ export class JsonEventType<T> implements EventType<T> {
         name: string;
         serializer?: Serializable<T, any>;
     }): JsonEventType<T> {
-        return new JsonEventType<T>({ owner: extension.key, name, serializer });
+        return new JsonEventType<T>({ owner: extension.name, name, serializer });
     }
 }
 
@@ -88,6 +88,6 @@ export class SerializeEventType<T = any> implements EventType<T> {
         name: string;
         serializer: Serializable<T, Uint8Array>;
     }): SerializeEventType<T> {
-        return new SerializeEventType<T>({ owner: extension.key, name, serializer });
+        return new SerializeEventType<T>({ owner: extension.name, name, serializer });
     }
 }

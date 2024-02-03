@@ -20,10 +20,16 @@
         "lint": "npm run lint:stylelint && npm run lint:eslint",
         "fix": "npm run fix:stylelint && npm run fix:eslint"
     },
+    "packageManager": "pnpm@8.14.1",
+    "engines": {
+        "pnpm": ">=8.14.1"
+    },
     "workspaces": [
         "packages/*"
     ],
     "devDependencies": {
+        "@omuchatjs/chat": "workspace:*",
+        "@omuchatjs/omu": "workspace:*",
         "@fontsource/noto-sans-jp": "^5.0.17",
         "@sveltejs/adapter-static": "^2.0.3",
         "@sveltejs/kit": "^1.27.5",

@@ -1,6 +1,6 @@
-import { textDecoder, textEncoder } from '../const.js';
 import { ConnectEvent } from '../event/event-registry.js';
 import { EVENTS, type EventType } from '../event/index.js';
+import { ByteReader, ByteWriter } from '../helper.js';
 import type { Client } from '../index.js';
 
 import type { Address } from './address.js';
@@ -55,7 +55,7 @@ export class WebsocketConnection implements Connection {
         });
     }
 
-    private onMessage(event: MessageEvent<string | Blob>): void {
+    private async onMessage(event: MessageEvent<string | Blob>): Promise<void> {
         if (typeof event.data === 'string') {
             const message = JSON.parse(event.data);
             this.listeners.forEach((listener) => {
@@ -63,21 +63,16 @@ export class WebsocketConnection implements Connection {
             });
             return;
         }
-        const reader = new FileReader();
-        reader.onload = (): void => {
-            const buffer = new Uint8Array(reader.result as ArrayBuffer);
-            const typeLength = buffer[0];
-            const typeArray = buffer.slice(1, typeLength + 1);
-            const type = textDecoder.decode(typeArray);
-            const data = buffer.slice(typeLength + 1);
-            this.listeners.forEach((listener) => {
-                listener.onEvent?.({
-                    type,
-                    data,
-                });
+        const reader = new ByteReader(await event.data.arrayBuffer());
+        const type = reader.readString();
+        const data = reader.readByteArray();
+        reader.finish();
+        this.listeners.forEach((listener) => {
+            listener.onEvent?.({
+                type,
+                data,
             });
-        };
-        reader.readAsArrayBuffer(event.data);
+        });
     }
 
     proxy(url: string): string {
@@ -103,13 +98,10 @@ export class WebsocketConnection implements Connection {
         if (!this.connected || !this.socket) {
             throw new Error('Not connected');
         }
-        const typeArray = textEncoder.encode(event.type);
-        const dataBuffer = event.serializer.serialize(data);
-        if (!(dataBuffer instanceof Uint8Array)) {
-            throw new Error('Data must be Uint8Array');
-        }
-        const buffer = new Uint8Array([typeArray.length, ...typeArray, ...dataBuffer]);
-        this.socket.send(buffer);
+        const writer = new ByteWriter();
+        writer.writeString(event.type);
+        writer.writeByteArray(event.serializer.serialize(data));
+        this.socket.send(writer.finish());
     }
 
     status(): ConnectionStatus {

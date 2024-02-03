@@ -89,6 +89,7 @@
             display: flex;
             flex-direction: row;
             gap: 5px;
+
             .button {
                 display: flex;
                 flex-direction: row;
