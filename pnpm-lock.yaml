@@ -11,6 +11,12 @@ importers:
       '@fontsource/noto-sans-jp':
         specifier: ^5.0.17
         version: 5.0.17
+      '@omuchatjs/chat':
+        specifier: workspace:*
+        version: link:packages/chat
+      '@omuchatjs/omu':
+        specifier: workspace:*
+        version: link:packages/omu
       '@sveltejs/adapter-static':
         specifier: ^2.0.3
         version: 2.0.3(@sveltejs/kit@1.30.3)
