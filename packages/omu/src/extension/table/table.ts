@@ -36,16 +36,16 @@ export interface TableListener<T extends Keyable> {
     onCacheUpdate?(cache: Map<string, T>): void;
 }
 
-export interface TableType<T extends Keyable, D = unknown> {
+export interface TableType<T extends Keyable> {
     info: TableInfo;
     key: string;
-    serializer: Serializable<T, D>;
+    serializer: Serializable<T, Uint8Array>;
 }
 
-export class ModelTableType<T extends Keyable & Model<D>, D = unknown> implements TableType<T, D> {
+export class ModelTableType<T extends Keyable & Model<D>, D = unknown> implements TableType<T> {
     public readonly info: TableInfo;
     public readonly key: string;
-    public readonly serializer: Serializable<T, D>;
+    public readonly serializer: Serializable<T, Uint8Array>;
 
     private constructor(
         info: TableInfo,
@@ -53,7 +53,7 @@ export class ModelTableType<T extends Keyable & Model<D>, D = unknown> implement
     ) {
         this.info = info;
         this.key = info.key();
-        this.serializer = Serializer.model(model);
+        this.serializer = Serializer.model(model).pipe(Serializer.json());
     }
 
     static of<T extends Keyable & Model<D>, D = unknown>(app: App, {

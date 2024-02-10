@@ -63,9 +63,10 @@ export class WebsocketConnection implements Connection {
             });
             return;
         }
-        const reader = new ByteReader(new Uint8Array(await event.data.arrayBuffer()));
+        const reader = new ByteReader(await event.data.arrayBuffer());
         const type = reader.readString();
         const data = reader.readByteArray();
+        reader.finish();
         this.listeners.forEach((listener) => {
             listener.onEvent?.({
                 type,
@@ -100,7 +101,7 @@ export class WebsocketConnection implements Connection {
         const writer = new ByteWriter();
         writer.writeString(event.type);
         writer.writeByteArray(event.serializer.serialize(data));
-        this.socket.send(writer.build());
+        this.socket.send(writer.finish());
     }
 
     status(): ConnectionStatus {

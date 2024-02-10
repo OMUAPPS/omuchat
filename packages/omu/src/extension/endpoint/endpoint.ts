@@ -32,14 +32,14 @@ export class SerializeEndpointType<Req = unknown, Res = unknown> implements Endp
         this.responseSerializer = responseSerializer ?? Serializer.noop();
     }
 
-    static of<Req, Res, ReqData, ResData>(app: App, {
+    static of<Req, Res>(app: App, {
         name,
         requestSerializer,
         responseSerializer,
     }: {
         name: string;
-        requestSerializer?: Serializable<Req, ReqData>;
-        responseSerializer?: Serializable<Res, ResData>;
+        requestSerializer?: Serializable<Req, Uint8Array>;
+        responseSerializer?: Serializable<Res, Uint8Array>;
     }): SerializeEndpointType<Req, Res> {
         return new SerializeEndpointType<Req, Res>({
             info: new EndpointInfo(app.key(), name),
@@ -48,17 +48,17 @@ export class SerializeEndpointType<Req = unknown, Res = unknown> implements Endp
         });
     }
 
-    static ofExtension<Req, Res, ReqData, ResData>(extension: ExtensionType, {
+    static ofExtension<Req, Res>(extension: ExtensionType, {
         name,
         requestSerializer,
         responseSerializer,
     }: {
         name: string;
-        requestSerializer?: Serializable<Req, ReqData>;
-        responseSerializer?: Serializable<Res, ResData>;
+        requestSerializer?: Serializable<Req, Uint8Array>;
+        responseSerializer?: Serializable<Res, Uint8Array>;
     }): SerializeEndpointType<Req, Res> {
         return new SerializeEndpointType<Req, Res>({
-            info: new EndpointInfo(extension.key, name),
+            info: new EndpointInfo(extension.name, name),
             requestSerializer,
             responseSerializer,
         });
@@ -108,7 +108,7 @@ export class JsonEndpointType<Req = unknown, Res = unknown> implements EndpointT
         requestSerializer?: Serializable<Req, any>;
         responseSerializer?: Serializable<Res, any>;
     }): JsonEndpointType<Req, Res> {
-        return new JsonEndpointType<Req, Res>(new EndpointInfo(extension.key, name), {
+        return new JsonEndpointType<Req, Res>(new EndpointInfo(extension.name, name), {
             requestSerializer: requestSerializer ?? Serializer.noop(),
             responseSerializer: responseSerializer ?? Serializer.noop(),
         });

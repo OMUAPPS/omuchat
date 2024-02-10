@@ -19,7 +19,7 @@ export class EndpointInfo implements Keyable, Model<EndpointInfoJson> {
     }
 
     static create(extensionType: ExtensionType, name: string, description?: string): EndpointInfo {
-        return new EndpointInfo(extensionType.key, name, description);
+        return new EndpointInfo(extensionType.name, name, description);
     }
 
     key(): string {
