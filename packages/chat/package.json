@@ -44,7 +44,7 @@
         "ws": "7.5.2"
     },
     "dependencies": {
-        "@omuchatjs/omu": "^0.0.8"
+        "@omuchatjs/omu": "workspace:*"
     },
     "gitHead": "04559d5aec52117d707e0d554ee429b858da522a"
 }
