@@ -4,12 +4,12 @@
     import LinkableText from "$lib/common/LinkableText.svelte";
     import Tooltip from "$lib/common/tooltip/Tooltip.svelte";
     
-    export let component: models.Content;
+    export let component: models.content.Content;
 </script>
 
-{#if component instanceof models.TextContent}
+{#if component instanceof models.content.TextContent}
     <LinkableText text={component.text || ''} />
-{:else if component instanceof models.ImageContent}
+{:else if component instanceof models.content.ImageContent}
     <span>
         <Tooltip>
             {component.name || component.id}
