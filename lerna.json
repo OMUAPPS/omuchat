@@ -1,15 +1,15 @@
 {
-    "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-    "useNx": true,
-    "private": false,
-    "version": "0.0.8",
-    "ignoreChanges": [
-        "**/*.test.ts",
-        "**/*.md"
-    ],
-    "message": "ci(release): %v [skip ci]",
-    "conventionalCommits": true,
-    "packages": [
-        "packages/*"
-    ]
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "useNx": true,
+  "private": false,
+  "version": "0.0.9",
+  "ignoreChanges": [
+    "**/*.test.ts",
+    "**/*.md"
+  ],
+  "message": "ci(release): %v [skip ci]",
+  "conventionalCommits": true,
+  "packages": [
+    "packages/*"
+  ]
 }
