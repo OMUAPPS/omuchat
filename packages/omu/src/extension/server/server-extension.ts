@@ -20,6 +20,9 @@ const AppsTableKey = ModelTableType.ofExtension(ServerExtensionType, {
 const ShutdownEndpointType = JsonEndpointType.ofExtension<boolean, boolean>(ServerExtensionType, {
     name: 'shutdown',
 });
+const PrintTasksEndpointType = JsonEndpointType.ofExtension<{}, void>(ServerExtensionType, {
+    name: 'shutdown',
+});
 
 export class ServerExtension implements Extension {
     apps: Table<App>;
@@ -31,5 +34,9 @@ export class ServerExtension implements Extension {
 
     shutdown(restart?: boolean): Promise<boolean> {
         return this.client.endpoints.call(ShutdownEndpointType, restart ?? false);
+    }
+
+    printTasks(): Promise<void> {
+        return this.client.endpoints.call(PrintTasksEndpointType, {});
     }
 }

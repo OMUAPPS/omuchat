@@ -5,97 +5,69 @@ let _invoke: typeof api.invoke;
 let _listen: typeof event.listen;
 type ServerStatus = 'NotInstalled' | 'Installing' | 'Installed' | 'AlreadyRunning';
 type Commands = {
-    share_url: {
-        args: [];
-        return: {
-            host: string;
-            port: number;
-        }
+    share_url: () => {
+        host: string;
+        port: number;
     },
-    run_server: {
-        args: [];
-        return: void;
-    },
-    get_token: {
-        args: [];
-        return: string;
-    },
-    delete_runtime: {
-        args: [];
-        return: void;
-    },
-    install_runtime: {
-        args: [];
-        return: void;
-    },
-    get_server_state: {
-        args: [];
-        return: ServerStatus;
-    },
-    update_libraries: {
-        args: [];
-        return: void;
-    },
+    run_server: () => void,
+    get_token: () => string,
+    delete_runtime: () => void,
+    install_runtime: () => void,
+    get_server_state: () => ServerStatus,
+    update_libraries: () => void,
 }
 
 export async function invoke<T extends keyof Commands>(
     command: T,
-    ...args: Commands[T]['args']
-): Promise<Commands[T]['return']> {
+    ...args: Parameters<Commands[T]>
+): Promise<ReturnType<Commands[T]>> {
     assertTauri();
     return _invoke(command, ...args);
 }
-type TauriEvent<T> = {
-    return: T;
-}
 type Events = {
-    'server-state': {
-        return: ServerStatus;
-    },
+    'server-state': ServerStatus,
     'install-progress': {
-        return: {
-            progress: number;
-            total: number;
-            message: string;
-        }
+        progress: number;
+        total: number;
+        message: string;
     },
-    [event.TauriEvent.WINDOW_RESIZED]: TauriEvent<unknown>,
-    [event.TauriEvent.WINDOW_MOVED]: TauriEvent<unknown>,
-    [event.TauriEvent.WINDOW_CLOSE_REQUESTED]: TauriEvent<unknown>,
-    [event.TauriEvent.WINDOW_CREATED]: TauriEvent<unknown>,
-    [event.TauriEvent.WINDOW_DESTROYED]: TauriEvent<unknown>,
-    [event.TauriEvent.WINDOW_FOCUS]: TauriEvent<unknown>,
-    [event.TauriEvent.WINDOW_BLUR]: TauriEvent<unknown>,
-    [event.TauriEvent.WINDOW_SCALE_FACTOR_CHANGED]: TauriEvent<unknown>,
-    [event.TauriEvent.WINDOW_THEME_CHANGED]: TauriEvent<unknown>,
-    [event.TauriEvent.WINDOW_FILE_DROP]: TauriEvent<string[]>,
-    [event.TauriEvent.WINDOW_FILE_DROP_HOVER]: TauriEvent<unknown>,
-    [event.TauriEvent.WINDOW_FILE_DROP_CANCELLED]: TauriEvent<unknown>,
-    [event.TauriEvent.MENU]: TauriEvent<unknown>,
-    [event.TauriEvent.CHECK_UPDATE]: TauriEvent<unknown>,
-    [event.TauriEvent.UPDATE_AVAILABLE]: TauriEvent<unknown>,
-    [event.TauriEvent.INSTALL_UPDATE]: TauriEvent<unknown>,
-    [event.TauriEvent.STATUS_UPDATE]: TauriEvent<unknown>,
-    [event.TauriEvent.DOWNLOAD_PROGRESS]: TauriEvent<unknown>,
+    [event.TauriEvent.WINDOW_RESIZED]: unknown,
+    [event.TauriEvent.WINDOW_MOVED]: unknown,
+    [event.TauriEvent.WINDOW_CLOSE_REQUESTED]: unknown,
+    [event.TauriEvent.WINDOW_CREATED]: unknown,
+    [event.TauriEvent.WINDOW_DESTROYED]: unknown,
+    [event.TauriEvent.WINDOW_FOCUS]: unknown,
+    [event.TauriEvent.WINDOW_BLUR]: unknown,
+    [event.TauriEvent.WINDOW_SCALE_FACTOR_CHANGED]: unknown,
+    [event.TauriEvent.WINDOW_THEME_CHANGED]: unknown,
+    [event.TauriEvent.WINDOW_FILE_DROP]: string[],
+    [event.TauriEvent.WINDOW_FILE_DROP_HOVER]: unknown,
+    [event.TauriEvent.WINDOW_FILE_DROP_CANCELLED]: unknown,
+    [event.TauriEvent.MENU]: unknown,
+    [event.TauriEvent.CHECK_UPDATE]: unknown,
+    [event.TauriEvent.UPDATE_AVAILABLE]: unknown,
+    [event.TauriEvent.INSTALL_UPDATE]: unknown,
+    [event.TauriEvent.STATUS_UPDATE]: unknown,
+    [event.TauriEvent.DOWNLOAD_PROGRESS]: unknown,
 }
 
 export function listen<T extends keyof Events>(
     command: T,
-    callback: (event: event.Event<Events[T]['return']>) => void,
+    callback: (event: event.Event<Events[T]>) => void,
 ): Promise<() => void> {
     assertTauri();
-    return _listen(command, (event: event.Event<Events[T]['return']>) => {
+    return _listen(command, (event: event.Event<Events[T]>) => {
         callback(event);
     })
 }
 
 export function listenSync<T extends keyof Events>(
     command: T,
-    callback: (event: event.Event<Events[T]['return']>) => void,
+    callback: (event: event.Event<Events[T]>) => void,
 ): () => void {
     assertTauri();
-    let destroy = () => {};
-    _listen(command, (event: event.Event<Events[T]['return']>) => {
+    let destroy = () => { };
+    _listen(command, (event: event.Event<Events[T]>) => {
         callback(event);
     }).then((func) => {
         destroy = func;
@@ -118,6 +90,7 @@ const loadHandlers: (() => void)[] = [];
 const loadPromises: (() => Promise<void>)[] = [];
 
 function loadLazy<T>(load: () => Promise<T>): T {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let obj: T | any = {};
     loadPromises.push(async () => {
         obj = await load();

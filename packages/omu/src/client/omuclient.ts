@@ -94,7 +94,7 @@ export class OmuClient implements Client, ConnectionListener {
         }
     }
 
-    send<T, D>(event: EventType<T>, data: T): void {
+    send<T>(event: EventType<T>, data: T): void {
         this.connection.send(event, data);
     }
 

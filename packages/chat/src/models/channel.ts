@@ -40,7 +40,7 @@ export class Channel implements Keyable, Model<ChannelJson> {
     }
 
     key(): string {
-        return this.url;
+        return `${this.provider_id}:${this.id}`
     }
 
     toJson(): ChannelJson {
