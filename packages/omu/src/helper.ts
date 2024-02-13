@@ -26,6 +26,12 @@ export class ByteWriter {
         return this;
     }
 
+    writeBigInt(value: bigint): ByteWriter {
+        this.dataArray.setBigInt64(this.offset, value);
+        this.offset += 8;
+        return this;
+    }
+
     writeInt(value: number): ByteWriter {
         this.dataArray.setInt32(this.offset, value);
         this.offset += 4;
@@ -76,13 +82,24 @@ export class ByteReader {
         this.dataArray = new DataView(new Uint8Array(buffer).buffer);
     }
 
-    read(size?: number): Uint8Array {
+    read(size: number): Uint8Array {
         if (this.finished) {
             throw new Error('Buffer already finished');
         }
-        const sizeToRead = size ?? this.dataArray.byteLength - this.offset;
-        const value = new Uint8Array(this.dataArray.buffer, this.offset, sizeToRead);
-        this.offset += sizeToRead;
+        if (size < 0) {
+            throw new Error('Size must be positive');
+        }
+        if (this.offset + size > this.dataArray.byteLength) {
+            throw new Error('Buffer not fully read');
+        }
+        const value = new Uint8Array(this.dataArray.buffer, this.offset, size);
+        this.offset += size;
+        return value;
+    }
+
+    readBigInt(): bigint {
+        const value = this.dataArray.getBigInt64(this.offset);
+        this.offset += 8;
         return value;
     }
 
