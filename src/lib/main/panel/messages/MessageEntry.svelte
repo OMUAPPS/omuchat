@@ -122,6 +122,7 @@
 		height: fit-content;
 		min-height: 32px;
 		margin-top: 4px;
+		margin-left: 4px;
 	}
 
 	.right {

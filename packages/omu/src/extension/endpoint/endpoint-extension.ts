@@ -7,7 +7,7 @@ import type { Table } from '../table/index.js';
 import { ModelTableType } from '../table/index.js';
 
 import { type EndpointType } from './endpoint.js';
-import { EndpointInfo } from './model/index.js';
+import { EndpointInfo } from './endpoint-info.js';
 
 type CallFuture = {
     resolve: (data: any) => void;

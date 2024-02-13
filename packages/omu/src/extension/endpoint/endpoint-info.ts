@@ -1,5 +1,5 @@
-import type { Keyable, Model } from '../../../interface/index.js';
-import type { ExtensionType } from '../../extension.js';
+import type { Keyable, Model } from '../../interface/index.js';
+import type { ExtensionType } from '../extension.js';
 
 export interface EndpointInfoJson {
     owner: string;
@@ -12,7 +12,7 @@ export class EndpointInfo implements Keyable, Model<EndpointInfoJson> {
         public owner: string,
         public name: string,
         public description?: string,
-    ) {}
+    ) { }
 
     static fromJson(json: EndpointInfoJson): EndpointInfo {
         return new EndpointInfo(json.owner, json.name, json.description);

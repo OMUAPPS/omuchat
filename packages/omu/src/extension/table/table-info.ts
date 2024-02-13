@@ -1,7 +1,7 @@
-import { Identifier } from '../../../identifier.js';
-import type { Keyable, Model } from '../../../interface/index.js';
-import type { ExtensionType } from '../../extension.js';
-import type { App } from '../../server/index.js';
+import { Identifier } from '../../identifier.js';
+import type { Keyable, Model } from '../../interface/index.js';
+import type { ExtensionType } from '../extension.js';
+import type { App } from '../server/index.js';
 
 export interface TableInfoJson {
     identifier: string;

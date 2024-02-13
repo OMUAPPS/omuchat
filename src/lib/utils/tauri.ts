@@ -51,23 +51,29 @@ type Events = {
     [event.TauriEvent.DOWNLOAD_PROGRESS]: unknown,
 }
 
+type TauriEvent<T> = {
+    payload: T,
+    windowLabel: string,
+}
+
 export function listen<T extends keyof Events>(
     command: T,
-    callback: (event: event.Event<Events[T]>) => void,
+    callback: (event: TauriEvent<Events[T]>) => void,
 ): Promise<() => void> {
     assertTauri();
-    return _listen(command, (event: event.Event<Events[T]>) => {
+    return _listen(command, (event: TauriEvent<Events[T]>) => {
+        event
         callback(event);
     })
 }
 
 export function listenSync<T extends keyof Events>(
     command: T,
-    callback: (event: event.Event<Events[T]>) => void,
+    callback: (event: TauriEvent<Events[T]>) => void,
 ): () => void {
     assertTauri();
     let destroy = () => { };
-    _listen(command, (event: event.Event<Events[T]>) => {
+    _listen(command, (event: TauriEvent<Events[T]>) => {
         callback(event);
     }).then((func) => {
         destroy = func;

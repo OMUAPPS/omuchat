@@ -1,4 +1,4 @@
-import type { Keyable, Model } from '../../../interface/index.js';
+import type { Keyable, Model } from '../../interface/index.js';
 
 export interface AppJson {
     name: string;

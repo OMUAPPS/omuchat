@@ -6,7 +6,7 @@ import { JsonEndpointType, SerializeEndpointType } from '../endpoint/endpoint.js
 import type { Extension, ExtensionType } from '../extension.js';
 import { defineExtensionType } from '../extension.js';
 
-import { TableInfo } from './model/table-info.js';
+import { TableInfo } from './table-info.js';
 import type { Table, TableListener, TableType } from './table.js';
 import { ModelTableType } from './table.js';
 
@@ -279,8 +279,8 @@ class TableImpl<T extends Keyable> implements Table<T> {
     listen(listener?: (items: Map<string, T>) => void): void {
         if (!this.listening) {
             this.client.connection.addTask(this._listen.bind(this));
+            this.listening = true;
         }
-        this.listening = true;
         if (!listener) {
             return;
         }

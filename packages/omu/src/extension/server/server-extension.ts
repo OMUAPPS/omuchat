@@ -6,7 +6,7 @@ import type { Table } from '../table/index.js';
 import { TableExtensionType } from '../table/table-extension.js';
 import { ModelTableType } from '../table/table.js';
 
-import { App } from './model/index.js';
+import { App } from './app.js';
 
 export const ServerExtensionType: ExtensionType<ServerExtension> = defineExtensionType('server', {
     create: (client: Client) => new ServerExtension(client),

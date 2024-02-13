@@ -3,7 +3,7 @@ import { Serializer } from '../../interface/index.js';
 import type { ExtensionType } from '../extension.js';
 import type { App } from '../server/index.js';
 
-import { TableInfo } from './model/table-info.js';
+import { TableInfo } from './table-info.js';
 
 export interface Table<T extends Keyable> {
     readonly info: TableInfo;
