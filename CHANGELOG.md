@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.12 (2024-02-14)
+
+**Note:** Version bump only for package dashboard
+
 ## [0.0.11](https://github.com/OMUCHAT/dashboard/compare/v0.0.10...v0.0.11) (2024-02-14)
 
 ### Bug Fixes
