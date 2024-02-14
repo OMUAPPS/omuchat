@@ -20,12 +20,13 @@
 	} from '$lib/utils/tauri.js';
 
 	let emojis: Map<string, Emoji> = new Map();
-	client.omu.registry.listen<Record<string, Emoji>>(
-		{ name: 'emojis', app: 'omu.chat.plugins/emoji' },
-		(data) => {
-			emojis = new Map(Object.entries(data || {}));
-		}
-	);
+	const REGISTRY = client.omu.registry.get<Record<string, Emoji>>({
+		name: 'emojis',
+		app: 'omu.chat.plugins/emoji'
+	});
+	REGISTRY.listen((data) => {
+		emojis = new Map(Object.entries(data || {}));
+	});
 	client.run();
 
 	let selectedEmoji: Emoji | undefined;
@@ -34,7 +35,7 @@
 	let dragFiles: string[] = [];
 	let uploading: number = 0;
 
-	async function upload(files: Array<{ key: string; buffer: ArrayBuffer }>) {
+	async function upload(files: Array<{ key: string; buffer: Uint8Array }>) {
 		uploading++;
 		files = files.map(({ key, buffer }) => ({ key: `emoji/${key}`, buffer }));
 		await client.omu.assets.upload(...files);
@@ -48,10 +49,7 @@
 			};
 			emojis.set(emoji.id, emoji);
 		});
-		client.omu.registry.set(
-			{ name: 'emojis', app: 'omu.chat.plugins/emoji' },
-			Object.fromEntries(emojis)
-		);
+		REGISTRY.update((data) => ({ ...data, ...Object.fromEntries(emojis) }));
 		uploading--;
 	}
 
@@ -61,7 +59,7 @@
 			if (event.windowLabel !== tauriWindow.appWindow.label) return;
 			fileDrop = false;
 			const files = await Promise.all(event.payload.map((path) => readFile(path)));
-			upload(files.map(([key, buffer]) => ({ key, buffer })));
+			upload(files.map(([key, buffer]) => ({ key, buffer: new Uint8Array(buffer) })));
 		});
 		listen(tauriEvent.TauriEvent.WINDOW_FILE_DROP_HOVER, (event) => {
 			if (event.windowLabel !== tauriWindow.appWindow.label) return;
@@ -77,10 +75,11 @@
 	function deleteEmoji(event: CustomEvent<Emoji>) {
 		const emoji = event.detail;
 		emojis.delete(emoji.id);
-		client.omu.registry.set(
-			{ name: 'emojis', app: 'omu.chat.plugins/emoji' },
-			Object.fromEntries(emojis)
-		);
+		REGISTRY.update((registry) => {
+			if (!registry) return registry;
+			delete registry[emoji.id];
+			return registry;
+		});
 		if (selectedEmoji?.id === emoji.id) {
 			selectedEmoji = undefined;
 		}
@@ -89,10 +88,11 @@
 	function saveEmoji(event: CustomEvent<Emoji>) {
 		const emoji = event.detail;
 		emojis.set(emoji.id, emoji);
-		client.omu.registry.set(
-			{ name: 'emojis', app: 'omu.chat.plugins/emoji' },
-			Object.fromEntries(emojis)
-		);
+		REGISTRY.update((registry) => {
+			if (!registry) return registry;
+			registry[emoji.id] = emoji;
+			return registry;
+		});
 		selectedEmoji = undefined;
 	}
 
@@ -131,7 +131,7 @@
 			Array.from(files).map(async (file) => {
 				const name = file.name;
 				const buffer = await file.arrayBuffer();
-				return { key: name, buffer: buffer };
+				return { key: name, buffer: new Uint8Array(buffer) };
 			})
 		);
 		upload(selected);
