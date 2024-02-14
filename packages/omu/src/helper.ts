@@ -11,40 +11,49 @@ export class ByteWriter {
         this.dataArray = new DataView(this.buffer);
     }
 
-    write(data: Uint8Array): ByteWriter {
-        if (this.finished) {
-            throw new Error('Buffer already finished');
-        }
-        if (this.offset + data.length > this.buffer.byteLength) {
-            const newBuffer = new ArrayBuffer(this.buffer.byteLength * 2);
+    private allocate(length: number) {
+        if (this.offset + length > this.buffer.byteLength) {
+            const newByteLength = Math.max(this.buffer.byteLength * 2, this.offset + length);
+            const newBuffer = new ArrayBuffer(newByteLength);
             new Uint8Array(newBuffer).set(new Uint8Array(this.buffer));
             this.buffer = newBuffer;
             this.dataArray = new DataView(this.buffer);
         }
-        new Uint8Array(this.buffer, this.offset, data.length).set(data);
+    }
+
+    write(data: Uint8Array): ByteWriter {
+        if (this.finished) {
+            throw new Error('Buffer already finished');
+        }
+        this.allocate(data.length);
+        new Uint8Array(this.buffer).set(data, this.offset);
         this.offset += data.length;
         return this;
     }
 
     writeBigInt(value: bigint): ByteWriter {
+        this.allocate(8);
         this.dataArray.setBigInt64(this.offset, value);
         this.offset += 8;
         return this;
     }
 
     writeInt(value: number): ByteWriter {
+        this.allocate(4);
         this.dataArray.setInt32(this.offset, value);
         this.offset += 4;
         return this;
     }
 
     writeShort(value: number): ByteWriter {
+        this.allocate(2);
         this.dataArray.setInt16(this.offset, value);
         this.offset += 2;
         return this;
     }
 
     writeByte(value: number): ByteWriter {
+        this.allocate(1);
         this.dataArray.setInt8(this.offset, value);
         this.offset += 1;
         return this;
