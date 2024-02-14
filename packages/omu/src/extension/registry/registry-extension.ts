@@ -12,7 +12,7 @@ export class RegistryExtension implements Extension {
         client.events.register(RegistryUpdateEvent);
     }
 
-    async get<T>(key: Key): Promise<Registry<T>> {
+    get<T>(key: Key): Registry<T> {
         const identifier = `${key.app ?? this.client.app.key()}:${key.name}`;
         return new RegistryImpl(this.client, identifier);
     }
@@ -25,7 +25,16 @@ class RegistryImpl<T> implements Registry<T> {
     constructor(
         private readonly client: Client,
         private readonly key: string,
-    ) { }
+    ) {
+        client.events.addListener(RegistryUpdateEvent, (event) => {
+            if (event.key !== this.key) {
+                return;
+            }
+            this.listeners.forEach((listener) => {
+                listener(event.value);
+            });
+        });
+    }
 
     async get(): Promise<T | undefined> {
         return await this.client.endpoints.call(RegistryGetEndpoint, this.key) as T;
