@@ -12,19 +12,20 @@ export class RegistryExtension implements Extension {
         client.events.register(RegistryUpdateEvent);
     }
 
-    get<T>(key: Key): Registry<T> {
+    get<T>(key: Key, defaultValue: T): Registry<T> {
         const identifier = `${key.app ?? this.client.app.key()}:${key.name}`;
-        return new RegistryImpl(this.client, identifier);
+        return new RegistryImpl(this.client, identifier, defaultValue);
     }
 }
 
 class RegistryImpl<T> implements Registry<T> {
-    private readonly listeners: Array<(value: T | undefined) => void> = [];
+    private readonly listeners: Array<(value: T) => void> = [];
     private listening: boolean = false;
 
     constructor(
         private readonly client: Client,
         private readonly key: string,
+        private readonly defaultValue: T,
     ) {
         client.events.addListener(RegistryUpdateEvent, (event) => {
             if (event.key !== this.key) {
@@ -36,11 +37,11 @@ class RegistryImpl<T> implements Registry<T> {
         });
     }
 
-    async get(): Promise<T | undefined> {
-        return await this.client.endpoints.call(RegistryGetEndpoint, this.key) as T;
+    async get(): Promise<T> {
+        return await this.client.endpoints.call(RegistryGetEndpoint, this.key) as T ?? this.defaultValue;
     }
 
-    async update(fn: (value: T | undefined) => T): Promise<void> {
+    async update(fn: (value: T) => T): Promise<void> {
         const value = await this.get();
         const newValue = await fn(value);
         this.client.send(RegistryUpdateEvent, {
@@ -49,7 +50,7 @@ class RegistryImpl<T> implements Registry<T> {
         })
     }
 
-    async listen(handler: (value: T | undefined) => void): Promise<() => void> {
+    async listen(handler: (value: T) => void): Promise<() => void> {
         if (!this.listening) {
             this.client.connection.addTask(() => {
                 this.client.send(RegistryListenEvent, this.key);
