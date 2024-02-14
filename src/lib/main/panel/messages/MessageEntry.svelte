@@ -33,64 +33,95 @@
 			: {}
 	)}
 >
-	<div class="left">
-		{#if author && author.avatar_url}
-			<img
-				src={client.proxy(author.avatar_url)}
-				alt="avatar"
-				class="author-avatar"
-				width="32"
-				height="32"
-			/>
-			<Tooltip noBackground>
-				<img src={client.proxy(author.avatar_url)} alt="avatar" class="author-avatar-preview" />
-			</Tooltip>
-		{/if}
-	</div>
-	<div class="right">
-		<div class="author-name">
-			<span class="name">
-				{#if author}
-					{author.name}
-					{#if author.roles}
-						<div class="roles">
-							{#each author.roles as role}
-								<Role {role} />
-							{/each}
-						</div>
-					{/if}
-					<small>
-						{author.id}
-					</small>
-				{/if}
-			</span>
-			{#if entry.created_at}
-				<span class="time">
-					<Tooltip>
-						{$dateTimeFormats.full.format(entry.created_at)}
-					</Tooltip>
-					{$dateTimeFormats.time.format(entry.created_at)}
-				</span>
+	{#if entry.author_id}
+		<div class="left">
+			{#if author && author.avatar_url}
+				<img
+					src={client.proxy(author.avatar_url)}
+					alt="avatar"
+					class="author-avatar"
+					width="32"
+					height="32"
+				/>
+				<Tooltip noBackground>
+					<img src={client.proxy(author.avatar_url)} alt="avatar" class="author-avatar-preview" />
+				</Tooltip>
 			{/if}
 		</div>
-		{#if entry.content}
-			<div class="message-content">
-				<MessageContent component={entry.content} />
+		<div class="right">
+			<div class="author-name">
+				<span class="name">
+					{#if author}
+						{author.name}
+						{#if author.roles}
+							<div class="roles">
+								{#each author.roles as role}
+									<Role {role} />
+								{/each}
+							</div>
+						{/if}
+						<small>
+							{author.id}
+						</small>
+					{/if}
+				</span>
+				{#if entry.created_at}
+					<span class="time">
+						<Tooltip>
+							{$dateTimeFormats.full.format(entry.created_at)}
+						</Tooltip>
+						{$dateTimeFormats.time.format(entry.created_at)}
+					</span>
+				{/if}
 			</div>
+			{#if entry.content}
+				<div class="message-content">
+					<MessageContent component={entry.content} />
+				</div>
+			{/if}
+			{#if entry.paid}
+				<div class="paid">
+					{entry.paid.currency}{entry.paid.amount}
+				</div>
+			{/if}
+			{#if entry.gifts?.length}
+				<div class="gifts">
+					{#each entry.gifts as gift}
+						<Gift {gift} />
+					{/each}
+				</div>
+			{/if}
+		</div>
+	{:else}
+		<div class="left"></div>
+		<div class="right">
+			{#if entry.content}
+				<div class="message-content">
+					<MessageContent component={entry.content} />
+				</div>
+			{/if}
+			{#if entry.paid}
+				<div class="paid">
+					{entry.paid.currency}{entry.paid.amount}
+				</div>
+			{/if}
+			{#if entry.gifts?.length}
+				<div class="gifts">
+					{#each entry.gifts as gift}
+						<Gift {gift} />
+					{/each}
+				</div>
+			{/if}
+		</div>
+		{#if entry.created_at}
+			<span class="time">
+				<Tooltip>
+					{$dateTimeFormats.full.format(entry.created_at)}
+				</Tooltip>
+				{$dateTimeFormats.time.format(entry.created_at)}
+			</span>
 		{/if}
-		{#if entry.paid}
-			<div class="paid">
-				{entry.paid.currency}{entry.paid.amount}
-			</div>
-		{/if}
-		{#if entry.gifts?.length}
-			<div class="gifts">
-				{#each entry.gifts as gift}
-					<Gift {gift} />
-				{/each}
-			</div>
-		{/if}
-	</div>
+	{/if}
 </div>
 
 <style lang="scss">
@@ -173,6 +204,16 @@
 				color: #999;
 			}
 		}
+	}
+
+	.time {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 2px 0;
+		font-size: 0.8rem;
+		color: #666;
+		user-select: text;
 	}
 
 	.message-content {
