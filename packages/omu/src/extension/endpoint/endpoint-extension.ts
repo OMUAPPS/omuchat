@@ -48,21 +48,17 @@ export class EndpointExtension {
     }
 
     async call<Req, Res>(endpoint: EndpointType<Req, Res>, data: Req): Promise<Res> {
-        try {
-            const id = this.callId++;
-            const promise = new Promise<Uint8Array>((resolve, reject) => {
-                this.promiseMap.set(id, { resolve, reject });
-            });
-            this.client.send(EndpointCallEvent, {
-                type: endpoint.type,
-                id,
-                data: endpoint.requestSerializer.serialize(data),
-            });
-            const response = await promise;
-            return endpoint.responseSerializer.deserialize(response);
-        } catch (e) {
-            throw new Error(`Failed to call endpoint ${endpoint.type}: ${e}`);
-        }
+        const id = this.callId++;
+        const promise = new Promise<Uint8Array>((resolve, reject) => {
+            this.promiseMap.set(id, { resolve, reject });
+        });
+        this.client.send(EndpointCallEvent, {
+            type: endpoint.type,
+            id,
+            data: endpoint.requestSerializer.serialize(data),
+        });
+        const response = await promise;
+        return endpoint.responseSerializer.deserialize(response);
     }
 }
 
