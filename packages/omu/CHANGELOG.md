@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/OMUCHAT/omu.js/compare/v0.0.10...v0.0.11) (2024-02-14)
+
+### Bug Fixes
+
+- **omu:** ByteWriterが書き込むときバッファーが足りない問題を修正 ([2c4a9be](https://github.com/OMUCHAT/omu.js/commit/2c4a9bef06150727b8824c15bcb254b5a9e577c8))
+- **omu:** registryの更新を受け取るのを忘れてた ([b62f272](https://github.com/OMUCHAT/omu.js/commit/b62f2727a0435653675c6bd0ea6855707fdb51bd))
+
 ## 0.0.10 (2024-02-10)
 
 **Note:** Version bump only for package @omuchatjs/omu
