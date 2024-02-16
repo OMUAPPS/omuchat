@@ -78,7 +78,7 @@
 		<span>
 			{client.connection.connected ? 'connected' : 'disconnected'}
 			<small>
-				{client.connection.address.host}:{client.connection.address.port}
+				{client.address.host}:{client.address.port}
 			</small>
 			<div>
 				{starting ? 'starting' : 'stopped'}
