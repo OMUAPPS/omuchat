@@ -50,13 +50,17 @@ export class Client {
 }
 
 export class BrowserTokenProvider implements TokenProvider {
-    constructor(private readonly prefix: string) {}
-
-    async get(app: omu.App): Promise<string | null> {
-        return localStorage.getItem(`${this.prefix}${app.key()}`);
+    constructor(private readonly key: string) { }
+    async set(serverAddress: Address, app: omu.App, token: string): Promise<void> {
+        const tokens = JSON.parse(localStorage.getItem(this.key) || '{}');
+        const key = `${serverAddress.host}:${serverAddress.port}:${app.key()}`;
+        tokens[key] = token;
+        localStorage.setItem(this.key, JSON.stringify(tokens));
     }
 
-    async set(app: omu.App, token: string): Promise<void> {
-        localStorage.setItem(`${this.prefix}${app.key()}`, token);
+    async get(serverAddress: Address, app: omu.App): Promise<string | null> {
+        const tokens = JSON.parse(localStorage.getItem(this.key) || '{}');
+        const key = `${serverAddress.host}:${serverAddress.port}:${app.key()}`;
+        return Promise.resolve(tokens[key] || null);
     }
 }

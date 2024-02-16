@@ -73,7 +73,7 @@ export class OmuClient implements Client, ConnectionListener {
             });
         });
         this.events.addListener(EVENTS.Token, (token) => {
-            this.token.set(this.app, token);
+            this.token.set(this.address, this.app, token);
         });
         this.listeners.forEach((listener) => {
             listener.onInitialized?.();

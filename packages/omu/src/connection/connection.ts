@@ -5,7 +5,7 @@ import type { Address } from './address.js';
 export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected';
 
 export interface Connection {
-    readonly address: Address;
+    readonly serverAddress: Address;
     readonly connected: boolean;
 
     connect(): Promise<void>;

@@ -1,56 +1,54 @@
 <script lang="ts">
-    import { App, Client } from '@omuchatjs/chat';
-    import type { TokenProvider } from '@omuchatjs/omu/client/token.js';
-    import { ServerExtensionType } from '@omuchatjs/omu/extension/server/server-extension.js';
+	import type { Address } from '@omuchatjs/omu/connection/address.js';
 
-    import { setClient } from './client.js';
-    import { DashboardExtensionType } from './dashboard-ext.js';
+	import { App, Client } from '@omuchatjs/chat';
+	import { ServerExtensionType } from '@omuchatjs/omu/extension/server/server-extension.js';
 
-    import { invoke, isOnTauri } from '$lib/utils/tauri.js';
+	import { setClient } from './client.js';
+	import { DashboardExtensionType } from './dashboard-ext.js';
 
-    export let app: App;
-    export let connect = true;
+	import { invoke, isOnTauri } from '$lib/utils/tauri.js';
+	import { BrowserTokenProvider } from '@omuchatjs/chat/client.js';
 
-    const address = {
-        host: window.location.hostname,
-        port: 26423,
-        secure: false
-    };
+	export let app: App;
+	export let connect = true;
 
-    const tokenKey = `omu-chat-token-${app.key()}`;
-    const token: TokenProvider = {
-        async get() {
-            let token = null;
-            if (isOnTauri) {
-                token = await invoke('get_token');
-            }
-            if (!token) {
-                token = window.localStorage.getItem(tokenKey);
-            }
-            return token;
-        },
-        async set(_: App, token: string) {
-            window.localStorage.setItem(tokenKey, token);
-        }
-    }
+	const address = {
+		host: window.location.hostname,
+		port: 26423,
+		secure: false
+	};
 
-    const client = new Client({
-        app,
-        address,
-        token
-    });
-    const omu = client.omu;
-    const dashboard = omu.extensions.register(DashboardExtensionType);
-    setClient({
-        client: client.omu,
-        chat: client.chat,
-        server: omu.extensions.get(ServerExtensionType),
-        dashboard
-    });
+	class TokenProvider extends BrowserTokenProvider {
+		async get(serverAddress: Address, app: App): Promise<string | null> {
+			if (isOnTauri) {
+				return await invoke('get_token');
+			}
+			return super.get(serverAddress, app);
+		}
 
-    if (connect) {
-        client.run();
-    }
+		async set(serverAddress: Address, app: App, token: string): Promise<void> {
+			return super.set(serverAddress, app, token);
+		}
+	}
+
+	const client = new Client({
+		app,
+		address,
+		token: new TokenProvider('omu-token')
+	});
+	const omu = client.omu;
+	const dashboard = omu.extensions.register(DashboardExtensionType);
+	setClient({
+		client: client.omu,
+		chat: client.chat,
+		server: omu.extensions.get(ServerExtensionType),
+		dashboard
+	});
+
+	if (connect) {
+		client.run();
+	}
 </script>
 
 <slot />

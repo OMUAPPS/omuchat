@@ -8,13 +8,13 @@ import type { Connection, ConnectionListener, ConnectionStatus } from './connect
 
 export class WebsocketConnection implements Connection {
     public connected: boolean;
-    readonly address: Address;
+    readonly serverAddress: Address;
     private readonly listeners: ConnectionListener[] = [];
     private socket: WebSocket | null;
     private tasks: (() => void)[] = [];
 
     constructor(private readonly client: Client) {
-        this.address = client.address;
+        this.serverAddress = client.address;
         this.connected = false;
         this.socket = null;
         client.addListener(this);
@@ -38,7 +38,7 @@ export class WebsocketConnection implements Connection {
 
     private async onOpen(): Promise<void> {
         this.connected = true;
-        this.send(EVENTS.Connect, new ConnectEvent(this.client.app, await this.client.token.get(this.client.app)));
+        this.send(EVENTS.Connect, new ConnectEvent(this.client.app, await this.client.token.get(this.serverAddress, this.client.app)));
         this.listeners.forEach((listener) => {
             listener.onConnect?.();
             listener.onStatusChanged?.('connected');
@@ -76,14 +76,14 @@ export class WebsocketConnection implements Connection {
     }
 
     proxy(url: string): string {
-        const protocol = this.address.secure ? 'https' : 'http';
-        const { host, port } = this.address;
+        const protocol = this.serverAddress.secure ? 'https' : 'http';
+        const { host, port } = this.serverAddress;
         return `${protocol}://${host}:${port}/proxy?url=${encodeURIComponent(url)}`;
     }
 
     asset(url: string): string {
-        const protocol = this.address.secure ? 'https' : 'http';
-        const { host, port } = this.address;
+        const protocol = this.serverAddress.secure ? 'https' : 'http';
+        const { host, port } = this.serverAddress;
         return `${protocol}://${host}:${port}/assets?path=${encodeURIComponent(url)}`;
     }
 
@@ -115,8 +115,8 @@ export class WebsocketConnection implements Connection {
     }
 
     private wsEndpoint(): string {
-        const protocol = this.address.secure ? 'wss' : 'ws';
-        const { host, port } = this.address;
+        const protocol = this.serverAddress.secure ? 'wss' : 'ws';
+        const { host, port } = this.serverAddress;
         return `${protocol}://${host}:${port}/ws`;
     }
 

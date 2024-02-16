@@ -7,8 +7,8 @@ import type { Author, Channel, Message, Provider, Room } from '../models/index.j
 export class EventKey<T extends unknown[]> {
     constructor(
         public readonly name: string,
-        public readonly create: (client: Client, invoke: (...data: T) => void) => void = (): void => {},
-    ) {}
+        public readonly create: (client: Client, invoke: (...data: T) => void) => void = (): void => { },
+    ) { }
 }
 
 function initTableEvent<T extends Keyable>(
@@ -28,7 +28,13 @@ function initTableEvent<T extends Keyable>(
 }
 
 export const events = {
-    Ready: new EventKey<[]>('ready'),
+    Ready: new EventKey<[]>('ready', (client, invoke) => {
+        client.omu.addListener({
+            onReady: () => {
+                invoke();
+            },
+        });
+    }),
     MessageCreate: new EventKey<[Message]>('on_message', initTableEvent((client) => client.chat.messages)),
     MessageUpdate: new EventKey<[Message]>('on_message_update', initTableEvent((client) => client.chat.messages)),
     MessageDelete: new EventKey<[Message]>('on_message_delete', initTableEvent((client) => client.chat.messages)),
