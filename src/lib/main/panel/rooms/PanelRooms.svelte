@@ -4,18 +4,16 @@
 
 	import RoomEntry from './RoomEntry.svelte';
 
-	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
 	import Button from '$lib/common/input/Button.svelte';
 	import { getClient } from '$lib/common/omuchat/client.js';
 	import TableList from '$lib/common/omuchat/TableList.svelte';
 	import { screenContext } from '$lib/common/screen/screen.js';
 	import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
 
-	export let filter: (key: string, room: models.Room) => boolean = (_, room) => room.connected;
+	export let filter: (key: string, room: models.Room) => boolean = (_, room) => true;
 
 	const { chat, client } = getClient();
 	let rooms = chat.rooms!.cache;
-	let showOffline = false;
 
 	const destroy = chat.rooms.listen((newRooms: Map<string, models.Room>) => {
 		rooms = newRooms;
@@ -31,10 +29,6 @@
 		return destroy;
 	});
 
-	function toggleOffline() {
-		showOffline = !showOffline;
-	}
-
 	function openSetup() {
 		screenContext.push({
 			component: ScreenSetup,
@@ -46,22 +40,6 @@
 <div class="rooms">
 	{#if rooms.size > 0}
 		<TableList table={chat.rooms} component={RoomEntry} {filter} />
-		{#if [...rooms.values()].some((room) => !room.connected)}
-			<Button on:click={toggleOffline}>
-				<FlexRowWrapper widthFull reverse>
-					{#if showOffline}
-						<i class="ti ti-chevron-up" />
-						オンラインのみ表示
-					{:else}
-						<i class="ti ti-chevron-down" />
-						オフラインも表示する
-					{/if}
-				</FlexRowWrapper>
-			</Button>
-		{/if}
-		{#if showOffline}
-			<TableList table={chat.rooms} component={RoomEntry} filter={(_, room) => !room.connected} />
-		{/if}
 	{:else}
 		<div class="empty">
 			ルームが見つかりません！
