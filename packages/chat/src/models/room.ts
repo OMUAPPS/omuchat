@@ -16,7 +16,7 @@ export type Status = 'online' | 'reserved' | 'offline'
 export type RoomJson = {
     id: string;
     providerId: string;
-    online: boolean;
+    connected: boolean;
     status: Status;
     metadata?: MetadataJson;
     channelId?: string;
@@ -33,7 +33,7 @@ export class Room implements Keyable, Model<RoomJson> {
     constructor(options: RoomJson) {
         this.id = options.id;
         this.providerId = options.providerId;
-        this.connected = options.online;
+        this.connected = options.connected;
         this.status = options.status;
         this.metadata = options.metadata;
         this.channelId = options.channelId;
@@ -47,7 +47,7 @@ export class Room implements Keyable, Model<RoomJson> {
         return {
             id: this.id,
             providerId: this.providerId,
-            online: this.connected,
+            connected: this.connected,
             status: this.status,
             metadata: this.metadata,
             channelId: this.channelId,
