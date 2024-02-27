@@ -63,12 +63,19 @@
 			newItems = newItems.filter(([key, entry]) => filter(key, entry));
 		}
 		if (newItems.length === 0) return;
-		if (startIndex === 0) {
-			entries = new Map([...entries.entries(), ...newItems].slice(-limit));
-		} else {
-			entries = new Map([...entries.entries(), ...newItems]);
+		// entries = new Map([...entries.entries(), ...newItems]);
+		let changed = false;
+		for (const [key, value] of newItems) {
+			if (entries.get(key) === value) continue;
+			entries.set(key, value);
+			changed = true;
 		}
-		updated = true;
+		if (startIndex === 0) {
+			entries = new Map([...entries.entries()].slice(-limit));
+		}
+		if (changed) {
+			updated = true;
+		}
 		return;
 	}
 
@@ -86,24 +93,36 @@
 	onMount(() => {
 		table.listen((items) => {
 			updateCache(items);
-			updated = true;
 		});
 		table.addListener({
 			onRemove(items) {
-				for (const key of items.keys()) {
-					entries.delete(key);
+				const keys = items.keys();
+				let changed = false;
+				for (const key of keys) {
+					if (entries.delete(key)) {
+						changed = true;
+					}
 				}
-				updated = true;
+				if (changed) {
+					updated = true;
+				}
 			},
 			onUpdate(items) {
+				let changed = false;
 				for (const [key, value] of items.entries()) {
 					if (filter && !filter(key, value)) {
-						entries.delete(key);
+						if (entries.delete(key)) {
+							changed = true;
+						}
 						continue;
 					}
+					if (entries.get(key) === value) continue;
 					entries.set(key, value);
+					changed = true;
 				}
-				updated = true;
+				if (changed) {
+					updated = true;
+				}
 			}
 		});
 		viewport.addEventListener('scroll', handleScroll);
