@@ -120,9 +120,9 @@
 		};
 	});
 
-	function top() {
-		startIndex = 0;
+	function scrollToTop() {
 		viewport.scrollTo({ top: 0 });
+		fetch();
 	}
 
 	function update() {
@@ -234,14 +234,14 @@
 				selected={key === selectedItem}
 				{key}
 				{selectItem}
-				transition={addedItems.includes(key)}
+				transition={startIndex === 0 && addedItems.includes(key)}
 			>
 				<svelte:component this={component} entry={item} selected={key === selectedItem} />
 			</TableListEntry>
 		</VirtualList>
 	</div>
 	{#if updated}
-		<button class="update" on:click={top}>
+		<button class="update" on:click={scrollToTop}>
 			更新があります
 			<i class="ti ti-chevron-up" />
 		</button>
