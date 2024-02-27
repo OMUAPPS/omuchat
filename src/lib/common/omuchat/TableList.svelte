@@ -3,7 +3,7 @@
 
 	import type { Table } from '@omuchatjs/omu/extension/table/table.js';
 	import type { Keyable } from '@omuchatjs/omu/interface/keyable.js';
-	import { onMount, type ComponentType, type SvelteComponent } from 'svelte';
+	import { onMount, tick, type ComponentType, type SvelteComponent } from 'svelte';
 
 	import { getClient } from './client.js';
 
@@ -30,7 +30,7 @@
 	let updated = false;
 	let viewport: HTMLDivElement;
 	let last: string | undefined;
-	let scrollLock = false;
+	let loadingLock = false;
 
 	async function fetch() {
 		if (!client.connection.connected) return;
@@ -63,31 +63,15 @@
 			newItems = newItems.filter(([key, entry]) => filter(key, entry));
 		}
 		if (newItems.length === 0) return;
-		// entries = new Map([...entries.entries(), ...newItems]);
-		let changed = false;
-		for (const [key, value] of newItems) {
-			if (entries.get(key) === value) continue;
-			entries.set(key, value);
-			changed = true;
+		const length = [...entries.keys()].length;
+		entries = new Map([...entries.entries(), ...newItems]);
+		if (length !== [...entries.keys()].length) {
+			updated = true;
 		}
 		if (startIndex === 0) {
 			entries = new Map([...entries.entries()].slice(-limit));
 		}
-		if (changed) {
-			updated = true;
-		}
 		return;
-	}
-
-	async function handleScroll(e: Event) {
-		if (scrollLock) return;
-		scrollLock = true;
-		const target = e.target as HTMLDivElement;
-		const { scrollTop, scrollHeight, clientHeight } = target;
-		if (scrollTop + clientHeight >= scrollHeight - 1000) {
-			await fetch();
-		}
-		scrollLock = false;
 	}
 
 	onMount(() => {
@@ -155,6 +139,19 @@
 		if (!items.length || (startIndex === 0 && updated)) {
 			update();
 		}
+	}
+
+	async function handleScroll(e: Event) {
+		if (loadingLock) return;
+		loadingLock = true;
+		const target = e.target as HTMLDivElement;
+		let { scrollTop, scrollHeight, clientHeight } = target;
+		while (scrollTop + clientHeight >= scrollHeight - 1000) {
+			await fetch();
+			await tick();
+			scrollHeight = target.scrollHeight;
+		}
+		loadingLock = false;
 	}
 
 	function handleSelectItem(e: KeyboardEvent) {
@@ -235,11 +232,14 @@
 		</VirtualList>
 	</div>
 	{#if updated}
-		<button class="loading" on:click={top}>
+		<button class="update" on:click={top}>
 			更新があります
 			<i class="ti ti-chevron-up" />
 		</button>
 	{/if}
+	<button class="loading" class:active={loadingLock}>
+		<i class="ti ti-loader-2" />
+	</button>
 </div>
 
 <style lang="scss">
@@ -255,6 +255,36 @@
 	}
 
 	.loading {
+		position: absolute;
+		bottom: 10px;
+		right: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		font-size: 20px;
+		color: var(--color-1);
+		background: transparent;
+		border: none;
+		animation: spin 1s linear infinite;
+		visibility: hidden;
+
+		&.active {
+			visibility: visible;
+		}
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	.update {
 		position: absolute;
 		top: 10px;
 		right: 50%;
