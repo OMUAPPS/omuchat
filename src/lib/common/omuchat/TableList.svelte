@@ -25,6 +25,7 @@
 	const { client } = getClient();
 	let entries: Map<string, T> = new Map();
 	let items: Array<[string, T]> = [];
+	let addedItems: string[] = [];
 	let startIndex = 0;
 	let endIndex = 0;
 	let updated = false;
@@ -107,6 +108,9 @@
 				if (changed) {
 					updated = true;
 				}
+			},
+			onAdd(items) {
+				addedItems = [...items.keys()];
 			}
 		});
 		viewport.addEventListener('scroll', handleScroll);
@@ -146,7 +150,7 @@
 		loadingLock = true;
 		const target = e.target as HTMLDivElement;
 		let { scrollTop, scrollHeight, clientHeight } = target;
-		while (scrollTop + clientHeight >= scrollHeight - 1000) {
+		while (scrollTop + clientHeight >= scrollHeight - 4000) {
 			await fetch();
 			await tick();
 			scrollHeight = target.scrollHeight;
@@ -226,7 +230,12 @@
 			let:key
 			let:item
 		>
-			<TableListEntry selected={key === selectedItem} {key} {selectItem}>
+			<TableListEntry
+				selected={key === selectedItem}
+				{key}
+				{selectItem}
+				transition={addedItems.includes(key)}
+			>
 				<svelte:component this={component} entry={item} selected={key === selectedItem} />
 			</TableListEntry>
 		</VirtualList>

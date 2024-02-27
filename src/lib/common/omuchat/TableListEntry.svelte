@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { slide } from 'svelte/transition';
 
 	export let selected: boolean;
 	export let key: string;
 	export let selectItem: (key: string | undefined) => void;
+	export let transition: boolean = false;
 
 	let element: HTMLElement;
 
@@ -19,6 +21,7 @@
 	tabindex="-1"
 	on:mouseenter={() => selectItem(key)}
 	on:mouseleave={() => selectItem(undefined)}
+	transition:slide={{ duration: transition ? 100 : 0, easing: (t) => 1 - Math.pow(1 - t, 2) }}
 	role="listitem"
 >
 	<slot />
