@@ -1,7 +1,6 @@
 import { Identifier } from '../../identifier.js';
 import type { Keyable, Model } from '../../interface/index.js';
 import type { ExtensionType } from '../extension.js';
-import type { App } from '../server/index.js';
 
 export interface TableInfoJson {
     identifier: string;
@@ -30,15 +29,13 @@ export class TableInfo implements Keyable, Model<TableInfoJson> {
         });
     }
 
-    static of(app: App, {
-        name,
+    static of(identifier: Identifier, {
         cacheSize,
     }: {
-        name: string;
         cacheSize?: number;
     }): TableInfo {
         return new TableInfo({
-            identifier: Identifier.create(app.key(), name),
+            identifier: identifier,
             cacheSize,
         });
     }

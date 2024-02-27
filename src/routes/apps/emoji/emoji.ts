@@ -1,4 +1,4 @@
-import { Client } from "@omuchatjs/chat";
+import { Chat } from "@omuchatjs/chat";
 import { App } from "@omuchatjs/omu";
 
 export interface Emoji {
@@ -13,6 +13,6 @@ const app = new App({
     version: "0.1.0",
     group: "omu.chat.apps",
 });
-export const client = new Client({
+export const client = new Chat({
     app,
 });

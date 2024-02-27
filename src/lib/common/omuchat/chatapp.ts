@@ -2,7 +2,7 @@ import type { Keyable, Model } from "@omuchatjs/omu/interface/index.js";
 
 export type AssetType = 'app' | 'panel' | 'image';
 
-export type ChatAppJson = {
+export type ApplicationJson = {
     id: string;
     name?: string;
     icon?: string;
@@ -12,7 +12,7 @@ export type ChatAppJson = {
     tags: string[];
 }
 
-export class ChatApp implements Keyable, Model<ChatAppJson> {
+export class ChatApp implements Keyable, Model<ApplicationJson> {
     public id: string;
     public name?: string;
     public icon?: string;
@@ -21,7 +21,7 @@ export class ChatApp implements Keyable, Model<ChatAppJson> {
     public url: string;
     public tags: string[];
 
-    public constructor(data: ChatAppJson) {
+    public constructor(data: ApplicationJson) {
         this.id = data.id;
         this.name = data.name;
         this.icon = data.icon;
@@ -31,7 +31,7 @@ export class ChatApp implements Keyable, Model<ChatAppJson> {
         this.tags = data.tags;
     }
 
-    public static fromJson(data: ChatAppJson): ChatApp {
+    public static fromJson(data: ApplicationJson): ChatApp {
         return new ChatApp(data);
     }
 
@@ -39,7 +39,7 @@ export class ChatApp implements Keyable, Model<ChatAppJson> {
         return this.id;
     }
 
-    toJson(): ChatAppJson {
+    toJson(): ApplicationJson {
         return {
             id: this.id,
             name: this.name,

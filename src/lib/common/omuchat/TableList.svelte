@@ -1,4 +1,6 @@
 <script lang="ts" generics="_T extends Keyable">
+	import TableListEntry from './TableListEntry.svelte';
+
 	import type { Table } from '@omuchatjs/omu/extension/table/table.js';
 	import type { Keyable } from '@omuchatjs/omu/interface/keyable.js';
 	import { onMount, type ComponentType, type SvelteComponent } from 'svelte';
@@ -8,20 +10,21 @@
 	import VirtualList from '$lib/common/VirtualList.svelte';
 
 	// eslint-disable-next-line no-undef
-	type T = _T & Keyable; // TODO: 後悔
+	type T = _T & Keyable;
 
 	export let table: Table<T>;
-	export let component: ComponentType<SvelteComponent<{ entry: T }>>;
+	export let component: ComponentType<SvelteComponent<{ entry: T; selected?: boolean }>>;
 	export let filter: (key: string, entry: T) => boolean = () => true;
 	export let sort: (a: T, b: T) => number = () => 0;
 	export let reverse: boolean = false;
 	export let initial: number = 40;
 	export let limit = 400;
 	export let fitHeight = false;
+	export let selectedItem: string | undefined = undefined;
 
 	const { client } = getClient();
 	let entries: Map<string, T> = new Map();
-	let items: [string, T][] = [];
+	let items: Array<[string, T]> = [];
 	let startIndex = 0;
 	let endIndex = 0;
 	let updated = false;
@@ -134,12 +137,82 @@
 			update();
 		}
 	}
+
+	function handleSelectItem(e: KeyboardEvent) {
+		if (items.length === 0) return false;
+		if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			if (!selectedItem) {
+				selectedItem = items[startIndex][0];
+				return true;
+			}
+			const index = items.findIndex(([key]) => key === selectedItem);
+			if (index === -1) return true;
+			if (index + 1 < items.length) {
+				selectedItem = items[index + 1][0];
+			}
+			return true;
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			if (!selectedItem) {
+				selectedItem = items[startIndex][0];
+				return true;
+			}
+			const index = items.findIndex(([key]) => key === selectedItem);
+			if (index === -1) return true;
+			if (index - 1 >= 0) {
+				selectedItem = items[index - 1][0];
+			}
+			return true;
+		}
+		return false;
+	}
+
+	let average_height: number = 0;
+
+	function scrollToSelected() {
+		if (!selectedItem) return;
+		let index = items.findIndex(([key]) => key === selectedItem);
+		if (index === -1) return;
+		if (index < startIndex + 1) {
+			index = Math.max(0, index - 1);
+			const row = index * average_height;
+			viewport.scrollTo({ top: row, behavior: 'instant' });
+			return;
+		}
+		if (index > endIndex - 3) {
+			index = startIndex + 2;
+			const row = index * average_height;
+			viewport.scrollTo({ top: row, behavior: 'instant' });
+		}
+	}
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (handleSelectItem(e)) {
+			scrollToSelected();
+		}
+	}
+
+	function selectItem(key: string | undefined) {
+		selectedItem = key;
+	}
 </script>
 
+<svelte:window on:keydown={handleKeydown} />
 <div class="list" class:full={!fitHeight}>
 	<div class="items">
-		<VirtualList {items} bind:viewport bind:start={startIndex} bind:end={endIndex} let:item>
-			<svelte:component this={component} entry={item} />
+		<VirtualList
+			{items}
+			bind:average_height
+			bind:viewport
+			bind:start={startIndex}
+			bind:end={endIndex}
+			let:key
+			let:item
+		>
+			<TableListEntry selected={key === selectedItem} {key} {selectItem}>
+				<svelte:component this={component} entry={item} selected={key === selectedItem} />
+			</TableListEntry>
 		</VirtualList>
 	</div>
 	{#if updated}

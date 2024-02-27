@@ -12,17 +12,17 @@ export type RoleJson = {
 export class Role implements Model<RoleJson> {
     id?: string;
     name: string;
-    is_owner: boolean;
-    is_moderator: boolean;
-    icon_url?: string;
+    isOwner: boolean;
+    isModerator: boolean;
+    iconUrl?: string;
     color?: string;
 
     constructor(info: RoleJson) {
         this.id = info.id;
         this.name = info.name;
-        this.is_owner = info.is_owner;
-        this.is_moderator = info.is_moderator;
-        this.icon_url = info.icon_url;
+        this.isOwner = info.is_owner;
+        this.isModerator = info.is_moderator;
+        this.iconUrl = info.icon_url;
         this.color = info.color;
     }
 
@@ -31,9 +31,9 @@ export class Role implements Model<RoleJson> {
             id: this.id,
             name: this.name,
             color: this.color,
-            icon_url: this.icon_url,
-            is_owner: this.is_owner,
-            is_moderator: this.is_moderator,
+            icon_url: this.iconUrl,
+            is_owner: this.isOwner,
+            is_moderator: this.isModerator,
         };
     }
 

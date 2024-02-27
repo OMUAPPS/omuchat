@@ -1,3 +1,4 @@
+import { Identifier } from '../../identifier.js';
 import type { Keyable, Model, Serializable } from '../../interface/index.js';
 import { Serializer } from '../../interface/index.js';
 import type { ExtensionType } from '../extension.js';
@@ -56,14 +57,14 @@ export class ModelTableType<T extends Keyable & Model<D>, D = unknown> implement
         this.serializer = Serializer.model(model).pipe(Serializer.json());
     }
 
-    static of<T extends Keyable & Model<D>, D = unknown>(app: App, {
+    static of<T extends Keyable & Model<D>, D = unknown>(identifier: Identifier | App, {
         name,
         model,
     }: {
         name: string;
         model: { fromJson(data: D): T };
     }): ModelTableType<T, D> {
-        return new ModelTableType<T, D>(TableInfo.of(app, { name }), model);
+        return new ModelTableType<T, D>(TableInfo.of(Identifier.create(identifier.key(), name), {}), model);
     }
 
     static ofExtension<T extends Keyable & Model<D>, D = unknown>(extension: ExtensionType, {

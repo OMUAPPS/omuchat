@@ -2,17 +2,23 @@ import * as omu from '@omuchatjs/omu';
 import type { TokenProvider } from '@omuchatjs/omu/client/token.js';
 import type { Address } from '@omuchatjs/omu/connection/index.js';
 
-import type { ChatExtension } from './chat.js';
-import { ChatExtensionType } from './chat.js';
 import type { EventHandler, EventKey } from './event/index.js';
 import { EventRegistry } from './event/index.js';
+import { Table } from '@omuchatjs/omu/extension/table/table.js';
+import * as models from './models/index.js';
+import * as chat from './chat.js';
 
 export class Client {
-    app: omu.App;
-    address: Address;
-    omu: omu.Client;
-    chat: ChatExtension;
-    eventRegistry: EventRegistry;
+    readonly app: omu.App;
+    readonly address: Address;
+    readonly omu: omu.Client;
+    readonly eventRegistry: EventRegistry;
+
+    readonly messages: Table<models.Message>;
+    readonly authors: Table<models.Author>;
+    readonly channels: Table<models.Channel>;
+    readonly providers: Table<models.Provider>;
+    readonly rooms: Table<models.Room>;
 
     constructor({
         app,
@@ -37,7 +43,15 @@ export class Client {
             token: token ?? new BrowserTokenProvider('omu-token'),
         });
         this.eventRegistry = new EventRegistry(this);
-        this.chat = this.omu.extensions.register(ChatExtensionType);
+        this.messages = this.omu.tables.get(chat.MessagesTableKey);
+        this.authors = this.omu.tables.get(chat.AuthorsTableKey);
+        this.channels = this.omu.tables.get(chat.ChannelsTableKey);
+        this.providers = this.omu.tables.get(chat.ProvidersTableKey);
+        this.rooms = this.omu.tables.get(chat.RoomsTableKey);
+    }
+
+    async createChannelTree(url: string): Promise<models.Channel[]> {
+        return await this.omu.endpoints.call(chat.CreateChannelTree, url);
     }
 
     run(): void {

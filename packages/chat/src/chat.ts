@@ -7,50 +7,28 @@ import { ModelTableType, type Table } from '@omuchatjs/omu/extension/table/table
 import { Serializer } from '@omuchatjs/omu/interface/serializable.js';
 
 import { Author, Channel, Message, Provider, Room } from './models/index.js';
+import { Identifier } from '@omuchatjs/omu/identifier.js';
 
-export class ChatExtension implements Extension {
-    messages: Table<Message>;
-    authors: Table<Author>;
-    channels: Table<Channel>;
-    providers: Table<Provider>;
-    rooms: Table<Room>;
 
-    constructor(private readonly client: Client) {
-        const tables = client.extensions.get(TableExtensionType);
-        this.messages = tables.get(MessagesTableKey);
-        this.authors = tables.get(AuthorsTableKey);
-        this.channels = tables.get(ChannelsTableKey);
-        this.providers = tables.get(ProvidersTableKey);
-        this.rooms = tables.get(RoomsTableKey);
-        this.messages.setCacheSize(200);
-        this.authors.setCacheSize(200);
-    }
+export const IDENTIFIER = new Identifier('cc.omuchat', 'chat');
 
-    async createChannelTree(provider: string): Promise<Channel[]> {
-        return await this.client.endpoints.call(CreateChannelTreeEndpoint, provider);
-    }
-}
 
-export const ChatExtensionType = defineExtensionType('chat', {
-    create: (client: Client) => new ChatExtension(client),
-    dependencies: () => [TableExtensionType],
-});
-const MessagesTableKey = ModelTableType.ofExtension(ChatExtensionType, {
+export const MessagesTableKey = ModelTableType.of(IDENTIFIER, {
     name: 'messages', model: Message,
 });
-const AuthorsTableKey = ModelTableType.ofExtension(ChatExtensionType, {
+export const AuthorsTableKey = ModelTableType.of(IDENTIFIER, {
     name: 'authors', model: Author,
 });
-const ChannelsTableKey = ModelTableType.ofExtension(ChatExtensionType, {
+export const ChannelsTableKey = ModelTableType.of(IDENTIFIER, {
     name: 'channels', model: Channel,
 });
-const ProvidersTableKey = ModelTableType.ofExtension(ChatExtensionType, {
+export const ProvidersTableKey = ModelTableType.of(IDENTIFIER, {
     name: 'providers', model: Provider,
 });
-const RoomsTableKey = ModelTableType.ofExtension(ChatExtensionType, {
+export const RoomsTableKey = ModelTableType.of(IDENTIFIER, {
     name: 'rooms', model: Room,
 });
-const CreateChannelTreeEndpoint = JsonEndpointType.ofExtension(ChatExtensionType, {
+export const CreateChannelTree = JsonEndpointType.of(IDENTIFIER, {
     name: 'create_channel_tree',
     requestSerializer: Serializer.noop<string>(),
     responseSerializer: Serializer.model(Channel).array(),

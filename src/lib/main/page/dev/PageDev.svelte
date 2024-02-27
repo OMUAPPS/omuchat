@@ -9,7 +9,7 @@
 	import { i18n } from '$lib/i18n/i18n-context.js';
 	import { invoke } from '$lib/utils/tauri.js';
 
-	const { client, chat, server } = getClient();
+	const { client, chat } = getClient();
 	let text = `test-${Date.now()}`;
 	let authorName = `test-author-${Date.now()}`;
 	let authorIcon = `https://picsum.photos/seed/${Date.now()}/200/200`;
@@ -26,7 +26,7 @@
 			new models.Message({
 				room_id: 'test',
 				id: `test-${Date.now()}`,
-				content: models.content.TextContent.of(text),
+				content: models.content.Text.of(text),
 				author_id: author.key(),
 				created_at: new Date()
 			})
@@ -85,14 +85,14 @@
 				<button on:click={start}> start </button>
 				<button
 					on:click={() => {
-						server.shutdown();
+						client.server.shutdown();
 					}}
 				>
 					stop
 				</button>
 				<button
 					on:click={() => {
-						server.printTasks();
+						client.server.printTasks();
 					}}>print tasks</button
 				>
 				<button on:click={delete_runtime}>delete runtime</button>
@@ -124,7 +124,7 @@
 	<div class="section">
 		<h3>Apps</h3>
 		<div class="apps">
-			<TableList table={server.apps} component={AppEntry} />
+			<TableList table={client.server.apps} component={AppEntry} />
 		</div>
 	</div>
 	<div class="section">

@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { models } from '@omuchatjs/chat';
-
 	import LinkableText from '$lib/common/LinkableText.svelte';
 	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
+	import { content } from '@omuchatjs/chat/models/index.js';
 
-	export let component: models.content.ContentComponent;
+	export let component: content.Component;
 </script>
 
-{#if component instanceof models.content.TextContent}
+{#if component instanceof content.Text}
 	<LinkableText text={component.text || ''} />
-{:else if component instanceof models.content.ImageContent}
+{:else if component instanceof content.Image}
 	<span>
 		<Tooltip>
 			{component.name || component.id}
@@ -17,9 +16,14 @@
 		</Tooltip>
 		<img src={component.url} alt={component.id} />
 	</span>
-{/if}
-{#if component.siblings}
-	{#each component.siblings as sibling}
+{:else if component instanceof content.Link}
+	<a href={component.url} target="_blank" rel="noopener noreferrer">
+		{#each component.children || [] as sibling}
+			<svelte:self component={sibling} />
+		{/each}
+	</a>
+{:else if component.isParent()}
+	{#each component.children as sibling}
 		<svelte:self component={sibling} />
 	{/each}
 {/if}

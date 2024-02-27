@@ -1,3 +1,4 @@
+import { Identifier } from '../../identifier.js';
 import { Serializer, type Serializable } from '../../interface/serializable.js';
 import type { ExtensionType } from '../extension.js';
 import type { App } from '../server/index.js';
@@ -84,7 +85,7 @@ export class JsonEndpointType<Req = unknown, Res = unknown> implements EndpointT
         this.responseSerializer = Serializer.noop<Res>().pipe(responseSerializer).pipe(Serializer.json());
     }
 
-    static of<Req, Res>(app: App, {
+    static of<Req, Res>(identifier: Identifier | App, {
         name,
         requestSerializer,
         responseSerializer,
@@ -93,7 +94,7 @@ export class JsonEndpointType<Req = unknown, Res = unknown> implements EndpointT
         requestSerializer?: Serializable<Req, any>;
         responseSerializer?: Serializable<Res, any>;
     }): JsonEndpointType<Req, Res> {
-        return new JsonEndpointType<Req, Res>(new EndpointInfo(app.key(), name), {
+        return new JsonEndpointType<Req, Res>(new EndpointInfo(identifier.key(), name), {
             requestSerializer: requestSerializer ?? Serializer.noop(),
             responseSerializer: responseSerializer ?? Serializer.noop(),
         });

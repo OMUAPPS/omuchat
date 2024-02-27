@@ -1,17 +1,15 @@
-import type { ChatExtension } from '@omuchatjs/chat/chat.js';
-import type { Client } from '@omuchatjs/omu';
-import type { ServerExtension } from '@omuchatjs/omu/extension/server/index.js';
+import type { Client as ChatClient } from '@omuchatjs/chat';
+import type { Client as OmuClient } from '@omuchatjs/omu';
 import { getContext, setContext } from 'svelte';
+import type { Dashboard } from './dashboard.js';
 
-import type { DashboardExtension } from './dashboard-ext.js';
 
 export const CLIENT_CONTEXT = Symbol('client-context');
 
 interface ClientContext {
-    client: Client;
-    chat: ChatExtension;
-    server: ServerExtension;
-    dashboard: DashboardExtension;
+    chat: ChatClient;
+    client: OmuClient;
+    dashboard: Dashboard;
 }
 
 export function setClient(context: ClientContext) {

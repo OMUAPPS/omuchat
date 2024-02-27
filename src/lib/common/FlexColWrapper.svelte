@@ -1,40 +1,33 @@
 <script lang="ts">
-    import { classes } from '$lib/utils/class-helper.js';
-
-    export let between = false;
-    export let reverse = false;
-    export let widthFull = false;
-    export let heightFull = false;
+	export let between = false;
+	export let reverse = false;
+	export let widthFull = false;
+	export let heightFull = false;
 </script>
 
-<div
-    class:between
-    class:reverse
-    class={classes('wrapper', widthFull && 'width-full', heightFull && 'height-full')}
->
-    <slot />
+<div class:between class:reverse class:widthFull class:heightFull>
+	<slot />
 </div>
 
 <style>
-    .wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+	div {
+		display: flex;
+		flex-direction: column;
+	}
 
-    .between {
-        justify-content: space-between;
-    }
+	.between {
+		justify-content: space-between;
+	}
 
-    .reverse {
-        flex-direction: column-reverse;
-    }
+	.reverse {
+		flex-direction: column-reverse;
+	}
 
-    .width-full {
-        width: 100%;
-    }
+	.widthFull {
+		width: 100%;
+	}
 
-    .height-full {
-        height: 100%;
-    }
+	.heightFull {
+		height: 100%;
+	}
 </style>

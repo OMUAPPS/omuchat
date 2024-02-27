@@ -1,62 +1,60 @@
 import type { Keyable, Model } from '@omuchatjs/omu/interface/index.js';
 
+export type MetadataJson = {
+    title?: string,
+    description?: string,
+    url?: string,
+    thumbnail?: string,
+    viewers?: number,
+    created_at?: string,
+    started_at?: string,
+    ended_at?: string,
+}
+
+export type Status = 'online' | 'reserved' | 'offline'
+
 export type RoomJson = {
     id: string;
-    provider_id: string;
-    channel_id?: string;
-    name?: string;
-    description?: string;
+    providerId: string;
     online: boolean;
-    url: string;
-    image_url?: string;
-    viewers?: number;
+    status: Status;
+    metadata?: MetadataJson;
+    channelId?: string;
 }
 
 export class Room implements Keyable, Model<RoomJson> {
-    id: string;
-    provider_id: string;
-    channel_id?: string;
-    name?: string;
-    description?: string;
-    online: boolean;
-    url: string;
-    image_url?: string;
-    viewers?: number;
+    public id: string;
+    public providerId: string;
+    public connected: boolean;
+    public status: Status;
+    public metadata?: MetadataJson;
+    public channelId?: string;
 
-    constructor(json: RoomJson) {
-        this.id = json.id;
-        this.provider_id = json.provider_id;
-        this.channel_id = json.channel_id;
-        this.name = json.name;
-        this.description = json.description;
-        this.online = json.online;
-        this.url = json.url;
-        this.image_url = json.image_url;
-        this.viewers = json.viewers;
-    }
-    toString(): string {
-        throw new Error('Method not implemented.');
+    constructor(options: RoomJson) {
+        this.id = options.id;
+        this.providerId = options.providerId;
+        this.connected = options.online;
+        this.status = options.status;
+        this.metadata = options.metadata;
+        this.channelId = options.channelId;
     }
 
-    static fromJson(json: RoomJson): Room {
-        return new Room(json);
-    }
-
-    key(): string {
-        return `${this.id}@${this.provider_id}`;
+    static fromJson(options: RoomJson): Room {
+        return new Room(options);
     }
 
     toJson(): RoomJson {
         return {
             id: this.id,
-            provider_id: this.provider_id,
-            channel_id: this.channel_id,
-            name: this.name,
-            description: this.description,
-            online: this.online,
-            url: this.url,
-            image_url: this.image_url,
-            viewers: this.viewers,
+            providerId: this.providerId,
+            online: this.connected,
+            status: this.status,
+            metadata: this.metadata,
+            channelId: this.channelId,
         };
+    }
+
+    key(): string {
+        return `${this.id}@${this.providerId}`;
     }
 }

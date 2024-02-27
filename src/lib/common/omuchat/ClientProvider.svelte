@@ -2,13 +2,12 @@
 	import type { Address } from '@omuchatjs/omu/connection/address.js';
 
 	import { App, Client } from '@omuchatjs/chat';
-	import { ServerExtensionType } from '@omuchatjs/omu/extension/server/server-extension.js';
 
 	import { setClient } from './client.js';
-	import { DashboardExtensionType } from './dashboard-ext.js';
 
 	import { invoke, isOnTauri } from '$lib/utils/tauri.js';
 	import { BrowserTokenProvider } from '@omuchatjs/chat/client.js';
+	import { Dashboard } from './dashboard.js';
 
 	export let app: App;
 	export let connect = true;
@@ -37,13 +36,10 @@
 		address,
 		token: new TokenProvider('omu-token')
 	});
-	const omu = client.omu;
-	const dashboard = omu.extensions.register(DashboardExtensionType);
 	setClient({
+		chat: client,
 		client: client.omu,
-		chat: client.chat,
-		server: omu.extensions.get(ServerExtensionType),
-		dashboard
+		dashboard: new Dashboard(client)
 	});
 
 	if (connect) {

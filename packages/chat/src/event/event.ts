@@ -1,5 +1,5 @@
 import type { Table } from '@omuchatjs/omu/extension/table/table.js';
-import type { Keyable } from '@omuchatjs/omu/interface/keyable.js';
+import type { Keyable } from '@omuchatjs/omu/interface/index.js';
 
 import type { Client } from '../client.js';
 import type { Author, Channel, Message, Provider, Room } from '../models/index.js';
@@ -35,19 +35,19 @@ export const events = {
             },
         });
     }),
-    MessageCreate: new EventKey<[Message]>('on_message', initTableEvent((client) => client.chat.messages)),
-    MessageUpdate: new EventKey<[Message]>('on_message_update', initTableEvent((client) => client.chat.messages)),
-    MessageDelete: new EventKey<[Message]>('on_message_delete', initTableEvent((client) => client.chat.messages)),
-    AuthorCreate: new EventKey<[Author]>('on_author_create', initTableEvent((client) => client.chat.authors)),
-    AuthorUpdate: new EventKey<[Author]>('on_author_update', initTableEvent((client) => client.chat.authors)),
-    AuthorDelete: new EventKey<[Author]>('on_author_delete', initTableEvent((client) => client.chat.authors)),
-    ChannelCreate: new EventKey<[Channel]>('on_channel_create', initTableEvent((client) => client.chat.channels)),
-    ChannelUpdate: new EventKey<[Channel]>('on_channel_update', initTableEvent((client) => client.chat.channels)),
-    ChannelDelete: new EventKey<[Channel]>('on_channel_delete', initTableEvent((client) => client.chat.channels)),
-    ProviderCreate: new EventKey<[Provider]>('on_provider_create', initTableEvent((client) => client.chat.providers)),
-    ProviderUpdate: new EventKey<[Provider]>('on_provider_update', initTableEvent((client) => client.chat.providers)),
-    ProviderDelete: new EventKey<[Provider]>('on_provider_delete', initTableEvent((client) => client.chat.providers)),
-    RoomCreate: new EventKey<[Room]>('on_room_create', initTableEvent((client) => client.chat.rooms)),
-    RoomUpdate: new EventKey<[Room]>('on_room_update', initTableEvent((client) => client.chat.rooms)),
-    RoomDelete: new EventKey<[Room]>('on_room_delete', initTableEvent((client) => client.chat.rooms)),
+    MessageCreate: new EventKey<[Message]>('on_message', initTableEvent((client) => client.messages)),
+    MessageUpdate: new EventKey<[Message]>('on_message_update', initTableEvent((client) => client.messages)),
+    MessageDelete: new EventKey<[Message]>('on_message_delete', initTableEvent((client) => client.messages)),
+    AuthorCreate: new EventKey<[Author]>('on_author_create', initTableEvent((client) => client.authors)),
+    AuthorUpdate: new EventKey<[Author]>('on_author_update', initTableEvent((client) => client.authors)),
+    AuthorDelete: new EventKey<[Author]>('on_author_delete', initTableEvent((client) => client.authors)),
+    ChannelCreate: new EventKey<[Channel]>('on_channel_create', initTableEvent((client) => client.channels)),
+    ChannelUpdate: new EventKey<[Channel]>('on_channel_update', initTableEvent((client) => client.channels)),
+    ChannelDelete: new EventKey<[Channel]>('on_channel_delete', initTableEvent((client) => client.channels)),
+    ProviderCreate: new EventKey<[Provider]>('on_provider_create', initTableEvent((client) => client.providers)),
+    ProviderUpdate: new EventKey<[Provider]>('on_provider_update', initTableEvent((client) => client.providers)),
+    ProviderDelete: new EventKey<[Provider]>('on_provider_delete', initTableEvent((client) => client.providers)),
+    RoomCreate: new EventKey<[Room]>('on_room_create', initTableEvent((client) => client.rooms)),
+    RoomUpdate: new EventKey<[Room]>('on_room_update', initTableEvent((client) => client.rooms)),
+    RoomDelete: new EventKey<[Room]>('on_room_delete', initTableEvent((client) => client.rooms)),
 };

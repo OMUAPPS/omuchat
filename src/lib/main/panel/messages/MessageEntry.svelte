@@ -5,26 +5,39 @@
 	import MessageContent from './MessageContent.svelte';
 	import Role from './Role.svelte';
 
+	import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
+	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
 	import { getClient } from '$lib/common/omuchat/client.js';
 	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 	import { dateTimeFormats } from '$lib/const.js';
-	import { applyOpacity, classes, style } from '$lib/utils/class-helper.js';
+	import { applyOpacity, style } from '$lib/utils/class-helper.js';
+	import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
+
 	export let entry: models.Message;
+	export let selected: boolean = false;
 
 	const { chat, client } = getClient();
 
-	let author: models.Author | undefined =
-		(entry.author_id && chat.authors.cache.get(entry.author_id)) || undefined;
-	async function getAuthor() {
-		if (!entry.author_id) return null;
-		author = await chat.authors.get(entry.author_id);
+	let author: models.Author | undefined;
+
+	if (entry.authorId) {
+		chat.authors.get(entry.authorId).then((res) => {
+			author = res;
+		});
 	}
-	if (!author) getAuthor();
+
+	function handleCopy() {
+		ClipboardHelper.writeText(entry.text);
+	}
+
+	function handleBookmark() {
+		console.log('bookmark');
+	}
 </script>
 
-<div
-	class={classes('message', !!(entry.paid || entry.gifts?.length) && 'special')}
+<article
 	class:special={!!(entry.paid || entry.gifts?.length)}
+	class:selected
 	style={style(
 		entry.paid || entry.gifts?.length
 			? {
@@ -33,107 +46,92 @@
 			: {}
 	)}
 >
-	{#if entry.author_id}
-		<div class="left">
-			{#if author && author.avatar_url}
+	<FlexRowWrapper widthFull gap>
+		<div>
+			{#if author && author.avatarUrl}
 				<img
-					src={client.proxy(author.avatar_url)}
+					src={client.proxy(author.avatarUrl)}
 					alt="avatar"
 					class="author-avatar"
 					width="32"
 					height="32"
 				/>
 				<Tooltip noBackground>
-					<img src={client.proxy(author.avatar_url)} alt="avatar" class="author-avatar-preview" />
+					<img src={client.proxy(author.avatarUrl)} alt="avatar" class="author-avatar-preview" />
 				</Tooltip>
 			{/if}
 		</div>
-		<div class="right">
-			<div class="author-name">
-				<span class="name">
-					{#if author}
-						{author.name}
-						{#if author.roles}
-							<div class="roles">
-								{#each author.roles as role}
-									<Role {role} />
-								{/each}
-							</div>
-						{/if}
+		<FlexColWrapper widthFull>
+			<FlexRowWrapper widthFull gap>
+				{#if author}
+					<FlexRowWrapper baseline>
+						<span class="name">
+							{author.name}
+						</span>
+						{#each author.roles || [] as role}
+							<Role {role} />
+						{/each}
 						<small>
-							{author.id}
+							{author.screenId || author.id}
 						</small>
-					{/if}
-				</span>
-				{#if entry.created_at}
+					</FlexRowWrapper>
+				{/if}
+				{#if entry.createdAt}
 					<span class="time">
 						<Tooltip>
-							{$dateTimeFormats.full.format(entry.created_at)}
+							{$dateTimeFormats.full.format(entry.createdAt)}
 						</Tooltip>
-						{$dateTimeFormats.time.format(entry.created_at)}
+						{$dateTimeFormats.time.format(entry.createdAt)}
 					</span>
 				{/if}
-			</div>
-			{#if entry.content}
-				<div class="message-content">
-					<MessageContent component={entry.content} />
-				</div>
-			{/if}
-			{#if entry.paid}
-				<div class="paid">
-					{entry.paid.currency}{entry.paid.amount}
-				</div>
-			{/if}
-			{#if entry.gifts?.length}
-				<div class="gifts">
-					{#each entry.gifts as gift}
-						<Gift {gift} />
-					{/each}
-				</div>
-			{/if}
-		</div>
-	{:else}
-		<div class="left"></div>
-		<div class="right">
-			{#if entry.content}
-				<div class="message-content">
-					<MessageContent component={entry.content} />
-				</div>
-			{/if}
-			{#if entry.paid}
-				<div class="paid">
-					{entry.paid.currency}{entry.paid.amount}
-				</div>
-			{/if}
-			{#if entry.gifts?.length}
-				<div class="gifts">
-					{#each entry.gifts as gift}
-						<Gift {gift} />
-					{/each}
-				</div>
-			{/if}
-		</div>
-		{#if entry.created_at}
-			<span class="time">
-				<Tooltip>
-					{$dateTimeFormats.full.format(entry.created_at)}
-				</Tooltip>
-				{$dateTimeFormats.time.format(entry.created_at)}
-			</span>
-		{/if}
-	{/if}
-</div>
+			</FlexRowWrapper>
+			<FlexRowWrapper between>
+				<FlexColWrapper>
+					{#if entry.content}
+						<div class="message-content">
+							<MessageContent component={entry.content} />
+						</div>
+					{/if}
+					{#if entry.paid}
+						<div class="paid">
+							{entry.paid.currency}{entry.paid.amount}
+						</div>
+					{/if}
+					{#if entry.gifts?.length}
+						<div>
+							{#each entry.gifts as gift}
+								<Gift {gift} />
+							{/each}
+						</div>
+					{/if}
+				</FlexColWrapper>
+				{#if selected}
+					<div class="actions">
+						<button on:click={handleBookmark}>
+							<Tooltip>ブックマーク</Tooltip>
+							<i class="ti ti-bookmark" />
+						</button>
+						<button on:click={handleCopy}>
+							<Tooltip>コピー</Tooltip>
+							<i class="ti ti-files" />
+						</button>
+					</div>
+				{/if}
+			</FlexRowWrapper>
+		</FlexColWrapper>
+	</FlexRowWrapper>
+</article>
 
 <style lang="scss">
-	.message {
+	article {
 		display: flex;
 		flex-direction: row;
 		gap: 10px;
-		padding: 10px;
+		padding: 15px;
 		font-weight: 500;
 		border-bottom: 1px solid var(--color-bg-1);
 
-		&:hover {
+		&.selected {
 			background: var(--color-bg-1);
 			outline: 1px solid var(--color-1);
 			outline-offset: -4px;
@@ -142,22 +140,6 @@
 
 	.special {
 		border-left: 2px solid var(--color-1);
-	}
-
-	.left {
-		display: flex;
-		flex-direction: column;
-		gap: 5px;
-		align-items: center;
-		min-width: 32px;
-		height: fit-content;
-		min-height: 32px;
-		margin-top: 4px;
-		margin-left: 4px;
-	}
-
-	.right {
-		width: 100%;
 	}
 
 	.author-avatar {
@@ -172,53 +154,50 @@
 		outline: 2px solid #000;
 	}
 
-	.roles {
+	button {
 		display: flex;
-		flex-flow: row nowrap;
-		gap: 5px;
-		align-items: baseline;
-		width: fit-content;
-		overflow: hidden;
-		white-space: nowrap;
-	}
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		font-size: 1rem;
+		color: var(--color-1);
+		cursor: pointer;
+		background: var(--color-bg-1);
+		border: none;
+		outline: none;
 
-	.author-name {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		width: 100%;
-		padding: 2px 0;
-		font-size: 0.8rem;
-		color: #666;
-		user-select: text;
+		&:hover {
+			color: var(--color-bg-1);
+			background: var(--color-1);
+		}
 
-		.name {
-			display: flex;
-			flex-direction: row;
-			gap: 5px;
-			align-items: baseline;
-			white-space: nowrap;
-
-			small {
-				font-size: 0.6rem;
-				color: #999;
-			}
+		&:focus {
+			outline: 1px solid var(--color-1);
+			outline-offset: -1px;
 		}
 	}
 
+	.name {
+		margin-right: 5px;
+		white-space: nowrap;
+		user-select: text;
+	}
+
+	small {
+		font-size: 0.6rem;
+		color: #999;
+	}
+
 	.time {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
 		padding: 2px 0;
+		margin-left: auto;
 		font-size: 0.8rem;
 		color: #666;
 		user-select: text;
 	}
 
 	.message-content {
-		margin-right: 14px;
-		margin-bottom: 5px;
 		overflow: clip;
 		font-size: 0.9rem;
 		text-wrap: wrap;
@@ -237,11 +216,8 @@
 		user-select: text;
 	}
 
-	.gifts {
+	.actions {
 		display: flex;
-		flex-flow: row nowrap;
-		gap: 5px;
-		width: 100%;
-		margin: 10px 0 0;
+		align-self: flex-end;
 	}
 </style>

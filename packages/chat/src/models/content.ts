@@ -1,136 +1,216 @@
-import type { Model } from '@omuchatjs/omu/interface/index.js';
+type Primitive = {
+    [key: string]: Primitive | string | number | boolean | null;
+} | any[] | string | number | boolean | null;
 
-export type ContentJson = RootContentJson | TextContentJson | ImageContentJson;
-export type Content = RootContent | TextContent | ImageContent;
 
-export interface ContentComponentJson<T extends string = string> {
-    type: T;
-    siblings?: ContentJson[];
+export type ComponentJson = {
+    type: string;
+    data: Primitive;
+};
+
+
+interface Parent {
+    children: Component[];
 }
 
-export class ContentComponent implements Model<ContentComponentJson> {
-    protected constructor(
-        public type: string,
-        public siblings?: ContentComponent[],
-    ) {}
 
-    static fromJson(json: ContentJson): Content {
-        switch (json.type) {
-        case 'text':
-            return TextContent.fromJson(json);
-        case 'image':
-            return ImageContent.fromJson(json);
-        case 'root':
-            return RootContent.fromJson(json);
-        default:
-            throw new Error(`Unknown content type ${json}`);
+export abstract class Component<T extends string = string, D extends Primitive = Primitive> {
+    constructor(
+        public type: T,
+    ) { }
+
+    abstract toJson(): D;
+
+    isParent(): this is Parent {
+        return "children" in this;
+    }
+
+    walk(cb: (component: Component) => void): void {
+        const stack: Component[] = [this];
+        while (stack.length) {
+            const component = stack.pop();
+            if (!component) {
+                continue;
+            }
+            cb(component);
+            if (component.isParent()) {
+                stack.push(...component.children);
+            }
         }
     }
 
-    toJson(): ContentJson {
-        throw new Error('Not implemented');
+    *iter(): Iterable<Component> {
+        const stack: Component[] = [this];
+        while (stack.length) {
+            const component = stack.pop();
+            if (!component) {
+                continue;
+            }
+            yield component;
+            if (component.isParent()) {
+                stack.push(...component.children);
+            }
+        }
     }
 
-    walk(cb: (content: ContentComponent) => void): void {
-        cb(this);
-        this.siblings?.forEach(s => s.walk(cb));
-    }
-}
-
-export interface RootContentJson extends ContentComponentJson<'root'> {}
-
-export class RootContent extends ContentComponent implements Model<RootContentJson> {
-    constructor(
-        siblings?: ContentComponent[],
-    ) {
-        super('root', siblings);
-    }
     toString(): string {
-        throw new Error('Method not implemented.');
-    }
-
-    static fromJson(info: RootContentJson): RootContent {
-        return new RootContent(info.siblings?.map(s => ContentComponent.fromJson(s)));
-    }
-
-    static of(siblings?: ContentComponent[]): RootContent {
-        return new RootContent(siblings);
-    }
-
-    toJson(): RootContentJson {
-        return {
-            type: 'root',
-            siblings: this.siblings?.map(s => s.toJson()),
-        };
+        const parts = [] as string[];
+        for (const component of this.iter()) {
+            if (component instanceof Text) {
+                parts.push(component.text);
+            }
+        }
+        return parts.join("");
     }
 }
 
-export interface TextContentJson extends ContentComponentJson<'text'> {
-    text: string;
+
+export type ComponentType<D, C extends Component> = {
+    type: string;
+    fromJson(json: D): C;
+};
+
+
+const componentTypes: Record<string, ComponentType<unknown, Component>> = {};
+
+export function deserialize(json: ComponentJson): Component {
+    const type = componentTypes[json.type];
+    if (!type) {
+        throw new Error(`Unknown component type: ${json.type}`);
+    }
+    return type.fromJson(json.data);
 }
 
-export class TextContent extends ContentComponent implements Model<TextContentJson> {
-    constructor(
-        public text: string,
-        siblings?: Content[],
-    ) {
-        super('text', siblings);
+
+export function serialize(component: Component): ComponentJson {
+    return {
+        type: component.type,
+        data: component.toJson(),
+    };
+}
+
+
+export function register<D, C extends Component>(
+    type: string,
+    deserialize: (json: D) => C,
+): void {
+    if (componentTypes[type]) {
+        throw new Error(`Component type already registered: ${type}`);
     }
-    toString(): string {
-        throw new Error('Method not implemented.');
+    componentTypes[type] = {
+        type,
+        fromJson: deserialize,
+    };
+}
+
+
+export type RootData = ComponentJson[];
+
+export class Root extends Component<"root", RootData> implements Parent {
+    constructor(public children: Component[]) {
+        super("root");
     }
 
-    static fromJson(info: TextContentJson): TextContent {
-        return new TextContent(info.text, info.siblings?.map(s => ContentComponent.fromJson(s)));
+    toJson(): RootData {
+        return this.children.map(serialize);
     }
 
-    static of(text: string): TextContent {
-        return new TextContent(text);
+    add(component: Component): void {
+        if (!this.children) {
+            this.children = [];
+        }
+        this.children.push(component);
     }
 
-    toJson(): TextContentJson {
-        return {
-            type: 'text',
-            text: this.text,
-            siblings: this.siblings?.map(s => s.toJson()),
-        };
+    text(): string {
+        const parts = [] as string[];
+        for (const component of this.iter()) {
+            if (component instanceof Text) {
+                parts.push(component.text);
+            }
+        }
+        return parts.join("");
     }
 }
 
-export interface ImageContentJson extends ContentComponentJson<'image'> {
+
+export type TextData = string;
+
+export class Text extends Component<"text", TextData> {
+    constructor(public text: string) {
+        super("text");
+    }
+
+    toJson(): TextData {
+        return this.text;
+    }
+
+    static of(text: string): Text {
+        return new Text(text);
+    }
+}
+
+
+export type ImageData = {
     url: string;
     id: string;
     name?: string;
-}
+};
 
-export class ImageContent extends ContentComponent implements Model<ImageContentJson> {
-    constructor(
-        public url: string,
-        public id: string,
-        public name?: string,
-        siblings?: Content[],
-    ) {
-        super('image', siblings);
-    }
-    toString(): string {
-        throw new Error('Method not implemented.');
+export class Image extends Component<"image", ImageData> {
+    constructor(public url: string, public id: string, public name: string | undefined = undefined) {
+        super("image");
     }
 
-    static fromJson(info: ImageContentJson): ImageContent {
-        return new ImageContent(info.url, info.id, info.name, info.siblings?.map(s => ContentComponent.fromJson(s)));
-    }
-
-    static of(url: string, id: string, name?: string): ImageContent {
-        return new ImageContent(url, id, name);
-    }
-
-    toJson(): ImageContentJson {
+    toJson(): ImageData {
         return {
-            type: 'image',
             url: this.url,
             id: this.id,
             name: this.name,
-            siblings: this.siblings?.map(s => s.toJson()),
+        };
+    }
+
+    static of({ url, id, name }: { url: string; id: string; name?: string }): Image {
+        return new Image(url, id, name);
+    }
+}
+
+
+export type LinkData = {
+    url: string;
+    children: ComponentJson[];
+};
+
+export class Link extends Component<"link", LinkData> implements Parent {
+    constructor(public url: string, public children: Component[]) {
+        super("link");
+    }
+
+    toJson(): LinkData {
+        return {
+            url: this.url,
+            children: this.children.map(serialize),
         };
     }
 }
+
+
+export type SystemData = ComponentJson[];
+
+export class System extends Component<"system", SystemData> implements Parent {
+    constructor(public children: Component[]) {
+        super("system");
+    }
+
+    toJson(): SystemData {
+        return this.children.map(serialize);
+    }
+}
+
+
+register("root", (json: RootData) => new Root(json.map(deserialize)));
+register("text", (json: TextData) => new Text(json));
+register("image", (json: ImageData) => new Image(json.url, json.id, json.name));
+register("link", (json: LinkData) => new Link(json.url, json.children.map(deserialize)));
+register("system", (json: SystemData) => new System(json.map(deserialize)));
+

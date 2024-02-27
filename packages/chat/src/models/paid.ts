@@ -6,22 +6,14 @@ export type PaidJson = {
 }
 
 export class Paid implements Model<PaidJson> {
-    amount: number;
-    currency: string;
 
-    constructor(options: {
-        amount: number;
-        currency: string;
-    }) {
-        this.amount = options.amount;
-        this.currency = options.currency;
-    }
+    constructor(
+        public amount: number,
+        public currency: string,
+    ) { }
 
-    static fromJson(info: PaidJson): Paid {
-        return new Paid({
-            amount: info.amount,
-            currency: info.currency,
-        });
+    static fromJson(options: PaidJson): Paid {
+        return new Paid(options.amount, options.currency);
     }
 
     toJson(): PaidJson {
@@ -29,9 +21,5 @@ export class Paid implements Model<PaidJson> {
             amount: this.amount,
             currency: this.currency,
         };
-    }
-
-    toString(): string {
-        return `${this.amount} ${this.currency}`;
     }
 }

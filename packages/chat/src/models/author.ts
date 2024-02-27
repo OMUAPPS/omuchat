@@ -13,11 +13,11 @@ export type AuthorJson = {
 }
 
 export class Author implements Keyable, Model<AuthorJson> {
-    provider_id: string;
+    providerId: string;
     id: string;
     name: string;
-    screen_id?: string;
-    avatar_url?: string;
+    screenId?: string;
+    avatarUrl?: string;
     roles?: Role[];
 
     constructor(options: {
@@ -28,11 +28,11 @@ export class Author implements Keyable, Model<AuthorJson> {
         avatar_url?: string;
         roles?: Role[];
     }) {
-        this.provider_id = options.provider_id;
+        this.providerId = options.provider_id;
         this.id = options.id;
         this.name = options.name;
-        this.screen_id = options.screen_id;
-        this.avatar_url = options.avatar_url;
+        this.screenId = options.screen_id;
+        this.avatarUrl = options.avatar_url;
         this.roles = options.roles;
     }
 
@@ -48,16 +48,16 @@ export class Author implements Keyable, Model<AuthorJson> {
     }
 
     key(): string {
-        return `${this.provider_id}:${this.id}`;
+        return `${this.providerId}:${this.id}`;
     }
 
     toJson(): AuthorJson {
         return {
-            provider_id: this.provider_id,
+            provider_id: this.providerId,
             id: this.id,
             name: this.name,
-            screen_id: this.screen_id,
-            avatar_url: this.avatar_url,
+            screen_id: this.screenId,
+            avatar_url: this.avatarUrl,
             roles: this.roles?.map(role => role.toJson()),
         };
     }
