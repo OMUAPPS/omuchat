@@ -257,7 +257,8 @@
 	.loading {
 		position: absolute;
 		bottom: 10px;
-		right: 20px;
+		right: 50%;
+		transform: translateX(50%);
 		display: flex;
 		align-items: center;
 		justify-content: center;
