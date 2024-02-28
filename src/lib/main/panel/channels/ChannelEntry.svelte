@@ -27,17 +27,17 @@
 <div class="entry" class:selected>
 	<div class="left">
 		<div class="channel-icon">
-			{#if entry.icon_url}
-				<img src={client.proxy(entry.icon_url)} alt="icon" />
+			{#if entry.iconUrl}
+				<img src={client.proxy(entry.iconUrl)} alt="icon" />
 				<Tooltip>
-					<img src={client.proxy(entry.icon_url)} alt="icon" class="tooltip-image" />
+					<img src={client.proxy(entry.iconUrl)} alt="icon" class="tooltip-image" />
 				</Tooltip>
 			{:else}
-				<ProviderIcon providerId={entry.provider_id} />
+				<ProviderIcon providerId={entry.providerId} />
 			{/if}
 		</div>
 		<div class="description">
-			<div class="channel-name">{entry.name || entry.provider_id}</div>
+			<div class="channel-name">{entry.name || entry.providerId}</div>
 			<small class="channel-url">
 				{entry.url}
 			</small>
