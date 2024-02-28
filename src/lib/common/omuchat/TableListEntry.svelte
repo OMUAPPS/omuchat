@@ -21,7 +21,7 @@
 	tabindex="-1"
 	on:mouseenter={() => selectItem(key)}
 	on:mouseleave={() => selectItem(undefined)}
-	transition:slide={{ duration: transition ? 100 : 0, easing: (t) => 1 - Math.pow(1 - t, 2) }}
+	in:slide={{ duration: transition ? 100 : 0, easing: (t) => 1 - Math.pow(1 - t, 2) }}
 	role="listitem"
 >
 	<slot />
