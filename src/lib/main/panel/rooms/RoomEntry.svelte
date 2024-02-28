@@ -22,7 +22,7 @@
 	}
 </script>
 
-<article class="room" class:selected>
+<article class="room" class:selected class:connected={entry.connected}>
 	<div class="top">
 		<div>
 			{#if entry.metadata && entry.metadata.thumbnail}
@@ -59,13 +59,13 @@
 	</div>
 	<div>
 		{#if entry.metadata}
-			<div class="room-name">
+			<div class="title">
 				<Tooltip>
 					{entry.metadata.title}
 				</Tooltip>
 				{entry.metadata.title}
 			</div>
-			<div class="room-name">
+			<div class="description">
 				<Tooltip>
 					{entry.metadata.description}
 				</Tooltip>
@@ -84,6 +84,10 @@
 			background: var(--color-bg-1);
 			outline: 1px solid var(--color-1);
 			outline-offset: -4px;
+		}
+
+		&.connected {
+			border-left: 2px solid var(--color-1);
 		}
 
 		border-bottom: 1px solid var(--color-bg-1);
@@ -128,11 +132,19 @@
 		object-fit: contain;
 		outline: 2px solid #000;
 	}
+	.title {
+		overflow: hidden;
+		font-size: 14px;
+		text-overflow: ellipsis;
+		font-weight: bold;
+		color: var(--color-1);
+		white-space: nowrap;
+	}
 
-	.room-name {
+	.description {
 		overflow: hidden;
 		font-size: 12px;
-		color: rgba($color: #000, $alpha: 50%);
+		color: color-mix(in srgb, var(--color-1) 100%, transparent 50%);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
