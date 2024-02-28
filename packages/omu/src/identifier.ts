@@ -1,4 +1,4 @@
-import type { Keyable } from './interface/keyable.js';
+import type { Keyable } from './interface.js';
 
 const NAMESPACE_REGEX = /^\w+(\.[:\w]+)*$/;
 const NAME_REGEX = /^[\w-]+$/;

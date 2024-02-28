@@ -1,4 +1,4 @@
-import { Serializer } from '../../interface/serializable.js';
+import { Serializer } from '../../serializer.js';
 import type { Client } from '../../client/index.js';
 import { SerializeEndpointType } from '../endpoint/endpoint.js';
 import { defineExtensionType } from '../extension.js';

@@ -61,8 +61,4 @@ export class Author implements Keyable, Model<AuthorJson> {
             roles: this.roles?.map(role => role.toJson()),
         };
     }
-
-    toString(): string {
-        return this.name;
-    }
 }

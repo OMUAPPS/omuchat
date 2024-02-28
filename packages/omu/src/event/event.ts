@@ -1,6 +1,6 @@
 import type { ExtensionType } from '../extension/index.js';
 import type { App } from '../extension/server/index.js';
-import { Serializer, type Serializable } from '../interface/index.js';
+import { Serializer, type Serializable } from '../serializer.js';
 
 export interface EventData {
     readonly type: string;

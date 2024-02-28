@@ -1,4 +1,4 @@
-import type { Keyable, Model } from '@omuchatjs/omu/interface/index.js';
+import type { Keyable, Model, Timestamped } from '@omuchatjs/omu/interface/index.js';
 
 export type MetadataJson = {
     title?: string,
@@ -15,28 +15,34 @@ export type Status = 'online' | 'reserved' | 'offline'
 
 export type RoomJson = {
     id: string;
-    providerId: string;
+    provider_id: string;
     connected: boolean;
     status: Status;
     metadata?: MetadataJson;
-    channelId?: string;
+    channel_id?: string;
+    created_at: string; // ISO 8601 date string
 }
 
-export class Room implements Keyable, Model<RoomJson> {
+export class Room implements Model<RoomJson>, Keyable, Timestamped {
     public id: string;
     public providerId: string;
     public connected: boolean;
     public status: Status;
     public metadata?: MetadataJson;
     public channelId?: string;
+    public createdAt: Date;
 
     constructor(options: RoomJson) {
         this.id = options.id;
-        this.providerId = options.providerId;
+        this.providerId = options.provider_id;
         this.connected = options.connected;
         this.status = options.status;
         this.metadata = options.metadata;
-        this.channelId = options.channelId;
+        this.channelId = options.channel_id;
+        this.createdAt = new Date(options.created_at);
+    }
+    toString(): string {
+        throw new Error('Method not implemented.');
     }
 
     static fromJson(options: RoomJson): Room {
@@ -46,11 +52,12 @@ export class Room implements Keyable, Model<RoomJson> {
     toJson(): RoomJson {
         return {
             id: this.id,
-            providerId: this.providerId,
+            provider_id: this.providerId,
             connected: this.connected,
             status: this.status,
             metadata: this.metadata,
-            channelId: this.channelId,
+            channel_id: this.channelId,
+            created_at: this.createdAt.toISOString(),
         };
     }
 

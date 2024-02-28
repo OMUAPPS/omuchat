@@ -1,13 +1,13 @@
 import type { Client } from '../../client/index.js';
 import { JsonEventType, SerializeEventType } from '../../event/index.js';
 import { ByteReader, ByteWriter } from '../../helper.js';
-import { Serializer } from '../../interface/serializable.js';
+import { Serializer } from '../../serializer.js';
 import { defineExtensionType } from '../extension.js';
 import type { Table } from '../table/index.js';
 import { ModelTableType } from '../table/index.js';
 
-import { type EndpointType } from './endpoint.js';
 import { EndpointInfo } from './endpoint-info.js';
+import { type EndpointType } from './endpoint.js';
 
 type CallFuture = {
     resolve: (data: any) => void;

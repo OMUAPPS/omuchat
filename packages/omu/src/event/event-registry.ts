@@ -1,9 +1,8 @@
 import type { Client } from '../client/index.js';
 import type { AppJson } from '../extension/server/index.js';
 import { App } from '../extension/server/index.js';
-import type { Model } from '../interface/model.js';
-import type { Serializable } from '../interface/serializable.js';
-import { Serializer } from '../interface/serializable.js';
+import type { Model } from '../interface.js';
+import { Serializable, Serializer } from '../serializer.js';
 
 import type { EventData, EventType } from './event.js';
 

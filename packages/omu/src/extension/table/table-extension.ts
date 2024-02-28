@@ -1,7 +1,8 @@
+import { Keyable } from '../../interface.js';
 import type { Client } from '../../client/index.js';
 import { JsonEventType, SerializeEventType } from '../../event/event.js';
 import { ByteReader, ByteWriter } from '../../helper.js';
-import { Serializer, type Keyable } from '../../interface/index.js';
+import { Serializer } from '../../serializer.js';
 import { JsonEndpointType, SerializeEndpointType } from '../endpoint/endpoint.js';
 import type { Extension, ExtensionType } from '../extension.js';
 import { defineExtensionType } from '../extension.js';
@@ -254,6 +255,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
             const cache = new Map([...this.cache, ...items].slice(-this.cacheSize));
             this.cache = cache;
         }
+        console.log('cache updated', this.cache.size);
         this.listeners.forEach((listener) => {
             listener.onCacheUpdate?.(this.cache);
         });

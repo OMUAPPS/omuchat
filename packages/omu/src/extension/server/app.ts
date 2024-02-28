@@ -1,5 +1,5 @@
 import { Identifier } from '../../identifier.js';
-import type { Keyable, Model } from '../../interface/index.js';
+import type { Keyable, Model } from '../../interface.js';
 
 export interface AppJson {
     identifier: string;

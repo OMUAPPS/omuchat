@@ -1,6 +1,5 @@
-import { textDecoder, textEncoder } from '../const.js';
-
-import type { Model } from './model.js';
+import { textDecoder, textEncoder } from "./const.js";
+import { Model } from "./interface.js";
 
 export interface Serializable<T, D> {
     serialize(data: T): D;
@@ -11,7 +10,7 @@ export class Serializer<T, D> {
     constructor(
         public serialize: (data: T) => D,
         public deserialize: (data: D) => T,
-    ) {}
+    ) { }
 
     static noop<T>(): Serializer<T, T> {
         return new Serializer<T, T>((data) => data, (data) => data);

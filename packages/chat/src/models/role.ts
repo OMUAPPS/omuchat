@@ -36,8 +36,4 @@ export class Role implements Model<RoleJson> {
             is_moderator: this.isModerator,
         };
     }
-
-    toString(): string {
-        return this.name;
-    }
 }

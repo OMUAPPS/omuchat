@@ -1,5 +1,5 @@
 import { Identifier } from '../../identifier.js';
-import { Serializer, type Serializable } from '../../interface/serializable.js';
+import { Serializer, type Serializable } from '../../serializer.js';
 import type { ExtensionType } from '../extension.js';
 import type { App } from '../server/index.js';
 

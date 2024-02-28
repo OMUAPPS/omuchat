@@ -1,4 +1,4 @@
-import type { Keyable, Model } from '@omuchatjs/omu/interface/index.js';
+import type { Keyable, Model, Timestamped } from '@omuchatjs/omu/interface/index.js';
 
 import * as content from './content.js';
 import type { GiftJson } from './gift.js';
@@ -16,7 +16,7 @@ export type MessageJson = {
     gifts?: GiftJson[];
 }
 
-export class Message implements Keyable, Model<MessageJson> {
+export class Message implements Model<MessageJson>, Keyable, Timestamped {
     roomId: string;
     id: string;
     authorId?: string;
@@ -79,9 +79,5 @@ export class Message implements Keyable, Model<MessageJson> {
             paid: this.paid?.toJson(),
             gifts: this.gifts?.map(gift => gift.toJson()),
         };
-    }
-
-    toString(): string {
-        return `${this.authorId}: ${this.content}`;
     }
 }

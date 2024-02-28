@@ -1,6 +1,6 @@
 import { Identifier } from '../../identifier.js';
-import type { Keyable, Model, Serializable } from '../../interface/index.js';
-import { Serializer } from '../../interface/index.js';
+import type { Keyable, Model } from '../../interface.js';
+import { Serializable, Serializer } from '../../serializer.js';
 import type { ExtensionType } from '../extension.js';
 import type { App } from '../server/index.js';
 
