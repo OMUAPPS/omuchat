@@ -50,10 +50,11 @@
 	}
 
 	.transition {
-		animation: slide 0.15s cubic-bezier(0, 0.57, 0.07, 0.825);
+		animation: slide 0.2s cubic-bezier(0, 0.855, 0.18, 0.925);
 	}
 
 	.inner {
+		align-self: flex-end;
 		overflow: hidden;
 	}
 
