@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { slide } from 'svelte/transition';
 
 	export let selected: boolean;
 	export let key: string;
@@ -16,13 +15,54 @@
 	});
 </script>
 
-<div
-	bind:this={element}
-	tabindex="-1"
-	on:mouseenter={() => selectItem(key)}
-	on:mouseleave={() => selectItem(undefined)}
-	in:slide={{ duration: transition ? 100 : 0, easing: (t) => 1 - Math.pow(1 - t, 2) }}
-	role="listitem"
->
-	<slot />
-</div>
+{#if transition}
+	<div class="container" class:transition>
+		<div
+			bind:this={element}
+			role="listitem"
+			on:mouseenter={() => selectItem(key)}
+			on:mouseleave={() => selectItem(undefined)}
+			tabindex="-1"
+			class="inner"
+		>
+			<slot />
+		</div>
+	</div>
+{:else}
+	<div
+		bind:this={element}
+		role="listitem"
+		on:mouseenter={() => selectItem(key)}
+		on:mouseleave={() => selectItem(undefined)}
+		tabindex="-1"
+		class="inner"
+	>
+		<slot />
+	</div>
+{/if}
+
+<style>
+	/* https://zenn.dev/no4_dev/articles/ae1581061bb7b3 */
+
+	.container {
+		display: grid;
+		grid-template-rows: 1fr;
+	}
+
+	.transition {
+		animation: slide 0.15s;
+	}
+
+	.inner {
+		overflow: hidden;
+	}
+
+	@keyframes slide {
+		from {
+			grid-template-rows: 0fr;
+		}
+		to {
+			grid-template-rows: 1fr;
+		}
+	}
+</style>
