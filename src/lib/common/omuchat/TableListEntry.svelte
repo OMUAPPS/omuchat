@@ -50,7 +50,7 @@
 	}
 
 	.transition {
-		animation: slide 0.15s;
+		animation: slide 0.15s cubic-bezier(0, 0.57, 0.07, 0.825);
 	}
 
 	.inner {
