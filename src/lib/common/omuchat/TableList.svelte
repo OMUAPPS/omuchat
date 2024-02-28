@@ -2,7 +2,7 @@
 	import TableListEntry from './TableListEntry.svelte';
 
 	import type { Table } from '@omuchatjs/omu/extension/table/table.js';
-	import type { Keyable } from '@omuchatjs/omu/interface/keyable.js';
+	import type { Keyable } from '@omuchatjs/omu/interface/index.js';
 	import { onMount, tick, type ComponentType, type SvelteComponent } from 'svelte';
 
 	import { getClient } from './client.js';
@@ -101,7 +101,6 @@
 						}
 						continue;
 					}
-					if (entries.get(key) === value) continue;
 					entries.set(key, value);
 					changed = true;
 				}
