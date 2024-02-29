@@ -9,33 +9,33 @@ import { ModelTableType } from '../table/index.js';
 import { EndpointInfo } from './endpoint-info.js';
 import { type EndpointType } from './endpoint.js';
 
-type CallFuture = {
-    resolve: (data: any) => void;
+type FutureResult = {
+    resolve: (data: Uint8Array) => void;
     reject: (error: Error) => void;
 }
 
 export class EndpointExtension {
     private readonly endpointMap: Map<string, EndpointType>;
     public readonly endpoints: Table<EndpointInfo>;
-    private readonly promiseMap: Map<number, CallFuture>;
-    private callId: number;
+    private readonly futureResultMap: Map<number, FutureResult>;
+    private requestId: number;
 
     constructor(private readonly client: Client) {
         this.endpointMap = new Map();
-        this.promiseMap = new Map();
+        this.futureResultMap = new Map();
         this.endpoints = this.client.tables.get(EndpointsTableType);
-        this.callId = 0;
+        this.requestId = 0;
         client.events.register(EndpointRegisterEvent, EndpointCallEvent, EndpointReceiveEvent, EndpointErrorEvent);
         client.events.addListener(EndpointReceiveEvent, (event) => {
-            const promise = this.promiseMap.get(event.id);
+            const promise = this.futureResultMap.get(event.id);
             if (!promise) return;
-            this.promiseMap.delete(event.id);
+            this.futureResultMap.delete(event.id);
             promise.resolve(event.data);
         });
         client.events.addListener(EndpointErrorEvent, (event) => {
-            const promise = this.promiseMap.get(event.id);
+            const promise = this.futureResultMap.get(event.id);
             if (!promise) return;
-            this.promiseMap.delete(event.id);
+            this.futureResultMap.delete(event.id);
             promise.reject(new Error(event.error));
         });
     }
@@ -48,9 +48,9 @@ export class EndpointExtension {
     }
 
     async call<Req, Res>(endpoint: EndpointType<Req, Res>, data: Req): Promise<Res> {
-        const id = this.callId++;
+        const id = this.requestId++;
         const promise = new Promise<Uint8Array>((resolve, reject) => {
-            this.promiseMap.set(id, { resolve, reject });
+            this.futureResultMap.set(id, { resolve, reject });
         });
         this.client.send(EndpointCallEvent, {
             type: endpoint.type,
