@@ -3,9 +3,10 @@
 	export let reverse = false;
 	export let widthFull = false;
 	export let heightFull = false;
+	export let center = false;
 </script>
 
-<div class:between class:reverse class:widthFull class:heightFull>
+<div class:between class:reverse class:widthFull class:heightFull class:center>
 	<slot />
 </div>
 
@@ -13,6 +14,7 @@
 	div {
 		display: flex;
 		flex-direction: column;
+		align-items: flex-start;
 	}
 
 	.between {
@@ -29,5 +31,9 @@
 
 	.heightFull {
 		height: 100%;
+	}
+
+	.center {
+		align-items: center;
 	}
 </style>

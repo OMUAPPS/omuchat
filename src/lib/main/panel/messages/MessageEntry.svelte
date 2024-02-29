@@ -85,7 +85,7 @@
 					</span>
 				{/if}
 			</FlexRowWrapper>
-			<FlexRowWrapper between>
+			<FlexRowWrapper widthFull between>
 				<FlexColWrapper>
 					{#if entry.content}
 						<div class="message-content">
