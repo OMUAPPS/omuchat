@@ -1,8 +1,7 @@
 import { JsonEndpointType } from '@omuchatjs/omu/extension/endpoint/endpoint.js';
 import { ModelTableType } from '@omuchatjs/omu/extension/table/table.js';
-import { Serializer } from '@omuchatjs/omu/interface.js';
-
 import { Identifier } from '@omuchatjs/omu/identifier.js';
+import { Serializer } from '@omuchatjs/omu/serializer.js';
 import { Author, Channel, Message, Provider, Room } from './models/index.js';
 
 
