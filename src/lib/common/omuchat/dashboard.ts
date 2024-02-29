@@ -3,13 +3,13 @@ import { ModelTableType, type Table } from "@omuchatjs/omu/extension/table/table
 
 import { Identifier } from "@omuchatjs/omu/identifier.js";
 import { Asset } from "./asset.js";
-import { ChatApp } from "./chatapp.js";
+import { AppMetadata } from "./app-metadata.js";
 
 export const IDENTIFIER = Identifier.fromKey('cc.omuchat:dashboard');
 
 export const AppsTableKey = ModelTableType.of(IDENTIFIER, {
     name: "apps",
-    model: ChatApp
+    model: AppMetadata
 });
 export const AssetsTableKey = ModelTableType.of(IDENTIFIER, {
     name: "assets",
@@ -17,7 +17,7 @@ export const AssetsTableKey = ModelTableType.of(IDENTIFIER, {
 });
 
 export class Dashboard {
-    readonly apps: Table<ChatApp>;
+    readonly apps: Table<AppMetadata>;
     readonly assets: Table<Asset>;
 
     constructor(
