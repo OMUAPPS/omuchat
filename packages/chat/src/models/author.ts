@@ -1,4 +1,4 @@
-import type { Keyable, Model } from '@omuchatjs/omu/interface/index.js';
+import type { Keyable, Model } from '@omuchatjs/omu/interface.js';
 
 import type { RoleJson } from './role.js';
 import { Role } from './role.js';

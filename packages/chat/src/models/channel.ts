@@ -1,4 +1,4 @@
-import type { Keyable, Model, Timestamped } from '@omuchatjs/omu/interface/index.js';
+import type { Keyable, Model, Timestamped } from '@omuchatjs/omu/interface.js';
 
 export type ChannelJson = {
     provider_id: string;

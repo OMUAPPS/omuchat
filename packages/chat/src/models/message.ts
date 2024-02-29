@@ -1,4 +1,4 @@
-import type { Keyable, Model, Timestamped } from '@omuchatjs/omu/interface/index.js';
+import type { Keyable, Model, Timestamped } from '@omuchatjs/omu/interface.js';
 
 import * as content from './content.js';
 import type { GiftJson } from './gift.js';
