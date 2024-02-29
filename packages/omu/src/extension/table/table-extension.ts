@@ -255,7 +255,6 @@ class TableImpl<T extends Keyable> implements Table<T> {
             const cache = new Map([...this.cache, ...items].slice(-this.cacheSize));
             this.cache = cache;
         }
-        console.log('cache updated', this.cache.size);
         this.listeners.forEach((listener) => {
             listener.onCacheUpdate?.(this.cache);
         });
