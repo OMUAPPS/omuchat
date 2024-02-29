@@ -29,7 +29,7 @@
 			<FlexColWrapper>
 				<div class="name">{entry.name}</div>
 				<small>
-					{entry}
+					{entry.author}
 				</small>
 			</FlexColWrapper>
 		</FlexRowWrapper>

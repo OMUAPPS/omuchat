@@ -2,26 +2,30 @@ import type { Keyable, Model } from "@omuchatjs/omu/interface.js";
 
 export type AppMetadataJson = {
     identifier: string;
-    name: string;
     url: string;
+    name: string;
+    author?: string;
     icon?: string;
 }
 
 export class AppMetadata implements Keyable, Model<AppMetadataJson> {
     readonly identifier: string;
-    readonly name: string;
     readonly url: string;
+    readonly name: string;
+    readonly author?: string;
     readonly icon?: string;
 
     constructor(options: {
         identifier: string;
-        name: string;
         url: string;
+        name: string;
+        author?: string;
         icon?: string;
     }) {
         this.identifier = options.identifier;
-        this.name = options.name;
         this.url = options.url;
+        this.name = options.name;
+        this.author = options.author;
         this.icon = options.icon;
     }
 
@@ -36,8 +40,9 @@ export class AppMetadata implements Keyable, Model<AppMetadataJson> {
     toJson(): AppMetadataJson {
         return {
             identifier: this.identifier,
-            name: this.name,
             url: this.url,
+            name: this.name,
+            author: this.author,
             icon: this.icon,
         };
     }
