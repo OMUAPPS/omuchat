@@ -363,6 +363,8 @@ class TableImpl<T extends Keyable> implements Table<T> {
         const data = Object.fromEntries(items.map((item) => {
             return [item.key(), this.type.serializer.serialize(item)];
         }));
+        const keys = items.map((item) => item.key());
+        this.cache = new Map([...this.cache].filter(([key]) => !keys.includes(key)));
         this.client.send(TableItemRemoveEvent, {
             type: this.key,
             items: data,
