@@ -1,13 +1,17 @@
 import { Identifier } from '../../identifier.js';
-import type { Keyable, Model } from '../../interface.js';
+import type { Keyable } from '../../interface.js';
 import { Serializable, Serializer } from '../../serializer.js';
 import type { ExtensionType } from '../extension.js';
 import type { App } from '../server/index.js';
+import type { Model } from './model.js';
 
-import { TableInfo } from './table-info.js';
 
-export interface Table<T extends Keyable> {
-    readonly info: TableInfo;
+export type TableConfig = {
+    cache_size: number
+};
+
+
+export interface Table<T> {
     readonly cache: Map<string, T>;
     get(key: string): Promise<T | undefined>;
     getMany(keys: string[]): Promise<Map<string, T>>;
@@ -20,16 +24,17 @@ export interface Table<T extends Keyable> {
     iter({ backward, cursor }: { backward?: boolean, cursor?: string }): AsyncIterable<T>;
     size(): Promise<number>;
 
+    proxy(proxy: (item: T) => T | undefined): () => void;
+    setCacheSize(size: number): void;
+    setConfig(config: TableConfig): void;
+
     addListener(listener: TableListener<T>): void;
     removeListener(listener: TableListener<T>): void;
     listen(listener?: (items: Map<string, T>) => void): void;
     unlisten(listener?: (items: Map<string, T>) => void): void;
-
-    proxy(proxy: (item: T) => T | null): () => void;
-    setCacheSize(size: number): void;
 }
 
-export interface TableListener<T extends Keyable> {
+export interface TableListener<T> {
     onAdd?(items: Map<string, T>): void;
     onUpdate?(items: Map<string, T>): void;
     onRemove?(items: Map<string, T>): void;
@@ -37,43 +42,24 @@ export interface TableListener<T extends Keyable> {
     onCacheUpdate?(cache: Map<string, T>): void;
 }
 
-export interface TableType<T extends Keyable> {
-    info: TableInfo;
-    key: string;
-    serializer: Serializable<T, Uint8Array>;
-}
+export class TableType<T> {
+    constructor(
+        public identifier: Identifier,
+        public serializer: Serializable<T, Uint8Array>,
+        public keyFunc: (item: T) => string,
+    ) { }
 
-export class ModelTableType<T extends Keyable & Model<D>, D = unknown> implements TableType<T> {
-    public readonly info: TableInfo;
-    public readonly key: string;
-    public readonly serializer: Serializable<T, Uint8Array>;
-
-    private constructor(
-        info: TableInfo,
+    static model<T extends Keyable & Model<D>, D = unknown>(identifier: Identifier | App | ExtensionType, {
+        name,
+        model,
+    }: {
+        name: string,
         model: { fromJson(data: D): T },
-    ) {
-        this.info = info;
-        this.key = info.key();
-        this.serializer = Serializer.model(model).pipe(Serializer.json());
-    }
-
-    static of<T extends Keyable & Model<D>, D = unknown>(identifier: Identifier | App, {
-        name,
-        model,
-    }: {
-        name: string;
-        model: { fromJson(data: D): T };
-    }): ModelTableType<T, D> {
-        return new ModelTableType<T, D>(TableInfo.of(Identifier.create(identifier.key(), name), {}), model);
-    }
-
-    static ofExtension<T extends Keyable & Model<D>, D = unknown>(extension: ExtensionType, {
-        name,
-        model,
-    }: {
-        name: string;
-        model: { fromJson(data: D): T };
-    }): ModelTableType<T, D> {
-        return new ModelTableType<T, D>(TableInfo.ofExtension(extension, { name }), model);
+    }): TableType<T> {
+        return new TableType<T>(
+            new Identifier(identifier.key(), name),
+            Serializer.model(model).pipe(Serializer.json()),
+            (item) => item.key(),
+        );
     }
 }

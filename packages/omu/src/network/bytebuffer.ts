@@ -1,4 +1,4 @@
-import { textDecoder, textEncoder } from './const.js';
+import { textDecoder, textEncoder } from '../const.js';
 
 export class ByteWriter {
     private dataArray: DataView;

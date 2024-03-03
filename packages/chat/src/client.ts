@@ -1,6 +1,6 @@
 import * as omu from '@omuchatjs/omu';
 import type { TokenProvider } from '@omuchatjs/omu/client/token.js';
-import type { Address } from '@omuchatjs/omu/connection/index.js';
+import type { Address } from '@omuchatjs/omu/network/index.js';
 
 import type { EventHandler, EventKey } from './event/index.js';
 import { EventRegistry } from './event/index.js';

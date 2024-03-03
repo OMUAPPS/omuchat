@@ -45,7 +45,7 @@ export class Identifier implements Keyable {
         return new Identifier(namespace, name);
     }
 
-    key(): string {
+    public key(): string {
         return `${this.namespace}:${this.name}`;
     }
 }

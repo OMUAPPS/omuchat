@@ -1,19 +1,15 @@
 import type { Client } from '../../client/index.js';
 import { JsonEndpointType } from '../endpoint/endpoint.js';
-import type { Extension, ExtensionType } from '../extension.js';
-import { defineExtensionType } from '../extension.js';
+import { Extension, ExtensionType } from '../extension.js';
 import type { Table } from '../table/index.js';
 import { TableExtensionType } from '../table/table-extension.js';
-import { ModelTableType } from '../table/table.js';
+import { TableType } from '../table/table.js';
 
 import { App } from './app.js';
 
-export const ServerExtensionType: ExtensionType<ServerExtension> = defineExtensionType('server', {
-    create: (client: Client) => new ServerExtension(client),
-    dependencies: () => [TableExtensionType],
-});
+export const ServerExtensionType: ExtensionType<ServerExtension> = new ExtensionType('server', (client: Client) => new ServerExtension(client), () => [TableExtensionType]);
 
-const AppsTableKey = ModelTableType.ofExtension(ServerExtensionType, {
+const AppsTableKey = TableType.model(ServerExtensionType, {
     name: 'apps',
     model: App,
 });

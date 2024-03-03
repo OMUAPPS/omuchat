@@ -1,4 +1,4 @@
-import type { Address, Connection } from '../connection/index.js';
+import type { Address, Connection } from '../network/index.js';
 import type { EventRegistry, EventType } from '../event/index.js';
 import type { AssetExtension } from '../extension/asset/asset-extension.js';
 import type { EndpointExtension } from '../extension/endpoint/index.js';

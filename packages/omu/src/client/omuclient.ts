@@ -1,5 +1,5 @@
-import type { Address, Connection, ConnectionListener } from '../connection/index.js';
-import { WebsocketConnection } from '../connection/websocket-connection.js';
+import type { Address, Connection, ConnectionListener } from '../network/index.js';
+import { WebsocketConnection } from '../network/websocket-connection.js';
 import type { EventRegistry, EventType } from '../event/index.js';
 import { EVENTS, createEventRegistry } from '../event/index.js';
 import type { AssetExtension } from '../extension/asset/asset-extension.js';

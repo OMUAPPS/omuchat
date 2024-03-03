@@ -1,4 +1,4 @@
-import { Address } from '../connection/address.js';
+import { Address } from '../network/address.js';
 import type { App } from '../index.js';
 
 export interface TokenProvider {

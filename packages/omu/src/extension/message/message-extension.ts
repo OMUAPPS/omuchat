@@ -1,8 +1,7 @@
 import type { Client } from '../../client/index.js';
-import type { ConnectionListener } from '../../connection/index.js';
+import type { ConnectionListener } from '../../network/index.js';
 import { JsonEventType } from '../../event/index.js';
-import type { Extension } from '../extension.js';
-import { defineExtensionType } from '../extension.js';
+import { ExtensionType, type Extension } from '../extension.js';
 
 type Key = { name: string, app?: string };
 
@@ -53,9 +52,7 @@ export class MessageExtension implements Extension, ConnectionListener {
     }
 }
 
-export const MessageExtensionType = defineExtensionType('message', {
-    create: (client: Client) => new MessageExtension(client),
-});
+export const MessageExtensionType = new ExtensionType('message', (client: Client) => new MessageExtension(client));
 export const MessageRegisterEvent = JsonEventType.ofExtension<string>(MessageExtensionType, {
     name: 'register',
 });

@@ -1,8 +1,7 @@
 import type { Client } from '../../client/index.js';
 import { JsonEventType } from '../../event/index.js';
 import { JsonEndpointType } from '../endpoint/endpoint.js';
-import type { Extension } from '../extension.js';
-import { defineExtensionType } from '../extension.js';
+import { ExtensionType, type Extension } from '../extension.js';
 import { Registry } from './registry.js';
 
 type Key = { name: string, app?: string };
@@ -64,9 +63,7 @@ class RegistryImpl<T> implements Registry<T> {
     }
 }
 
-export const RegistryExtensionType = defineExtensionType('registry', {
-    create: (client: Client) => new RegistryExtension(client),
-});
+export const RegistryExtensionType = new ExtensionType('registry', (client: Client) => new RegistryExtension(client));
 export const RegistryUpdateEvent = JsonEventType.ofExtension<{ key: string, value: any }>(RegistryExtensionType, {
     name: 'update',
 });

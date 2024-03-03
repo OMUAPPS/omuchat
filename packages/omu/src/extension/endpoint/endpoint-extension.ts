@@ -1,10 +1,10 @@
 import type { Client } from '../../client/index.js';
 import { JsonEventType, SerializeEventType } from '../../event/index.js';
-import { ByteReader, ByteWriter } from '../../helper.js';
+import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 import { Serializer } from '../../serializer.js';
-import { defineExtensionType } from '../extension.js';
+import { ExtensionType } from '../extension.js';
 import type { Table } from '../table/index.js';
-import { ModelTableType } from '../table/index.js';
+import { TableType } from '../table/index.js';
 
 import { EndpointInfo } from './endpoint-info.js';
 import { type EndpointType } from './endpoint.js';
@@ -62,9 +62,7 @@ export class EndpointExtension {
     }
 }
 
-export const EndpointExtensionType = defineExtensionType('endpoint', {
-    create: (client: Client) => new EndpointExtension(client),
-});
+export const EndpointExtensionType = new ExtensionType('endpoint', (client: Client) => new EndpointExtension(client));
 
 export const EndpointRegisterEvent = JsonEventType.ofExtension<EndpointInfo>(EndpointExtensionType, {
     name: 'register',
@@ -109,7 +107,7 @@ export const EndpointReceiveEvent = SerializeEventType.ofExtension<EndpointReqDa
 export const EndpointErrorEvent = JsonEventType.ofExtension<EndpointReq & { error: string }>(EndpointExtensionType, {
     name: 'error',
 });
-export const EndpointsTableType = ModelTableType.ofExtension(EndpointExtensionType, {
+export const EndpointsTableType = TableType.model(EndpointExtensionType, {
     name: 'endpoints',
     model: EndpointInfo,
 });

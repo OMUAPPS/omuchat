@@ -1,5 +1,5 @@
 import { textDecoder, textEncoder } from "./const.js";
-import { Model } from "./interface.js";
+import type { Model } from "./extension/table/model.js";
 
 export interface Serializable<T, D> {
     serialize(data: T): D;

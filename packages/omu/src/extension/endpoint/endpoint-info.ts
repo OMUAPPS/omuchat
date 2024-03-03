@@ -1,5 +1,6 @@
-import type { Keyable, Model } from '../../interface.js';
+import type { Keyable } from '../../interface.js';
 import type { ExtensionType } from '../extension.js';
+import type { Model } from '../table/model.js';
 
 export interface EndpointInfoJson {
     owner: string;

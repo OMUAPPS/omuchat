@@ -1,12 +1,10 @@
 import { Serializer } from '../../serializer.js';
 import type { Client } from '../../client/index.js';
 import { SerializeEndpointType } from '../endpoint/endpoint.js';
-import { defineExtensionType } from '../extension.js';
-import { ByteReader, ByteWriter } from '../../helper.js';
+import { ExtensionType } from '../extension.js';
+import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 
-export const AssetExtensionType = defineExtensionType('asset', {
-    create: (client: Client) => new AssetExtension(client),
-});
+export const AssetExtensionType = new ExtensionType('asset', (client: Client) => new AssetExtension(client));
 
 type Files = Array<{ key: string; buffer: Uint8Array }>;
 

@@ -1,6 +1,6 @@
 import { ConnectEvent } from '../event/event-registry.js';
 import { EVENTS, type EventType } from '../event/index.js';
-import { ByteReader, ByteWriter } from '../helper.js';
+import { ByteReader, ByteWriter } from './bytebuffer.js';
 import type { Client } from '../index.js';
 
 import type { Address } from './address.js';

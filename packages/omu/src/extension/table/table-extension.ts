@@ -1,19 +1,17 @@
-import { Keyable } from '../../interface.js';
 import type { Client } from '../../client/index.js';
 import { JsonEventType, SerializeEventType } from '../../event/event.js';
-import { ByteReader, ByteWriter } from '../../helper.js';
-import { Serializer } from '../../serializer.js';
+import { Keyable } from '../../interface.js';
+import { Serializable, Serializer } from '../../serializer.js';
 import { JsonEndpointType, SerializeEndpointType } from '../endpoint/endpoint.js';
-import type { Extension, ExtensionType } from '../extension.js';
-import { defineExtensionType } from '../extension.js';
+import { Extension, ExtensionType } from '../extension.js';
 
-import { TableInfo } from './table-info.js';
-import type { Table, TableListener, TableType } from './table.js';
-import { ModelTableType } from './table.js';
+import { Identifier } from '../../identifier.js';
+import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
+import { App } from '../server/app.js';
+import type { Model } from './model.js';
+import { Table, TableConfig, TableListener, TableType } from './table.js';
 
-export const TableExtensionType: ExtensionType<TableExtension> = defineExtensionType('table', {
-    create: (client: Client) => new TableExtension(client),
-});
+export const TableExtensionType: ExtensionType<TableExtension> = new ExtensionType('table', (client) => new TableExtension(client));
 type TableEventData = { type: string; }
 type TableItemsData = TableEventData & { items: Record<string, Uint8Array> };
 type TableProxyData = TableEventData & { items: Record<string, Uint8Array>, key: number };
@@ -71,9 +69,11 @@ const proxySerializer = new Serializer<TableProxyData, Uint8Array>(
     },
 );
 
-export const TableRegisterEvent = JsonEventType.ofExtension<TableInfo>(TableExtensionType, {
-    name: 'register',
-    serializer: Serializer.model(TableInfo),
+export const TableConfigSetEvent = JsonEventType.ofExtension<{
+    type: string;
+    config: TableConfig;
+}>(TableExtensionType, {
+    name: 'config_set',
 });
 export const TableListenEvent = JsonEventType.ofExtension<string>(TableExtensionType, {
     name: 'listen',
@@ -119,63 +119,75 @@ export const TableItemFetchEndpoint = SerializeEndpointType.ofExtension<TableEve
 export const TableItemSizeEndpoint = JsonEndpointType.ofExtension<TableEventData, number>(TableExtensionType, {
     name: 'item_size',
 });
-export const TablesTableType = ModelTableType.ofExtension(TableExtensionType, {
-    name: 'tables',
-    model: TableInfo,
-});
 
 export class TableExtension implements Extension {
-    private readonly tableMap: Map<string, Table<any>>;
-    public readonly tables: Table<TableInfo>;
+    private readonly tableMap: Map<string, Table<unknown>>;
 
     constructor(private readonly client: Client) {
         this.tableMap = new Map();
-        client.events.register(TableRegisterEvent, TableProxyEvent, TableProxyListenEvent, TableListenEvent, TableItemAddEvent, TableItemRemoveEvent, TableItemUpdateEvent, TableItemClearEvent);
-        this.tables = this.get(TablesTableType);
+        client.events.register(TableConfigSetEvent, TableProxyEvent, TableProxyListenEvent, TableListenEvent, TableItemAddEvent, TableItemRemoveEvent, TableItemUpdateEvent, TableItemClearEvent);
     }
 
-    register<T extends Keyable>(type: TableType<T>): Table<T> {
-        if (this.has(type)) {
-            throw new Error(`Table for key ${type.key} already registered`);
+    create<T>(
+        identifier: Identifier,
+        serializer: Serializable<T, Uint8Array>,
+        keyFunc: (item: T) => string,
+    ): Table<T> {
+        if (this.has(identifier)) {
+            throw new Error('Table already exists');
         }
-        const table = new TableImpl<T>(this.client, type, true);
-        this.tableMap.set(type.key, table);
-        return table as Table<T>;
+        const table = new TableImpl<T>(this.client, identifier, serializer, keyFunc);
+        this.tableMap.set(identifier.key(), table);
+        return table;
     }
 
     get<T extends Keyable>(type: TableType<T>): Table<T> {
-        if (this.has(type)) {
-            return this.tableMap.get(type.key) as Table<T>;
+        if (this.has(type.identifier)) {
+            return this.tableMap.get(type.identifier.key()) as Table<T>;
         }
-        const table = new TableImpl<T>(this.client, type, false);
-        this.tableMap.set(type.key, table);
-        return table as Table<T>;
+        return this.create(type.identifier, type.serializer, type.keyFunc);
     }
 
-    has<K extends Keyable>(type: TableType<K>): boolean {
-        return this.tableMap.has(type.key);
+    model<T extends Keyable & Model<D>, D = unknown>(identifier: Identifier | App, {
+        name,
+        model,
+    }: {
+        name: string,
+        model: { fromJson(data: D): T },
+    }): Table<T> {
+        identifier = new Identifier(identifier.key(), name);
+        if (this.has(identifier)) {
+            throw new Error('Table already exists');
+        }
+        const serializer = Serializer.model(model).pipe(Serializer.json());
+        const keyFunc = (item: T) => item.key();
+        return this.create(identifier, serializer, keyFunc);
+    }
+
+    has(identifier: Identifier): boolean {
+        return this.tableMap.has(identifier.key());
     }
 }
 
-class TableImpl<T extends Keyable> implements Table<T> {
-    public readonly info: TableInfo;
+class TableImpl<T> implements Table<T> {
     public cache: Map<string, T>;
     private readonly listeners: TableListener<T>[];
-    private readonly proxies: Array<(item: T) => T | null>;
+    private readonly proxies: Array<(item: T) => T | undefined>;
     private readonly key: string;
     private listening: boolean;
     private cacheSize?: number;
+    private config?: TableConfig;
 
     constructor(
         private readonly client: Client,
-        private readonly type: TableType<T>,
-        private readonly owner: boolean,
+        private readonly identifier: Identifier,
+        private readonly serializer: Serializable<T, Uint8Array>,
+        private readonly keyFunc: (item: T) => string,
     ) {
         this.cache = new Map();
+        this.key = identifier.key();
         this.listeners = [];
         this.proxies = [];
-        this.info = type.info;
-        this.key = type.key;
         this.listening = false;
 
         client.connection.addListener(this);
@@ -183,12 +195,12 @@ class TableImpl<T extends Keyable> implements Table<T> {
             if (event.type !== this.key) {
                 return;
             }
-            let items = this.parseItems(event.items);
+            let items = this.deserializeItems(event.items);
             this.proxies.forEach((proxy) => {
                 items = new Map([...items.entries()].map(([key, item]) => {
                     const proxyItem = proxy(item);
-                    if (proxyItem) {
-                        return [key, proxyItem];
+                    if (proxyItem !== undefined) {
+                        return [key, proxyItem as T];
                     }
                     return undefined;
                 }).filter((item): item is [string, T] => {
@@ -199,7 +211,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
                 type: this.key,
                 key: event.key,
                 items: Object.fromEntries([...items.entries()].map(([key, item]) => {
-                    return [key, this.type.serializer.serialize(item)];
+                    return [key, this.serializer.serialize(item)];
                 })),
             });
         });
@@ -207,7 +219,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
             if (event.type !== this.key) {
                 return;
             }
-            const items = this.parseItems(event.items);
+            const items = this.deserializeItems(event.items);
             this.updateCache(items);
             this.listeners.forEach((listener) => {
                 listener.onAdd?.(items);
@@ -217,7 +229,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
             if (event.type !== this.key) {
                 return;
             }
-            const items = this.parseItems(event.items);
+            const items = this.deserializeItems(event.items);
             this.updateCache(items);
             this.listeners.forEach((listener) => {
                 listener.onUpdate?.(items);
@@ -227,7 +239,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
             if (event.type !== this.key) {
                 return;
             }
-            const items = this.parseItems(event.items);
+            const items = this.deserializeItems(event.items);
             items.forEach((_, key) => {
                 this.cache.delete(key);
             });
@@ -247,7 +259,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
             });
         });
     }
-
+    d
     private updateCache(items: Map<string, T>): void {
         if (!this.cacheSize) {
             this.cache = new Map([...this.cache, ...items]);
@@ -300,7 +312,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
         this.listening = this.listeners.length > 0;
     }
 
-    proxy(callback: (item: T) => T | null): () => void {
+    proxy(callback: (item: T) => T | undefined): () => void {
         this.proxies.push(callback);
         return () => {
             this.proxies.splice(this.proxies.indexOf(callback), 1);
@@ -308,8 +320,11 @@ class TableImpl<T extends Keyable> implements Table<T> {
     }
 
     onConnect(): void {
-        if (this.owner) {
-            this.client.send(TableRegisterEvent, this.info);
+        if (this.config) {
+            this.client.send(TableConfigSetEvent, {
+                type: this.key,
+                config: this.config,
+            });
         }
         if (this.proxies.length > 0) {
             this.client.send(TableProxyListenEvent, this.key);
@@ -324,7 +339,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
             type: this.key,
             keys: [key],
         });
-        const items = this.parseItems(res.items);
+        const items = this.deserializeItems(res.items);
         this.updateCache(items);
         return this.cache.get(key);
     }
@@ -334,15 +349,13 @@ class TableImpl<T extends Keyable> implements Table<T> {
             type: this.key,
             keys,
         });
-        const items = this.parseItems(res.items);
+        const items = this.deserializeItems(res.items);
         this.updateCache(items);
         return items;
     }
 
     async add(...items: T[]): Promise<void> {
-        const data = Object.fromEntries(items.map((item) => {
-            return [item.key(), this.type.serializer.serialize(item)];
-        }));
+        const data = this.serializeItems(items);
         this.client.send(TableItemAddEvent, {
             type: this.key,
             items: data,
@@ -350,9 +363,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
     }
 
     async set(...items: T[]): Promise<void> {
-        const data = Object.fromEntries(items.map((item) => {
-            return [item.key(), this.type.serializer.serialize(item)];
-        }));
+        const data = this.serializeItems(items);
         this.client.send(TableItemUpdateEvent, {
             type: this.key,
             items: data,
@@ -360,10 +371,8 @@ class TableImpl<T extends Keyable> implements Table<T> {
     }
 
     async remove(...items: T[]): Promise<void> {
-        const data = Object.fromEntries(items.map((item) => {
-            return [item.key(), this.type.serializer.serialize(item)];
-        }));
-        const keys = items.map((item) => item.key());
+        const data = this.serializeItems(items);
+        const keys = Object.keys(data);
         this.cache = new Map([...this.cache].filter(([key]) => !keys.includes(key)));
         this.client.send(TableItemRemoveEvent, {
             type: this.key,
@@ -384,7 +393,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
             after,
             cursor,
         });
-        const items = this.parseItems(res.items);
+        const items = this.deserializeItems(res.items);
         this.updateCache(items);
         return items;
     }
@@ -401,7 +410,7 @@ class TableImpl<T extends Keyable> implements Table<T> {
         });
         yield* items.values();
         while (items.size > 0) {
-            const cursor = backward ? items.values().next().value.key() : [...items.values()].pop()?.key();
+            const cursor = this.keyFunc(backward ? items.values().next().value : [...items.values()].pop());
             items = await this.fetch(backward ? { before: 0, after: this.cacheSize ?? 100, cursor } : { before: this.cacheSize ?? 100, after: 0, cursor });
             yield* items.values();
         }
@@ -413,15 +422,25 @@ class TableImpl<T extends Keyable> implements Table<T> {
         });
     }
 
-    private parseItems(items: Record<string, Uint8Array>): Map<string, T> {
+    private deserializeItems(items: Record<string, Uint8Array>): Map<string, T> {
         return new Map(Object.entries(items).map(([key, data]) => {
-            const item = this.type.serializer.deserialize(data);
+            const item = this.serializer.deserialize(data);
             this.cache.set(key, item);
             return [key, item];
         }));
     }
 
+    private serializeItems(items: T[]): Record<string, Uint8Array> {
+        return Object.fromEntries(items.map((item) => {
+            return [this.keyFunc(item), this.serializer.serialize(item)];
+        }));
+    }
+
     setCacheSize(size: number): void {
         this.cacheSize = size;
+    }
+
+    setConfig(config: TableConfig): void {
+        this.config = config;
     }
 }
