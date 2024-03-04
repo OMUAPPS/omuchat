@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 
 import license from 'license-checker';
@@ -22,7 +22,7 @@ async function generateLicense() {
     });
     const destDir = path.join('src', 'lib', 'license');
     const destFile = path.join(destDir, 'licenses.json');
-    await fs.writeFile(
+    await fs.writeFileSync(
         destFile,
         JSON.stringify([
             ...Object.entries(licenses).map(([key, license]) => ({
@@ -30,7 +30,7 @@ async function generateLicense() {
                 repository: license.repository,
                 url: license.url,
                 license: license.licenses,
-                licenseText: license.licenseFile && fs.readFile(license.licenseFile, 'utf8')
+                licenseText: license.licenseFile && fs.readFileSync(license.licenseFile, 'utf8')
             }))
         ])
     );
