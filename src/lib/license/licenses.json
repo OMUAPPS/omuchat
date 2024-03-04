@@ -1,0 +1,403 @@
+[
+	{
+		"name": "@eslint-community/eslint-utils@4.4.0",
+		"repository": "https://github.com/eslint-community/eslint-utils",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@eslint-community/regexpp@4.10.0",
+		"repository": "https://github.com/eslint-community/regexpp",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@eslint/eslintrc@2.1.4",
+		"repository": "https://github.com/eslint/eslintrc",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@eslint/js@8.56.0",
+		"repository": "https://github.com/eslint/eslint",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@fontsource/noto-sans-jp@5.0.17",
+		"repository": "https://github.com/fontsource/font-files",
+		"license": "OFL-1.1",
+		"licenseText": ""
+	},
+	{
+		"name": "@omuchatjs/chat@0.0.19",
+		"repository": "https://github.com/OMUCHAT/omuchat.js",
+		"license": "UNKNOWN"
+	},
+	{
+		"name": "@omuchatjs/omu@0.0.19",
+		"repository": "https://github.com/OMUCHAT/omu.js",
+		"license": "UNKNOWN"
+	},
+	{
+		"name": "@sveltejs/adapter-static@2.0.3",
+		"repository": "https://github.com/sveltejs/kit",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@sveltejs/kit@1.30.3",
+		"repository": "https://github.com/sveltejs/kit",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@sveltejs/vite-plugin-svelte@2.5.3",
+		"repository": "https://github.com/sveltejs/vite-plugin-svelte",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@tabler/icons-webfont@2.47.0",
+		"repository": "https://github.com/tabler/tabler-icons",
+		"license": "MIT*",
+		"licenseText": ""
+	},
+	{
+		"name": "@tauri-apps/api@1.5.3",
+		"repository": "https://github.com/tauri-apps/tauri",
+		"license": "Apache-2.0 OR MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@tauri-apps/cli@1.5.9",
+		"repository": "https://github.com/tauri-apps/tauri",
+		"license": "Apache-2.0 OR MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@tsconfig/svelte@5.0.2",
+		"repository": "https://github.com/tsconfig/bases",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@types/node@20.11.16",
+		"repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@types/websocket@1.0.2",
+		"repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@types/ws@7.4.6",
+		"repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@typescript-eslint/eslint-plugin@6.20.0",
+		"repository": "https://github.com/typescript-eslint/typescript-eslint",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@typescript-eslint/parser@6.20.0",
+		"repository": "https://github.com/typescript-eslint/typescript-eslint",
+		"license": "BSD-2-Clause",
+		"licenseText": ""
+	},
+	{
+		"name": "@typescript-eslint/scope-manager@6.20.0",
+		"repository": "https://github.com/typescript-eslint/typescript-eslint",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@typescript-eslint/type-utils@6.20.0",
+		"repository": "https://github.com/typescript-eslint/typescript-eslint",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@typescript-eslint/types@6.20.0",
+		"repository": "https://github.com/typescript-eslint/typescript-eslint",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@typescript-eslint/typescript-estree@6.20.0",
+		"repository": "https://github.com/typescript-eslint/typescript-eslint",
+		"license": "BSD-2-Clause",
+		"licenseText": ""
+	},
+	{
+		"name": "@typescript-eslint/utils@6.20.0",
+		"repository": "https://github.com/typescript-eslint/typescript-eslint",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "@typescript-eslint/visitor-keys@6.20.0",
+		"repository": "https://github.com/typescript-eslint/typescript-eslint",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "axios@1.6.7",
+		"repository": "https://github.com/axios/axios",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "concurrently@8.2.2",
+		"repository": "https://github.com/open-cli-tools/concurrently",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "csstype@3.1.3",
+		"repository": "https://github.com/frenic/csstype",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{ "name": "dashboard@0.0.0", "license": "UNLICENSED", "licenseText": "" },
+	{
+		"name": "eslint-compat-utils@0.1.2",
+		"repository": "https://github.com/ota-meshi/eslint-compat-utils",
+		"url": "https://github.com/ota-meshi",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint-config-prettier@9.1.0",
+		"repository": "https://github.com/prettier/eslint-config-prettier",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint-import-resolver-node@0.3.9",
+		"repository": "https://github.com/import-js/eslint-plugin-import",
+		"url": "me@benmosher.com",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint-module-utils@2.8.0",
+		"repository": "https://github.com/import-js/eslint-plugin-import",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint-plugin-import@2.29.1",
+		"repository": "https://github.com/import-js/eslint-plugin-import",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint-plugin-prettier@5.1.3",
+		"repository": "https://github.com/prettier/eslint-plugin-prettier",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint-plugin-svelte@2.35.1",
+		"repository": "https://github.com/sveltejs/eslint-plugin-svelte",
+		"url": "https://github.com/ota-meshi",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint-plugin-unused-imports@3.0.0",
+		"repository": "https://github.com/sweepline/eslint-plugin-unused-imports",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint-rule-composer@0.3.0",
+		"repository": "https://github.com/not-an-aardvark/eslint-rule-composer",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint-scope@7.2.2",
+		"repository": "https://github.com/eslint/eslint-scope",
+		"license": "BSD-2-Clause",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint-visitor-keys@3.4.3",
+		"repository": "https://github.com/eslint/eslint-visitor-keys",
+		"url": "https://github.com/mysticatea",
+		"license": "Apache-2.0",
+		"licenseText": ""
+	},
+	{
+		"name": "eslint@8.56.0",
+		"repository": "https://github.com/eslint/eslint",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "lerna@8.0.2",
+		"repository": "https://github.com/lerna/lerna",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "license-checker@25.0.1",
+		"repository": "https://github.com/davglass/license-checker",
+		"license": "BSD-3-Clause",
+		"licenseText": ""
+	},
+	{
+		"name": "postcss-html@1.6.0",
+		"repository": "https://github.com/ota-meshi/postcss-html",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "prettier-linter-helpers@1.0.0",
+		"repository": "https://github.com/prettier/prettier-linter-helpers",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "prettier-plugin-svelte@3.1.2",
+		"repository": "https://github.com/sveltejs/prettier-plugin-svelte",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "prettier@3.2.4",
+		"repository": "https://github.com/prettier/prettier",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "qrious@4.0.2",
+		"repository": "https://github.com/neocotic/qrious",
+		"url": "https://neocotic.com",
+		"license": "GPL-3.0",
+		"licenseText": ""
+	},
+	{
+		"name": "sass@1.70.0",
+		"repository": "https://github.com/sass/dart-sass",
+		"url": "https://github.com/nex3",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "stylelint-config-html@1.1.0",
+		"repository": "https://github.com/ota-meshi/stylelint-config-html",
+		"url": "https://github.com/ota-meshi",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "stylelint-config-prettier@8.0.2",
+		"repository": "https://github.com/prettier/stylelint-config-prettier",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "stylelint-config-recess-order@4.4.0",
+		"repository": "https://github.com/stormwarning/stylelint-config-recess-order",
+		"url": "https://tidaltheory.io",
+		"license": "ISC",
+		"licenseText": ""
+	},
+	{
+		"name": "stylelint-config-standard-scss@11.1.0",
+		"repository": "https://github.com/stylelint-scss/stylelint-config-standard-scss",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "stylelint-config-standard@34.0.0",
+		"repository": "https://github.com/stylelint/stylelint-config-standard",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "stylelint@15.11.0",
+		"repository": "https://github.com/stylelint/stylelint",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "sugarss@4.0.1",
+		"repository": "https://github.com/postcss/sugarss",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "svelte-check@3.6.3",
+		"repository": "https://github.com/sveltejs/language-tools",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "svelte-eslint-parser@0.33.1",
+		"repository": "https://github.com/sveltejs/svelte-eslint-parser",
+		"url": "https://github.com/ota-meshi",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "svelte@4.2.9",
+		"repository": "https://github.com/sveltejs/svelte",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "ts-node@10.0.0",
+		"repository": "https://github.com/TypeStrong/ts-node",
+		"url": "http://blakeembrey.me",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "tslib@2.6.2",
+		"repository": "https://github.com/Microsoft/tslib",
+		"license": "0BSD",
+		"licenseText": ""
+	},
+	{
+		"name": "typescript@5.3.3",
+		"repository": "https://github.com/Microsoft/TypeScript",
+		"license": "Apache-2.0",
+		"licenseText": ""
+	},
+	{
+		"name": "vite@4.5.2",
+		"repository": "https://github.com/vitejs/vite",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "vitest@0.34.6",
+		"repository": "https://github.com/vitest-dev/vitest",
+		"license": "MIT",
+		"licenseText": ""
+	},
+	{
+		"name": "websocket@1.0.34",
+		"repository": "https://github.com/theturtle32/WebSocket-Node",
+		"url": "https://github.com/theturtle32",
+		"license": "Apache-2.0",
+		"licenseText": ""
+	},
+	{
+		"name": "ws@7.5.2",
+		"repository": "https://github.com/websockets/ws",
+		"url": "http://2x.io",
+		"license": "MIT",
+		"licenseText": ""
+	}
+]

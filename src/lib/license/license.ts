@@ -11,5 +11,5 @@ import * as TablerIcons from './tabler-icons.js';
 
 export const LICENSES: License[] = [
     TablerIcons,
-    ...licenses,
+    ...licenses as License[],
 ];
