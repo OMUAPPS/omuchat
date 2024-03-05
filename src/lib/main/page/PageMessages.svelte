@@ -6,7 +6,7 @@
     import type { PanelEntry } from '../panel/panel.js';
     import PanelProvider from '../panel/PanelProvider.svelte';
     import PanelRooms from '../panel/rooms/PanelRooms.svelte';
-    
+
     const panels = writable<PanelEntry[]>([
         {
             icon: 'ti ti-bolt',
@@ -24,9 +24,13 @@
             icon: 'ti ti-message',
             name: 'ギフト／投げ銭',
             width: 400,
-            panel: () => ({ component: PanelMessages, props: {
-                filter: (_key: string, message: models.Message) => !!(message.gifts?.length || message.paid)
-            } }),
+            panel: () => ({
+                component: PanelMessages,
+                props: {
+                    filter: (_key: string, message: models.Message) =>
+                        !!(message.gifts?.length || message.paid),
+                },
+            }),
         },
     ]);
 </script>

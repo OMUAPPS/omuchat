@@ -13,12 +13,12 @@
         if (part.startsWith('http')) {
             return {
                 type: 'url',
-                content: part
+                content: part,
             };
         } else {
             return {
                 type: 'text',
-                content: part
+                content: part,
             };
         }
     });

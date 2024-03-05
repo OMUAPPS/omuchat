@@ -1,61 +1,61 @@
 name: Publish Package to npmjs
 
 on:
-  workflow_dispatch:
-    inputs:
-      releaseType:
-        type: choice
-        description: Release type
-        required: true
-        options:
-          - release
-          - prerelease
-          - graduate
+    workflow_dispatch:
+        inputs:
+            releaseType:
+                type: choice
+                description: Release type
+                required: true
+                options:
+                    - release
+                    - prerelease
+                    - graduate
 
 permissions:
-  contents: write # for checkout and tag
-  pull-requests: write # for comments
-  packages: write # for publish
+    contents: write # for checkout and tag
+    pull-requests: write # for comments
+    packages: write # for publish
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    env:
-      NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-      NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-          run_install: false
-
-      - uses: actions/setup-node@v4.0.1
-        with:
-          node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-
-      - name: Git Identity
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+    publish:
+        runs-on: ubuntu-latest
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+            NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+            GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+            - name: Install pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 8
+                  run_install: false
 
-      - name: Build
-        run: npx lerna run build
+            - uses: actions/setup-node@v4.0.1
+              with:
+                  node-version: '20.x'
+                  registry-url: 'https://registry.npmjs.org'
+                  cache: 'pnpm'
 
-      - if: ${{ inputs.releaseType == 'release' }}
-        run: npx lerna publish --yes --no-private
-      - if: ${{ inputs.releaseType == 'prerelease' }}
-        run: npx lerna publish --yes --no-private --conventional-prerelease --dist-tag alpha
-      - if: ${{ inputs.releaseType == 'graduate' }}
-        run: npx lerna publish --yes --no-private --conventional-graduate
+            - name: Git Identity
+              run: |
+                  git config --global user.name 'github-actions[bot]'
+                  git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+                  git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Install dependencies
+              run: pnpm i --frozen-lockfile
+
+            - name: Build
+              run: npx lerna run build
+
+            - if: ${{ inputs.releaseType == 'release' }}
+              run: npx lerna publish --yes --no-private
+            - if: ${{ inputs.releaseType == 'prerelease' }}
+              run: npx lerna publish --yes --no-private --conventional-prerelease --dist-tag alpha
+            - if: ${{ inputs.releaseType == 'graduate' }}
+              run: npx lerna publish --yes --no-private --conventional-graduate

@@ -18,10 +18,8 @@
         "baseUrl": ".",
         "paths": {},
         "strict": true,
-        "newLine": "LF"
+        "newLine": "LF",
     },
     "compileOnSave": true,
-    "include": [
-        "./src/**/*"
-    ]
+    "include": ["./src/**/*"],
 }

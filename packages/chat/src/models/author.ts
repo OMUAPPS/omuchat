@@ -10,7 +10,7 @@ export type AuthorJson = {
     screen_id?: string;
     avatar_url?: string;
     roles?: RoleJson[];
-}
+};
 
 export class Author implements Keyable, Model<AuthorJson> {
     providerId: string;
@@ -43,7 +43,7 @@ export class Author implements Keyable, Model<AuthorJson> {
             name: info.name,
             screen_id: info.screen_id,
             avatar_url: info.avatar_url,
-            roles: info.roles?.map(role => new Role(role)),
+            roles: info.roles?.map((role) => new Role(role)),
         });
     }
 
@@ -58,7 +58,7 @@ export class Author implements Keyable, Model<AuthorJson> {
             name: this.name,
             screen_id: this.screenId,
             avatar_url: this.avatarUrl,
-            roles: this.roles?.map(role => role.toJson()),
+            roles: this.roles?.map((role) => role.toJson()),
         };
     }
 }

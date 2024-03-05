@@ -9,7 +9,7 @@
     const app = new App({
         name: `remote-client-${getOS()}-${getBrowser()}-${getTabId()}`,
         version: '0.1.0',
-        group: 'omu.chat'
+        group: 'omu.chat',
     });
 </script>
 

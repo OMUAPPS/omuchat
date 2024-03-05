@@ -9,7 +9,7 @@ export type ChannelJson = {
     description: string;
     active: boolean;
     icon_url: string;
-}
+};
 
 export class Channel implements Model<ChannelJson>, Keyable {
     providerId: string;
@@ -35,7 +35,7 @@ export class Channel implements Model<ChannelJson>, Keyable {
     }
 
     key(): string {
-        return `${this.providerId}:${this.id}`
+        return `${this.providerId}:${this.id}`;
     }
 
     toJson(): ChannelJson {

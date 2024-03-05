@@ -1,4 +1,4 @@
-import type { Keyable, Model } from "@omuchatjs/omu/interface.js";
+import type { Keyable, Model } from '@omuchatjs/omu/interface.js';
 
 export type AssetType = 'app' | 'panel' | 'image';
 
@@ -11,7 +11,7 @@ export type AssetJson = {
     url: string;
     settingsUrl?: string;
     tags: string[];
-}
+};
 
 export class Asset implements Keyable, Model<AssetJson> {
     public id: string;
@@ -51,7 +51,7 @@ export class Asset implements Keyable, Model<AssetJson> {
             thumbnail: this.thumbnail,
             url: this.url,
             settingsUrl: this.settingsUrl,
-            tags: this.tags
+            tags: this.tags,
         };
     }
 }

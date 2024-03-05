@@ -1,4 +1,4 @@
-import { writable } from "svelte/store"
+import { writable } from 'svelte/store';
 
 export const dateTimeFormats = writable({
     full: new Intl.DateTimeFormat(window.navigator.language, {
@@ -15,4 +15,4 @@ export const dateTimeFormats = writable({
         timeStyle: 'short',
         hour12: false,
     }),
-})
+});

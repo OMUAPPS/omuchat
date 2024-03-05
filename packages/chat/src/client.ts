@@ -37,11 +37,13 @@ export class Client {
             port: 26423,
             secure: false,
         };
-        this.omu = client || new omu.OmuClient({
-            app,
-            address: this.address,
-            token: token ?? new BrowserTokenProvider('omu-token'),
-        });
+        this.omu =
+            client ||
+            new omu.OmuClient({
+                app,
+                address: this.address,
+                token: token ?? new BrowserTokenProvider('omu-token'),
+            });
         this.eventRegistry = new EventRegistry(this);
         this.messages = this.omu.tables.get(chat.MessagesTableKey);
         this.authors = this.omu.tables.get(chat.AuthorsTableKey);
@@ -64,7 +66,7 @@ export class Client {
 }
 
 export class BrowserTokenProvider implements TokenProvider {
-    constructor(private readonly key: string) { }
+    constructor(private readonly key: string) {}
     async set(serverAddress: Address, app: omu.App, token: string): Promise<void> {
         const tokens = JSON.parse(localStorage.getItem(this.key) || '{}');
         const key = `${serverAddress.host}:${serverAddress.port}:${app.key()}`;

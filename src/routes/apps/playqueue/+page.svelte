@@ -11,10 +11,10 @@
     const app = new App({
         name: 'play-queue',
         version: '0.1.0',
-        group: 'omu.chat.apps'
+        group: 'omu.chat.apps',
     });
     const client = new Client({
-        app
+        app,
     });
 
     client.chat.authors.listen();
@@ -30,8 +30,8 @@
                 {
                     author,
                     message,
-                    element: null
-                }
+                    element: null,
+                },
             ];
         }
     });

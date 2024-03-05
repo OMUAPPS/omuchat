@@ -58,12 +58,7 @@
     </div>
     <div class="items">
         {#if search === ''}
-            <TableList
-                table={dashboard.assets}
-                component={AssetItem}
-                filter={filter}
-                sort={sort}
-            />
+            <TableList table={dashboard.assets} component={AssetItem} {filter} {sort} />
         {/if}
     </div>
 </div>

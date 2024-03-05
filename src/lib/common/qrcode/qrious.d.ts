@@ -1,6 +1,6 @@
 interface QRiousStatic {
     // eslint-disable-next-line @typescript-eslint/no-misused-new
-    new(options?: QRiousOptions): QRiousStatic;
+    new (options?: QRiousOptions): QRiousStatic;
     toDataURL(mime?: string): string;
     set(options: QRiousOptions): void;
 }

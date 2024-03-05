@@ -1,6 +1,6 @@
 <script lang="ts">
     export let handle: (files: Map<string, Uint8Array>) => void;
-    export let accept: string = "image/*";
+    export let accept: string = 'image/*';
     export let multiple: boolean = false;
 
     async function handleChange(event: Event) {
@@ -19,9 +19,9 @@
     let input: HTMLInputElement;
 </script>
 
-<input type="file" accept={accept} multiple={multiple} bind:this={input} on:change={handleChange} hidden/>
+<input type="file" {accept} {multiple} bind:this={input} on:change={handleChange} hidden />
 <button on:click={() => input.click()}>
-    <slot/>
+    <slot />
 </button>
 
 <style>

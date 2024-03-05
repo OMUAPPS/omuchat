@@ -1,50 +1,50 @@
 {
-	"type": "module",
-	"name": "@omuchatjs/chat",
-	"version": "0.0.19",
-	"repository": "https://github.com/OMUCHAT/omuchat.js.git",
-	"publishConfig": {
-		"access": "public"
-	},
-	"exports": {
-		".": {
-			"import": "./built/esm/index.js",
-			"types": "./built/dts/index.d.ts"
-		},
-		"./*": {
-			"import": "./built/esm/*",
-			"types": "./built/dts/*"
-		}
-	},
-	"scripts": {
-		"ts": "npm run ts-esm && npm run ts-dts",
-		"ts-esm": "tsc --outDir built/esm",
-		"ts-dts": "tsc --outDir built/dts --declaration true --emitDeclarationOnly true --declarationMap true",
-		"watch": "tsc --watch --outDir built/esm",
-		"build": "npm run ts",
-		"lint": "eslint . --ext .js,.ts",
-		"fix": "eslint . --ext .js,.ts --fix"
-	},
-	"devDependencies": {
-		"@types/node": "^20.11.2",
-		"@types/websocket": "1.0.2",
-		"@types/ws": "7.4.6",
-		"@typescript-eslint/eslint-plugin": "^6.6.0",
-		"@typescript-eslint/parser": "^6.6.0",
-		"axios": "^1.6.0",
-		"eslint": "^8.48.0",
-		"eslint-config-prettier": "^9.0.0",
-		"eslint-plugin-import": "^2.29.0",
-		"eslint-plugin-prettier": "^5.0.0",
-		"eslint-plugin-svelte": "^2.35.0",
-		"eslint-plugin-unused-imports": "^3.0.0",
-		"ts-node": "10.0.0",
-		"typescript": "^5.3.3",
-		"websocket": "1.0.34",
-		"ws": "7.5.2"
-	},
-	"dependencies": {
-		"@omuchatjs/omu": "workspace:*"
-	},
-	"gitHead": "04559d5aec52117d707e0d554ee429b858da522a"
+    "type": "module",
+    "name": "@omuchatjs/chat",
+    "version": "0.0.19",
+    "repository": "https://github.com/OMUCHAT/omuchat.js.git",
+    "publishConfig": {
+        "access": "public"
+    },
+    "exports": {
+        ".": {
+            "import": "./built/esm/index.js",
+            "types": "./built/dts/index.d.ts"
+        },
+        "./*": {
+            "import": "./built/esm/*",
+            "types": "./built/dts/*"
+        }
+    },
+    "scripts": {
+        "ts": "npm run ts-esm && npm run ts-dts",
+        "ts-esm": "tsc --outDir built/esm",
+        "ts-dts": "tsc --outDir built/dts --declaration true --emitDeclarationOnly true --declarationMap true",
+        "watch": "tsc --watch --outDir built/esm",
+        "build": "npm run ts",
+        "lint": "eslint . --ext .js,.ts",
+        "fix": "eslint . --ext .js,.ts --fix"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.2",
+        "@types/websocket": "1.0.2",
+        "@types/ws": "7.4.6",
+        "@typescript-eslint/eslint-plugin": "^6.6.0",
+        "@typescript-eslint/parser": "^6.6.0",
+        "axios": "^1.6.0",
+        "eslint": "^8.48.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-import": "^2.29.0",
+        "eslint-plugin-prettier": "^5.0.0",
+        "eslint-plugin-svelte": "^2.35.0",
+        "eslint-plugin-unused-imports": "^3.0.0",
+        "ts-node": "10.0.0",
+        "typescript": "^5.3.3",
+        "websocket": "1.0.34",
+        "ws": "7.5.2"
+    },
+    "dependencies": {
+        "@omuchatjs/omu": "workspace:*"
+    },
+    "gitHead": "04559d5aec52117d707e0d554ee429b858da522a"
 }

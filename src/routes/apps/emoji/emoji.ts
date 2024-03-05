@@ -1,5 +1,5 @@
-import { Chat } from "@omuchatjs/chat";
-import { App } from "@omuchatjs/omu";
+import { Chat } from '@omuchatjs/chat';
+import { App } from '@omuchatjs/omu';
 
 export interface Emoji {
     id: string;
@@ -9,9 +9,9 @@ export interface Emoji {
 }
 
 const app = new App({
-    name: "emoji",
-    version: "0.1.0",
-    group: "omu.chat.apps",
+    name: 'emoji',
+    version: '0.1.0',
+    group: 'omu.chat.apps',
 });
 export const client = new Chat({
     app,

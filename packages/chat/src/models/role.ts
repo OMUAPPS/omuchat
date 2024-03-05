@@ -7,7 +7,7 @@ export type RoleJson = {
     is_moderator: boolean;
     icon_url?: string;
     color?: string;
-}
+};
 
 export class Role implements Model<RoleJson> {
     id?: string;

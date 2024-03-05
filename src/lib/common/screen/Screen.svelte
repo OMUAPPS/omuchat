@@ -1,7 +1,6 @@
 <script lang="ts">
-    
-import { screenContext } from './screen.js';
-import ScreenHeader from './ScreenHeader.svelte';
+    import { screenContext } from './screen.js';
+    import ScreenHeader from './ScreenHeader.svelte';
 
     import { classes } from '$lib/utils/class-helper.js';
 

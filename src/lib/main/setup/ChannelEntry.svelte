@@ -1,7 +1,7 @@
-<script lang="ts">  
-    import type { models } from "@omuchatjs/chat";
+<script lang="ts">
+    import type { models } from '@omuchatjs/chat';
 
-    import { getClient } from "$lib/common/omuchat/client.js";
+    import { getClient } from '$lib/common/omuchat/client.js';
 
     export let channel: models.Channel;
     export let active = false;

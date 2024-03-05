@@ -33,15 +33,18 @@ export class SerializeEndpointType<Req = unknown, Res = unknown> implements Endp
         this.responseSerializer = responseSerializer ?? Serializer.noop();
     }
 
-    static of<Req, Res>(app: App, {
-        name,
-        requestSerializer,
-        responseSerializer,
-    }: {
-        name: string;
-        requestSerializer?: Serializable<Req, Uint8Array>;
-        responseSerializer?: Serializable<Res, Uint8Array>;
-    }): SerializeEndpointType<Req, Res> {
+    static of<Req, Res>(
+        app: App,
+        {
+            name,
+            requestSerializer,
+            responseSerializer,
+        }: {
+            name: string;
+            requestSerializer?: Serializable<Req, Uint8Array>;
+            responseSerializer?: Serializable<Res, Uint8Array>;
+        },
+    ): SerializeEndpointType<Req, Res> {
         return new SerializeEndpointType<Req, Res>({
             info: new EndpointInfo(app.key(), name),
             requestSerializer,
@@ -49,15 +52,18 @@ export class SerializeEndpointType<Req = unknown, Res = unknown> implements Endp
         });
     }
 
-    static ofExtension<Req, Res>(extension: ExtensionType, {
-        name,
-        requestSerializer,
-        responseSerializer,
-    }: {
-        name: string;
-        requestSerializer?: Serializable<Req, Uint8Array>;
-        responseSerializer?: Serializable<Res, Uint8Array>;
-    }): SerializeEndpointType<Req, Res> {
+    static ofExtension<Req, Res>(
+        extension: ExtensionType,
+        {
+            name,
+            requestSerializer,
+            responseSerializer,
+        }: {
+            name: string;
+            requestSerializer?: Serializable<Req, Uint8Array>;
+            responseSerializer?: Serializable<Res, Uint8Array>;
+        },
+    ): SerializeEndpointType<Req, Res> {
         return new SerializeEndpointType<Req, Res>({
             info: new EndpointInfo(extension.name, name),
             requestSerializer,
@@ -72,43 +78,56 @@ export class JsonEndpointType<Req = unknown, Res = unknown> implements EndpointT
     public requestSerializer: Serializable<Req, Uint8Array>;
     public responseSerializer: Serializable<Res, Uint8Array>;
 
-    constructor(info: EndpointInfo, {
-        requestSerializer,
-        responseSerializer,
-    }: {
-        requestSerializer: Serializable<Req, any>;
-        responseSerializer: Serializable<Res, any>;
-    }) {
+    constructor(
+        info: EndpointInfo,
+        {
+            requestSerializer,
+            responseSerializer,
+        }: {
+            requestSerializer: Serializable<Req, any>;
+            responseSerializer: Serializable<Res, any>;
+        },
+    ) {
         this.info = info;
         this.type = info.key();
-        this.requestSerializer = Serializer.noop<Req>().pipe(requestSerializer).pipe(Serializer.json());
-        this.responseSerializer = Serializer.noop<Res>().pipe(responseSerializer).pipe(Serializer.json());
+        this.requestSerializer = Serializer.noop<Req>()
+            .pipe(requestSerializer)
+            .pipe(Serializer.json());
+        this.responseSerializer = Serializer.noop<Res>()
+            .pipe(responseSerializer)
+            .pipe(Serializer.json());
     }
 
-    static of<Req, Res>(identifier: Identifier | App, {
-        name,
-        requestSerializer,
-        responseSerializer,
-    }: {
-        name: string;
-        requestSerializer?: Serializable<Req, any>;
-        responseSerializer?: Serializable<Res, any>;
-    }): JsonEndpointType<Req, Res> {
+    static of<Req, Res>(
+        identifier: Identifier | App,
+        {
+            name,
+            requestSerializer,
+            responseSerializer,
+        }: {
+            name: string;
+            requestSerializer?: Serializable<Req, any>;
+            responseSerializer?: Serializable<Res, any>;
+        },
+    ): JsonEndpointType<Req, Res> {
         return new JsonEndpointType<Req, Res>(new EndpointInfo(identifier.key(), name), {
             requestSerializer: requestSerializer ?? Serializer.noop(),
             responseSerializer: responseSerializer ?? Serializer.noop(),
         });
     }
 
-    static ofExtension<Req, Res>(extension: ExtensionType, {
-        name,
-        requestSerializer,
-        responseSerializer,
-    }: {
-        name: string;
-        requestSerializer?: Serializable<Req, any>;
-        responseSerializer?: Serializable<Res, any>;
-    }): JsonEndpointType<Req, Res> {
+    static ofExtension<Req, Res>(
+        extension: ExtensionType,
+        {
+            name,
+            requestSerializer,
+            responseSerializer,
+        }: {
+            name: string;
+            requestSerializer?: Serializable<Req, any>;
+            responseSerializer?: Serializable<Res, any>;
+        },
+    ): JsonEndpointType<Req, Res> {
         return new JsonEndpointType<Req, Res>(new EndpointInfo(extension.name, name), {
             requestSerializer: requestSerializer ?? Serializer.noop(),
             responseSerializer: responseSerializer ?? Serializer.noop(),

@@ -1,6 +1,6 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store';
 
-import { SSR, invoke, isOnTauri, waitForLoad } from "$lib/utils/tauri.js";
+import { SSR, invoke, isOnTauri, waitForLoad } from '$lib/utils/tauri.js';
 
 export const origin = writable<string>();
 

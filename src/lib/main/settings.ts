@@ -21,10 +21,7 @@ function getSystemLanguage(): keyof typeof LOCALES {
     return 'ja-JP';
 }
 
-export function createSetting<T>(
-    key: string,
-    defaultValue: T
-) {
+export function createSetting<T>(key: string, defaultValue: T) {
     if (typeof localStorage === 'undefined') {
         return writable<T>(defaultValue);
     }
@@ -37,7 +34,7 @@ export function createSetting<T>(
         }
     }
     const store = writable<T>(
-        localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)!) : defaultValue
+        localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)!) : defaultValue,
     );
     store.subscribe((value) => localStorage.setItem(key, JSON.stringify(value)));
     return store;
@@ -78,11 +75,11 @@ SETTING_REGISTRY.set('general', {
                 component: Checkbox,
                 props: {
                     label: 'settings.setting.devMode',
-                    value: devMode
-                }
+                    value: devMode,
+                },
             };
-        }
-    }
+        },
+    },
 });
 SETTING_REGISTRY.set('language', {
     language: {
@@ -93,10 +90,10 @@ SETTING_REGISTRY.set('language', {
                     label: 'settings.setting.language',
                     value: language,
                     options: Object.keys(LOCALES).sort(
-                        (a, b) => calcLanguageScore(b) - calcLanguageScore(a)
-                    ) as (keyof typeof LOCALES)[]
-                }
+                        (a, b) => calcLanguageScore(b) - calcLanguageScore(a),
+                    ) as (keyof typeof LOCALES)[],
+                },
             };
-        }
+        },
     },
 });

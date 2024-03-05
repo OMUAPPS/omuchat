@@ -21,7 +21,7 @@
         if (!$installed) {
             screenContext.push({
                 component: ScreenSetup,
-                props: {}
+                props: {},
             });
         }
     }

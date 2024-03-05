@@ -3,9 +3,11 @@ import type { Keyable } from './interface.js';
 const NAMESPACE_REGEX = /^\w+(\.[:\w]+)*$/;
 const NAME_REGEX = /^[\w-]+$/;
 
-
 export class Identifier implements Keyable {
-    constructor(public namespace: string, public name: string) {
+    constructor(
+        public namespace: string,
+        public name: string,
+    ) {
         Identifier.validate(namespace, name);
     }
 

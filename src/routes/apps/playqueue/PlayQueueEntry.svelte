@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher } from 'svelte';
 
-    import type { Entry } from "./playqueue.js";
+    import type { Entry } from './playqueue.js';
 
-    import Button from "$lib/common/input/Button.svelte";
-    import Tooltip from "$lib/common/tooltip/Tooltip.svelte";
+    import Button from '$lib/common/input/Button.svelte';
+    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
     export let entry: Entry;
 
@@ -16,7 +16,7 @@
     function handleMouseMove(event: MouseEvent) {
         if (dragging) {
             entry.element!.style.top = `${event.clientY - offset.y}px`;
-            dispatcher("drag", entry);
+            dispatcher('drag', entry);
         }
     }
 
@@ -28,18 +28,18 @@
         };
         handleMouseMove(event);
     }
-    
+
     function handleMouseUp() {
         if (!dragging) return;
         dragging = false;
-        dispatcher("drop", entry);
+        dispatcher('drop', entry);
     }
 </script>
 
 <svelte:window on:mouseup={handleMouseUp} on:mousemove={handleMouseMove} />
 
 <div class="container">
-    <div class="entry" bind:this={entry.element} class:dragging={dragging}>
+    <div class="entry" bind:this={entry.element} class:dragging>
         <button class="grab" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp}>
             <i class="ti ti-grip-vertical" />
         </button>

@@ -46,15 +46,18 @@ export class App implements Keyable, Model<AppJson> {
         this.image_url = options.image_url;
     }
 
-    static fromIdentifier(identifier: Identifier, options: {
-        version?: string;
-        description?: string;
-        authors?: string[];
-        site_url?: string;
-        repository_url?: string;
-        license?: string;
-        image_url?: string;
-    }): App {
+    static fromIdentifier(
+        identifier: Identifier,
+        options: {
+            version?: string;
+            description?: string;
+            authors?: string[];
+            site_url?: string;
+            repository_url?: string;
+            license?: string;
+            image_url?: string;
+        },
+    ): App {
         return new App({
             name: identifier.name,
             group: identifier.namespace,

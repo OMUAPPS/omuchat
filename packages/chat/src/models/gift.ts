@@ -6,7 +6,7 @@ export type GiftJson = {
     amount: number;
     is_paid: boolean;
     image_url?: string;
-}
+};
 
 export class Gift implements Model<GiftJson> {
     id: string;

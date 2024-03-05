@@ -3,4 +3,3 @@ export { IDENTIFIER } from './chat.js';
 export { Client } from './client.js';
 export { events } from './event/index.js';
 export * as models from './models/index.js';
-

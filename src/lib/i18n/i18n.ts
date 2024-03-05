@@ -41,7 +41,7 @@ export function createI18n(messages: Messages, locale: string): I18n {
                 return translation.replace(/\{([a-zA-Z0-9]+)\}/g, (_, key) => params[key] ?? key);
             }
             return translation;
-        }
+        },
     };
 }
 
@@ -56,7 +56,7 @@ export function createI18nUnion(i18ns: I18n[]): I18n {
         },
         get locale(): string {
             const locales = i18ns.map((i18n) => i18n.locale).join(', ');
-            return `union(${locales})`
-        }
+            return `union(${locales})`;
+        },
     };
 }

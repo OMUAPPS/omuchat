@@ -39,8 +39,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-- **omu:** ByteWriterが書き込むときバッファーが足りない問題を修正 ([2c4a9be](https://github.com/OMUCHAT/omu.js/commit/2c4a9bef06150727b8824c15bcb254b5a9e577c8))
-- **omu:** registryの更新を受け取るのを忘れてた ([b62f272](https://github.com/OMUCHAT/omu.js/commit/b62f2727a0435653675c6bd0ea6855707fdb51bd))
+-   **omu:** ByteWriterが書き込むときバッファーが足りない問題を修正 ([2c4a9be](https://github.com/OMUCHAT/omu.js/commit/2c4a9bef06150727b8824c15bcb254b5a9e577c8))
+-   **omu:** registryの更新を受け取るのを忘れてた ([b62f272](https://github.com/OMUCHAT/omu.js/commit/b62f2727a0435653675c6bd0ea6855707fdb51bd))
 
 ## 0.0.10 (2024-02-10)
 
@@ -70,5 +70,5 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-- submodules ([879f374](https://github.com/OMUCHAT/omu.js/commit/879f37402a0c9c5d85867493ca33a1c84316d201))
-- youtube reaction ([c18ebdc](https://github.com/OMUCHAT/omu.js/commit/c18ebdc439a4cce6ea0f22301ed2f934ae99154e))
+-   submodules ([879f374](https://github.com/OMUCHAT/omu.js/commit/879f37402a0c9c5d85867493ca33a1c84316d201))
+-   youtube reaction ([c18ebdc](https://github.com/OMUCHAT/omu.js/commit/c18ebdc439a4cce6ea0f22301ed2f934ae99154e))

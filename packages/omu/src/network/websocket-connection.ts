@@ -38,7 +38,13 @@ export class WebsocketConnection implements Connection {
 
     private async onOpen(): Promise<void> {
         this.connected = true;
-        this.send(EVENTS.Connect, new ConnectEvent(this.client.app, await this.client.token.get(this.serverAddress, this.client.app)));
+        this.send(
+            EVENTS.Connect,
+            new ConnectEvent(
+                this.client.app,
+                await this.client.token.get(this.serverAddress, this.client.app),
+            ),
+        );
         this.listeners.forEach((listener) => {
             listener.onConnect?.();
             listener.onStatusChanged?.('connected');

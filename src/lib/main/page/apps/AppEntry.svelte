@@ -3,7 +3,7 @@
 
     import type { ChatApp } from '$lib/common/omuchat/chatapp.js';
     import { t } from '$lib/i18n/i18n-context.js';
-    
+
     export let entry: ChatApp;
 </script>
 

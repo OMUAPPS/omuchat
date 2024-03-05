@@ -19,14 +19,14 @@
     function openSetupScreen() {
         screenContext.push({
             component: ScreenSetup,
-            props: {}
+            props: {},
         });
     }
 
     function openAddScreen() {
         screenContext.push({
             component: ScreenAddChannel,
-            props: {}
+            props: {},
         });
     }
 
@@ -34,7 +34,7 @@
 
     onMount(() => {
         const interval = setInterval(() => {
-            checkIntervalLeft = 15 - new Date().getTime() / 1000 % 15;
+            checkIntervalLeft = 15 - ((new Date().getTime() / 1000) % 15);
         }, 1000);
         return () => {
             clearInterval(interval);
@@ -45,15 +45,11 @@
 <div class="container">
     <div class="buttons">
         <ButtonMini on:click={openAddScreen}>
-            <Tooltip>
-                追加する
-            </Tooltip>
+            <Tooltip>追加する</Tooltip>
             <i class="ti ti-plus" />
         </ButtonMini>
         <ButtonMini on:click={openSetupScreen}>
-            <Tooltip>
-                簡単セットアップ
-            </Tooltip>
+            <Tooltip>簡単セットアップ</Tooltip>
             <i class="ti ti-external-link" />
         </ButtonMini>
         <small>
@@ -61,7 +57,7 @@
                 再チェックまであと
                 {Math.floor(checkIntervalLeft)}秒
             </Tooltip>
-            <i class="ti ti-reload"/>
+            <i class="ti ti-reload" />
             {Math.floor(checkIntervalLeft)}
         </small>
     </div>

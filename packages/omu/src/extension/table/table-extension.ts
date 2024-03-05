@@ -11,10 +11,13 @@ import { App } from '../server/app.js';
 import type { Model } from './model.js';
 import { Table, TableConfig, TableListener, TableType } from './table.js';
 
-export const TableExtensionType: ExtensionType<TableExtension> = new ExtensionType('table', (client) => new TableExtension(client));
-type TableEventData = { type: string; }
+export const TableExtensionType: ExtensionType<TableExtension> = new ExtensionType(
+    'table',
+    (client) => new TableExtension(client),
+);
+type TableEventData = { type: string };
 type TableItemsData = TableEventData & { items: Record<string, Uint8Array> };
-type TableProxyData = TableEventData & { items: Record<string, Uint8Array>, key: number };
+type TableProxyData = TableEventData & { items: Record<string, Uint8Array>; key: number };
 
 const itemsSerializer = new Serializer<TableItemsData, Uint8Array>(
     (data) => {
@@ -85,47 +88,77 @@ export const TableProxyEvent = SerializeEventType.ofExtension<TableProxyData>(Ta
     name: 'proxy',
     serializer: proxySerializer,
 });
-export const TableProxyEndpoint = SerializeEndpointType.ofExtension<TableProxyData, void>(TableExtensionType, {
-    name: 'proxy',
-    requestSerializer: proxySerializer,
-    responseSerializer: Serializer.noop(),
-});
+export const TableProxyEndpoint = SerializeEndpointType.ofExtension<TableProxyData, void>(
+    TableExtensionType,
+    {
+        name: 'proxy',
+        requestSerializer: proxySerializer,
+        responseSerializer: Serializer.noop(),
+    },
+);
 
-export const TableItemAddEvent = SerializeEventType.ofExtension<TableItemsData>(TableExtensionType, {
-    name: 'item_add',
-    serializer: itemsSerializer,
-});
-export const TableItemUpdateEvent = SerializeEventType.ofExtension<TableItemsData>(TableExtensionType, {
-    name: 'item_update',
-    serializer: itemsSerializer,
-});
-export const TableItemRemoveEvent = SerializeEventType.ofExtension<TableItemsData>(TableExtensionType, {
-    name: 'item_remove',
-    serializer: itemsSerializer,
-});
+export const TableItemAddEvent = SerializeEventType.ofExtension<TableItemsData>(
+    TableExtensionType,
+    {
+        name: 'item_add',
+        serializer: itemsSerializer,
+    },
+);
+export const TableItemUpdateEvent = SerializeEventType.ofExtension<TableItemsData>(
+    TableExtensionType,
+    {
+        name: 'item_update',
+        serializer: itemsSerializer,
+    },
+);
+export const TableItemRemoveEvent = SerializeEventType.ofExtension<TableItemsData>(
+    TableExtensionType,
+    {
+        name: 'item_remove',
+        serializer: itemsSerializer,
+    },
+);
 export const TableItemClearEvent = JsonEventType.ofExtension<TableEventData>(TableExtensionType, {
     name: 'item_clear',
 });
-export const TableItemGetEndpoint = SerializeEndpointType.ofExtension<TableEventData & { keys: string[] }, TableItemsData>(TableExtensionType, {
+export const TableItemGetEndpoint = SerializeEndpointType.ofExtension<
+    TableEventData & { keys: string[] },
+    TableItemsData
+>(TableExtensionType, {
     name: 'item_get',
     requestSerializer: Serializer.json(),
     responseSerializer: itemsSerializer,
 });
-export const TableItemFetchEndpoint = SerializeEndpointType.ofExtension<TableEventData & { before?: number, after?: number, cursor?: string }, TableItemsData>(TableExtensionType, {
+export const TableItemFetchEndpoint = SerializeEndpointType.ofExtension<
+    TableEventData & { before?: number; after?: number; cursor?: string },
+    TableItemsData
+>(TableExtensionType, {
     name: 'item_fetch',
     requestSerializer: Serializer.json(),
     responseSerializer: itemsSerializer,
 });
-export const TableItemSizeEndpoint = JsonEndpointType.ofExtension<TableEventData, number>(TableExtensionType, {
-    name: 'item_size',
-});
+export const TableItemSizeEndpoint = JsonEndpointType.ofExtension<TableEventData, number>(
+    TableExtensionType,
+    {
+        name: 'item_size',
+    },
+);
 
 export class TableExtension implements Extension {
     private readonly tableMap: Map<string, Table<unknown>>;
 
     constructor(private readonly client: Client) {
         this.tableMap = new Map();
-        client.events.register(TableConfigSetEvent, TableProxyEvent, TableProxyListenEvent, TableListenEvent, TableItemAddEvent, TableItemRemoveEvent, TableItemUpdateEvent, TableItemClearEvent);
+        client.events.register(
+            TableConfigSetEvent,
+            TableProxyEvent,
+            TableProxyListenEvent,
+            TableListenEvent,
+            TableItemAddEvent,
+            TableItemRemoveEvent,
+            TableItemUpdateEvent,
+            TableItemClearEvent,
+        );
     }
 
     create<T>(
@@ -148,13 +181,16 @@ export class TableExtension implements Extension {
         return this.create(type.identifier, type.serializer, type.keyFunc);
     }
 
-    model<T extends Keyable & Model<D>, D = unknown>(identifier: Identifier | App, {
-        name,
-        model,
-    }: {
-        name: string,
-        model: { fromJson(data: D): T },
-    }): Table<T> {
+    model<T extends Keyable & Model<D>, D = unknown>(
+        identifier: Identifier | App,
+        {
+            name,
+            model,
+        }: {
+            name: string;
+            model: { fromJson(data: D): T };
+        },
+    ): Table<T> {
         identifier = new Identifier(identifier.key(), name);
         if (this.has(identifier)) {
             throw new Error('Table already exists');
@@ -197,22 +233,28 @@ class TableImpl<T> implements Table<T> {
             }
             let items = this.deserializeItems(event.items);
             this.proxies.forEach((proxy) => {
-                items = new Map([...items.entries()].map(([key, item]) => {
-                    const proxyItem = proxy(item);
-                    if (proxyItem !== undefined) {
-                        return [key, proxyItem as T];
-                    }
-                    return undefined;
-                }).filter((item): item is [string, T] => {
-                    return typeof item !== 'undefined';
-                }));
+                items = new Map(
+                    [...items.entries()]
+                        .map(([key, item]) => {
+                            const proxyItem = proxy(item);
+                            if (proxyItem !== undefined) {
+                                return [key, proxyItem as T];
+                            }
+                            return undefined;
+                        })
+                        .filter((item): item is [string, T] => {
+                            return typeof item !== 'undefined';
+                        }),
+                );
             });
             client.endpoints.call(TableProxyEndpoint, {
                 type: this.key,
                 key: event.key,
-                items: Object.fromEntries([...items.entries()].map(([key, item]) => {
-                    return [key, this.serializer.serialize(item)];
-                })),
+                items: Object.fromEntries(
+                    [...items.entries()].map(([key, item]) => {
+                        return [key, this.serializer.serialize(item)];
+                    }),
+                ),
             });
         });
         client.events.addListener(TableItemAddEvent, (event) => {
@@ -259,7 +301,7 @@ class TableImpl<T> implements Table<T> {
             });
         });
     }
-    d
+    d;
     private updateCache(items: Map<string, T>): void {
         if (!this.cacheSize) {
             this.cache = new Map([...this.cache, ...items]);
@@ -386,7 +428,15 @@ class TableImpl<T> implements Table<T> {
         });
     }
 
-    async fetch({ before, after, cursor }: { before: number, after: number, cursor?: string }): Promise<Map<string, T>> {
+    async fetch({
+        before,
+        after,
+        cursor,
+    }: {
+        before: number;
+        after: number;
+        cursor?: string;
+    }): Promise<Map<string, T>> {
         const res = await this.client.endpoints.call(TableItemFetchEndpoint, {
             type: this.key,
             before,
@@ -398,20 +448,30 @@ class TableImpl<T> implements Table<T> {
         return items;
     }
 
-    async *iter({ backward, cursor }: { backward?: boolean, cursor?: string }): AsyncIterable<T> {
-        let items: Map<string, T> = await this.fetch(backward ? {
-            before: 0,
-            after: this.cacheSize ?? 100,
-            cursor,
-        } : {
-            before: this.cacheSize ?? 100,
-            after: 0,
-            cursor,
-        });
+    async *iter({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T> {
+        let items: Map<string, T> = await this.fetch(
+            backward
+                ? {
+                      before: 0,
+                      after: this.cacheSize ?? 100,
+                      cursor,
+                  }
+                : {
+                      before: this.cacheSize ?? 100,
+                      after: 0,
+                      cursor,
+                  },
+        );
         yield* items.values();
         while (items.size > 0) {
-            const cursor = this.keyFunc(backward ? items.values().next().value : [...items.values()].pop());
-            items = await this.fetch(backward ? { before: 0, after: this.cacheSize ?? 100, cursor } : { before: this.cacheSize ?? 100, after: 0, cursor });
+            const cursor = this.keyFunc(
+                backward ? items.values().next().value : [...items.values()].pop(),
+            );
+            items = await this.fetch(
+                backward
+                    ? { before: 0, after: this.cacheSize ?? 100, cursor }
+                    : { before: this.cacheSize ?? 100, after: 0, cursor },
+            );
             yield* items.values();
         }
     }
@@ -423,17 +483,21 @@ class TableImpl<T> implements Table<T> {
     }
 
     private deserializeItems(items: Record<string, Uint8Array>): Map<string, T> {
-        return new Map(Object.entries(items).map(([key, data]) => {
-            const item = this.serializer.deserialize(data);
-            this.cache.set(key, item);
-            return [key, item];
-        }));
+        return new Map(
+            Object.entries(items).map(([key, data]) => {
+                const item = this.serializer.deserialize(data);
+                this.cache.set(key, item);
+                return [key, item];
+            }),
+        );
     }
 
     private serializeItems(items: T[]): Record<string, Uint8Array> {
-        return Object.fromEntries(items.map((item) => {
-            return [this.keyFunc(item), this.serializer.serialize(item)];
-        }));
+        return Object.fromEntries(
+            items.map((item) => {
+                return [this.keyFunc(item), this.serializer.serialize(item)];
+            }),
+        );
     }
 
     setCacheSize(size: number): void {

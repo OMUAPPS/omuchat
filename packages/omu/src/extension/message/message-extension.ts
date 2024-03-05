@@ -3,7 +3,7 @@ import type { ConnectionListener } from '../../network/index.js';
 import { JsonEventType } from '../../event/index.js';
 import { ExtensionType, type Extension } from '../extension.js';
 
-type Key = { name: string, app?: string };
+type Key = { name: string; app?: string };
 
 export class MessageExtension implements Extension, ConnectionListener {
     private readonly listenKeys: Set<string> = new Set();
@@ -30,7 +30,7 @@ export class MessageExtension implements Extension, ConnectionListener {
 
     listen<T>(key: Key, handler: (value: T) => void): () => void {
         const keyString = `${key.app ?? this.client.app.key()}:${key.name}`;
-        const listener = (event: { key: string; body: any; }): void => {
+        const listener = (event: { key: string; body: any }): void => {
             if (event.key === keyString) {
                 handler(event.body);
             }
@@ -52,13 +52,19 @@ export class MessageExtension implements Extension, ConnectionListener {
     }
 }
 
-export const MessageExtensionType = new ExtensionType('message', (client: Client) => new MessageExtension(client));
+export const MessageExtensionType = new ExtensionType(
+    'message',
+    (client: Client) => new MessageExtension(client),
+);
 export const MessageRegisterEvent = JsonEventType.ofExtension<string>(MessageExtensionType, {
     name: 'register',
 });
 export const MessageListenEvent = JsonEventType.ofExtension<string>(MessageExtensionType, {
     name: 'listen',
 });
-export const MessageBroadcastEvent = JsonEventType.ofExtension<{ key: string, body: any }>(MessageExtensionType, {
-    name: 'broadcast',
-});
+export const MessageBroadcastEvent = JsonEventType.ofExtension<{ key: string; body: any }>(
+    MessageExtensionType,
+    {
+        name: 'broadcast',
+    },
+);

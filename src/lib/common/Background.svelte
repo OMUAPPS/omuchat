@@ -12,7 +12,7 @@
         width: calc(100vw + tan(30deg) * 100vh);
         height: 100vh;
         pointer-events: none;
-        background: linear-gradient(180deg, #F1F6F7 0%, #EDF7FF 100%);
+        background: linear-gradient(180deg, #f1f6f7 0%, #edf7ff 100%);
         transform: matrix(1, 0, 0.25, 1, 0, 0) translateX(-30vh);
     }
 

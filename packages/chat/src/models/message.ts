@@ -15,7 +15,7 @@ export type MessageJson = {
     content?: content.ComponentJson;
     paid?: PaidJson;
     gifts?: GiftJson[];
-}
+};
 
 export class Message implements Model<MessageJson>, Keyable, Timestamped {
     roomId: string;
@@ -54,7 +54,7 @@ export class Message implements Model<MessageJson>, Keyable, Timestamped {
             author_id: info.author_id,
             content: info.content && content.deserialize(info.content),
             paid: info.paid && Paid.fromJson(info.paid),
-            gifts: info.gifts?.map(gift => Gift.fromJson(gift)),
+            gifts: info.gifts?.map((gift) => Gift.fromJson(gift)),
             created_at: new Date(info.created_at),
         });
     }
@@ -78,7 +78,7 @@ export class Message implements Model<MessageJson>, Keyable, Timestamped {
             created_at: this.createdAt.toISOString(),
             content: this.content && content.serialize(this.content),
             paid: this.paid?.toJson(),
-            gifts: this.gifts?.map(gift => gift.toJson()),
+            gifts: this.gifts?.map((gift) => gift.toJson()),
         };
     }
 }

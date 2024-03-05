@@ -6,7 +6,10 @@ import type { AssetExtension } from '../extension/asset/asset-extension.js';
 import { AssetExtensionType } from '../extension/asset/asset-extension.js';
 import type { EndpointExtension } from '../extension/endpoint/endpoint-extension.js';
 import { EndpointExtensionType } from '../extension/endpoint/endpoint-extension.js';
-import { createExtensionRegistry, type ExtensionRegistry } from '../extension/extension-registry.js';
+import {
+    createExtensionRegistry,
+    type ExtensionRegistry,
+} from '../extension/extension-registry.js';
 import type { Extension, ExtensionType } from '../extension/extension.js';
 import type { MessageExtension } from '../extension/message/message-extension.js';
 import { MessageExtensionType } from '../extension/message/message-extension.js';
@@ -43,7 +46,7 @@ export class OmuClient implements Client, ConnectionListener {
         connection?: Connection;
         eventsRegistry?: EventRegistry;
         extensionRegistry?: ExtensionRegistry;
-        extensions?: ExtensionType<Extension>[]
+        extensions?: ExtensionType<Extension>[];
     }) {
         const { connection, eventsRegistry, extensionRegistry, extensions } = options;
         this.running = false;

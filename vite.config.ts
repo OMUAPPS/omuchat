@@ -5,11 +5,11 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
     plugins: [sveltekit()],
     test: {
-        include: ['src/**/*.{test,spec}.{js,ts}']
+        include: ['src/**/*.{test,spec}.{js,ts}'],
     },
     server: {
         fs: {
-            allow: [searchForWorkspaceRoot(process.cwd())]
-        }
-    }
+            allow: [searchForWorkspaceRoot(process.cwd())],
+        },
+    },
 });

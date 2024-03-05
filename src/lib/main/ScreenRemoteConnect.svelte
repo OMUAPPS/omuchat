@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    
+
     import Button from '../common/input/Button.svelte';
     import QrCode from '../common/qrcode/QRCode.svelte';
     import Screen from '../common/screen/Screen.svelte';
@@ -105,7 +105,7 @@
         font-weight: bold;
         background: var(--color-bg-2);
     }
-    
+
     .close-button {
         position: absolute;
         bottom: 20px;

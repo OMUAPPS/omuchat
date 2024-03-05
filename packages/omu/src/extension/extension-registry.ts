@@ -18,7 +18,9 @@ export function createExtensionRegistry(client: Client): ExtensionRegistry {
         }
         type.dependencies?.().forEach((dependency) => {
             if (!has(dependency)) {
-                throw new Error(`Extension type ${type.name} depends on ${dependency.name} which is not registered`);
+                throw new Error(
+                    `Extension type ${type.name} depends on ${dependency.name} which is not registered`,
+                );
             }
         });
         const extension = type.create(client);

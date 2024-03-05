@@ -1,12 +1,11 @@
 <script lang="ts">
-    import AppEntry from "./AppEntry.svelte";
+    import AppEntry from './AppEntry.svelte';
 
-    import { getClient } from "$lib/common/omuchat/client.js";
-    import TableList from "$lib/common/omuchat/TableList.svelte";
-    
+    import { getClient } from '$lib/common/omuchat/client.js';
+    import TableList from '$lib/common/omuchat/TableList.svelte';
+
     const { dashboard } = getClient();
 </script>
-
 
 <div class="container">
     <div class="header">
@@ -14,14 +13,10 @@
             <i class="ti ti-player-play" />
             アプリ
         </div>
-        <div>
-        </div>
+        <div></div>
     </div>
     <div class="apps">
-        <TableList
-            table={dashboard.apps}
-            component={AppEntry}
-        />
+        <TableList table={dashboard.apps} component={AppEntry} />
     </div>
 </div>
 

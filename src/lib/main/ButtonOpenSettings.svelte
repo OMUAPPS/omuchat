@@ -6,7 +6,6 @@
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { t } from '$lib/i18n/i18n-context.js';
 
-
     function openConnectScreen() {
         screenContext.push({ component: ScreenSettings, props: {} });
     }

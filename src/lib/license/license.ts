@@ -9,7 +9,4 @@ interface License {
 import licenses from './licenses.json';
 import * as TablerIcons from './tabler-icons.js';
 
-export const LICENSES: License[] = [
-    TablerIcons,
-    ...licenses as License[],
-];
+export const LICENSES: License[] = [TablerIcons, ...(licenses as License[])];

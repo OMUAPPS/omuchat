@@ -26,28 +26,34 @@ export class JsonEventType<T> implements EventType<T> {
         serializer?: Serializable<T, any>;
     }) {
         this.type = `${owner}:${name}`;
-        this.serializer = (Serializer.noop<T>()
+        this.serializer = Serializer.noop<T>()
             .pipe(serializer ?? Serializer.noop())
-            .pipe(Serializer.json()));
+            .pipe(Serializer.json());
     }
 
-    static of<T>(app: App, {
-        name,
-        serializer,
-    }: {
-        name: string;
-        serializer?: Serializable<T, any>;
-    }): JsonEventType<T> {
+    static of<T>(
+        app: App,
+        {
+            name,
+            serializer,
+        }: {
+            name: string;
+            serializer?: Serializable<T, any>;
+        },
+    ): JsonEventType<T> {
         return new JsonEventType<T>({ owner: app.key(), name, serializer });
     }
 
-    static ofExtension<T>(extension: ExtensionType, {
-        name,
-        serializer,
-    }: {
-        name: string;
-        serializer?: Serializable<T, any>;
-    }): JsonEventType<T> {
+    static ofExtension<T>(
+        extension: ExtensionType,
+        {
+            name,
+            serializer,
+        }: {
+            name: string;
+            serializer?: Serializable<T, any>;
+        },
+    ): JsonEventType<T> {
         return new JsonEventType<T>({ owner: extension.name, name, serializer });
     }
 }
@@ -81,13 +87,16 @@ export class SerializeEventType<T = any> implements EventType<T> {
         return new SerializeEventType<T>({ owner, name, serializer });
     }
 
-    static ofExtension<T>(extension: ExtensionType, {
-        name,
-        serializer,
-    }: {
-        name: string;
-        serializer: Serializable<T, Uint8Array>;
-    }): SerializeEventType<T> {
+    static ofExtension<T>(
+        extension: ExtensionType,
+        {
+            name,
+            serializer,
+        }: {
+            name: string;
+            serializer: Serializable<T, Uint8Array>;
+        },
+    ): SerializeEventType<T> {
         return new SerializeEventType<T>({ owner: extension.name, name, serializer });
     }
 }

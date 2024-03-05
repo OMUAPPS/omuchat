@@ -6,7 +6,7 @@ interface ImportMetaEnv {
     readonly VITE_APP_VERSION: string;
     readonly VITE_DEFAULT_ENGINE_INFOS: string;
     readonly VITE_GTM_CONTAINER_ID: string;
-    readonly VITE_TARGET: "electron" | "browser";
+    readonly VITE_TARGET: 'electron' | 'browser';
 }
 
 interface ImportMeta {

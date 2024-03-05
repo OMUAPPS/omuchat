@@ -4,7 +4,7 @@ import { JsonEndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType, type Extension } from '../extension.js';
 import { Registry } from './registry.js';
 
-type Key = { name: string, app?: string };
+type Key = { name: string; app?: string };
 
 export class RegistryExtension implements Extension {
     constructor(private readonly client: Client) {
@@ -37,7 +37,10 @@ class RegistryImpl<T> implements Registry<T> {
     }
 
     async get(): Promise<T> {
-        return await this.client.endpoints.call(RegistryGetEndpoint, this.key) as T ?? this.defaultValue;
+        return (
+            ((await this.client.endpoints.call(RegistryGetEndpoint, this.key)) as T) ??
+            this.defaultValue
+        );
     }
 
     async update(fn: (value: T) => T): Promise<void> {
@@ -46,7 +49,7 @@ class RegistryImpl<T> implements Registry<T> {
         this.client.send(RegistryUpdateEvent, {
             key: this.key,
             value: newValue,
-        })
+        });
     }
 
     async listen(handler: (value: T) => void): Promise<() => void> {
@@ -63,13 +66,22 @@ class RegistryImpl<T> implements Registry<T> {
     }
 }
 
-export const RegistryExtensionType = new ExtensionType('registry', (client: Client) => new RegistryExtension(client));
-export const RegistryUpdateEvent = JsonEventType.ofExtension<{ key: string, value: any }>(RegistryExtensionType, {
-    name: 'update',
-});
+export const RegistryExtensionType = new ExtensionType(
+    'registry',
+    (client: Client) => new RegistryExtension(client),
+);
+export const RegistryUpdateEvent = JsonEventType.ofExtension<{ key: string; value: any }>(
+    RegistryExtensionType,
+    {
+        name: 'update',
+    },
+);
 export const RegistryListenEvent = JsonEventType.ofExtension<string>(RegistryExtensionType, {
     name: 'listen',
 });
-export const RegistryGetEndpoint = JsonEndpointType.ofExtension<string, any>(RegistryExtensionType, {
-    name: 'get',
-});
+export const RegistryGetEndpoint = JsonEndpointType.ofExtension<string, any>(
+    RegistryExtensionType,
+    {
+        name: 'get',
+    },
+);

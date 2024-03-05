@@ -1,43 +1,50 @@
 <script lang="ts">
-	export let between = false;
-	export let reverse = false;
-	export let widthFull = false;
-	export let heightFull = false;
-	export let baseline = false;
-	export let gap = false;
+    export let between = false;
+    export let reverse = false;
+    export let widthFull = false;
+    export let heightFull = false;
+    export let baseline = false;
+    export let gap = false;
 </script>
 
-<div class:between class:reverse class:widthFull class:heightFull class:baseline class:gap>
-	<slot />
+<div
+    class:between
+    class:reverse
+    class:width={widthFull}
+    class:height={heightFull}
+    class:baseline
+    class:gap
+>
+    <slot />
 </div>
 
 <style>
-	div {
-		display: flex;
-		flex-direction: row;
-	}
+    div {
+        display: flex;
+        flex-direction: row;
+    }
 
-	.between {
-		justify-content: space-between;
-	}
+    .between {
+        justify-content: space-between;
+    }
 
-	.reverse {
-		flex-direction: row-reverse;
-	}
+    .reverse {
+        flex-direction: row-reverse;
+    }
 
-	.widthFull {
-		width: 100%;
-	}
+    .width {
+        width: 100%;
+    }
 
-	.heightFull {
-		height: 100%;
-	}
+    .height {
+        height: 100%;
+    }
 
-	.baseline {
-		align-items: baseline;
-	}
+    .baseline {
+        align-items: baseline;
+    }
 
-	.gap {
-		gap: 10px;
-	}
+    .gap {
+        gap: 10px;
+    }
 </style>

@@ -14,7 +14,7 @@
     chat.providers!.addListener({
         onCacheUpdate(cache) {
             providers = cache;
-        }
+        },
     });
     chat.providers!.fetch({});
 
@@ -37,7 +37,7 @@
                 if (options) {
                     matches!.set(provider.id, {
                         provider: provider,
-                        match: options
+                        match: options,
                     });
                 }
                 return true;
@@ -60,8 +60,8 @@
                 description: '',
                 id: '',
                 icon_url: '',
-                name: ''
-            })
+                name: '',
+            }),
         );
         screenContext.pop();
     }
@@ -110,7 +110,13 @@
         <!-- svelte-ignore a11y-autofocus -->
         <span>
             <i class="ti ti-link" />
-            <input type="text" bind:this={input} bind:value={url} placeholder="チャンネルURL..." autofocus={true}/>
+            <input
+                type="text"
+                bind:this={input}
+                bind:value={url}
+                placeholder="チャンネルURL..."
+                autofocus={true}
+            />
         </span>
         <div class="providers">
             {#if providers && providers.size}

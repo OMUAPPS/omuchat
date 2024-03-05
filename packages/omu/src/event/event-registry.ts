@@ -81,8 +81,10 @@ function defineEvent<T>(type: string, serializer: Serializable<T, any>): EventTy
 type ConnectEventData = { app: AppJson; token: string | null };
 
 export class ConnectEvent implements Model<ConnectEventData> {
-    constructor(public app: App, public token: string | null) {
-    }
+    constructor(
+        public app: App,
+        public token: string | null,
+    ) {}
 
     toJson(): ConnectEventData {
         return {

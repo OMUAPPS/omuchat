@@ -5,11 +5,9 @@ import type { ExtensionType } from '../extension.js';
 import type { App } from '../server/index.js';
 import type { Model } from './model.js';
 
-
 export type TableConfig = {
-    cache_size: number
+    cache_size: number;
 };
-
 
 export interface Table<T> {
     readonly cache: Map<string, T>;
@@ -20,8 +18,16 @@ export interface Table<T> {
     remove(...items: T[]): Promise<void>;
     clear(): Promise<void>;
 
-    fetch({ before, after, cursor }: { before?: number, after?: number, cursor?: string }): Promise<Map<string, T>>;
-    iter({ backward, cursor }: { backward?: boolean, cursor?: string }): AsyncIterable<T>;
+    fetch({
+        before,
+        after,
+        cursor,
+    }: {
+        before?: number;
+        after?: number;
+        cursor?: string;
+    }): Promise<Map<string, T>>;
+    iter({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T>;
     size(): Promise<number>;
 
     proxy(proxy: (item: T) => T | undefined): () => void;
@@ -47,15 +53,18 @@ export class TableType<T> {
         public identifier: Identifier,
         public serializer: Serializable<T, Uint8Array>,
         public keyFunc: (item: T) => string,
-    ) { }
+    ) {}
 
-    static model<T extends Keyable & Model<D>, D = unknown>(identifier: Identifier | App | ExtensionType, {
-        name,
-        model,
-    }: {
-        name: string,
-        model: { fromJson(data: D): T },
-    }): TableType<T> {
+    static model<T extends Keyable & Model<D>, D = unknown>(
+        identifier: Identifier | App | ExtensionType,
+        {
+            name,
+            model,
+        }: {
+            name: string;
+            model: { fromJson(data: D): T };
+        },
+    ): TableType<T> {
         return new TableType<T>(
             new Identifier(identifier.key(), name),
             Serializer.model(model).pipe(Serializer.json()),

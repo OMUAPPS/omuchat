@@ -3,7 +3,6 @@ import type { Client as OmuClient } from '@omuchatjs/omu';
 import { getContext, setContext } from 'svelte';
 import type { Dashboard } from './dashboard.js';
 
-
 export const CLIENT_CONTEXT = Symbol('client-context');
 
 interface ClientContext {

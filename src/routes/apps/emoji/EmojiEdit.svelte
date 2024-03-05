@@ -1,23 +1,22 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher } from 'svelte';
 
-    import type { Emoji } from "./emoji.js";
+    import type { Emoji } from './emoji.js';
 
-    import Button from "$lib/common/input/Button.svelte";
+    import Button from '$lib/common/input/Button.svelte';
 
     export let emoji: Emoji;
 
     const dispatch = createEventDispatcher();
 
     function saveEmoji() {
-        dispatch("save", emoji);
+        dispatch('save', emoji);
     }
 </script>
 
 <div class="emoji-edit">
     <img src={emoji.image_url} alt={emoji.name} />
-    <div class="inputs">
-    </div>
+    <div class="inputs"></div>
     <div class="info">
         <span>
             name:
@@ -35,7 +34,7 @@
                 <i class="ti ti-upload" />
             </div>
         </Button>
-        <Button on:click={() => dispatch("delete", emoji)} rounded>
+        <Button on:click={() => dispatch('delete', emoji)} rounded>
             <i class="ti ti-trash" />
         </Button>
     </div>

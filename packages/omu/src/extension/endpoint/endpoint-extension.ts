@@ -12,7 +12,7 @@ import { type EndpointType } from './endpoint.js';
 type FutureResult = {
     resolve: (data: Uint8Array) => void;
     reject: (error: Error) => void;
-}
+};
 
 export class EndpointExtension {
     private readonly endpointMap: Map<string, EndpointType>;
@@ -25,7 +25,12 @@ export class EndpointExtension {
         this.futureResultMap = new Map();
         this.endpoints = this.client.tables.get(EndpointsTableType);
         this.requestId = 0;
-        client.events.register(EndpointRegisterEvent, EndpointCallEvent, EndpointReceiveEvent, EndpointErrorEvent);
+        client.events.register(
+            EndpointRegisterEvent,
+            EndpointCallEvent,
+            EndpointReceiveEvent,
+            EndpointErrorEvent,
+        );
         client.events.addListener(EndpointReceiveEvent, (event) => {
             const promise = this.futureResultMap.get(event.id);
             if (!promise) return;
@@ -62,21 +67,27 @@ export class EndpointExtension {
     }
 }
 
-export const EndpointExtensionType = new ExtensionType('endpoint', (client: Client) => new EndpointExtension(client));
+export const EndpointExtensionType = new ExtensionType(
+    'endpoint',
+    (client: Client) => new EndpointExtension(client),
+);
 
-export const EndpointRegisterEvent = JsonEventType.ofExtension<EndpointInfo>(EndpointExtensionType, {
-    name: 'register',
-});
+export const EndpointRegisterEvent = JsonEventType.ofExtension<EndpointInfo>(
+    EndpointExtensionType,
+    {
+        name: 'register',
+    },
+);
 type EndpointReq = {
     type: string;
     id: number;
-}
+};
 
 type EndpointReqData = {
     type: string;
     id: number;
     data: Uint8Array;
-}
+};
 
 const serializer = new Serializer<EndpointReqData, Uint8Array>(
     (data) => {
@@ -96,17 +107,26 @@ const serializer = new Serializer<EndpointReqData, Uint8Array>(
     },
 );
 
-export const EndpointCallEvent = SerializeEventType.ofExtension<EndpointReqData>(EndpointExtensionType, {
-    name: 'call',
-    serializer,
-});
-export const EndpointReceiveEvent = SerializeEventType.ofExtension<EndpointReqData>(EndpointExtensionType, {
-    name: 'receive',
-    serializer,
-});
-export const EndpointErrorEvent = JsonEventType.ofExtension<EndpointReq & { error: string }>(EndpointExtensionType, {
-    name: 'error',
-});
+export const EndpointCallEvent = SerializeEventType.ofExtension<EndpointReqData>(
+    EndpointExtensionType,
+    {
+        name: 'call',
+        serializer,
+    },
+);
+export const EndpointReceiveEvent = SerializeEventType.ofExtension<EndpointReqData>(
+    EndpointExtensionType,
+    {
+        name: 'receive',
+        serializer,
+    },
+);
+export const EndpointErrorEvent = JsonEventType.ofExtension<EndpointReq & { error: string }>(
+    EndpointExtensionType,
+    {
+        name: 'error',
+    },
+);
 export const EndpointsTableType = TableType.model(EndpointExtensionType, {
     name: 'endpoints',
     model: EndpointInfo,

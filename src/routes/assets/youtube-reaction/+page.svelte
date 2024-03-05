@@ -12,7 +12,7 @@
     client.omu.message.listen<ReactionMessage>(
         {
             name: 'youtube-reaction',
-            app: 'omu.chat/provider'
+            app: 'omu.chat/provider',
         },
         (data) => {
             for (const [key, value] of Object.entries(data.reactions)) {
@@ -20,39 +20,39 @@
                     id++;
                     queue.push({
                         id,
-                        key
+                        key,
                     });
                 }
             }
-        }
+        },
     );
     client.omu.message.listen(
         {
             name: 'test',
-            app: 'omu.chat.apps/youtube-reaction'
+            app: 'omu.chat.apps/youtube-reaction',
         },
         () => {
             queue.push({
                 id: id++,
-                key: '❤'
+                key: '❤',
             });
             queue.push({
                 id: id++,
-                key: '💯'
+                key: '💯',
             });
             queue.push({
                 id: id++,
-                key: '😳'
+                key: '😳',
             });
             queue.push({
                 id: id++,
-                key: '🎉'
+                key: '🎉',
             });
             queue.push({
                 id: id++,
-                key: '😄'
+                key: '😄',
             });
-        }
+        },
     );
 
     interface Particle {
@@ -83,7 +83,7 @@
                 vx: Math.random() - 0.5,
                 vy: 0,
                 opacity: 0,
-                rotation: 0
+                rotation: 0,
             });
         }
     }
@@ -139,7 +139,7 @@
                 if (emoji) {
                     const size = Math.min(64, emoji.height);
                     const ratio = emoji.width / emoji.height;
-                    ctx.drawImage(emoji, -size / 2 * ratio, -size / 2, size * ratio, size);
+                    ctx.drawImage(emoji, (-size / 2) * ratio, -size / 2, size * ratio, size);
                 } else {
                     ctx.font = "32px 'Noto Color Emoji', 'Noto Sans JP', sans-serif";
                     ctx.fillText(particle.key, 0, 0);

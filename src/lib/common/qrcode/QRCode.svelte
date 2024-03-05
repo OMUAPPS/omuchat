@@ -22,7 +22,7 @@
             level: errorCorrection,
             padding,
             size,
-            value
+            value,
         });
 
         image = QRcode.toDataURL('image/png');

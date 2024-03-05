@@ -10,7 +10,7 @@ export class ExtensionInfo implements Keyable, Model<ExtensionInfoJson> {
     constructor(
         public name: string,
         public description?: string,
-    ) { }
+    ) {}
     toString(): string {
         throw new Error('Method not implemented.');
     }

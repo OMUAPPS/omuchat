@@ -8,14 +8,14 @@ type Commands = {
     share_url: () => {
         host: string;
         port: number;
-    },
-    run_server: () => void,
-    get_token: () => string,
-    delete_runtime: () => void,
-    install_runtime: () => void,
-    get_server_state: () => ServerStatus,
-    update_libraries: () => void,
-}
+    };
+    run_server: () => void;
+    get_token: () => string;
+    delete_runtime: () => void;
+    install_runtime: () => void;
+    get_server_state: () => ServerStatus;
+    update_libraries: () => void;
+};
 
 export async function invoke<T extends keyof Commands>(
     command: T,
@@ -25,36 +25,36 @@ export async function invoke<T extends keyof Commands>(
     return _invoke(command, ...args);
 }
 type Events = {
-    'server-state': ServerStatus,
+    'server-state': ServerStatus;
     'install-progress': {
         progress: number;
         total: number;
         message: string;
-    },
-    [event.TauriEvent.WINDOW_RESIZED]: unknown,
-    [event.TauriEvent.WINDOW_MOVED]: unknown,
-    [event.TauriEvent.WINDOW_CLOSE_REQUESTED]: unknown,
-    [event.TauriEvent.WINDOW_CREATED]: unknown,
-    [event.TauriEvent.WINDOW_DESTROYED]: unknown,
-    [event.TauriEvent.WINDOW_FOCUS]: unknown,
-    [event.TauriEvent.WINDOW_BLUR]: unknown,
-    [event.TauriEvent.WINDOW_SCALE_FACTOR_CHANGED]: unknown,
-    [event.TauriEvent.WINDOW_THEME_CHANGED]: unknown,
-    [event.TauriEvent.WINDOW_FILE_DROP]: string[],
-    [event.TauriEvent.WINDOW_FILE_DROP_HOVER]: unknown,
-    [event.TauriEvent.WINDOW_FILE_DROP_CANCELLED]: unknown,
-    [event.TauriEvent.MENU]: unknown,
-    [event.TauriEvent.CHECK_UPDATE]: unknown,
-    [event.TauriEvent.UPDATE_AVAILABLE]: unknown,
-    [event.TauriEvent.INSTALL_UPDATE]: unknown,
-    [event.TauriEvent.STATUS_UPDATE]: unknown,
-    [event.TauriEvent.DOWNLOAD_PROGRESS]: unknown,
-}
+    };
+    [event.TauriEvent.WINDOW_RESIZED]: unknown;
+    [event.TauriEvent.WINDOW_MOVED]: unknown;
+    [event.TauriEvent.WINDOW_CLOSE_REQUESTED]: unknown;
+    [event.TauriEvent.WINDOW_CREATED]: unknown;
+    [event.TauriEvent.WINDOW_DESTROYED]: unknown;
+    [event.TauriEvent.WINDOW_FOCUS]: unknown;
+    [event.TauriEvent.WINDOW_BLUR]: unknown;
+    [event.TauriEvent.WINDOW_SCALE_FACTOR_CHANGED]: unknown;
+    [event.TauriEvent.WINDOW_THEME_CHANGED]: unknown;
+    [event.TauriEvent.WINDOW_FILE_DROP]: string[];
+    [event.TauriEvent.WINDOW_FILE_DROP_HOVER]: unknown;
+    [event.TauriEvent.WINDOW_FILE_DROP_CANCELLED]: unknown;
+    [event.TauriEvent.MENU]: unknown;
+    [event.TauriEvent.CHECK_UPDATE]: unknown;
+    [event.TauriEvent.UPDATE_AVAILABLE]: unknown;
+    [event.TauriEvent.INSTALL_UPDATE]: unknown;
+    [event.TauriEvent.STATUS_UPDATE]: unknown;
+    [event.TauriEvent.DOWNLOAD_PROGRESS]: unknown;
+};
 
 type TauriEvent<T> = {
-    payload: T,
-    windowLabel: string,
-}
+    payload: T;
+    windowLabel: string;
+};
 
 export function listen<T extends keyof Events>(
     command: T,
@@ -62,9 +62,9 @@ export function listen<T extends keyof Events>(
 ): Promise<() => void> {
     assertTauri();
     return _listen(command, (event: TauriEvent<Events[T]>) => {
-        event
+        event;
         callback(event);
-    })
+    });
 }
 
 export function listenSync<T extends keyof Events>(
@@ -72,7 +72,7 @@ export function listenSync<T extends keyof Events>(
     callback: (event: TauriEvent<Events[T]>) => void,
 ): () => void {
     assertTauri();
-    let destroy = () => { };
+    let destroy = () => {};
     _listen(command, (event: TauriEvent<Events[T]>) => {
         callback(event);
     }).then((func) => {
@@ -111,7 +111,7 @@ function loadLazy<T>(load: () => Promise<T>): T {
             } else {
                 throw new Error(`Property ${prop.toString()} not found`);
             }
-        }
+        },
     });
 }
 
@@ -143,8 +143,8 @@ async function load() {
     ]);
     _invoke = invoke;
     _listen = listen;
-    await Promise.all(loadPromises.map(it => it()));
-    loadHandlers.forEach(handler => handler());
+    await Promise.all(loadPromises.map((it) => it()));
+    loadHandlers.forEach((handler) => handler());
     loaded = true;
 }
 
@@ -162,7 +162,7 @@ export function waitForLoad() {
     if (loaded) {
         return Promise.resolve();
     }
-    return new Promise<void>(resolve => {
+    return new Promise<void>((resolve) => {
         loadHandlers.push(resolve);
     });
 }

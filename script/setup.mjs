@@ -3,13 +3,12 @@ import path from 'path';
 
 import license from 'license-checker';
 
-
 async function generateLicense() {
     const licenses = await new Promise((resolve, reject) => {
         license.init(
             {
                 start: './',
-                json: true
+                json: true,
             },
             (err, licenses) => {
                 if (err) {
@@ -17,7 +16,7 @@ async function generateLicense() {
                 } else {
                     resolve(licenses);
                 }
-            }
+            },
         );
     });
     const destDir = path.join('src', 'lib', 'license');
@@ -30,9 +29,9 @@ async function generateLicense() {
                 repository: license.repository,
                 url: license.url,
                 license: license.licenses,
-                licenseText: license.licenseFile && fs.readFileSync(license.licenseFile, 'utf8')
-            }))
-        ])
+                licenseText: license.licenseFile && fs.readFileSync(license.licenseFile, 'utf8'),
+            })),
+        ]),
     );
 }
 

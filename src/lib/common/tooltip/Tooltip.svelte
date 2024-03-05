@@ -14,13 +14,13 @@
         x: 0,
         y: 0,
         width: 0,
-        height: 0
+        height: 0,
     };
     let targetRect: Rect = {
         x: 0,
         y: 0,
         width: 0,
-        height: 0
+        height: 0,
     };
     let tooltipPos: { x: number; y: number } = { x: 0, y: 0 };
 
@@ -45,13 +45,13 @@
                 x: clamp(
                     targetRect.x + targetRect.width / 2 - tooltipRect.width / 2,
                     padding,
-                    window.innerWidth - tooltipRect.width - padding
+                    window.innerWidth - tooltipRect.width - padding,
                 ),
                 y: clamp(
                     targetRect.y + targetRect.height + 10,
                     padding,
-                    window.innerHeight - tooltipRect.height - padding
-                )
+                    window.innerHeight - tooltipRect.height - padding,
+                ),
             };
         }
     }
@@ -85,7 +85,7 @@
             class="pointer"
             style={style({
                 top: `${targetRect.y + targetRect.height}px`,
-                left: `${targetRect.x + targetRect.width / 2}px`
+                left: `${targetRect.x + targetRect.width / 2}px`,
             })}
         />
     {/if}

@@ -1,151 +1,156 @@
 <script lang="ts">
-	import type { models } from '@omuchatjs/chat';
+    import type { models } from '@omuchatjs/chat';
 
-	import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
-	import ButtonMini from '$lib/common/input/ButtonMini.svelte';
-	import { getClient } from '$lib/common/omuchat/client.js';
-	import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-	import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
+    import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
+    import ButtonMini from '$lib/common/input/ButtonMini.svelte';
+    import { getClient } from '$lib/common/omuchat/client.js';
+    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
+    import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
 
-	export let entry: models.Room;
-	export let selected: boolean = false;
+    export let entry: models.Room;
+    export let selected: boolean = false;
 
-	const { client } = getClient();
+    const { client } = getClient();
 
-	function open() {
-		window.open(entry.metadata?.url, '_blank');
-	}
+    function open() {
+        window.open(entry.metadata?.url, '_blank');
+    }
 
-	function copyViewers() {
-		if (!entry.metadata?.viewers) return;
-		ClipboardHelper.writeText(entry.metadata?.viewers.toString());
-	}
+    function copyViewers() {
+        if (!entry.metadata?.viewers) return;
+        ClipboardHelper.writeText(entry.metadata?.viewers.toString());
+    }
 </script>
 
 <article class="room" class:selected class:connected={entry.connected}>
-	<div class="top">
-		<div>
-			{#if entry.metadata && entry.metadata.thumbnail}
-				<img src={client.proxy(entry.metadata.thumbnail)} alt="thumbnail" class="room-thumbnail" />
-				<Tooltip noBackground>
-					<img
-						src={client.proxy(entry.metadata.thumbnail)}
-						alt="thumbnail"
-						class="room-thumbnail-preview"
-					/>
-				</Tooltip>
-			{/if}
-		</div>
-		<div class="buttons">
-			<FlexRowWrapper widthFull>
-				<ButtonMini on:click={open}>
-					<Tooltip>見る</Tooltip>
-					<i class="ti ti-external-link" />
-				</ButtonMini>
-			</FlexRowWrapper>
-			<FlexRowWrapper widthFull between>
-				{#if entry.metadata}
-					<ButtonMini on:click={copyViewers}>
-						<Tooltip>視聴者数（クリックでコピー）</Tooltip>
-						{entry.metadata.viewers}
-						<i class="ti ti-user" />
-					</ButtonMini>
-				{/if}
-				<i class={`online-state ti ti-bolt ${entry.connected ? 'online' : 'offline'}`}>
-					<Tooltip>{entry.connected ? '接続済み' : '切断済み'}</Tooltip>
-				</i>
-			</FlexRowWrapper>
-		</div>
-	</div>
-	<div>
-		{#if entry.metadata}
-			<div class="title">
-				<Tooltip>
-					{entry.metadata.title}
-				</Tooltip>
-				{entry.metadata.title}
-			</div>
-			<div class="description">
-				<Tooltip>
-					{entry.metadata.description}
-				</Tooltip>
-				{entry.metadata.description}
-			</div>
-		{/if}
-	</div>
+    <div class="top">
+        <div>
+            {#if entry.metadata && entry.metadata.thumbnail}
+                <img
+                    src={client.proxy(entry.metadata.thumbnail)}
+                    alt="thumbnail"
+                    class="room-thumbnail"
+                />
+                <Tooltip noBackground>
+                    <img
+                        src={client.proxy(entry.metadata.thumbnail)}
+                        alt="thumbnail"
+                        class="room-thumbnail-preview"
+                    />
+                </Tooltip>
+            {/if}
+        </div>
+        <div class="buttons">
+            <FlexRowWrapper widthFull>
+                <ButtonMini on:click={open}>
+                    <Tooltip>見る</Tooltip>
+                    <i class="ti ti-external-link" />
+                </ButtonMini>
+            </FlexRowWrapper>
+            <FlexRowWrapper widthFull between>
+                {#if entry.metadata}
+                    <ButtonMini on:click={copyViewers}>
+                        <Tooltip>視聴者数（クリックでコピー）</Tooltip>
+                        {entry.metadata.viewers}
+                        <i class="ti ti-user" />
+                    </ButtonMini>
+                {/if}
+                <i class={`online-state ti ti-bolt ${entry.connected ? 'online' : 'offline'}`}>
+                    <Tooltip>{entry.connected ? '接続済み' : '切断済み'}</Tooltip>
+                </i>
+            </FlexRowWrapper>
+        </div>
+    </div>
+    <div>
+        {#if entry.metadata}
+            <div class="title">
+                <Tooltip>
+                    {entry.metadata.title}
+                </Tooltip>
+                {entry.metadata.title}
+            </div>
+            <div class="description">
+                <Tooltip>
+                    {entry.metadata.description}
+                </Tooltip>
+                {entry.metadata.description}
+            </div>
+        {/if}
+    </div>
 </article>
 
 <style lang="scss">
-	article {
-		padding: 10px;
-		background: var(--color-bg-2);
+    article {
+        padding: 10px;
+        background: var(--color-bg-2);
 
-		&.selected {
-			background: var(--color-bg-1);
-			outline: 1px solid var(--color-1);
-			outline-offset: -4px;
-		}
+        &.selected {
+            background: var(--color-bg-1);
+            outline: 1px solid var(--color-1);
+            outline-offset: -4px;
+        }
 
-		&.connected {
-			border-left: 2px solid var(--color-1);
-		}
+        &.connected {
+            border-left: 2px solid var(--color-1);
+        }
 
-		border-bottom: 1px solid var(--color-bg-1);
-	}
+        border-bottom: 1px solid var(--color-bg-1);
+    }
 
-	.top {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-	}
+    .top {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
 
-	.buttons {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		width: 100%;
-		height: 20px;
-		margin-left: 5px;
-	}
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        height: 20px;
+        margin-left: 5px;
+    }
 
-	.online-state {
-		margin-left: 5px;
-	}
+    .online-state {
+        margin-left: 5px;
+    }
 
-	.online {
-		color: var(--color-1);
-	}
+    .online {
+        color: var(--color-1);
+    }
 
-	.offline {
-		color: #ccc;
-	}
+    .offline {
+        color: #ccc;
+    }
 
-	.room-thumbnail {
-		width: 100px;
-		min-width: 100px;
-		min-height: 56px;
-		object-fit: contain;
-	}
+    .room-thumbnail {
+        width: 100px;
+        min-width: 100px;
+        min-height: 56px;
+        object-fit: contain;
+    }
 
-	.room-thumbnail-preview {
-		width: 300px;
-		object-fit: contain;
-		outline: 2px solid #000;
-	}
-	.title {
-		overflow: hidden;
-		font-size: 14px;
-		text-overflow: ellipsis;
-		font-weight: bold;
-		color: var(--color-1);
-		white-space: nowrap;
-	}
+    .room-thumbnail-preview {
+        width: 300px;
+        object-fit: contain;
+        outline: 2px solid #000;
+    }
 
-	.description {
-		overflow: hidden;
-		font-size: 12px;
-		color: color-mix(in srgb, var(--color-1) 100%, transparent 50%);
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
+    .title {
+        overflow: hidden;
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--color-1);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .description {
+        overflow: hidden;
+        font-size: 12px;
+        color: color-mix(in srgb, var(--color-1) 100%, transparent 50%);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 </style>

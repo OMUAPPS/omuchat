@@ -8,9 +8,9 @@
     client.omu.addListener({
         onReady() {
             client.chat.messages.fetch({
-                before: 100
+                before: 100,
             });
-        }
+        },
     });
 
     onMount(() => {

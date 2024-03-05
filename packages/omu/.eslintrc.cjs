@@ -3,14 +3,14 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     parserOptions: {
         tsconfigRootDir: __dirname,
-        project: ['./tsconfig.json']
+        project: ['./tsconfig.json'],
     },
     plugins: ['@typescript-eslint', 'import'],
     extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:import/recommended',
-        'plugin:import/typescript'
+        'plugin:import/typescript',
     ],
     rules: {
         indent: ['warn', 4],
@@ -23,22 +23,22 @@ module.exports = {
             'error',
             {
                 before: true,
-                after: true
-            }
+                after: true,
+            },
         ],
         'key-spacing': [
             'error',
             {
                 beforeColon: false,
-                afterColon: true
-            }
+                afterColon: true,
+            },
         ],
         'arrow-spacing': [
             'error',
             {
                 before: true,
-                after: true
-            }
+                after: true,
+            },
         ],
         'padded-blocks': ['error', 'never'],
         eqeqeq: ['error', 'always', { null: 'ignore' }],
@@ -70,8 +70,8 @@ module.exports = {
         '@typescript-eslint/no-misused-promises': [
             'error',
             {
-                checksVoidReturn: false
-            }
+                checksVoidReturn: false,
+            },
         ],
         'import/no-unresolved': ['off'],
         'import/no-default-export': ['warn'],
@@ -83,16 +83,16 @@ module.exports = {
                     {
                         pattern: 'react',
                         group: 'external',
-                        position: 'before'
-                    }
+                        position: 'before',
+                    },
                 ],
                 pathGroupsExcludedImportTypes: ['react'],
                 'newlines-between': 'always',
                 alphabetize: {
                     order: 'asc',
-                    caseInsensitive: true
-                }
-            }
+                    caseInsensitive: true,
+                },
+            },
         ],
         'import/no-cycle': [1, { maxDepth: 1 }],
         '@typescript-eslint/no-unused-vars': [
@@ -101,15 +101,15 @@ module.exports = {
                 argsIgnorePattern: '^_',
                 varsIgnorePattern: '^_',
                 caughtErrorsIgnorePattern: '^_',
-                destructuredArrayIgnorePattern: '^_'
-            }
+                destructuredArrayIgnorePattern: '^_',
+            },
         ],
-        "@typescript-eslint/consistent-type-imports": [
-            "error",
+        '@typescript-eslint/consistent-type-imports': [
+            'error',
             {
-                "prefer": "type-imports",
-                "disallowTypeAnnotations": false
-            }
-        ]
-    }
+                prefer: 'type-imports',
+                disallowTypeAnnotations: false,
+            },
+        ],
+    },
 };

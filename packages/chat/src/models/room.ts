@@ -2,17 +2,17 @@ import type { Model } from '@omuchatjs/omu/extension/table/model.js';
 import type { Keyable, Timestamped } from '@omuchatjs/omu/interface.js';
 
 export type MetadataJson = {
-    title?: string,
-    description?: string,
-    url?: string,
-    thumbnail?: string,
-    viewers?: number,
-    created_at?: string,
-    started_at?: string,
-    ended_at?: string,
-}
+    title?: string;
+    description?: string;
+    url?: string;
+    thumbnail?: string;
+    viewers?: number;
+    created_at?: string;
+    started_at?: string;
+    ended_at?: string;
+};
 
-export type Status = 'online' | 'reserved' | 'offline'
+export type Status = 'online' | 'reserved' | 'offline';
 
 export type RoomJson = {
     id: string;
@@ -22,7 +22,7 @@ export type RoomJson = {
     metadata?: MetadataJson;
     channel_id?: string;
     created_at: string; // ISO 8601 date string
-}
+};
 
 export class Room implements Model<RoomJson>, Keyable, Timestamped {
     public id: string;

@@ -5,7 +5,7 @@
     import type { PanelEntry } from '../panel/panel.js';
     import PanelProvider from '../panel/PanelProvider.svelte';
     import PanelRooms from '../panel/rooms/PanelRooms.svelte';
-        
+
     const panels = writable<PanelEntry[]>([
         {
             icon: 'ti ti-bolt',

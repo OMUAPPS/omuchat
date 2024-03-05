@@ -11,7 +11,7 @@
     import { screenContext } from '$lib/common/screen/screen.js';
     import ScreenHeader from '$lib/common/screen/ScreenHeader.svelte';
     import { t } from '$lib/i18n/i18n-context.js';
-    
+
     const categories = [
         ...[...SETTING_REGISTRY.entries()].map(([name, settings]) => {
             return {
@@ -19,9 +19,9 @@
                 settings: Object.entries(settings).map(([name, setting]) => {
                     return {
                         name,
-                        ...setting
+                        ...setting,
                     };
-                })
+                }),
             };
         }),
         {
@@ -32,12 +32,12 @@
                     component() {
                         return {
                             component: Licenses,
-                            props: {}
+                            props: {},
                         };
-                    }
-                }
-            ]
-        }
+                    },
+                },
+            ],
+        },
     ];
 
     const currentCategory = writable(categories[0]);

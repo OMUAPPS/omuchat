@@ -10,7 +10,7 @@ export type ProviderJson = {
     image_url?: string;
     description: string;
     regex: string;
-}
+};
 
 export class Provider implements Keyable, Model<ProviderJson> {
     public id: string;

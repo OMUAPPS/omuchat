@@ -1,18 +1,18 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher } from 'svelte';
 
-    import { client } from "./youtube-reaction.js";
+    import { client } from './youtube-reaction.js';
 
-    import FileInput from "$lib/common/input/FileInput.svelte";
-    import Tooltip from "$lib/common/tooltip/Tooltip.svelte";
+    import FileInput from '$lib/common/input/FileInput.svelte';
+    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
     export let key: string;
     export let value: string | undefined;
-    
+
     const dispatcher = createEventDispatcher();
 
     function editValue(event: Event) {
-        dispatcher("edit", [key, (event.target as HTMLInputElement).value]);
+        dispatcher('edit', [key, (event.target as HTMLInputElement).value]);
     }
 
     async function handle(files: Map<string, Uint8Array>) {
@@ -20,9 +20,9 @@
         if (!file) return;
         const [url] = await client.omu.assets.upload({
             key: `youtube-reaction/${key}.png`,
-            buffer: file
+            buffer: file,
         });
-        dispatcher("edit", [key, `${client.omu.asset(url)}&${Date.now()}`]);
+        dispatcher('edit', [key, `${client.omu.asset(url)}&${Date.now()}`]);
     }
 </script>
 
@@ -44,12 +44,10 @@
         <FileInput accept="image/*" {handle}>
             <button>
                 <i class="ti ti-upload" />
-                <Tooltip>
-                    画像をアップロード
-                </Tooltip>
+                <Tooltip>画像をアップロード</Tooltip>
             </button>
         </FileInput>
-        <input type="text" bind:value={value} on:input={editValue} placeholder="画像URL" />
+        <input type="text" bind:value on:input={editValue} placeholder="画像URL" />
     </span>
 </div>
 
@@ -98,7 +96,7 @@
             img {
                 width: 42px;
             }
-            
+
             .missing {
                 display: flex;
                 align-items: center;
@@ -123,7 +121,7 @@
                 border: 1px solid var(--color-1);
                 outline: none;
             }
-        
+
             button {
                 align-items: center;
                 justify-content: center;
@@ -135,7 +133,7 @@
                 background: var(--color-1);
                 border: 1px solid var(--color-1);
                 outline: none;
-        
+
                 &:hover {
                     color: var(--color-1);
                     background: var(--color-bg-2);

@@ -1,6 +1,6 @@
-import type { Model } from "@omuchatjs/omu/extension/table/model.js";
-import { Identifier } from "@omuchatjs/omu/identifier.js";
-import type { Keyable } from "@omuchatjs/omu/interface.js";
+import type { Model } from '@omuchatjs/omu/extension/table/model.js';
+import { Identifier } from '@omuchatjs/omu/identifier.js';
+import type { Keyable } from '@omuchatjs/omu/interface.js';
 
 export type AppMetadataJson = {
     identifier: string;
@@ -8,7 +8,7 @@ export type AppMetadataJson = {
     name: string;
     author?: string;
     icon?: string;
-}
+};
 
 export class AppMetadata implements Keyable, Model<AppMetadataJson> {
     readonly identifier: Identifier;

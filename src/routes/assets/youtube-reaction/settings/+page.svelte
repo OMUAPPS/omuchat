@@ -5,7 +5,6 @@
     import EmojiEntry from './EmojiEntry.svelte';
     import { client } from './youtube-reaction.js';
 
-
     let emojis: Map<string, string | undefined> = new Map();
     client.omu.registry.listen<Record<string, string | undefined>>({ name: 'emojis' }, (data) => {
         emojis = new Map([
@@ -14,7 +13,7 @@
             ['😳', undefined],
             ['🎉', undefined],
             ['😄', undefined],
-            ...Object.entries(data || {})
+            ...Object.entries(data || {}),
         ]);
     });
 
@@ -40,9 +39,9 @@
     function test() {
         client.omu.message.broadcast(
             {
-                name: 'test'
+                name: 'test',
             },
-            {}
+            {},
         );
     }
 

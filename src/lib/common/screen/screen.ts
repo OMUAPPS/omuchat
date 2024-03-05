@@ -22,5 +22,5 @@ export const screenContext = {
     push,
     pop,
     current,
-    stack
+    stack,
 };
