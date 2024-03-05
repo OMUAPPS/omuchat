@@ -28,9 +28,9 @@
 		"packages/*"
 	],
 	"devDependencies": {
+		"@fontsource/noto-sans-jp": "^5.0.17",
 		"@omuchatjs/chat": "workspace:*",
 		"@omuchatjs/omu": "workspace:*",
-		"@fontsource/noto-sans-jp": "^5.0.17",
 		"@sveltejs/adapter-static": "^2.0.3",
 		"@sveltejs/kit": "^1.27.5",
 		"@sveltejs/vite-plugin-svelte": "^2.5.2",
@@ -70,5 +70,8 @@
 		"typescript": "^5.3.3",
 		"vite": "^4.5.0",
 		"vitest": "^0.34.0"
+	},
+	"dependencies": {
+		"svelte-markdown": "^0.4.1"
 	}
 }

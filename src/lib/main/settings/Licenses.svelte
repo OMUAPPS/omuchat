@@ -1,4 +1,5 @@
 <script lang="ts">
+    import SvelteMarkdown from 'svelte-markdown'
     import ExternalLink from '$lib/common/input/ExternalLink.svelte';
     import { LICENSES } from '$lib/license/license.js';
 
@@ -19,7 +20,7 @@
                 {license.license}
                 {#if selected === license.name}
                     <div class="content">
-                        {license.licenseText}
+                        <SvelteMarkdown source={license.licenseText}/>
                     </div>
                 {/if}
             </div>
