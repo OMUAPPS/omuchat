@@ -38,7 +38,8 @@
     "titlebar": {
         "close": "閉じる",
         "minimize": "最小化",
-        "maximize": "最大化"
+        "maximize": "最大化",
+        "unmaximize": "最大化を解除"
     },
     "pages": {
         "main": {

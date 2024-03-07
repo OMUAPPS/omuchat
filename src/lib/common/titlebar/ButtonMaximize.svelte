@@ -3,14 +3,22 @@
     import Tooltip from '../tooltip/Tooltip.svelte';
 
     import { t } from '$lib/i18n/i18n-context.js';
-    import { tauriWindow } from '$lib/utils/tauri.js';
+    import { listen, tauriWindow } from '$lib/utils/tauri.js';
+    import { TauriEvent } from '@tauri-apps/api/event';
+
+    let maximized = false;
 
     function maximize() {
-        tauriWindow.appWindow.maximize();
+        tauriWindow.appWindow.toggleMaximize();
+        listen(TauriEvent.WINDOW_RESIZED, async () => {
+            maximized = await tauriWindow.appWindow.isMaximized();
+        });
     }
 </script>
 
 <Button on:click={maximize}>
-    <Tooltip>{$t('titlebar.maximize')}</Tooltip>
-    <i class="ti ti-rectangle" />
+    <Tooltip>
+        {$t(`titlebar.${maximized ? 'unmaximize' : 'maximize'}`)}
+    </Tooltip>
+    <i class="ti ti-{maximized ? 'picture-in-picture-top' : 'rectangle'}" />
 </Button>
