@@ -3,16 +3,13 @@
     import Tooltip from '../tooltip/Tooltip.svelte';
 
     import { t } from '$lib/i18n/i18n-context.js';
-    import { listen, tauriWindow } from '$lib/utils/tauri.js';
-    import { TauriEvent } from '@tauri-apps/api/event';
+    import { tauriWindow } from '$lib/utils/tauri.js';
 
     let maximized = false;
 
-    function maximize() {
+    async function maximize() {
         tauriWindow.appWindow.toggleMaximize();
-        listen(TauriEvent.WINDOW_RESIZED, async () => {
-            maximized = await tauriWindow.appWindow.isMaximized();
-        });
+        maximized = !(await tauriWindow.appWindow.isMaximized());
     }
 </script>
 
