@@ -72,14 +72,19 @@ export function listenSync<T extends keyof Events>(
     callback: (event: TauriEvent<Events[T]>) => void,
 ): () => void {
     assertTauri();
-    let destroy = () => {};
+    let destroyCallback = () => { };
+    let isDestroyed = false;
     _listen(command, (event: TauriEvent<Events[T]>) => {
         callback(event);
-    }).then((func) => {
-        destroy = func;
+    }).then((destroyFunc) => {
+        destroyCallback = destroyFunc;
+        if (isDestroyed) {
+            destroyCallback();
+        }
     });
     return () => {
-        destroy();
+        destroyCallback();
+        isDestroyed = true;
     };
 }
 
@@ -155,7 +160,7 @@ export function checkOnTauri() {
 }
 export const isOnTauri = checkOnTauri();
 
-export function waitForLoad() {
+export function waitForTauri() {
     if (!checkOnTauri()) {
         return Promise.resolve();
     }

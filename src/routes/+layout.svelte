@@ -6,20 +6,25 @@
     import { DEFAULT_LOCALE, LOCALES } from '$lib/i18n/locales/index.js';
     import { language } from '$lib/main/settings.js';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
+    import { waitForTauri } from '$lib/utils/tauri.js';
     import './styles.scss';
+
+    async function init() {
+        await loadLocale();
+        await waitForTauri();
+
+        language.subscribe(loadLocale);
+    }
 
     async function loadLocale() {
         const lang = await LOCALES[$language].load();
         const fallbackLang = await LOCALES[DEFAULT_LOCALE].load();
-
         if (lang !== fallbackLang) {
             i18n.set(createI18nUnion([lang, fallbackLang]));
         } else {
             i18n.set(lang);
         }
     }
-
-    language.subscribe(loadLocale);
 </script>
 
 <svelte:head>
@@ -30,7 +35,7 @@
 
 <div class="app">
     <main>
-        {#await loadLocale()}
+        {#await init()}
             <div class="loading" data-tauri-drag-region></div>
         {:then}
             <slot />

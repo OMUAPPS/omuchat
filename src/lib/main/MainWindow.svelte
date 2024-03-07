@@ -22,7 +22,7 @@
     import { screenContext } from '$lib/common/screen/screen.js';
     import { t } from '$lib/i18n/i18n-context.js';
     import { style } from '$lib/utils/class-helper.js';
-    import { invoke, isOnTauri, listen, waitForLoad } from '$lib/utils/tauri.js';
+    import { invoke, isOnTauri, listen } from '$lib/utils/tauri.js';
 
     const { client } = getClient();
 
@@ -107,8 +107,6 @@
     }
 
     onMount(async () => {
-        await waitForLoad();
-
         if (isOnTauri) {
             const state = await invoke('get_server_state');
             if (state == 'Installed' || state == 'AlreadyRunning') {
