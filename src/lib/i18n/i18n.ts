@@ -1,16 +1,16 @@
-export type TranslateFunction = (key: string, params?: Record<string, any>) => string;
+export type TranslateFunction = (key: string, params?: Record<string, unknown>) => string;
 
 export interface I18n {
     translate: TranslateFunction;
     locale: string;
 }
 
-export interface Messages {
+export type Messages = {
     [key: string]: string | Messages;
 }
 
 export function createI18n(messages: Messages, locale: string): I18n {
-    const getTranslation = (key: string, params?: Record<string, any>): string => {
+    const getTranslation = (key: string, params?: Record<string, unknown>): string => {
         const parts = key.split('.');
         let translation: string | undefined;
         let result = messages;
@@ -20,7 +20,7 @@ export function createI18n(messages: Messages, locale: string): I18n {
             result = result[part] as Messages;
         }
         if (typeof translation === 'object') {
-            translation = (translation as any)[''];
+            translation = translation[''];
         }
         if (!translation) return key;
         if (params) {
@@ -31,7 +31,7 @@ export function createI18n(messages: Messages, locale: string): I18n {
 
     return {
         locale,
-        translate(key: string, params?: Record<string, any>): string {
+        translate(key: string, params?: Record<string, unknown>): string {
             const translation = getTranslation(key);
             if (!translation) {
                 console.warn(`Translation for key "${key}" not found`);
@@ -47,7 +47,7 @@ export function createI18n(messages: Messages, locale: string): I18n {
 
 export function createI18nUnion(i18ns: I18n[]): I18n {
     return {
-        translate(key: string, params?: Record<string, any>): string {
+        translate(key: string, params?: Record<string, unknown>): string {
             for (const i18n of i18ns) {
                 const translated = i18n.translate(key, params);
                 if (translated !== key) return translated;

@@ -13,7 +13,7 @@ async function loadI18n(load: () => Promise<{ default: Messages }>, locale: stri
 export const LOCALES = {
     'ja-JP': {
         name: '日本語',
-        load: () => loadI18n(() => import('./ja-JP.json'), 'ja-JP'),
+        load: () => loadI18n(() => import('./ja-JP.js'), 'ja-JP'),
     },
 };
 
