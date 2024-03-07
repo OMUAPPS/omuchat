@@ -50,6 +50,8 @@ export class Client {
         this.channels = this.omu.tables.get(chat.ChannelsTableKey);
         this.providers = this.omu.tables.get(chat.ProvidersTableKey);
         this.rooms = this.omu.tables.get(chat.RoomsTableKey);
+        this.messages.setCacheSize(1000);
+        this.authors.setCacheSize(500);
     }
 
     async createChannelTree(url: string): Promise<models.Channel[]> {
@@ -66,7 +68,7 @@ export class Client {
 }
 
 export class BrowserTokenProvider implements TokenProvider {
-    constructor(private readonly key: string) {}
+    constructor(private readonly key: string) { }
     async set(serverAddress: Address, app: omu.App, token: string): Promise<void> {
         const tokens = JSON.parse(localStorage.getItem(this.key) || '{}');
         const key = `${serverAddress.host}:${serverAddress.port}:${app.key()}`;
