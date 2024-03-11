@@ -1,2 +1,8 @@
-# Set the default behavior, in case people don't have core.autocrlf set.
-* text=auto
+*.svg -diff -text
+*.psd -diff -text
+*.ai -diff -text
+*.mqo -diff -text
+*.glb -diff -text
+*.blend -diff -text
+*.afdesign -diff -text
+* text=auto eol=lf
