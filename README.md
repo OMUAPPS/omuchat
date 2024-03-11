@@ -1,5 +1,5 @@
 <div align="center">
-    <image src="src/favicon.png" width=150><br>
+    <image src="src/lib/images/title.svg" width=150><br>
     <img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues/OMUCHAT/dashboard">
     <img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues-pr/OMUCHAT/dashboard">
     <img alt="GitHub License" src="https://img.shields.io/github/license/OMUCHAT/dashboard">
