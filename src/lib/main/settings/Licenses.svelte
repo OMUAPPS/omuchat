@@ -22,18 +22,14 @@
                         {license.url}
                     </ExternalLink>
                 {/if}
-                {#if selected === license.name}
+                {#if selected === license.name && license.licenseText}
                     <div class="content">
-                        {#if license.licenseText}
-                            <SvelteMarkdown
-                                source={license.licenseText}
-                                renderers={{
-                                    link: ExternalLink,
-                                }}
-                            />
-                        {:else}
-                            No text exists.
-                        {/if}
+                        <SvelteMarkdown
+                            source={license.licenseText}
+                            renderers={{
+                                link: ExternalLink,
+                            }}
+                        />
                     </div>
                 {/if}
             </div>
