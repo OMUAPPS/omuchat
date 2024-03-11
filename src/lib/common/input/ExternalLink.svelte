@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Tooltip from '../tooltip/Tooltip.svelte';
+
     export let href: string = '';
     export let title: string | undefined = undefined;
 
@@ -7,4 +9,9 @@
     }
 </script>
 
-<a target="_blank" {href} {title}><slot /></a>
+<a target="_blank" {href} {title}>
+    <Tooltip>
+        {href}
+    </Tooltip>
+    <slot />
+</a>
