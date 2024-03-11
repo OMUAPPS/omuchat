@@ -24,12 +24,16 @@
                 {/if}
                 {#if selected === license.name}
                     <div class="content">
-                        <SvelteMarkdown
-                            source={license.licenseText}
-                            renderers={{
-                                link: ExternalLink,
-                            }}
-                        />
+                        {#if license.licenseText}
+                            <SvelteMarkdown
+                                source={license.licenseText}
+                                renderers={{
+                                    link: ExternalLink,
+                                }}
+                            />
+                        {:else}
+                            No text exists.
+                        {/if}
                     </div>
                 {/if}
             </div>

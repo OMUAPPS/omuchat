@@ -24,10 +24,10 @@
 
 ## Setup
 
-Install latest Rust [here](https://www.rust-lang.org/ja)
-Install LTS Nodejs [here](https://nodejs.org/)
-Install pnpm [how to install](https://pnpm.io/ja/installation)
-Install/Setup dependencies `pnpm install`
+- Install latest Rust [here](https://www.rust-lang.org/ja)
+- Install LTS Nodejs [here](https://nodejs.org/)
+- Install pnpm [how to install](https://pnpm.io/ja/installation)
+- Install/Setup dependencies `pnpm install`
 
 ## Development
 
