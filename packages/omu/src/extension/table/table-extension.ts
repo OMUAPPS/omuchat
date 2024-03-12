@@ -2,7 +2,7 @@ import type { Client } from '../../client/index.js';
 import { JsonEventType, SerializeEventType } from '../../event/event.js';
 import { Keyable } from '../../interface.js';
 import { Serializable, Serializer } from '../../serializer.js';
-import { JsonEndpointType, SerializeEndpointType } from '../endpoint/endpoint.js';
+import { EndpointType } from '../endpoint/endpoint.js';
 import { Extension, ExtensionType } from '../extension.js';
 
 import { Identifier } from '../../identifier.js';
@@ -88,7 +88,7 @@ export const TableProxyEvent = SerializeEventType.ofExtension<TableProxyData>(Ta
     name: 'proxy',
     serializer: proxySerializer,
 });
-export const TableProxyEndpoint = SerializeEndpointType.ofExtension<TableProxyData, void>(
+export const TableProxyEndpoint = EndpointType.createSerialized<TableProxyData, void>(
     TableExtensionType,
     {
         name: 'proxy',
@@ -121,7 +121,7 @@ export const TableItemRemoveEvent = SerializeEventType.ofExtension<TableItemsDat
 export const TableItemClearEvent = JsonEventType.ofExtension<TableEventData>(TableExtensionType, {
     name: 'item_clear',
 });
-export const TableItemGetEndpoint = SerializeEndpointType.ofExtension<
+export const TableItemGetEndpoint = EndpointType.createSerialized<
     TableEventData & { keys: string[] },
     TableItemsData
 >(TableExtensionType, {
@@ -129,7 +129,7 @@ export const TableItemGetEndpoint = SerializeEndpointType.ofExtension<
     requestSerializer: Serializer.json(),
     responseSerializer: itemsSerializer,
 });
-export const TableItemFetchEndpoint = SerializeEndpointType.ofExtension<
+export const TableItemFetchEndpoint = EndpointType.createSerialized<
     TableEventData & { before?: number; after?: number; cursor?: string },
     TableItemsData
 >(TableExtensionType, {
@@ -137,11 +137,8 @@ export const TableItemFetchEndpoint = SerializeEndpointType.ofExtension<
     requestSerializer: Serializer.json(),
     responseSerializer: itemsSerializer,
 });
-export const TableItemSizeEndpoint = JsonEndpointType.ofExtension<TableEventData, number>(
-    TableExtensionType,
-    {
-        name: 'item_size',
-    },
+export const TableItemSizeEndpoint = EndpointType.createJson<TableEventData, number>(TableExtensionType,
+    { name: 'item_size' }
 );
 
 export class TableExtension implements Extension {
@@ -452,15 +449,15 @@ class TableImpl<T> implements Table<T> {
         let items: Map<string, T> = await this.fetch(
             backward
                 ? {
-                      before: 0,
-                      after: this.cacheSize ?? 100,
-                      cursor,
-                  }
+                    before: 0,
+                    after: this.cacheSize ?? 100,
+                    cursor,
+                }
                 : {
-                      before: this.cacheSize ?? 100,
-                      after: 0,
-                      cursor,
-                  },
+                    before: this.cacheSize ?? 100,
+                    after: 0,
+                    cursor,
+                },
         );
         yield* items.values();
         while (items.size > 0) {

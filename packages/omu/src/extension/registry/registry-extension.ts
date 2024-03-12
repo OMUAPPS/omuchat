@@ -1,6 +1,6 @@
 import type { Client } from '../../client/index.js';
 import { JsonEventType } from '../../event/index.js';
-import { JsonEndpointType } from '../endpoint/endpoint.js';
+import { EndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType, type Extension } from '../extension.js';
 import { Registry } from './registry.js';
 
@@ -79,7 +79,7 @@ export const RegistryUpdateEvent = JsonEventType.ofExtension<{ key: string; valu
 export const RegistryListenEvent = JsonEventType.ofExtension<string>(RegistryExtensionType, {
     name: 'listen',
 });
-export const RegistryGetEndpoint = JsonEndpointType.ofExtension<string, any>(
+export const RegistryGetEndpoint = EndpointType.createJson<string, any>(
     RegistryExtensionType,
     {
         name: 'get',

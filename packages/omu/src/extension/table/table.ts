@@ -53,10 +53,10 @@ export class TableType<T> {
         public identifier: Identifier,
         public serializer: Serializable<T, Uint8Array>,
         public keyFunc: (item: T) => string,
-    ) {}
+    ) { }
 
     static model<T extends Keyable & Model<D>, D = unknown>(
-        identifier: Identifier | App | ExtensionType,
+        identifier: Identifier | ExtensionType,
         {
             name,
             model,
@@ -66,7 +66,7 @@ export class TableType<T> {
         },
     ): TableType<T> {
         return new TableType<T>(
-            new Identifier(identifier.key(), name),
+            identifier.join(name),
             Serializer.model(model).pipe(Serializer.json()),
             (item) => item.key(),
         );

@@ -1,6 +1,6 @@
 import { Serializer } from '../../serializer.js';
 import type { Client } from '../../client/index.js';
-import { SerializeEndpointType } from '../endpoint/endpoint.js';
+import { EndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType } from '../extension.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 
@@ -35,7 +35,7 @@ const FILES_SERIALIZER = new Serializer<Files, Uint8Array>(
     },
 );
 
-export const AssetUploadEndpoint = SerializeEndpointType.ofExtension<Files, string[]>(
+export const AssetUploadEndpoint = EndpointType.createSerialized<Files, string[]>(
     AssetExtensionType,
     {
         name: 'upload',
@@ -45,7 +45,7 @@ export const AssetUploadEndpoint = SerializeEndpointType.ofExtension<Files, stri
 );
 
 export class AssetExtension {
-    constructor(private readonly client: Client) {}
+    constructor(private readonly client: Client) { }
 
     async upload(...files: Files): Promise<string[]> {
         return this.client.endpoints.call(AssetUploadEndpoint, files);

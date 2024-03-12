@@ -6,7 +6,6 @@ import { ExtensionType } from '../extension.js';
 import type { Table } from '../table/index.js';
 import { TableType } from '../table/index.js';
 
-import { EndpointInfo } from './endpoint-info.js';
 import { type EndpointType } from './endpoint.js';
 
 type FutureResult = {
@@ -16,14 +15,12 @@ type FutureResult = {
 
 export class EndpointExtension {
     private readonly endpointMap: Map<string, EndpointType>;
-    public readonly endpoints: Table<EndpointInfo>;
     private readonly futureResultMap: Map<number, FutureResult>;
     private requestId: number;
 
     constructor(private readonly client: Client) {
         this.endpointMap = new Map();
         this.futureResultMap = new Map();
-        this.endpoints = this.client.tables.get(EndpointsTableType);
         this.requestId = 0;
         client.events.register(
             EndpointRegisterEvent,
@@ -46,10 +43,10 @@ export class EndpointExtension {
     }
 
     register<Req, Res>(type: EndpointType<Req, Res>): void {
-        if (this.endpointMap.has(type.type)) {
-            throw new Error(`Endpoint for key ${type.type} already registered`);
+        if (this.endpointMap.has(type.identifier.key())) {
+            throw new Error(`Endpoint for key ${type.identifier.key()} already registered`);
         }
-        this.endpointMap.set(type.type, type);
+        this.endpointMap.set(type.identifier.key(), type);
     }
 
     async call<Req, Res>(endpoint: EndpointType<Req, Res>, data: Req): Promise<Res> {
@@ -58,7 +55,7 @@ export class EndpointExtension {
             this.futureResultMap.set(id, { resolve, reject });
         });
         this.client.send(EndpointCallEvent, {
-            type: endpoint.type,
+            type: endpoint.identifier.key(),
             id,
             data: endpoint.requestSerializer.serialize(data),
         });
@@ -72,7 +69,7 @@ export const EndpointExtensionType = new ExtensionType(
     (client: Client) => new EndpointExtension(client),
 );
 
-export const EndpointRegisterEvent = JsonEventType.ofExtension<EndpointInfo>(
+export const EndpointRegisterEvent = JsonEventType.ofExtension<string>(
     EndpointExtensionType,
     {
         name: 'register',
@@ -127,7 +124,3 @@ export const EndpointErrorEvent = JsonEventType.ofExtension<EndpointReq & { erro
         name: 'error',
     },
 );
-export const EndpointsTableType = TableType.model(EndpointExtensionType, {
-    name: 'endpoints',
-    model: EndpointInfo,
-});
