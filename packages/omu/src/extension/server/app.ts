@@ -14,6 +14,7 @@ export interface AppJson {
 }
 
 export class App implements Keyable, Model<AppJson> {
+    readonly identifer: Identifier;
     readonly name: string;
     readonly group: string;
     version?: string;
@@ -35,6 +36,7 @@ export class App implements Keyable, Model<AppJson> {
         license?: string;
         image_url?: string;
     }) {
+        this.identifer = new Identifier(options.group, options.name);
         this.name = options.name;
         this.group = options.group;
         this.version = options.version;
@@ -58,6 +60,9 @@ export class App implements Keyable, Model<AppJson> {
             image_url?: string;
         },
     ): App {
+        if (identifier.path.length !== 1) {
+            throw new Error(`Invalid identifier path length: ${identifier.key()}`);
+        }
         return new App({
             name: identifier.name,
             group: identifier.namespace,
