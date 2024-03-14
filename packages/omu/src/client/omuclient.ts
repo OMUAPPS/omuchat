@@ -23,6 +23,7 @@ export class OmuClient implements Client {
     readonly listeners: ClientListeners;
     readonly app: App;
     readonly token: TokenProvider;
+    readonly address: Address;
     readonly network: Network;
     readonly extensions: ExtensionManager;
     readonly endpoints: EndpointExtension;
@@ -42,6 +43,7 @@ export class OmuClient implements Client {
         this.listeners = new ClientListeners();
         this.app = options.app;
         this.token = options.token;
+        this.address = options.address;
         this.network = new Network(this, options.address, this.token, options.connection ?? new WebsocketConnection(options.address));
         this.extensions = new ExtensionManager(this);
 
@@ -59,6 +61,18 @@ export class OmuClient implements Client {
             type: packetType,
             data,
         });
+    }
+
+    proxy(url: string): string {
+        const protocol = this.address.secure ? 'https' : 'http';
+        const { host, port } = this.address;
+        return `${protocol}://${host}:${port}/proxy?url=${encodeURIComponent(url)}`;
+    }
+
+    asset(url: string): string {
+        const protocol = this.address.secure ? 'https' : 'http';
+        const { host, port } = this.address;
+        return `${protocol}://${host}:${port}/assets?path=${encodeURIComponent(url)}`;
     }
 
     start(): void {
