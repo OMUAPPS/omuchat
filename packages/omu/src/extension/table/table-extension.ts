@@ -320,24 +320,22 @@ class TableImpl<T> implements Table<T> {
         this.listeners.splice(this.listeners.indexOf(listener), 1);
     }
 
-    private _listen(): void {
-        this.client.network.addTask(() => {
-            this.client.send(TableListenEvent, this.key);
-        });
-    }
 
-    listen(listener?: (items: Map<string, T>) => void): void {
+    listen(listener?: (items: Map<string, T>) => void): () => void {
         if (!this.listening) {
-            this.client.network.addTask(this._listen.bind(this));
+            this.client.network.addTask(() => {
+                this.client.send(TableListenEvent, this.key);
+            });
             this.listening = true;
         }
         if (!listener) {
-            return;
+            return () => { };
         }
         const tableListener = {
             onCacheUpdate: listener,
         };
         this.addListener(tableListener);
+        return () => this.unlisten(listener);
     }
 
     unlisten(listener?: ((items: Map<string, T>) => void) | undefined): void {

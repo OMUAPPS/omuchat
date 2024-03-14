@@ -15,18 +15,19 @@
     const { chat, client } = getClient();
     let rooms = chat.rooms!.cache;
 
-    const destroy = chat.rooms.listen((newRooms: Map<string, models.Room>) => {
+    const unlisten = chat.rooms.listen((newRooms: Map<string, models.Room>) => {
         rooms = newRooms;
     });
-    client.connection.addListener({
-        onConnect() {
+
+    onMount(() => {
+        client.network.listeners.connected.subscribe(() => {
             chat.rooms.fetch({
                 after: 100,
             });
-        },
-    });
-    onMount(() => {
-        return destroy;
+        });
+        return () => {
+            unlisten();
+        };
     });
 
     function openSetup() {

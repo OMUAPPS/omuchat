@@ -66,7 +66,9 @@ export class OmuClient implements Client {
             throw new Error('Client already running');
         }
         this.running = true;
+        this.network.connect();
         this.listeners.started.emit();
+
     }
 
     stop(): void {

@@ -31,10 +31,13 @@ export class WebsocketConnection implements Connection {
         return new Promise((resolve, reject) => {
             this.close();
             this.socket = new WebSocket(this.wsEndpoint);
+            this.socket.onerror = reject;
             this.socket.onclose = () => this.close();
             this.socket.onmessage = (event) => this.onMessage(event);
-            this.socket.onopen = () => resolve();
-            this.socket.onerror = reject;
+            this.socket.onopen = () => {
+                this.connected = true;
+                resolve();
+            }
         });
     }
 
@@ -48,6 +51,9 @@ export class WebsocketConnection implements Connection {
         const data = reader.readByteArray();
         reader.finish();
         this.packetQueue.push({ type, data });
+        if (this.receiveWaiter) {
+            this.receiveWaiter();
+        }
     }
 
     public async receive(serializer: Serializable<Packet<unknown>, PacketData>): Promise<Packet> {

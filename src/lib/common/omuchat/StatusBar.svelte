@@ -9,15 +9,9 @@
     import { getClient } from './client.js';
 
     const { client } = getClient();
-    const status = writable<ConnectionStatus>(client.connection.status());
+    const status = writable<ConnectionStatus>('disconnected');
 
-    onMount(() => {
-        return client.connection.addListener({
-            onStatusChanged: (newStatus) => {
-                status.set(newStatus);
-            },
-        });
-    });
+    onMount(() => client.network.listeners.status.subscribe((newStatus) => status.set(newStatus)));
 </script>
 
 <p class={$status}>
@@ -35,7 +29,7 @@
             <FlexColWrapper>
                 接続済み
                 <span>
-                    {client.address.host}:{client.address.port}
+                    {client.network.address.host}:{client.network.address.port}
                     <small> に接続済み </small>
                 </span>
             </FlexColWrapper>
@@ -44,7 +38,7 @@
             <FlexColWrapper>
                 接続中
                 <span>
-                    {client.address.host}:{client.address.port}
+                    {client.network.address.host}:{client.network.address.port}
                     <small> に接続中… </small>
                 </span>
             </FlexColWrapper>
@@ -53,7 +47,7 @@
             <FlexColWrapper>
                 接続されていません
                 <span>
-                    {client.address.host}:{client.address.port}
+                    {client.network.address.host}:{client.network.address.port}
                     <small> に接続できませんでした </small>
                 </span>
             </FlexColWrapper>

@@ -4,7 +4,7 @@ import { PacketType } from "./packet.js";
 import { App, AppJson } from "../../app.js";
 import { Serializer } from "../../serializer.js";
 
-const IDENTIFIER = new Identifier('omu', 'packet');
+const IDENTIFIER = new Identifier('core', 'packet');
 
 type ConnectPacketJson = {
     app: AppJson,

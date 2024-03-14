@@ -28,7 +28,7 @@ export class Network {
 
     constructor(
         private readonly client: Client,
-        private readonly address: Address,
+        public readonly address: Address,
         private readonly tokenProcider: TokenProvider,
         private connection: Connection,
     ) {
@@ -80,10 +80,9 @@ export class Network {
                 token: await this.tokenProcider.get(this.address, this.client.app),
             }),
         });
-        this.listeners.status.emit("connected");
-        this.listeners.connected.emit();
+        await this.listeners.status.emit("connected");
+        await this.listeners.connected.emit();
         this.dispatchTasks();
-
         await this.listen();
 
         if (recconect) {
