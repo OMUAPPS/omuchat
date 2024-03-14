@@ -18,6 +18,7 @@
     import ScreenInstalling from './setup/ScreenInstalling.svelte';
 
     import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
+    import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import { getClient } from '$lib/common/omuchat/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
     import { t } from '$lib/i18n/i18n-context.js';
@@ -97,9 +98,10 @@
     }
 
     function handleKeydown(event: KeyboardEvent) {
-        // ctrl + 1-0 to switch pages
+        // ctrl + [1234567890] to switch pages
+        const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
         if (event.ctrlKey && event.key >= '0' && event.key <= '9') {
-            const index = event.key === '0' ? 9 : event.key.charCodeAt(0) - '0'.charCodeAt(0) - 1;
+            const index = numbers.indexOf(Number(event.key));
             $currentPage = [...$pages.keys()][index];
             event.preventDefault();
             return;
@@ -131,7 +133,7 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<div class="wrapper">
+<FlexRowWrapper heightFull>
     <div class="tab-container">
         <FlexColWrapper>
             {#each $pages.entries() as [key, page] (key)}
@@ -162,7 +164,7 @@
             {/if}
         </div>
     {/each}
-</div>
+</FlexRowWrapper>
 
 <style lang="scss">
     .wrapper {
