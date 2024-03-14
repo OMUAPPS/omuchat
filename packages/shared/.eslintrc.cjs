@@ -95,6 +95,7 @@ module.exports = {
                 },
             },
         ],
+        'import/no-relative-parent-imports': 'error',
         '@typescript-eslint/no-unused-vars': [
             'warn',
             {
