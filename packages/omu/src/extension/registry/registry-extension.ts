@@ -1,6 +1,6 @@
 import type { Client } from '../../client/index.js';
-import { JsonEventType } from '../../event/index.js';
-import { JsonEndpointType } from '../endpoint/endpoint.js';
+import { PacketType } from '../../network/packet/index.js';
+import { EndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType, type Extension } from '../extension.js';
 import { Registry } from './registry.js';
 
@@ -8,7 +8,7 @@ type Key = { name: string; app?: string };
 
 export class RegistryExtension implements Extension {
     constructor(private readonly client: Client) {
-        client.events.register(RegistryUpdateEvent);
+        client.network.registerPacket(RegistryUpdateEvent);
     }
 
     get<T>(key: Key, defaultValue: T): Registry<T> {
@@ -26,7 +26,7 @@ class RegistryImpl<T> implements Registry<T> {
         private readonly key: string,
         private readonly defaultValue: T,
     ) {
-        client.events.addListener(RegistryUpdateEvent, (event) => {
+        client.network.addPacketHandler(RegistryUpdateEvent, (event) => {
             if (event.key !== this.key) {
                 return;
             }
@@ -54,7 +54,7 @@ class RegistryImpl<T> implements Registry<T> {
 
     async listen(handler: (value: T) => void): Promise<() => void> {
         if (!this.listening) {
-            this.client.connection.addTask(() => {
+            this.client.network.addTask(() => {
                 this.client.send(RegistryListenEvent, this.key);
             });
             this.listening = true;
@@ -70,16 +70,16 @@ export const RegistryExtensionType = new ExtensionType(
     'registry',
     (client: Client) => new RegistryExtension(client),
 );
-export const RegistryUpdateEvent = JsonEventType.ofExtension<{ key: string; value: any }>(
+export const RegistryUpdateEvent = PacketType.createJson<{ key: string; value: any }>(
     RegistryExtensionType,
     {
         name: 'update',
     },
 );
-export const RegistryListenEvent = JsonEventType.ofExtension<string>(RegistryExtensionType, {
+export const RegistryListenEvent = PacketType.createJson<string>(RegistryExtensionType, {
     name: 'listen',
 });
-export const RegistryGetEndpoint = JsonEndpointType.ofExtension<string, any>(
+export const RegistryGetEndpoint = EndpointType.createJson<string, any>(
     RegistryExtensionType,
     {
         name: 'get',

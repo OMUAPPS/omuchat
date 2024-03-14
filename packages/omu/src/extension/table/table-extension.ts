@@ -1,14 +1,14 @@
 import type { Client } from '../../client/index.js';
-import { JsonEventType, SerializeEventType } from '../../event/event.js';
+import { PacketType } from '../../network/packet/packet.js';
 import { Keyable } from '../../interface.js';
 import { Serializable, Serializer } from '../../serializer.js';
-import { JsonEndpointType, SerializeEndpointType } from '../endpoint/endpoint.js';
+import { EndpointType } from '../endpoint/endpoint.js';
 import { Extension, ExtensionType } from '../extension.js';
 
 import { Identifier } from '../../identifier.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
-import { App } from '../server/app.js';
-import type { Model } from './model.js';
+import { App } from '../../app.js';
+import type { Model } from '../../model.js';
 import { Table, TableConfig, TableListener, TableType } from './table.js';
 
 export const TableExtensionType: ExtensionType<TableExtension> = new ExtensionType(
@@ -72,23 +72,23 @@ const proxySerializer = new Serializer<TableProxyData, Uint8Array>(
     },
 );
 
-export const TableConfigSetEvent = JsonEventType.ofExtension<{
+export const TableConfigSetEvent = PacketType.createJson<{
     type: string;
     config: TableConfig;
 }>(TableExtensionType, {
     name: 'config_set',
 });
-export const TableListenEvent = JsonEventType.ofExtension<string>(TableExtensionType, {
+export const TableListenEvent = PacketType.createJson<string>(TableExtensionType, {
     name: 'listen',
 });
-export const TableProxyListenEvent = JsonEventType.ofExtension<string>(TableExtensionType, {
+export const TableProxyListenEvent = PacketType.createJson<string>(TableExtensionType, {
     name: 'proxy_listen',
 });
-export const TableProxyEvent = SerializeEventType.ofExtension<TableProxyData>(TableExtensionType, {
+export const TableProxyEvent = PacketType.createSerialized<TableProxyData>(TableExtensionType, {
     name: 'proxy',
     serializer: proxySerializer,
 });
-export const TableProxyEndpoint = SerializeEndpointType.ofExtension<TableProxyData, void>(
+export const TableProxyEndpoint = EndpointType.createSerialized<TableProxyData, void>(
     TableExtensionType,
     {
         name: 'proxy',
@@ -97,31 +97,31 @@ export const TableProxyEndpoint = SerializeEndpointType.ofExtension<TableProxyDa
     },
 );
 
-export const TableItemAddEvent = SerializeEventType.ofExtension<TableItemsData>(
+export const TableItemAddEvent = PacketType.createSerialized<TableItemsData>(
     TableExtensionType,
     {
         name: 'item_add',
         serializer: itemsSerializer,
     },
 );
-export const TableItemUpdateEvent = SerializeEventType.ofExtension<TableItemsData>(
+export const TableItemUpdateEvent = PacketType.createSerialized<TableItemsData>(
     TableExtensionType,
     {
         name: 'item_update',
         serializer: itemsSerializer,
     },
 );
-export const TableItemRemoveEvent = SerializeEventType.ofExtension<TableItemsData>(
+export const TableItemRemoveEvent = PacketType.createSerialized<TableItemsData>(
     TableExtensionType,
     {
         name: 'item_remove',
         serializer: itemsSerializer,
     },
 );
-export const TableItemClearEvent = JsonEventType.ofExtension<TableEventData>(TableExtensionType, {
+export const TableItemClearEvent = PacketType.createJson<TableEventData>(TableExtensionType, {
     name: 'item_clear',
 });
-export const TableItemGetEndpoint = SerializeEndpointType.ofExtension<
+export const TableItemGetEndpoint = EndpointType.createSerialized<
     TableEventData & { keys: string[] },
     TableItemsData
 >(TableExtensionType, {
@@ -129,7 +129,7 @@ export const TableItemGetEndpoint = SerializeEndpointType.ofExtension<
     requestSerializer: Serializer.json(),
     responseSerializer: itemsSerializer,
 });
-export const TableItemFetchEndpoint = SerializeEndpointType.ofExtension<
+export const TableItemFetchEndpoint = EndpointType.createSerialized<
     TableEventData & { before?: number; after?: number; cursor?: string },
     TableItemsData
 >(TableExtensionType, {
@@ -137,11 +137,8 @@ export const TableItemFetchEndpoint = SerializeEndpointType.ofExtension<
     requestSerializer: Serializer.json(),
     responseSerializer: itemsSerializer,
 });
-export const TableItemSizeEndpoint = JsonEndpointType.ofExtension<TableEventData, number>(
-    TableExtensionType,
-    {
-        name: 'item_size',
-    },
+export const TableItemSizeEndpoint = EndpointType.createJson<TableEventData, number>(TableExtensionType,
+    { name: 'item_size' }
 );
 
 export class TableExtension implements Extension {
@@ -149,7 +146,7 @@ export class TableExtension implements Extension {
 
     constructor(private readonly client: Client) {
         this.tableMap = new Map();
-        client.events.register(
+        client.network.registerPacket(
             TableConfigSetEvent,
             TableProxyEvent,
             TableProxyListenEvent,
@@ -226,8 +223,7 @@ class TableImpl<T> implements Table<T> {
         this.proxies = [];
         this.listening = false;
 
-        client.connection.addListener(this);
-        client.events.addListener(TableProxyEvent, (event) => {
+        client.network.addPacketHandler(TableProxyEvent, (event) => {
             if (event.type !== this.key) {
                 return;
             }
@@ -257,7 +253,7 @@ class TableImpl<T> implements Table<T> {
                 ),
             });
         });
-        client.events.addListener(TableItemAddEvent, (event) => {
+        client.network.addPacketHandler(TableItemAddEvent, (event) => {
             if (event.type !== this.key) {
                 return;
             }
@@ -267,7 +263,7 @@ class TableImpl<T> implements Table<T> {
                 listener.onAdd?.(items);
             });
         });
-        client.events.addListener(TableItemUpdateEvent, (event) => {
+        client.network.addPacketHandler(TableItemUpdateEvent, (event) => {
             if (event.type !== this.key) {
                 return;
             }
@@ -277,7 +273,7 @@ class TableImpl<T> implements Table<T> {
                 listener.onUpdate?.(items);
             });
         });
-        client.events.addListener(TableItemRemoveEvent, (event) => {
+        client.network.addPacketHandler(TableItemRemoveEvent, (event) => {
             if (event.type !== this.key) {
                 return;
             }
@@ -290,7 +286,7 @@ class TableImpl<T> implements Table<T> {
                 listener.onCacheUpdate?.(this.cache);
             });
         });
-        client.events.addListener(TableItemClearEvent, (event) => {
+        client.network.addPacketHandler(TableItemClearEvent, (event) => {
             if (event.type !== this.key) {
                 return;
             }
@@ -301,7 +297,6 @@ class TableImpl<T> implements Table<T> {
             });
         });
     }
-    d;
     private updateCache(items: Map<string, T>): void {
         if (!this.cacheSize) {
             this.cache = new Map([...this.cache, ...items]);
@@ -325,24 +320,22 @@ class TableImpl<T> implements Table<T> {
         this.listeners.splice(this.listeners.indexOf(listener), 1);
     }
 
-    private _listen(): void {
-        this.client.connection.addTask(() => {
-            this.client.send(TableListenEvent, this.key);
-        });
-    }
 
-    listen(listener?: (items: Map<string, T>) => void): void {
+    listen(listener?: (items: Map<string, T>) => void): () => void {
         if (!this.listening) {
-            this.client.connection.addTask(this._listen.bind(this));
+            this.client.network.addTask(() => {
+                this.client.send(TableListenEvent, this.key);
+            });
             this.listening = true;
         }
         if (!listener) {
-            return;
+            return () => { };
         }
         const tableListener = {
             onCacheUpdate: listener,
         };
         this.addListener(tableListener);
+        return () => this.unlisten(listener);
     }
 
     unlisten(listener?: ((items: Map<string, T>) => void) | undefined): void {
@@ -452,15 +445,15 @@ class TableImpl<T> implements Table<T> {
         let items: Map<string, T> = await this.fetch(
             backward
                 ? {
-                      before: 0,
-                      after: this.cacheSize ?? 100,
-                      cursor,
-                  }
+                    before: 0,
+                    after: this.cacheSize ?? 100,
+                    cursor,
+                }
                 : {
-                      before: this.cacheSize ?? 100,
-                      after: 0,
-                      cursor,
-                  },
+                    before: this.cacheSize ?? 100,
+                    after: 0,
+                    cursor,
+                },
         );
         yield* items.values();
         while (items.size > 0) {

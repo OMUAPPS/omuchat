@@ -1,70 +1,97 @@
 import type { Client } from '../../client/index.js';
-import type { ConnectionListener } from '../../network/index.js';
-import { JsonEventType } from '../../event/index.js';
+import { PacketType } from '../../network/packet/index.js';
 import { ExtensionType, type Extension } from '../extension.js';
-
-type Key = { name: string; app?: string };
-
-export class MessageExtension implements Extension, ConnectionListener {
-    private readonly listenKeys: Set<string> = new Set();
-    private readonly keys: Set<string> = new Set();
-
-    constructor(private readonly client: Client) {
-        client.events.register(MessageRegisterEvent, MessageListenEvent, MessageBroadcastEvent);
-        client.connection.addListener(this);
-    }
-
-    register(key: Key): void {
-        if (this.keys.has(key.name)) {
-            throw new Error(`Key ${key.name} already registered`);
-        }
-        this.keys.add(`${key.app ?? this.client.app.key()}:${key.name}`);
-    }
-
-    broadcast<T>(key: Key, value: T): void {
-        this.client.send(MessageBroadcastEvent, {
-            key: `${key.app ?? this.client.app.key()}:${key.name}`,
-            body: value,
-        });
-    }
-
-    listen<T>(key: Key, handler: (value: T) => void): () => void {
-        const keyString = `${key.app ?? this.client.app.key()}:${key.name}`;
-        const listener = (event: { key: string; body: any }): void => {
-            if (event.key === keyString) {
-                handler(event.body);
-            }
-        };
-        this.listenKeys.add(keyString);
-        this.client.events.addListener(MessageBroadcastEvent, listener);
-        return () => {
-            this.client.events.removeListener(MessageBroadcastEvent, listener);
-        };
-    }
-
-    onConnect(): void {
-        for (const key of this.keys) {
-            this.client.send(MessageRegisterEvent, key);
-        }
-        for (const key of this.listenKeys) {
-            this.client.send(MessageListenEvent, key);
-        }
-    }
-}
+import { Message, MessageType } from './message.js';
+import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 
 export const MessageExtensionType = new ExtensionType(
     'message',
     (client: Client) => new MessageExtension(client),
 );
-export const MessageRegisterEvent = JsonEventType.ofExtension<string>(MessageExtensionType, {
-    name: 'register',
-});
-export const MessageListenEvent = JsonEventType.ofExtension<string>(MessageExtensionType, {
+export const MessageListenEvent = PacketType.createJson<string>(MessageExtensionType, {
     name: 'listen',
 });
-export const MessageBroadcastEvent = JsonEventType.ofExtension<{ key: string; body: any }>(
+type MessageData = { key: string; body: Uint8Array };
+export const MessageBroadcastEvent = PacketType.createSerialized<MessageData>(
     MessageExtensionType,
     {
         name: 'broadcast',
+        serializer: {
+            serialize: (data) => {
+                const writer = new ByteWriter();
+                writer.writeString(data.key);
+                writer.writeByteArray(data.body);
+                return writer.finish();
+            },
+            deserialize: (data) => {
+                const reader = new ByteReader(data);
+                const key = reader.readString();
+                const body = reader.readByteArray();
+                reader.finish();
+                return { key, body };
+            },
+        },
     },
 );
+
+export class MessageExtension implements Extension {
+    private readonly messageIdentifiers: Set<string> = new Set();
+
+
+    constructor(private readonly client: Client) {
+        client.network.registerPacket(MessageListenEvent, MessageBroadcastEvent);
+    }
+
+    create<T>(name: string): Message<T> {
+        const identifier = this.client.app.identifer.join(name);
+        if (this.messageIdentifiers.has(identifier.key())) {
+            throw new Error(`Message for key ${identifier.key()} already created`);
+        }
+        this.messageIdentifiers.add(identifier.key());
+        const type = MessageType.createJson<T>(identifier, name);
+        return new MessageImpl<T>(this.client, type);
+    }
+}
+
+class MessageImpl<T> implements Message<T> {
+    private readonly listeners: ((value: T) => void)[] = [];
+    private listening: boolean = false;
+
+    constructor(
+        private readonly client: Client,
+        private readonly type: MessageType<T>,
+    ) {
+        client.network.addPacketHandler(MessageBroadcastEvent, this.handleBroadcast);
+    }
+
+    broadcast(body: T): void {
+        const data = this.type.serializer.serialize(body);
+        this.client.send(MessageBroadcastEvent, {
+            key: this.type.identifier.key(),
+            body: data,
+        });
+    }
+
+    listen(handler: (value: T) => void): () => void {
+        this.listeners.push(handler);
+        if (!this.listening) {
+            this.client.network.addTask(() => {
+                this.client.send(MessageListenEvent, this.type.identifier.key());
+            });
+            this.listening = true;
+        }
+        return () => {
+            this.listeners.splice(this.listeners.indexOf(handler), 1);
+        };
+    }
+
+    private handleBroadcast(data: MessageData): void {
+        if (data.key !== this.type.identifier.key()) {
+            return;
+        }
+        const body = this.type.serializer.deserialize(data.body);
+        for (const listener of this.listeners) {
+            listener(body);
+        }
+    }
+}

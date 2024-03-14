@@ -4,4 +4,4 @@ export {
     EndpointExtensionType,
     EndpointRegisterEvent,
 } from './endpoint-extension.js';
-export { SerializeEndpointType, type EndpointType } from './endpoint.js';
+export { type EndpointType } from './endpoint.js';

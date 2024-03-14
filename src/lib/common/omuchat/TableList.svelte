@@ -34,7 +34,7 @@
     let loadingLock = false;
 
     async function fetch() {
-        if (!client.connection.connected) return;
+        if (!client.network.connected) return;
         if (last) {
             const items = await table.fetch({
                 cursor: last,
@@ -51,7 +51,7 @@
         updated = false;
     }
 
-    client.connection.addTask(async () => {
+    client.network.addTask(async () => {
         entries.clear();
         fetch();
     });

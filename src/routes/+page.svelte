@@ -7,7 +7,7 @@
     const app = new App({
         name: 'dashboard',
         version: '0.1.0',
-        group: 'omu.chat',
+        group: 'cc.omuchat',
     });
 </script>
 

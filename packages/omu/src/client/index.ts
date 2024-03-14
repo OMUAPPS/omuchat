@@ -1,1 +1,1 @@
-export type { Client, ClientListener } from './client.js';
+export type { Client } from './client.js';

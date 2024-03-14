@@ -19,7 +19,7 @@
     };
 
     class TokenProvider extends BrowserTokenProvider {
-        async get(serverAddress: Address, app: App): Promise<string | null> {
+        async get(serverAddress: Address, app: App): Promise<string | undefined> {
             if (isOnTauri) {
                 return await invoke('get_token');
             }

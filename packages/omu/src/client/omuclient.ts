@@ -1,16 +1,8 @@
-import type { Address, Connection, ConnectionListener } from '../network/index.js';
-import { WebsocketConnection } from '../network/websocket-connection.js';
-import type { EventRegistry, EventType } from '../event/index.js';
-import { EVENTS, createEventRegistry } from '../event/index.js';
 import type { AssetExtension } from '../extension/asset/asset-extension.js';
 import { AssetExtensionType } from '../extension/asset/asset-extension.js';
 import type { EndpointExtension } from '../extension/endpoint/endpoint-extension.js';
 import { EndpointExtensionType } from '../extension/endpoint/endpoint-extension.js';
-import {
-    createExtensionRegistry,
-    type ExtensionRegistry,
-} from '../extension/extension-registry.js';
-import type { Extension, ExtensionType } from '../extension/extension.js';
+import { ExtensionManager } from '../extension/extension-manager.js';
 import type { MessageExtension } from '../extension/message/message-extension.js';
 import { MessageExtensionType } from '../extension/message/message-extension.js';
 import type { RegistryExtension } from '../extension/registry/registry-extension.js';
@@ -19,97 +11,68 @@ import type { App, ServerExtension } from '../extension/server/index.js';
 import { ServerExtensionType } from '../extension/server/index.js';
 import type { TableExtension } from '../extension/table/table-extension.js';
 import { TableExtensionType } from '../extension/table/table-extension.js';
+import { Address, Connection, Network } from '../network/index.js';
+import { WebsocketConnection } from '../network/websocket-connection.js';
 
-import type { Client, ClientListener } from './client.js';
+import { PacketType } from '../network/packet/packet.js';
+import { Client, ClientListeners } from './client.js';
 import type { TokenProvider } from './token.js';
 
-export class OmuClient implements Client, ConnectionListener {
+export class OmuClient implements Client {
+    public running: boolean;
+    readonly listeners: ClientListeners;
     readonly app: App;
     readonly token: TokenProvider;
     readonly address: Address;
-    readonly connection: Connection;
-    readonly events: EventRegistry;
-    readonly extensions: ExtensionRegistry;
+    readonly network: Network;
+    readonly extensions: ExtensionManager;
     readonly endpoints: EndpointExtension;
     readonly tables: TableExtension;
     readonly registry: RegistryExtension;
     readonly message: MessageExtension;
     readonly assets: AssetExtension;
     readonly server: ServerExtension;
-    readonly listeners: ClientListener[];
-    public running: boolean;
 
     constructor(options: {
         app: App;
-        address: Address;
         token: TokenProvider;
+        address: Address;
         connection?: Connection;
-        eventsRegistry?: EventRegistry;
-        extensionRegistry?: ExtensionRegistry;
-        extensions?: ExtensionType<Extension>[];
     }) {
-        const { connection, eventsRegistry, extensionRegistry, extensions } = options;
         this.running = false;
-        this.listeners = [];
+        this.listeners = new ClientListeners();
         this.app = options.app;
-        this.address = options.address;
         this.token = options.token;
-        this.connection = connection ?? new WebsocketConnection(this);
-        this.connection.addListener(this);
-        this.events = eventsRegistry ?? createEventRegistry(this);
-        this.extensions = extensionRegistry ?? createExtensionRegistry(this);
+        this.address = options.address;
+        this.network = new Network(this, options.address, this.token, options.connection ?? new WebsocketConnection(options.address));
+        this.extensions = new ExtensionManager(this);
 
-        this.events.register(EVENTS.Ready, EVENTS.Token);
         this.tables = this.extensions.register(TableExtensionType);
         this.endpoints = this.extensions.register(EndpointExtensionType);
         this.server = this.extensions.register(ServerExtensionType);
         this.registry = this.extensions.register(RegistryExtensionType);
         this.message = this.extensions.register(MessageExtensionType);
         this.assets = this.extensions.register(AssetExtensionType);
-        if (extensions) {
-            this.extensions.registerAll(extensions);
-        }
+        this.listeners.initialized.emit();
+    }
 
-        this.events.addListener(EVENTS.Ready, () => {
-            this.listeners.forEach((listener) => {
-                listener.onReady?.();
-            });
-        });
-        this.events.addListener(EVENTS.Token, (token) => {
-            this.token.set(this.address, this.app, token);
-        });
-        this.listeners.forEach((listener) => {
-            listener.onInitialized?.();
+    send<T>(packetType: PacketType<T>, data: T): void {
+        this.network.send({
+            type: packetType,
+            data,
         });
     }
 
     proxy(url: string): string {
-        return this.connection.proxy(url);
+        const protocol = this.address.secure ? 'https' : 'http';
+        const { host, port } = this.address;
+        return `${protocol}://${host}:${port}/proxy?url=${encodeURIComponent(url)}`;
     }
 
     asset(url: string): string {
-        return this.connection.asset(url);
-    }
-
-    onDisconnect(): void {
-        if (this.running) {
-            this.connection.connect();
-        }
-    }
-
-    send<T>(event: EventType<T>, data: T): void {
-        this.connection.send(event, data);
-    }
-
-    addListener(listener: ClientListener): void {
-        if (this.listeners.includes(listener)) {
-            throw new Error('Listener already registered');
-        }
-        this.listeners.push(listener);
-    }
-
-    removeListener(listener: ClientListener): void {
-        this.listeners.splice(this.listeners.indexOf(listener), 1);
+        const protocol = this.address.secure ? 'https' : 'http';
+        const { host, port } = this.address;
+        return `${protocol}://${host}:${port}/assets?path=${encodeURIComponent(url)}`;
     }
 
     start(): void {
@@ -117,15 +80,13 @@ export class OmuClient implements Client, ConnectionListener {
             throw new Error('Client already running');
         }
         this.running = true;
-        this.listeners.forEach((listener) => {
-            listener.onStarted?.();
-        });
+        this.network.connect();
+        this.listeners.started.emit();
+
     }
 
     stop(): void {
         this.running = false;
-        this.listeners.forEach((listener) => {
-            listener.onStopped?.();
-        });
+        this.listeners.stopped.emit();
     }
 }

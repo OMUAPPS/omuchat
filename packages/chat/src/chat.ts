@@ -1,4 +1,4 @@
-import { JsonEndpointType } from '@omuchatjs/omu/extension/endpoint/endpoint.js';
+import { EndpointType } from '@omuchatjs/omu/extension/endpoint/endpoint.js';
 import { TableType } from '@omuchatjs/omu/extension/table/table.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import { Serializer } from '@omuchatjs/omu/serializer.js';
@@ -26,8 +26,8 @@ export const RoomsTableKey = TableType.model(IDENTIFIER, {
     name: 'rooms',
     model: Room,
 });
-export const CreateChannelTree = JsonEndpointType.of(IDENTIFIER, {
+export const CreateChannelTree = EndpointType.createJson(IDENTIFIER, {
     name: 'create_channel_tree',
-    requestSerializer: Serializer.noop<string>(),
-    responseSerializer: Serializer.model(Channel).array(),
+    requestSerializer: Serializer.noop<string>().pipe(Serializer.json()),
+    responseSerializer: Serializer.model(Channel).array().pipe(Serializer.json()),
 });

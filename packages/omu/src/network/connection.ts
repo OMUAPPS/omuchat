@@ -1,30 +1,44 @@
-import type { EventData, EventType } from '../event/index.js';
+import type { PacketData, PacketType } from './packet/index.js';
 
-import type { Address } from './address.js';
+import { Serializable } from '../serializer.js';
+import { Packet } from './packet/packet.js';
 
 export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected';
 
-export interface Connection {
-    readonly serverAddress: Address;
-    readonly connected: boolean;
 
-    connect(): Promise<void>;
-    disconnect(): void;
-    send<T>(event: EventType<T>, data: T): void;
-    status(): ConnectionStatus;
+export class PacketMapper implements Serializable<Packet, PacketData> {
+    private readonly map = new Map<string, PacketType<unknown>>();
 
-    proxy(url: string): string;
-    asset(url: string): string;
+    public register(...packetTypes: PacketType<unknown>[]): void {
+        for (const type of packetTypes) {
+            if (this.map.has(type.identifier.key())) {
+                throw new Error(`Packet id ${type.identifier.key()} already registered`);
+            }
+            this.map.set(type.identifier.key(), type);
+        }
+    }
 
-    addListener(listener: ConnectionListener): void;
-    removeListener(listener: ConnectionListener): void;
-    addTask(task: () => void): void;
-    removeTask(task: () => void): void;
+    serialize(packet: Packet): PacketData {
+        return {
+            type: packet.type.identifier.key(),
+            data: packet.type.serializer.serialize(packet.data),
+        };
+    }
+
+    deserialize(data: PacketData): Packet {
+        const type = this.map.get(data.type);
+        if (!type) throw new Error(`Packet type ${data.type} not registered`);
+        return {
+            type,
+            data: type.serializer.deserialize(data.data),
+        };
+    }
 }
 
-export interface ConnectionListener {
-    onConnect?(): void;
-    onDisconnect?(): void;
-    onEvent?(event: EventData): void;
-    onStatusChanged?(status: ConnectionStatus): void;
+export interface Connection {
+    connect(): Promise<void>;
+    send(packet: Packet, serializer: Serializable<Packet, PacketData>): void;
+    receive(serializer: Serializable<Packet, PacketData>): Promise<Packet>;
+    close(): void;
+    closed: boolean;
 }

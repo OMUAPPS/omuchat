@@ -76,7 +76,7 @@ export class BrowserTokenProvider implements TokenProvider {
         localStorage.setItem(this.key, JSON.stringify(tokens));
     }
 
-    async get(serverAddress: Address, app: omu.App): Promise<string | null> {
+    async get(serverAddress: Address, app: omu.App): Promise<string | undefined> {
         const tokens = JSON.parse(localStorage.getItem(this.key) || '{}');
         const key = `${serverAddress.host}:${serverAddress.port}:${app.key()}`;
         return Promise.resolve(tokens[key] || null);

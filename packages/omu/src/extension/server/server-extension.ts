@@ -1,11 +1,11 @@
 import type { Client } from '../../client/index.js';
-import { JsonEndpointType } from '../endpoint/endpoint.js';
+import { EndpointType } from '../endpoint/endpoint.js';
 import { Extension, ExtensionType } from '../extension.js';
 import type { Table } from '../table/index.js';
 import { TableExtensionType } from '../table/table-extension.js';
 import { TableType } from '../table/table.js';
 
-import { App } from './app.js';
+import { App } from '../../app.js';
 
 export const ServerExtensionType: ExtensionType<ServerExtension> = new ExtensionType(
     'server',
@@ -17,10 +17,10 @@ const AppsTableKey = TableType.model(ServerExtensionType, {
     name: 'apps',
     model: App,
 });
-const ShutdownEndpointType = JsonEndpointType.ofExtension<boolean, boolean>(ServerExtensionType, {
+const ShutdownEndpointType = EndpointType.createJson<boolean, boolean>(ServerExtensionType, {
     name: 'shutdown',
 });
-const PrintTasksEndpointType = JsonEndpointType.ofExtension<{}, void>(ServerExtensionType, {
+const PrintTasksEndpointType = EndpointType.createJson<{}, void>(ServerExtensionType, {
     name: 'shutdown',
 });
 
