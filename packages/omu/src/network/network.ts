@@ -126,6 +126,9 @@ export class Network {
 
     public addTask(task: () => Promise<void> | void): void {
         this.tasks.push(task);
+        if (this.connected) {
+            task();
+        }
     }
 
     public removeTask(task: () => Promise<void> | void): void {
