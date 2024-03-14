@@ -2,7 +2,8 @@ import type { Client } from '../../client/index.js';
 import { PacketType } from '../../network/packet/index.js';
 import { EndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType, type Extension } from '../extension.js';
-import { Registry } from './registry.js';
+
+import type { Registry } from './registry.js';
 
 type Key = { name: string; app?: string };
 
@@ -19,7 +20,7 @@ export class RegistryExtension implements Extension {
 
 class RegistryImpl<T> implements Registry<T> {
     private readonly listeners: Array<(value: T) => void> = [];
-    private listening: boolean = false;
+    private listening = false;
 
     constructor(
         private readonly client: Client,

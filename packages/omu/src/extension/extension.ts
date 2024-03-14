@@ -1,5 +1,5 @@
-import { Identifier } from '../identifier.js';
 import { type Client } from '../client/index.js';
+import { Identifier } from '../identifier.js';
 
 export interface Extension { }
 

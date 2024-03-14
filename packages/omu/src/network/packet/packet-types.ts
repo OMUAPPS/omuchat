@@ -1,8 +1,10 @@
-import { Model } from "../../model.js";
-import { Identifier } from "../../identifier.js";
-import { PacketType } from "./packet.js";
-import { App, AppJson } from "../../app.js";
-import { Serializer } from "../../serializer.js";
+import type { AppJson } from '../../app.js';
+import { App } from '../../app.js';
+import { Identifier } from '../../identifier.js';
+import type { Model } from '../../model.js';
+import { Serializer } from '../../serializer.js';
+
+import { PacketType } from './packet.js';
 
 const IDENTIFIER = new Identifier('core', 'packet');
 

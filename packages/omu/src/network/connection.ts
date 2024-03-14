@@ -1,10 +1,9 @@
-import type { PacketData, PacketType } from './packet/index.js';
+import type { Serializable } from '../serializer.js';
 
-import { Serializable } from '../serializer.js';
-import { Packet } from './packet/packet.js';
+import type { PacketData, PacketType } from './packet/index.js';
+import type { Packet } from './packet/packet.js';
 
 export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected';
-
 
 export class PacketMapper implements Serializable<Packet, PacketData> {
     private readonly map = new Map<string, PacketType<unknown>>();

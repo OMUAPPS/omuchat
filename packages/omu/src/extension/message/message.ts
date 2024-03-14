@@ -1,5 +1,6 @@
-import { Serializable, Serializer } from "../../serializer.js";
-import { Identifier } from "../../identifier.js";
+import type { Identifier } from '../../identifier.js';
+import type { Serializable } from '../../serializer.js';
+import { Serializer } from '../../serializer.js';
 
 export class MessageType<T> {
     constructor(

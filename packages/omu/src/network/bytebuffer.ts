@@ -11,7 +11,7 @@ export class ByteWriter {
         this.dataArray = new DataView(this.buffer);
     }
 
-    private allocate(length: number) {
+    private allocate(length: number): void {
         if (this.offset + length > this.buffer.byteLength) {
             const newByteLength = Math.max(this.buffer.byteLength * 2, this.offset + length);
             const newBuffer = new ArrayBuffer(newByteLength);

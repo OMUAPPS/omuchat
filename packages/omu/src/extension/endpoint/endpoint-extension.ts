@@ -1,10 +1,8 @@
 import type { Client } from '../../client/index.js';
-import { PacketType } from '../../network/packet/index.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
+import { PacketType } from '../../network/packet/index.js';
 import { Serializer } from '../../serializer.js';
 import { ExtensionType } from '../extension.js';
-import type { Table } from '../table/index.js';
-import { TableType } from '../table/index.js';
 
 import { type EndpointType } from './endpoint.js';
 

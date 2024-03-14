@@ -1,5 +1,5 @@
-import { Address } from '../network/address.js';
 import type { App } from '../index.js';
+import type { Address } from '../network/address.js';
 
 export interface TokenProvider {
     get(serverAddress: Address, app: App): Promise<string | undefined>;

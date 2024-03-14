@@ -1,4 +1,4 @@
-import { Identifier } from '../../identifier.js';
+import type { Identifier } from '../../identifier.js';
 import { Serializer, type Serializable } from '../../serializer.js';
 
 export class EndpointType<Req = unknown, Res = unknown> {
@@ -18,7 +18,7 @@ export class EndpointType<Req = unknown, Res = unknown> {
             name: string,
             requestSerializer?: Serializable<Req, Uint8Array>,
             responseSerializer?: Serializable<Res, Uint8Array>,
-        }
+        },
     ): EndpointType<Req, Res> {
         return new EndpointType<Req, Res>(
             identifier.join(name),
@@ -37,7 +37,7 @@ export class EndpointType<Req = unknown, Res = unknown> {
             name: string,
             requestSerializer: Serializable<Req, Uint8Array>,
             responseSerializer: Serializable<Res, Uint8Array>,
-        }
+        },
     ): EndpointType<Req, Res> {
         return new EndpointType<Req, Res>(
             identifier.join(name),

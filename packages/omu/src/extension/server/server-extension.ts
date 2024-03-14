@@ -1,11 +1,11 @@
+import { App } from '../../app.js';
 import type { Client } from '../../client/index.js';
 import { EndpointType } from '../endpoint/endpoint.js';
-import { Extension, ExtensionType } from '../extension.js';
+import type { Extension } from '../extension.js';
+import { ExtensionType } from '../extension.js';
 import type { Table } from '../table/index.js';
 import { TableExtensionType } from '../table/table-extension.js';
 import { TableType } from '../table/table.js';
-
-import { App } from '../../app.js';
 
 export const ServerExtensionType: ExtensionType<ServerExtension> = new ExtensionType(
     'server',
@@ -20,7 +20,7 @@ const AppsTableKey = TableType.model(ServerExtensionType, {
 const ShutdownEndpointType = EndpointType.createJson<boolean, boolean>(ServerExtensionType, {
     name: 'shutdown',
 });
-const PrintTasksEndpointType = EndpointType.createJson<{}, void>(ServerExtensionType, {
+const PrintTasksEndpointType = EndpointType.createJson<undefined, void>(ServerExtensionType, {
     name: 'shutdown',
 });
 
@@ -37,6 +37,6 @@ export class ServerExtension implements Extension {
     }
 
     printTasks(): Promise<void> {
-        return this.client.endpoints.call(PrintTasksEndpointType, {});
+        return this.client.endpoints.call(PrintTasksEndpointType, undefined);
     }
 }

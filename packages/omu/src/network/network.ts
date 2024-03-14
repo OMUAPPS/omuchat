@@ -1,21 +1,22 @@
-import { Client } from "../index.js"
-import { Packet, PacketType } from "./packet/packet.js"
-import { Connection, PacketMapper } from "./connection.js"
-import { EventEmitter } from "../event-emitter.js";
-import { ConnectPacket, PACKET_TYPES } from "./packet/packet-types.js";
-import { TokenProvider } from "../client/token.js";
-import { Address } from "./address.js";
+import type { TokenProvider } from '../client/token.js';
+import { EventEmitter } from '../event-emitter.js';
+import type { Client } from '../index.js';
+
+import type { Address } from './address.js';
+import type { Connection } from './connection.js';
+import { PacketMapper } from './connection.js';
+import { ConnectPacket, PACKET_TYPES } from './packet/packet-types.js';
+import type { Packet, PacketType } from './packet/packet.js';
 
 type PacketListeners<T> = {
     readonly type: PacketType<T>,
     readonly listeners: EventEmitter<(packet: T) => void>,
 };
 
-
-export type NetworkStatus = "connecting" | "connected" | "disconnected";
+export type NetworkStatus = 'connecting' | 'connected' | 'disconnected';
 
 export class Network {
-    public connected: boolean = false;
+    public connected = false;
     public readonly listeners = {
         connected: new EventEmitter<() => void>,
         disconnected: new EventEmitter<() => void>,
@@ -42,7 +43,7 @@ export class Network {
 
     public setConnection(connection: Connection): void {
         if (this.connected) {
-            throw new Error("Cannot change connection while connected");
+            throw new Error('Cannot change connection while connected');
         }
         this.connection = connection;
     }
@@ -58,16 +59,16 @@ export class Network {
     }
 
     public addPacketHandler<T>(type: PacketType<T>, handler: (packet: T) => void): void {
-        const listeners = this.packetHandlers.get(type.identifier.key()) as PacketListeners<unknown>;
+        const listeners = this.packetHandlers.get(type.identifier.key()) as PacketListeners<unknown> | undefined;
         if (!listeners) {
             throw new Error(`Packet type ${type.identifier.key()} not registered`);
         }
         listeners.listeners.subscribe(handler as (packet: unknown) => void);
     }
 
-    public async connect(recconect: boolean = false): Promise<void> {
+    public async connect(recconect = false): Promise<void> {
         if (this.connected) {
-            throw new Error("Already connected");
+            throw new Error('Already connected');
         }
 
         this.disconnect();
@@ -80,7 +81,7 @@ export class Network {
                 token: await this.tokenProcider.get(this.address, this.client.app),
             }),
         });
-        await this.listeners.status.emit("connected");
+        await this.listeners.status.emit('connected');
         await this.listeners.connected.emit();
         this.dispatchTasks();
         await this.listen();
@@ -96,7 +97,7 @@ export class Network {
         }
         this.connected = false;
         this.connection.close();
-        this.listeners.status.emit("disconnected");
+        this.listeners.status.emit('disconnected');
         this.listeners.disconnected.emit();
     }
 

@@ -1,12 +1,12 @@
 import * as omu from '@omuchatjs/omu';
 import type { TokenProvider } from '@omuchatjs/omu/client/token.js';
+import type { Table } from '@omuchatjs/omu/extension/table/table.js';
 import type { Address } from '@omuchatjs/omu/network/index.js';
 
+import * as chat from './chat.js';
 import type { EventHandler, EventKey } from './event/index.js';
 import { EventRegistry } from './event/index.js';
-import { Table } from '@omuchatjs/omu/extension/table/table.js';
-import * as models from './models/index.js';
-import * as chat from './chat.js';
+import type * as models from './models/index.js';
 
 export class Client {
     readonly app: omu.App;
