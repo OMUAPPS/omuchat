@@ -1,5 +1,5 @@
 import type { Client } from '../../client/index.js';
-import { JsonEventType, SerializeEventType } from '../../event/index.js';
+import { PacketType } from '../../network/packet/index.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 import { Serializer } from '../../serializer.js';
 import { ExtensionType } from '../extension.js';
@@ -22,19 +22,19 @@ export class EndpointExtension {
         this.endpointMap = new Map();
         this.futureResultMap = new Map();
         this.requestId = 0;
-        client.events.register(
+        client.network.registerPacket(
             EndpointRegisterEvent,
             EndpointCallEvent,
             EndpointReceiveEvent,
             EndpointErrorEvent,
         );
-        client.events.addListener(EndpointReceiveEvent, (event) => {
+        client.network.addPacketHandler(EndpointReceiveEvent, (event) => {
             const promise = this.futureResultMap.get(event.id);
             if (!promise) return;
             this.futureResultMap.delete(event.id);
             promise.resolve(event.data);
         });
-        client.events.addListener(EndpointErrorEvent, (event) => {
+        client.network.addPacketHandler(EndpointErrorEvent, (event) => {
             const promise = this.futureResultMap.get(event.id);
             if (!promise) return;
             this.futureResultMap.delete(event.id);
@@ -69,7 +69,7 @@ export const EndpointExtensionType = new ExtensionType(
     (client: Client) => new EndpointExtension(client),
 );
 
-export const EndpointRegisterEvent = JsonEventType.ofExtension<string>(
+export const EndpointRegisterEvent = PacketType.createJson<string>(
     EndpointExtensionType,
     {
         name: 'register',
@@ -104,21 +104,21 @@ const serializer = new Serializer<EndpointReqData, Uint8Array>(
     },
 );
 
-export const EndpointCallEvent = SerializeEventType.ofExtension<EndpointReqData>(
+export const EndpointCallEvent = PacketType.createSerialized<EndpointReqData>(
     EndpointExtensionType,
     {
         name: 'call',
         serializer,
     },
 );
-export const EndpointReceiveEvent = SerializeEventType.ofExtension<EndpointReqData>(
+export const EndpointReceiveEvent = PacketType.createSerialized<EndpointReqData>(
     EndpointExtensionType,
     {
         name: 'receive',
         serializer,
     },
 );
-export const EndpointErrorEvent = JsonEventType.ofExtension<EndpointReq & { error: string }>(
+export const EndpointErrorEvent = PacketType.createJson<EndpointReq & { error: string }>(
     EndpointExtensionType,
     {
         name: 'error',

@@ -3,7 +3,7 @@ import type { Keyable } from '../../interface.js';
 import { Serializable, Serializer } from '../../serializer.js';
 import type { ExtensionType } from '../extension.js';
 import type { App } from '../server/index.js';
-import type { Model } from './model.js';
+import type { Model } from '../../model.js';
 
 export type TableConfig = {
     cache_size: number;

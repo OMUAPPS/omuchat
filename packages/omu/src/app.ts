@@ -1,6 +1,6 @@
-import { Identifier } from '../../identifier.js';
-import type { Keyable } from '../../interface.js';
-import type { Model } from '../table/model.js';
+import { Identifier } from './identifier.js';
+import type { Keyable } from './interface.js';
+import type { Model } from './model.js';
 
 export interface AppJson {
     identifier: string;

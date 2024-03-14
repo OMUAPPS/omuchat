@@ -1,5 +1,5 @@
 import type { Keyable } from '../../interface.js';
-import type { Model } from '../table/model.js';
+import type { Model } from '../../model.js';
 
 export interface ExtensionInfoJson {
     name: string;
@@ -10,7 +10,7 @@ export class ExtensionInfo implements Keyable, Model<ExtensionInfoJson> {
     constructor(
         public name: string,
         public description?: string,
-    ) {}
+    ) { }
     toString(): string {
         throw new Error('Method not implemented.');
     }

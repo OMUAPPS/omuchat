@@ -10,8 +10,8 @@ export class EventKey<T extends unknown[]> {
         public readonly create: (
             client: Client,
             invoke: (...data: T) => void,
-        ) => void = (): void => {},
-    ) {}
+        ) => void = (): void => { },
+    ) { }
 }
 
 function initTableEvent<T extends Keyable>(consumer: (client: Client) => Table<T>) {
@@ -30,11 +30,7 @@ function initTableEvent<T extends Keyable>(consumer: (client: Client) => Table<T
 
 export const events = {
     Ready: new EventKey<[]>('ready', (client, invoke) => {
-        client.omu.addListener({
-            onReady: () => {
-                invoke();
-            },
-        });
+        client.omu.network.listeners.connected.subscribe(() => invoke());
     }),
     MessageCreate: new EventKey<[Message]>(
         'on_message',

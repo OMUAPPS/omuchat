@@ -5,7 +5,7 @@ import type { Table } from '../table/index.js';
 import { TableExtensionType } from '../table/table-extension.js';
 import { TableType } from '../table/table.js';
 
-import { App } from './app.js';
+import { App } from '../../app.js';
 
 export const ServerExtensionType: ExtensionType<ServerExtension> = new ExtensionType(
     'server',

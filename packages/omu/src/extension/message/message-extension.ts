@@ -1,20 +1,18 @@
 import type { Client } from '../../client/index.js';
-import type { ConnectionListener } from '../../network/index.js';
-import { JsonEventType, SerializeEventType } from '../../event/index.js';
+import { PacketType } from '../../network/packet/index.js';
 import { ExtensionType, type Extension } from '../extension.js';
 import { Message, MessageType } from './message.js';
-import { Identifier } from '../../identifier.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 
 export const MessageExtensionType = new ExtensionType(
     'message',
     (client: Client) => new MessageExtension(client),
 );
-export const MessageListenEvent = JsonEventType.ofExtension<string>(MessageExtensionType, {
+export const MessageListenEvent = PacketType.createJson<string>(MessageExtensionType, {
     name: 'listen',
 });
 type MessageData = { key: string; body: Uint8Array };
-export const MessageBroadcastEvent = SerializeEventType.ofExtension<MessageData>(
+export const MessageBroadcastEvent = PacketType.createSerialized<MessageData>(
     MessageExtensionType,
     {
         name: 'broadcast',
@@ -41,7 +39,7 @@ export class MessageExtension implements Extension {
 
 
     constructor(private readonly client: Client) {
-        client.events.register(MessageListenEvent, MessageBroadcastEvent);
+        client.network.registerPacket(MessageListenEvent, MessageBroadcastEvent);
     }
 
     create<T>(name: string): Message<T> {
@@ -63,7 +61,7 @@ class MessageImpl<T> implements Message<T> {
         private readonly client: Client,
         private readonly type: MessageType<T>,
     ) {
-        client.events.addListener(MessageBroadcastEvent, this.handleBroadcast);
+        client.network.addPacketHandler(MessageBroadcastEvent, this.handleBroadcast);
     }
 
     broadcast(body: T): void {
@@ -77,7 +75,7 @@ class MessageImpl<T> implements Message<T> {
     listen(handler: (value: T) => void): () => void {
         this.listeners.push(handler);
         if (!this.listening) {
-            this.client.connection.addTask(() => {
+            this.client.network.addTask(() => {
                 this.client.send(MessageListenEvent, this.type.identifier.key());
             });
             this.listening = true;
