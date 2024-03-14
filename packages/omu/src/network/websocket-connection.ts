@@ -47,10 +47,11 @@ export class WebsocketConnection implements Connection {
             throw new Error('Received string data');
         }
         const reader = new ByteReader(await event.data.arrayBuffer());
-        const type = reader.readString();
-        const data = reader.readByteArray();
+        this.packetQueue.push({
+            type: reader.readString(),
+            data: reader.readByteArray(),
+        });
         reader.finish();
-        this.packetQueue.push({ type, data });
         if (this.receiveWaiter) {
             this.receiveWaiter();
         }
