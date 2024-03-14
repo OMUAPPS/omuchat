@@ -1,25 +1,15 @@
 {
     "$schema": "http://json.schemastore.org/tsconfig",
+    "extends": "../shared/tsconfig.json",
     "compilerOptions": {
-        "noEmitOnError": true,
-        "noImplicitAny": false,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noFallthroughCasesInSwitch": true,
-        "strictNullChecks": true,
-        "experimentalDecorators": true,
-        "rootDir": "./src",
-        "sourceMap": true,
-        "target": "es2022",
-        "moduleResolution": "NodeNext",
-        "module": "NodeNext",
-        "removeComments": false,
-        "noLib": false,
-        "baseUrl": ".",
-        "paths": {},
-        "strict": true,
-        "newLine": "LF",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        },
     },
     "compileOnSave": true,
-    "include": ["./src/**/*"],
+    "include": [
+        "./src/**/*"
+    ],
 }
