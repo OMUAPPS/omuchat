@@ -1,6 +1,6 @@
-import type { Model } from '@omuchatjs/omu/extension/table/model.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import type { Keyable } from '@omuchatjs/omu/interface.js';
+import type { Model } from '@omuchatjs/omu/model.js';
 
 export type AppMetadataJson = {
     identifier: string;
