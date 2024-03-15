@@ -53,7 +53,7 @@ class RegistryImpl<T> implements Registry<T> {
         });
     }
 
-    async listen(handler: (value: T) => void): Promise<() => void> {
+    listen(handler: (value: T) => void): () => void {
         if (!this.listening) {
             this.client.network.addTask(() => {
                 this.client.send(RegistryListenEvent, this.key);
