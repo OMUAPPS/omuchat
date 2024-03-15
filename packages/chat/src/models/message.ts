@@ -1,5 +1,5 @@
-import type { Model } from '@omuchatjs/omu/extension/table/model.js';
 import type { Keyable, Timestamped } from '@omuchatjs/omu/interface.js';
+import type { Model } from '@omuchatjs/omu/model.js';
 
 import * as content from './content.js';
 import type { GiftJson } from './gift.js';

@@ -1,4 +1,4 @@
-import type { Model } from '@omuchatjs/omu/extension/table/model.js';
+import type { Model } from '@omuchatjs/omu/model.js';
 
 export type GiftJson = {
     id: string;
