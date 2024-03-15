@@ -1,7 +1,7 @@
 type Primitive =
     | {
-          [key: string]: Primitive | string | number | boolean | null;
-      }
+        [key: string]: Primitive | string | number | boolean | null;
+    }
     | any[]
     | string
     | number
@@ -18,7 +18,7 @@ interface Parent {
 }
 
 export abstract class Component<T extends string = string, D extends Primitive = Primitive> {
-    constructor(public type: T) {}
+    constructor(public type: T) { }
 
     abstract toJson(): D;
 
@@ -70,7 +70,7 @@ export type ComponentType<D, C extends Component> = {
     fromJson(json: D): C;
 };
 
-const componentTypes: Record<string, ComponentType<unknown, Component>> = {};
+const componentTypes: Record<string, ComponentType<unknown, Component> | undefined> = {};
 
 export function deserialize(json: ComponentJson): Component {
     const type = componentTypes[json.type];
@@ -109,9 +109,6 @@ export class Root extends Component<'root', RootData> implements Parent {
     }
 
     add(component: Component): void {
-        if (!this.children) {
-            this.children = [];
-        }
         this.children.push(component);
     }
 

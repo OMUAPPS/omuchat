@@ -7,8 +7,8 @@ import type { RegistryExtension } from '../extension/registry/registry-extension
 import type { App, ServerExtension } from '../extension/server/index.js';
 import type { TableExtension } from '../extension/table/table-extension.js';
 import type { Network } from '../network/index.js';
+import type { PacketType } from '../network/packet/packet.js';
 
-import { PacketType } from '../network/packet/packet.js';
 import type { TokenProvider } from './token.js';
 
 export class ClientListeners {

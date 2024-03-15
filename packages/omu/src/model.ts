@@ -1,4 +1,4 @@
-export interface Model<T extends any> {
+export interface Model<T> {
     toJson(): T;
     toString(): string;
 }

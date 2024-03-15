@@ -1,9 +1,9 @@
-import { Identifier } from '../../identifier.js';
+import type { Identifier } from '../../identifier.js';
 import type { Keyable } from '../../interface.js';
-import { Serializable, Serializer } from '../../serializer.js';
-import type { ExtensionType } from '../extension.js';
-import type { App } from '../server/index.js';
 import type { Model } from '../../model.js';
+import type { Serializable } from '../../serializer.js';
+import { Serializer } from '../../serializer.js';
+import type { ExtensionType } from '../extension.js';
 
 export type TableConfig = {
     cache_size: number;

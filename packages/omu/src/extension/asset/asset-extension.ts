@@ -1,8 +1,8 @@
-import { Serializer } from '../../serializer.js';
 import type { Client } from '../../client/index.js';
+import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
+import { Serializer } from '../../serializer.js';
 import { EndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType } from '../extension.js';
-import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 
 export const AssetExtensionType = new ExtensionType(
     'asset',

@@ -1,4 +1,4 @@
-import { Identifier } from '../../identifier.js';
+import type { Identifier } from '../../identifier.js';
 import { Serializer, type Serializable } from '../../serializer.js';
 
 export interface PacketData {

@@ -11,11 +11,13 @@ import type { App, ServerExtension } from '../extension/server/index.js';
 import { ServerExtensionType } from '../extension/server/index.js';
 import type { TableExtension } from '../extension/table/table-extension.js';
 import { TableExtensionType } from '../extension/table/table-extension.js';
-import { Address, Connection, Network } from '../network/index.js';
+import type { Address, Connection } from '../network/index.js';
+import { Network } from '../network/index.js';
+import type { PacketType } from '../network/packet/packet.js';
 import { WebsocketConnection } from '../network/websocket-connection.js';
 
-import { PacketType } from '../network/packet/packet.js';
-import { Client, ClientListeners } from './client.js';
+import type { Client } from './client.js';
+import { ClientListeners } from './client.js';
 import type { TokenProvider } from './token.js';
 
 export class OmuClient implements Client {
@@ -82,7 +84,6 @@ export class OmuClient implements Client {
         this.running = true;
         this.network.connect();
         this.listeners.started.emit();
-
     }
 
     stop(): void {

@@ -1,8 +1,10 @@
 import type { Client } from '../../client/index.js';
+import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 import { PacketType } from '../../network/packet/index.js';
 import { ExtensionType, type Extension } from '../extension.js';
-import { Message, MessageType } from './message.js';
-import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
+
+import type { Message } from './message.js';
+import { MessageType } from './message.js';
 
 export const MessageExtensionType = new ExtensionType(
     'message',
@@ -37,7 +39,6 @@ export const MessageBroadcastEvent = PacketType.createSerialized<MessageData>(
 export class MessageExtension implements Extension {
     private readonly messageIdentifiers: Set<string> = new Set();
 
-
     constructor(private readonly client: Client) {
         client.network.registerPacket(MessageListenEvent, MessageBroadcastEvent);
     }
@@ -55,7 +56,7 @@ export class MessageExtension implements Extension {
 
 class MessageImpl<T> implements Message<T> {
     private readonly listeners: ((value: T) => void)[] = [];
-    private listening: boolean = false;
+    private listening = false;
 
     constructor(
         private readonly client: Client,

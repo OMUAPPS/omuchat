@@ -1,9 +1,10 @@
-import { ByteReader, ByteWriter } from './bytebuffer.js';
 
-import { Serializable } from '../serializer.js';
+import type { Serializable } from '../serializer.js';
+
 import type { Address } from './address.js';
+import { ByteReader, ByteWriter } from './bytebuffer.js';
 import type { Connection } from './connection.js';
-import { Packet, PacketData } from './packet/packet.js';
+import type { Packet, PacketData } from './packet/packet.js';
 
 export class WebsocketConnection implements Connection {
     public connected: boolean;
@@ -32,15 +33,14 @@ export class WebsocketConnection implements Connection {
             this.close();
             this.socket = new WebSocket(this.wsEndpoint);
             this.socket.onerror = reject;
-            this.socket.onclose = () => this.close();
-            this.socket.onmessage = (event) => this.onMessage(event);
-            this.socket.onopen = () => {
+            this.socket.onclose = (): void => { this.close(); };
+            this.socket.onmessage = (event): void => { this.onMessage(event); };
+            this.socket.onopen = (): void => {
                 this.connected = true;
                 resolve();
-            }
+            };
         });
     }
-
 
     private async onMessage(event: MessageEvent<string | Blob>): Promise<void> {
         if (typeof event.data === 'string') {
@@ -63,7 +63,7 @@ export class WebsocketConnection implements Connection {
         }
         while (this.packetQueue.length === 0) {
             await new Promise<void>((resolve) => {
-                this.receiveWaiter = () => resolve();
+                this.receiveWaiter = (): void => resolve();
             });
         }
         const packet = serializer.deserialize(this.packetQueue.shift()!);

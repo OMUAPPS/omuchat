@@ -1,4 +1,3 @@
-import { textDecoder, textEncoder } from './const.js';
 
 export interface Keyable {
     key(): string;

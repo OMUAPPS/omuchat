@@ -1,15 +1,16 @@
 import type { Client } from '../../client/index.js';
-import { PacketType } from '../../network/packet/packet.js';
-import { Keyable } from '../../interface.js';
-import { Serializable, Serializer } from '../../serializer.js';
-import { EndpointType } from '../endpoint/endpoint.js';
-import { Extension, ExtensionType } from '../extension.js';
-
-import { Identifier } from '../../identifier.js';
-import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
-import { App } from '../../app.js';
+import type { Identifier } from '../../identifier.js';
+import type { Keyable } from '../../interface.js';
 import type { Model } from '../../model.js';
-import { Table, TableConfig, TableListener, TableType } from './table.js';
+import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
+import { PacketType } from '../../network/packet/packet.js';
+import type { Serializable } from '../../serializer.js';
+import { Serializer } from '../../serializer.js';
+import { EndpointType } from '../endpoint/endpoint.js';
+import type { Extension } from '../extension.js';
+import { ExtensionType } from '../extension.js';
+
+import { TableType, type Table, type TableConfig, type TableListener } from './table.js';
 
 export const TableExtensionType: ExtensionType<TableExtension> = new ExtensionType(
     'table',
@@ -138,7 +139,7 @@ export const TableItemFetchEndpoint = EndpointType.createSerialized<
     responseSerializer: itemsSerializer,
 });
 export const TableItemSizeEndpoint = EndpointType.createJson<TableEventData, number>(TableExtensionType,
-    { name: 'item_size' }
+    { name: 'item_size' },
 );
 
 export class TableExtension implements Extension {
@@ -179,7 +180,7 @@ export class TableExtension implements Extension {
     }
 
     model<T extends Keyable & Model<D>, D = unknown>(
-        identifier: Identifier | App,
+        identifier: Identifier,
         {
             name,
             model,
@@ -188,13 +189,11 @@ export class TableExtension implements Extension {
             model: { fromJson(data: D): T };
         },
     ): Table<T> {
-        identifier = new Identifier(identifier.key(), name);
-        if (this.has(identifier)) {
+        const tableType = TableType.model(identifier, { name, model });
+        if (this.has(tableType.identifier)) {
             throw new Error('Table already exists');
         }
-        const serializer = Serializer.model(model).pipe(Serializer.json());
-        const keyFunc = (item: T) => item.key();
-        return this.create(identifier, serializer, keyFunc);
+        return this.create(tableType.identifier, tableType.serializer, tableType.keyFunc);
     }
 
     has(identifier: Identifier): boolean {
@@ -319,7 +318,6 @@ class TableImpl<T> implements Table<T> {
     removeListener(listener: TableListener<T>): void {
         this.listeners.splice(this.listeners.indexOf(listener), 1);
     }
-
 
     listen(listener?: (items: Map<string, T>) => void): () => void {
         if (!this.listening) {

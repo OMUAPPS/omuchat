@@ -22,7 +22,7 @@ export class Identifier implements Keyable {
         this.name = name;
     }
 
-    static validate(namespace: string, path: string[]) {
+    static validate(namespace: string, path: string[]): void {
         if (!namespace || !path.length) {
             throw new Error('Invalid namespace');
         }
