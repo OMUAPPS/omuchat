@@ -42,7 +42,6 @@ pub async fn prepare_libraries(
     data_directory: &std::path::PathBuf,
 ) -> Result<(), String> {
     info!("Preparing libraries...");
-    runtime.set_env("MULTIDICT_NO_EXTENSIONS", "1");
     handle_runtime_io(
         &runtime,
         vec![
