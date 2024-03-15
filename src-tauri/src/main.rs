@@ -4,7 +4,10 @@
     windows_subsystem = "windows"
 )]
 
-use std::{fs, io};
+use std::{
+    fs,
+    io::{self, stderr, stdout},
+};
 
 use anyhow::Result;
 use directories::ProjectDirs;

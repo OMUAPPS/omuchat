@@ -1,12 +1,10 @@
 use std::thread;
 
 use rand::Rng;
-use tokio::fs;
 use tracing::info;
 
 use crate::{
     python::{self, PythonRuntime},
-    util::{download_file, zip_extract},
     LAUNCHER_DIRECTORY,
 };
 
@@ -39,31 +37,6 @@ pub async fn handle_runtime_io(
     Ok(())
 }
 
-pub async fn prepare_plugins(plugins_folder: &std::path::PathBuf) -> Result<(), String> {
-    fs::create_dir_all(&plugins_folder).await.unwrap();
-    info!("Downloading plugins...");
-    fs::create_dir_all(LAUNCHER_DIRECTORY.cache_dir())
-        .await
-        .unwrap();
-    let archive = LAUNCHER_DIRECTORY.cache_dir().join("plugins.tar.gz");
-    download_file(
-        "https://github.com/OMUCHAT/omuchat-plugins/zipball/master/",
-        &archive,
-    )
-    .await
-    .unwrap();
-    let cache_plugins_folder = LAUNCHER_DIRECTORY.cache_dir().join("plugins");
-    fs::create_dir_all(&cache_plugins_folder).await.unwrap();
-    zip_extract(&archive, &cache_plugins_folder).await.unwrap();
-    let mut items = std::fs::read_dir(&cache_plugins_folder).unwrap();
-    let item = items.next().unwrap().unwrap();
-    let item_path = item.path();
-    fs::remove_dir_all(&plugins_folder).await.unwrap();
-    fs::rename(item_path, &plugins_folder).await.unwrap();
-    fs::remove_dir_all(&cache_plugins_folder).await.unwrap();
-    Ok(())
-}
-
 pub async fn prepare_libraries(
     runtime: &PythonRuntime,
     data_directory: &std::path::PathBuf,
@@ -91,10 +64,7 @@ pub async fn prepare_libraries(
             "pip".to_string(),
             "install".to_string(),
             "--upgrade".to_string(),
-            "git+https://github.com/OMUCHAT/omu.py.git".to_string(),
-            "git+https://github.com/OMUCHAT/server.git".to_string(),
-            "git+https://github.com/OMUCHAT/provider.git".to_string(),
-            "git+https://github.com/OMUCHAT/omuchat.py.git".to_string(),
+            "omuserver".to_string(),
         ],
         data_directory,
     )
@@ -112,8 +82,6 @@ pub async fn prepare_server() -> anyhow::Result<()> {
         .expect("Failed to download Python");
     let runtime = PythonRuntime::new(python).expect("Failed to create Python runtime");
 
-    let plugins_folder = data.join("plugins");
-    prepare_plugins(&plugins_folder).await.unwrap();
     prepare_libraries(&runtime, &data).await.unwrap();
     Ok(())
 }

@@ -4,7 +4,7 @@ use std::{
 };
 
 use local_ip_address::local_ip;
-use tauri::{utils::config::AppUrl, Manager, WindowUrl};
+use tauri::Manager;
 use window_shadows::set_shadow;
 
 use crate::server;
@@ -122,26 +122,17 @@ pub async fn get_token(state: tauri::State<'_, AppState>) -> Result<Option<Strin
 }
 
 pub fn gui_main() {
-    let mut context = tauri::generate_context!();
-
-    let host: std::net::IpAddr = local_ip().expect("failed to get local IP");
-    let remote_port = 26420u16;
-
-    let url = format!("http://{}:{}", host, remote_port).parse().unwrap();
-    let window_url = WindowUrl::External(url);
-    // rewrite the config so the IPC is enabled on this URL
-    context.config_mut().build.dist_dir = AppUrl::Url(window_url.clone());
-    context.config_mut().build.dev_path = AppUrl::Url(window_url.clone());
+    let host = local_ip().expect("failed to get local IP").to_string();
+    let port = 26420u16;
 
     let server_state = get_status();
-    if server_state == ServerStatus::AlreadyRunning {
-        info!("Server already running");
-    }
+
     let token = if server_state == ServerStatus::AlreadyRunning {
         None
     } else {
         Some(generate_token())
     };
+
     let app_state = AppState {
         server_state: Arc::new(Mutex::new(server_state.clone())),
         window: Arc::new(Mutex::new(None::<tauri::Window>)),
@@ -153,16 +144,13 @@ pub fn gui_main() {
     }
 
     tauri::Builder::default()
-        .manage(ShareState {
-            host: host.to_string(),
-            port: remote_port,
-        })
+        .manage(ShareState { host, port })
         .manage(app_state.clone())
-        .plugin(server::Builder::new(remote_port).build())
+        .plugin(server::Builder::new(port).build())
         .setup(move |app| {
             let window = app.get_window("main").unwrap();
             app_state.window.lock().unwrap().replace(window.clone());
-            set_shadow(&window, true).expect("Unsupported platform!");
+            set_shadow(&window, true).unwrap();
             window
                 .emit(
                     "server-state",
