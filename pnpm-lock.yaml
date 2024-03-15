@@ -145,9 +145,6 @@ importers:
         specifier: workspace:*
         version: link:../omu
     devDependencies:
-      '@omuchatjs/shared':
-        specifier: workspace:*
-        version: link:../shared
       '@types/node':
         specifier: ^20.11.2
         version: 20.11.16
@@ -199,9 +196,6 @@ importers:
 
   packages/omu:
     devDependencies:
-      '@omuchatjs/shared':
-        specifier: workspace:*
-        version: link:../shared
       '@types/node':
         specifier: ^20.11.2
         version: 20.11.16
