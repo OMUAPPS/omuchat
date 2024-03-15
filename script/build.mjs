@@ -21,7 +21,7 @@ async function generateLicense() {
     });
     const destDir = path.join('src', 'lib', 'license');
     const destFile = path.join(destDir, 'licenses.json');
-    await fs.writeFileSync(
+    fs.writeFileSync(
         destFile,
         JSON.stringify([
             ...Object.entries(licenses).map(([key, license]) => ({
