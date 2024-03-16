@@ -33,21 +33,34 @@ export class Room implements Model<RoomJson>, Keyable, Timestamped {
     public channelId?: string;
     public createdAt: Date;
 
-    constructor(options: RoomJson) {
+    constructor(options: {
+        id: string;
+        providerId: string;
+        connected: boolean;
+        status: Status;
+        metadata?: MetadataJson;
+        channelId?: string;
+        createdAt: Date;
+    }) {
         this.id = options.id;
-        this.providerId = options.provider_id;
+        this.providerId = options.providerId;
         this.connected = options.connected;
         this.status = options.status;
         this.metadata = options.metadata;
-        this.channelId = options.channel_id;
-        this.createdAt = new Date(options.created_at);
-    }
-    toString(): string {
-        throw new Error('Method not implemented.');
+        this.channelId = options.channelId;
+        this.createdAt = options.createdAt;
     }
 
     static fromJson(options: RoomJson): Room {
-        return new Room(options);
+        return new Room({
+            id: options.id,
+            providerId: options.provider_id,
+            connected: options.connected,
+            status: options.status,
+            metadata: options.metadata,
+            channelId: options.channel_id,
+            createdAt: new Date(options.created_at),
+        });
     }
 
     toJson(): RoomJson {
