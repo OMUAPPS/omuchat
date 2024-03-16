@@ -20,18 +20,34 @@ export class Channel implements Model<ChannelJson>, Keyable {
     active: boolean;
     iconUrl: string;
 
-    constructor(option: ChannelJson) {
-        this.providerId = option.provider_id;
+    constructor(option: {
+        providerId: string;
+        id: string;
+        url: string;
+        name: string;
+        description: string;
+        active: boolean;
+        iconUrl: string;
+    }) {
+        this.providerId = option.providerId;
         this.id = option.id;
         this.url = option.url;
         this.name = option.name;
         this.description = option.description;
         this.active = option.active;
-        this.iconUrl = option.icon_url;
+        this.iconUrl = option.iconUrl;
     }
 
     static fromJson(json: ChannelJson): Channel {
-        return new Channel(json);
+        return new Channel({
+            providerId: json.provider_id,
+            id: json.id,
+            url: json.url,
+            name: json.name,
+            description: json.description,
+            active: json.active,
+            iconUrl: json.icon_url,
+        });
     }
 
     key(): string {

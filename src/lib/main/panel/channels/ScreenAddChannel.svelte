@@ -53,13 +53,12 @@
 
         chat.channels!.add(
             new models.Channel({
-                provider_id: selectedProvider.id,
+                providerId: selectedProvider.id,
                 active: true,
-                created_at: Date.now(),
                 url: url,
                 description: '',
                 id: '',
-                icon_url: '',
+                iconUrl: '',
                 name: '',
             }),
         );
