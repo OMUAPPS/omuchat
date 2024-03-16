@@ -11,6 +11,10 @@
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
 
     export let filter: (key: string, room: models.Room) => boolean = (_, room) => true;
+    export let sort: (a: models.Room, b: models.Room) => number = (a, b) => {
+        if (!a.createdAt || !b.createdAt) return 0;
+        return a.createdAt.getTime() - b.createdAt.getTime();
+    };
 
     const { chat, client } = getClient();
     let rooms = chat.rooms!.cache;
@@ -40,7 +44,7 @@
 
 <div class="rooms">
     {#if rooms.size > 0}
-        <TableList table={chat.rooms} component={RoomEntry} {filter} />
+        <TableList table={chat.rooms} component={RoomEntry} {filter} {sort} />
     {:else}
         <div class="empty">
             ルームが見つかりません！
