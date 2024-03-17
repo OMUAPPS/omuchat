@@ -1,9 +1,5 @@
-import { createI18n, type I18n, type Messages } from './i18n.js';
-
-export interface Entry {
-    name: string;
-    load: () => Promise<I18n>;
-}
+import { createI18n } from './i18n.js';
+import { type Messages, type I18n } from "./types/i18n.d.js";
 
 async function loadI18n(load: () => Promise<{ default: Messages }>, locale: string): Promise<I18n> {
     const { default: messages } = await load();

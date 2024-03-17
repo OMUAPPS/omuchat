@@ -1,13 +1,4 @@
-export type TranslateFunction = (key: string, params?: Record<string, unknown>) => string;
-
-export interface I18n {
-    translate: TranslateFunction;
-    locale: string;
-}
-
-export type Messages = {
-    [key: string]: string | Messages;
-}
+import { type Messages, type I18n } from "./types/i18n.d.js";
 
 export function createI18n(messages: Messages, locale: string): I18n {
     function getTranslation(key: string) {

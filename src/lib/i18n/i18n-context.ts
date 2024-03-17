@@ -1,6 +1,5 @@
 import { writable, type Writable } from 'svelte/store';
-
-import type { I18n, TranslateFunction } from './i18n.js';
+import { type I18n, type TranslateFunction } from "./types/i18n.d.js";
 
 export const i18n: Writable<I18n | null> = writable(null);
 
