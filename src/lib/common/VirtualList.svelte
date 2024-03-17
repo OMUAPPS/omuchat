@@ -69,7 +69,9 @@
                 row = rows[i - start];
             }
 
-            const row_height = (height_map[i] = itemHeight || height_map[i] || row.offsetHeight);
+            const row_height = row
+                ? (height_map[i] = itemHeight || height_map[i] || row.offsetHeight)
+                : content_height / i;
             content_height += row_height;
             i += 1;
         }
