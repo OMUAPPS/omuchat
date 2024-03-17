@@ -298,7 +298,7 @@ class TableImpl<T> implements Table<T> {
     }
     private updateCache(items: Map<string, T>): void {
         if (!this.cacheSize) {
-            this.cache = new Map([...this.cache, ...items]);
+            this.cache = items;
         } else {
             const cache = new Map([...this.cache, ...items].slice(-this.cacheSize));
             this.cache = cache;
