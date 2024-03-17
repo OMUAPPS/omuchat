@@ -4,6 +4,7 @@ import type { PropedComponent } from '$lib/common/component/proped-component.js'
 import { LOCALES } from '$lib/i18n/locales/index.js';
 import Checkbox from './settings/CheckboxField.svelte';
 import Combobox from './settings/ComboboxField.svelte';
+import Licenses from './settings/Licenses.svelte';
 
 function getSystemLanguage(): keyof typeof LOCALES {
     if (typeof window === 'undefined') {
@@ -63,7 +64,6 @@ function calcLanguageScore(lang: string): number {
     return score;
 }
 
-
 export const SETTING_REGISTRY: Map<string, Record<string, PropedComponent>> = new Map();
 
 export function registerSetting<T extends Record<string, unknown>>(category: string, key: string, setting: PropedComponent<T>) {
@@ -90,18 +90,6 @@ registerSetting('language', 'language', {
         ) as (keyof typeof LOCALES)[],
     },
 });
-
-// {
-//     name: 'licenses',
-//     settings: [
-//         {
-//             name: 'licenses',
-//             component: Licenses,
-//             props: {},
-//         },
-//     ],
-// },
-import Licenses from './settings/Licenses.svelte';
 registerSetting('licenses', 'licenses', {
     component: Licenses,
     props: {},
