@@ -156,24 +156,31 @@
         display: block;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: auto;
-        scrollbar-color: var(--color-1) var(--color-bg-2);
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
 
         &::-webkit-scrollbar-track {
             background: var(--color-bg-2);
+            border-radius: 1px;
         }
 
         &::-webkit-scrollbar-thumb {
             background: color-mix(in srgb, var(--color-1) 10%, transparent 0%);
-            border: 3px solid var(--color-bg-2);
+            border-radius: 1px;
+            border: 1px solid var(--color-bg-2);
+        }
+        &:hover {
+            &::-webkit-scrollbar-thumb {
+                background: var(--color-1);
+            }
         }
 
-        &::-webkit-scrollbar-thumb:hover {
-            background: var(--color-1);
-        }
-
-        &::-webkit-scrollbar {
-            width: 10px;
+        @supports not selector(::-webkit-scrollbar) {
+            & {
+                scrollbar-color: var(--color-1) var(--color-bg-2);
+            }
         }
     }
 
