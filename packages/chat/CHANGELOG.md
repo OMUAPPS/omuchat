@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.1.0 (2024-03-17)
+
+### Features
+
+-   **omu:** asset-extensionを強化 ([1db5eb5](https://github.com/OMUCHAT/omuchat.js/commit/1db5eb5177ac2daa529181b7fbbe3e0d67a11c91))
+
 ## 0.0.20 (2024-03-15)
 
 **Note:** Version bump only for package @omuchatjs/chat
