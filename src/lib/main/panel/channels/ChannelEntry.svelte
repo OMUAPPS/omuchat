@@ -2,6 +2,8 @@
     import type { models } from '@omuchatjs/chat';
     import { writable } from 'svelte/store';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import Checkbox from '$lib/common/input/Checkbox.svelte';
     import { getClient } from '$lib/common/omuchat/client.js';
@@ -47,26 +49,26 @@
         {#if selected}
             <ButtonMini on:click={remove}>
                 <Tooltip>
-                    <div class="description">チャンネルを削除</div>
+                    <div class="description">{$t('panels.channels.delete')}</div>
                 </Tooltip>
                 <i class="ti ti-trash" />
             </ButtonMini>
             <ButtonMini>
                 <Tooltip>
-                    <div class="description">チャンネルを編集</div>
+                    <div class="description">{$t('panels.channels.edit')}</div>
                 </Tooltip>
                 <i class="ti ti-settings" />
             </ButtonMini>
             <a href={entry.url} target="_blank">
                 <ButtonMini>
                     <Tooltip>
-                        <div class="description">チャンネルを開く</div>
+                        <div class="description">{$t('panels.channels.open')}</div>
                     </Tooltip>
                     <i class="ti ti-external-link" />
                 </ButtonMini>
             </a>
         {:else}
-            <small>接続</small>
+            <small>{$t('panels.channels.connect')}</small>
         {/if}
         <Checkbox bind:value={$active} />
     </div>

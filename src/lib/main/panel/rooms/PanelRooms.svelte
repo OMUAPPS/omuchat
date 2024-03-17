@@ -1,6 +1,8 @@
 <script lang="ts">
     import type { models } from '@omuchatjs/chat';
-    import { onMount } from 'svelte';
+    import { onMount, SvelteComponent } from 'svelte';
+
+    import { t } from '$lib/i18n/i18n-context.js';
 
     import RoomEntry from './RoomEntry.svelte';
 
@@ -47,9 +49,9 @@
         <TableList table={chat.rooms} component={RoomEntry} {filter} {sort} />
     {:else}
         <div class="empty">
-            ルームが見つかりません！
+            {$t('panels.rooms.not_found_rooms')}
             <Button on:click={openSetup}>
-                チャンネルを追加しますか？
+                {$t('panels.rooms.question_add_channel')}
                 <i class="ti ti-external-link" />
             </Button>
         </div>

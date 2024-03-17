@@ -7,6 +7,8 @@
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     export let entry: models.Room;
     export let selected: boolean = false;
 
@@ -43,20 +45,22 @@
         <div class="buttons">
             <FlexRowWrapper widthFull>
                 <ButtonMini on:click={open}>
-                    <Tooltip>見る</Tooltip>
+                    <Tooltip>{$t('panels.rooms.see_channel')}</Tooltip>
                     <i class="ti ti-external-link" />
                 </ButtonMini>
             </FlexRowWrapper>
             <FlexRowWrapper widthFull between>
                 {#if entry.metadata}
                     <ButtonMini on:click={copyViewers}>
-                        <Tooltip>視聴者数（クリックでコピー）</Tooltip>
+                        <Tooltip>{$t('panels.rooms.viewers')}</Tooltip>
                         {entry.metadata.viewers}
                         <i class="ti ti-user" />
                     </ButtonMini>
                 {/if}
                 <i class={`online-state ti ti-bolt ${entry.connected ? 'online' : 'offline'}`}>
-                    <Tooltip>{entry.connected ? '接続済み' : '切断済み'}</Tooltip>
+                    <Tooltip>
+                        {entry.connected ? $t('status.connected') : $t('status.disconnected')}
+                    </Tooltip>
                 </i>
             </FlexRowWrapper>
         </div>

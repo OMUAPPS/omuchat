@@ -20,7 +20,7 @@
             {$t(`apps.${entry.id}.name`)}
         </div>
         <span>
-            アプリを開く
+            {$t('panels.apps.open_apps')}
             <i class="ti ti-external-link" />
         </span>
     </div>

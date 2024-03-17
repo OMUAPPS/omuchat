@@ -1,6 +1,8 @@
 <script lang="ts">
     import AssetItem from './AssetEntry.svelte';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
     import type { Asset } from '$lib/common/omuchat/asset.js';
     import { getClient } from '$lib/common/omuchat/client.js';
@@ -50,10 +52,10 @@
     <div class="header">
         <div class="title">
             <i class="ti ti-package" />
-            アセット
+            {$t('pages.asset.name')}
         </div>
         <div>
-            <InputTextLazy placeholder="検索" bind:value={search} />
+            <InputTextLazy placeholder={$t('general.search')} bind:value={search} />
         </div>
     </div>
     <div class="items">

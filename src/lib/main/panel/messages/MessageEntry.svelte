@@ -1,6 +1,8 @@
 <script lang="ts">
     import type { models } from '@omuchatjs/chat';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     import Gift from './Gift.svelte';
     import MessageContent from './MessageContent.svelte';
     import Role from './Role.svelte';
@@ -112,11 +114,11 @@
                 {#if selected}
                     <div class="actions">
                         <button on:click={handleBookmark}>
-                            <Tooltip>ブックマーク</Tooltip>
+                            <Tooltip>{$t('panels.messages.bookmark')}</Tooltip>
                             <i class="ti ti-bookmark" />
                         </button>
                         <button on:click={handleCopy}>
-                            <Tooltip>コピー</Tooltip>
+                            <Tooltip>{$t('panels.messages.copy')}</Tooltip>
                             <i class="ti ti-files" />
                         </button>
                     </div>

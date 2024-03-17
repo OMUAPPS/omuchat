@@ -5,6 +5,8 @@
 
     import ScreenSetup from './ScreenSetup.svelte';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     import Background from '$lib/common/Background.svelte';
     import { screenContext, type ScreenHandle } from '$lib/common/screen/screen.js';
     import Screen from '$lib/common/screen/Screen.svelte';
@@ -49,7 +51,7 @@
         <div class="content">
             <div class="title">
                 <i class="ti ti-download" />
-                インストール中
+                {$t('setup.installing')}
                 {#if progress}
                     <div class="progress">
                         <div

@@ -1,6 +1,8 @@
 <script lang="ts">
     import AppEntry from './AppEntry.svelte';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     import { getClient } from '$lib/common/omuchat/client.js';
     import TableList from '$lib/common/omuchat/TableList.svelte';
 
@@ -11,7 +13,7 @@
     <div class="header">
         <div class="title">
             <i class="ti ti-player-play" />
-            アプリ
+            {$t('panels.apps.title')}
         </div>
         <div></div>
     </div>

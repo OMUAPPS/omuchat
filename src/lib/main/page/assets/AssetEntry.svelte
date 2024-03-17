@@ -53,7 +53,7 @@
             </div>
             <div class="drag-hint">
                 <i class="ti ti-drag-drop" />
-                ドラッグアンドドロップして追加できます
+                {$t('general.dragdrop')}
             </div>
         </div>
     </div>

@@ -4,6 +4,8 @@
 
     import { installed } from '../settings.js';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     import Background from '$lib/common/Background.svelte';
     import Button from '$lib/common/input/Button.svelte';
     import InputText from '$lib/common/input/InputText.svelte';
@@ -84,10 +86,10 @@
         <div class="content">
             <div class="title">
                 <i class="ti ti-settings" />
-                セットアップ
+                {$t('setup.title')}
             </div>
             {#if result}
-                <div class="description">どのチャンネルを追加しますか？</div>
+                <div class="description">{$t('setup.whitch_channel')}</div>
                 <div class="list">
                     {#each result.entries() as [key, { channel, active }] (key)}
                         <button class="item" class:active on:click={() => (active = !active)}>
@@ -120,12 +122,12 @@
                         on:click={finish}
                         disabled={![...result.values()].some((v) => v.active)}
                         rounded
-                        filled>追加する</Button
+                        filled>{$t('setup.append')}</Button
                     >
-                    <Button on:click={reset} rounded filled>やり直す</Button>
+                    <Button on:click={reset} rounded filled>{$t('setup.start_again')}</Button>
                 </div>
             {:else}
-                <div class="description">URLを入力すると、チャンネルを自動で追加します。</div>
+                <div class="description">{$t('setup.please_put_in_urls')}</div>
                 <div class="input">
                     <InputText
                         bind:value={url}
@@ -137,7 +139,7 @@
             {/if}
         </div>
         <button on:click={screen.pop} class="skip">
-            セットアップをスキップ
+            {$t('setup.skip')}
             <i class="ti ti-arrow-right" />
         </button>
     </div>

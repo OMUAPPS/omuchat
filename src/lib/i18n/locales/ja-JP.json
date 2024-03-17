@@ -26,7 +26,9 @@
         "show_less": "隠す",
         "select": "選択",
         "select_all": "すべて選択",
-        "settings": "設定"
+        "settings": "設定",
+        "dragdrop": "ドラッグアンドドロップして追加できます",
+        "second": "秒"
     },
     "status": {
         "connecting": "接続中...",
@@ -40,6 +42,50 @@
         "minimize": "最小化",
         "maximize": "最大化",
         "unmaximize": "最大化を解除"
+    },
+    "panels": {
+        "rooms": {
+            "title": "接続中",
+            "not_found_rooms": "ルームが見つかりません！",
+            "question_add_channel": "チャンネルを追加しますか？",
+            "see_channel": "見る",
+            "viewers": "視聴者数（クリックでコピー）"
+        },
+        "messages": {
+            "title": "コメント／メッセージ",
+            "bookmark": "ブックマーク",
+            "copy": "コピー"
+        },
+        "apps": {
+            "title": "アプリ",
+            "found_apps": "omuchat.ccでアプリを探す",
+            "open_apps": "アプリを開く",
+            "start_apps": "起動する"
+        },
+        "gifts": {
+            "title": "ギフト／投げ銭"
+        },
+        "channels": {
+            "title": "チャンネル",
+            "append_channel": "追加する",
+            "setup_channel": "簡単セットアップ",
+            "next_check": "再チェックまであと",
+            "delete": "チャンネルを削除",
+            "edit": "チャンネルを編集",
+            "open": "チャンネルを開く",
+            "connect": "接続",
+            "channel_url": "チャンネルURL...",
+            "append_as": "として追加"
+        }
+    },
+    "setup": {
+        "title": "セットアップ",
+        "whitch_channel": "どのチャンネルを追加しますか？",
+        "installing": "インストール中",
+        "append": "追加する",
+        "start_again": "やり直す",
+        "please_put_in_urls": "URLを入力すると、チャンネルを自動で追加します。",
+        "skip": "セットアップをスキップ"
     },
     "pages": {
         "main": {

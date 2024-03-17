@@ -2,6 +2,8 @@
     import type { models } from '@omuchatjs/chat';
     import { onMount } from 'svelte';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     import ChannelEntry from './ChannelEntry.svelte';
     import ScreenAddChannel from './ScreenAddChannel.svelte';
 
@@ -39,17 +41,18 @@
 <div class="container">
     <div class="buttons">
         <ButtonMini on:click={openAddScreen}>
-            <Tooltip>追加する</Tooltip>
+            <Tooltip>{$t('panels.channels.append_channel')}</Tooltip>
             <i class="ti ti-plus" />
         </ButtonMini>
         <ButtonMini on:click={openSetupScreen}>
-            <Tooltip>簡単セットアップ</Tooltip>
+            <Tooltip>{$t('panels.channels.setup_channel')}</Tooltip>
             <i class="ti ti-external-link" />
         </ButtonMini>
         <small>
             <Tooltip>
-                再チェックまであと
-                {Math.floor(checkIntervalLeft)}秒
+                {$t('panels.channels.next_check')}
+                {Math.floor(checkIntervalLeft)}
+                {$t('general.second')}
             </Tooltip>
             <i class="ti ti-reload" />
             {Math.floor(checkIntervalLeft)}

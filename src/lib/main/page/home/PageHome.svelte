@@ -6,17 +6,18 @@
     import type { PanelEntry } from '$lib/main/panel/panel.js';
     import PanelRooms from '$lib/main/panel/rooms/PanelRooms.svelte';
     import PanelApps from './PanelApps.svelte';
+    import { t } from '$lib/i18n/i18n-context.js';
 
     const panels = writable<PanelEntry[]>([
         {
             icon: 'ti ti-bolt',
-            name: '接続中',
+            name: $t('panels.rooms.title'),
             component: PanelRooms,
             props: {},
         },
         {
             icon: 'ti ti-message',
-            name: 'コメント／メッセージ',
+            name: $t('panels.messages.title'),
             width: 300,
             fit: true,
             component: PanelMessages,
@@ -24,7 +25,7 @@
         },
         {
             icon: 'ti ti-player-play',
-            name: 'アプリ',
+            name: $t('panels.apps.title'),
             component: PanelApps,
             props: {},
         },

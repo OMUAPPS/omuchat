@@ -4,6 +4,8 @@
     import type { AppMetadata } from '$lib/common/omuchat/app-metadata.js';
     import { tauriWindow } from '$lib/utils/tauri.js';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     export let entry: AppMetadata;
     export let selected: boolean = false;
 
@@ -34,7 +36,7 @@
             </FlexColWrapper>
         </FlexRowWrapper>
         <div class="right">
-            起動する
+            {$t('panels.apps.start_apps')}
             <i class="ti ti-arrow-right" />
         </div>
     </FlexRowWrapper>

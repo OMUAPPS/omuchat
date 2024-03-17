@@ -2,6 +2,8 @@
     import type { models } from '@omuchatjs/chat';
     import { writable } from 'svelte/store';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     import PanelMessages from '../panel/messages/PanelMessages.svelte';
     import type { PanelEntry } from '../panel/panel.js';
     import PanelProvider from '../panel/PanelProvider.svelte';
@@ -10,13 +12,13 @@
     const panels = writable<PanelEntry[]>([
         {
             icon: 'ti ti-bolt',
-            name: '接続中',
+            name: $t('panels.rooms.title'),
             component: PanelRooms,
             props: {},
         },
         {
             icon: 'ti ti-message',
-            name: 'コメント／メッセージ',
+            name: $t('panels.messages.title'),
             width: 300,
             fit: true,
             component: PanelMessages,
@@ -24,7 +26,7 @@
         },
         {
             icon: 'ti ti-message',
-            name: 'ギフト／投げ銭',
+            name: $t('panels.gifts.title'),
             width: 400,
             component: PanelMessages,
             props: {

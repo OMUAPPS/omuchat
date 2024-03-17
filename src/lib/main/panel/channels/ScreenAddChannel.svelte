@@ -2,6 +2,8 @@
     import { models } from '@omuchatjs/chat';
     import { onMount } from 'svelte';
 
+    import { t } from '$lib/i18n/i18n-context.js';
+
     import { getClient } from '$lib/common/omuchat/client.js';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
@@ -114,7 +116,7 @@
                 type="text"
                 bind:this={input}
                 bind:value={url}
-                placeholder="チャンネルURL..."
+                placeholder={$t('panel.channels.channel_url')}
                 autofocus={true}
             />
         </span>
@@ -131,7 +133,7 @@
                         <ProviderIcon providerId={provider.id} />
                         {provider.name}
                         <small>
-                            {provider.name}として追加
+                            {provider.name}{$t('panel.channels.append_as')}
                         </small>
                         <i class="ti ti-arrow-right" />
                     </button>
