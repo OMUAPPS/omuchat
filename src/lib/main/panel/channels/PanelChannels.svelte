@@ -17,17 +17,11 @@
     const { chat } = getClient();
 
     function openSetupScreen() {
-        screenContext.push({
-            component: ScreenSetup,
-            props: {},
-        });
+        screenContext.push(ScreenSetup, {});
     }
 
     function openAddScreen() {
-        screenContext.push({
-            component: ScreenAddChannel,
-            props: {},
-        });
+        screenContext.push(ScreenAddChannel, {});
     }
 
     let checkIntervalLeft = 0;

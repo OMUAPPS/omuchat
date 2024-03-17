@@ -1,9 +1,10 @@
 <script lang="ts">
-    import { screenContext } from './screen.js';
+    import { type ScreenHandle } from './screen.js';
     import ScreenHeader from './ScreenHeader.svelte';
 
     import { classes } from '$lib/utils/class-helper.js';
 
+    export let screen: ScreenHandle;
     export let title: string;
     export let windowed: boolean = true;
     export let noDecorated: boolean = false;
@@ -12,13 +13,13 @@
 
     function onClick(event: MouseEvent) {
         if (event.target === container) {
-            screenContext.pop();
+            screen.pop();
         }
     }
 
     function onKeyPress(e: KeyboardEvent) {
         if (!noClose && e.key === 'Escape') {
-            screenContext.pop();
+            screen.pop();
         }
     }
 </script>

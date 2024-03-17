@@ -10,22 +10,24 @@ export type Messages = {
 }
 
 export function createI18n(messages: Messages, locale: string): I18n {
+    function getTranslation(key: string) {
+        const parts = key.split('.');
+        let translation: string | undefined;
+        let result = messages;
+        for (const part of parts) {
+            if (typeof result !== 'object') return key;
+            translation = result[part] as string | undefined;
+            result = result[part] as Messages;
+        }
+        if (typeof translation === 'object') {
+            translation = translation[''];
+        }
+        if (!translation) return key;
+        return translation;
+    };
+
     const translate = (key: string, params?: Record<string, unknown>): string => {
-        const translation = ((_key) => {
-            const parts = _key.split('.');
-            let translation: string | undefined;
-            let result = messages;
-            for (const part of parts) {
-                if (typeof result !== 'object') return _key;
-                translation = result[part] as string | undefined;
-                result = result[part] as Messages;
-            }
-            if (typeof translation === 'object') {
-                translation = translation[''];
-            }
-            if (!translation) return _key;
-            return translation;
-        })(key);
+        const translation = getTranslation(key);
         if (!translation) {
             console.warn(`Translation for key "${key}" not found`);
             return key;

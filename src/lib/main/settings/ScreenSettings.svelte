@@ -3,14 +3,13 @@
 
     import { currentSettingsCategory, SETTING_REGISTRY } from '../settings.js';
 
-    import Licenses from './Licenses.svelte';
-
-    import PropedComponent from '$lib/common/component/PropedComponent.svelte';
     import Button from '$lib/common/input/Button.svelte';
     import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
-    import { screenContext } from '$lib/common/screen/screen.js';
+    import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import ScreenHeader from '$lib/common/screen/ScreenHeader.svelte';
     import { t } from '$lib/i18n/i18n-context.js';
+
+    export let screen: ScreenHandle;
 
     const categories = [
         ...[...SETTING_REGISTRY.entries()].map(([name, settings]) => {
@@ -24,20 +23,6 @@
                 }),
             };
         }),
-        {
-            name: 'licenses',
-            settings: [
-                {
-                    name: 'licenses',
-                    component() {
-                        return {
-                            component: Licenses,
-                            props: {},
-                        };
-                    },
-                },
-            ],
-        },
     ];
 
     const currentCategory = writable(categories[0]);
@@ -53,7 +38,7 @@
         <div class="description">{$t('screen.settings.description')}</div>
     </div>
     <div class="close-button">
-        <Button on:click={screenContext.pop} outline rounded filled>
+        <Button on:click={screen.pop} outline rounded filled>
             <JustifyBaselineWrapper>
                 {$t('general.close')}
                 <i class="ti ti-x" />
@@ -80,7 +65,7 @@
         </div>
         <div class="settings" class:fit={$currentCategory.name === 'licenses'}>
             {#each $currentCategory.settings as setting (setting.name)}
-                <PropedComponent component={setting.component()} />
+                <svelte:component this={setting.component} {...setting.props} />
             {/each}
         </div>
     </div>

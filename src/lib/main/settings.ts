@@ -1,10 +1,9 @@
 import { writable } from 'svelte/store';
 
-import Checkbox from './settings/CheckboxField.svelte';
-import Combobox from './settings/ComboboxField.svelte';
-
 import type { PropedComponent } from '$lib/common/component/proped-component.js';
 import { LOCALES } from '$lib/i18n/locales/index.js';
+import Checkbox from './settings/CheckboxField.svelte';
+import Combobox from './settings/ComboboxField.svelte';
 
 function getSystemLanguage(): keyof typeof LOCALES {
     if (typeof window === 'undefined') {
@@ -47,9 +46,6 @@ export const currentPage = createSetting('currentPage', 'main');
 export const currentSettingsCategory = createSetting('currentPageSettings', 'general');
 export const installed = createSetting('installed', false);
 
-export interface Setting {
-    component(): PropedComponent;
-}
 
 function calcLanguageScore(lang: string): number {
     let score = 0;
@@ -67,33 +63,46 @@ function calcLanguageScore(lang: string): number {
     return score;
 }
 
-export const SETTING_REGISTRY: Map<string, Record<string, Setting>> = new Map();
-SETTING_REGISTRY.set('general', {
-    devMode: {
-        component() {
-            return {
-                component: Checkbox,
-                props: {
-                    label: 'settings.setting.devMode',
-                    value: devMode,
-                },
-            };
-        },
+
+export const SETTING_REGISTRY: Map<string, Record<string, PropedComponent>> = new Map();
+
+export function registerSetting<T extends Record<string, unknown>>(category: string, key: string, setting: PropedComponent<T>) {
+    if (!SETTING_REGISTRY.has(category)) {
+        SETTING_REGISTRY.set(category, {});
+    }
+    SETTING_REGISTRY.get(category)![key] = setting;
+}
+
+registerSetting('general', 'devMode', {
+    component: Checkbox,
+    props: {
+        label: 'settings.setting.devMode',
+        value: devMode,
     },
 });
-SETTING_REGISTRY.set('language', {
-    language: {
-        component() {
-            return {
-                component: Combobox,
-                props: {
-                    label: 'settings.setting.language',
-                    value: language,
-                    options: Object.keys(LOCALES).sort(
-                        (a, b) => calcLanguageScore(b) - calcLanguageScore(a),
-                    ) as (keyof typeof LOCALES)[],
-                },
-            };
-        },
+registerSetting('language', 'language', {
+    component: Combobox,
+    props: {
+        label: 'settings.setting.language',
+        value: language,
+        options: Object.keys(LOCALES).sort(
+            (a, b) => calcLanguageScore(b) - calcLanguageScore(a),
+        ) as (keyof typeof LOCALES)[],
     },
+});
+
+// {
+//     name: 'licenses',
+//     settings: [
+//         {
+//             name: 'licenses',
+//             component: Licenses,
+//             props: {},
+//         },
+//     ],
+// },
+import Licenses from './settings/Licenses.svelte';
+registerSetting('licenses', 'licenses', {
+    component: Licenses,
+    props: {},
 });

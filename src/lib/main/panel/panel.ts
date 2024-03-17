@@ -1,12 +1,11 @@
+import type { TypedComponent } from '$lib/common/component/proped-component.js';
 import { getContext, setContext } from 'svelte';
 import type { Readable } from 'svelte/motion';
 import type { Writable } from 'svelte/store';
 
-import type { PropedComponent } from '$lib/common/component/proped-component.js';
-
-export interface PanelEntry {
-    panel(): PropedComponent;
-    settings?(): PropedComponent;
+export interface PanelEntry<T extends Record<string, unknown> = Record<string, unknown>> {
+    component: TypedComponent<T>;
+    props: T;
     icon: string;
     name: string;
     width?: number;

@@ -1,19 +1,51 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
-import type { PropedComponent } from '$lib/common/component/proped-component.js';
+import type { TypedComponent } from '$lib/common/component/proped-component.js';
 
-const stack = writable<PropedComponent[]>([]);
-const current = writable<PropedComponent | null>(null);
 
-function push(props: PropedComponent) {
-    stack.update((stack) => [...stack, props]);
-    current.set(props);
+export type ScreenHandle = {
+    id: number;
+    pop: () => void;
+};
+
+export type ScreenComponentType<T> = TypedComponent<{
+    screen: ScreenHandle;
+    props?: T;
+}>;
+
+export interface ScreenComponent<T> {
+    id: number;
+    component: ScreenComponentType<T>;
+    props: T;
+};
+
+let id = 0;
+const stack = writable<Map<number, ScreenComponent<unknown>>>(new Map());
+const current = writable<ScreenComponent<unknown> | null>(null);
+
+function push<T>(component: ScreenComponentType<T>, props: T) {
+    if (get(current)?.component === component) {
+        return;
+    }
+    stack.update((stack) => {
+        const newId = id++;
+        stack.set(newId, {
+            id: newId,
+            component: component as ScreenComponentType<unknown>,
+            props
+        });
+        const last = Array.from(stack.values()).pop() || null;
+        current.set(last);
+        return stack;
+    });
+
 }
 
-function pop() {
+function pop(id: number) {
     stack.update((stack) => {
-        stack.pop();
-        current.set(stack[stack.length - 1] || null);
+        stack.delete(id);
+        const last = Array.from(stack.values()).pop() || null;
+        current.set(last);
         return stack;
     });
 }

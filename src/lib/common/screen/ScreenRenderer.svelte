@@ -1,9 +1,33 @@
 <script lang="ts">
-    import { screenContext } from './screen.js';
+    import { screenContext, type ScreenComponent, type ScreenHandle } from './screen.js';
 
-    const current = screenContext.current;
+    let current: {
+        screen: ScreenComponent<unknown>;
+        handle: ScreenHandle;
+    } | null = null;
+
+    screenContext.current.subscribe((newValue) => {
+        if (!newValue) {
+            current = null;
+            return;
+        }
+        const screen = newValue!;
+        current = {
+            screen,
+            handle: {
+                id: screen.id,
+                pop() {
+                    screenContext.pop(newValue.id);
+                },
+            },
+        };
+    });
 </script>
 
-{#if $current}
-    <svelte:component this={$current.component} {...$current.props} />
+{#if current}
+    <svelte:component
+        this={current.screen.component}
+        screen={current.handle}
+        props={current.screen.props}
+    />
 {/if}

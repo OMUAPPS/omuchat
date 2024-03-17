@@ -2,7 +2,6 @@
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
-    import Component from '../common/component/PropedComponent.svelte';
     import Tooltip from '../common/tooltip/Tooltip.svelte';
 
     import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
@@ -30,59 +29,35 @@
     pages.set(new Map());
     $pages.set('main', {
         name: 'main',
-        component: () => {
-            return {
-                component: PageHome,
-                props: {},
-            };
-        },
+        component: PageHome,
+        props: {},
     });
     $pages.set('message', {
         name: 'message',
-        component: () => {
-            return {
-                component: PageMessages,
-                props: {},
-            };
-        },
+        component: PageMessages,
+        props: {},
     });
     $pages.set('channel', {
         name: 'channel',
-        component: () => {
-            return {
-                component: PageChannels,
-                props: {},
-            };
-        },
+        component: PageChannels,
+        props: {},
     });
     $pages.set('asset', {
         name: 'asset',
-        component: () => {
-            return {
-                component: PageAssets,
-                props: {},
-            };
-        },
+        component: PageAssets,
+        props: {},
     });
     $pages.set('app', {
         name: 'app',
-        component: () => {
-            return {
-                component: PageApps,
-                props: {},
-            };
-        },
+        component: PageApps,
+        props: {},
     });
 
     $: if ($devMode) {
         $pages.set('dev', {
             name: 'dev',
-            component: () => {
-                return {
-                    component: PageDev,
-                    props: {},
-                };
-            },
+            component: PageDev,
+            props: {},
         });
     } else {
         $pages.delete('dev');
@@ -115,10 +90,7 @@
                 client.start();
                 return;
             }
-            screenContext.push({
-                component: ScreenInstalling,
-                props: {},
-            });
+            screenContext.push(ScreenInstalling, {});
             listen('server-state', (state) => {
                 console.log(state);
                 if (state.payload === 'Installed') {
@@ -160,7 +132,7 @@
             class="page-container"
         >
             {#if $cachedPages.has(page.name)}
-                <Component component={page.component()} />
+                <svelte:component this={page.component} {...page.props} />
             {/if}
         </div>
     {/each}

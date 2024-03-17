@@ -6,6 +6,7 @@
     import { tauriWindow } from '$lib/utils/tauri.js';
     import { onMount } from 'svelte';
 
+    export let filter: (key: string, app: models.App) => boolean = () => true;
     const { dashboard } = getClient();
 
     onMount(() => {
@@ -18,7 +19,7 @@
 </script>
 
 <div class="container">
-    <TableList table={dashboard.apps} component={AppEntry} fitHeight={true} />
+    <TableList table={dashboard.apps} component={AppEntry} fitHeight={true} {filter} />
     <a href="https://omuchat.cc/" target="_blank">
         omuchat.ccでアプリを探す
         <i class="ti ti-external-link" />

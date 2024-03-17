@@ -6,9 +6,11 @@
     import ScreenSetup from './ScreenSetup.svelte';
 
     import Background from '$lib/common/Background.svelte';
-    import { screenContext } from '$lib/common/screen/screen.js';
+    import { screenContext, type ScreenHandle } from '$lib/common/screen/screen.js';
     import Screen from '$lib/common/screen/Screen.svelte';
     import { invoke, listen } from '$lib/utils/tauri.js';
+
+    export let screen: ScreenHandle;
 
     let progress: {
         progress: number;
@@ -17,12 +19,9 @@
     } | null = null;
 
     function close() {
-        screenContext.pop();
+        screen.pop();
         if (!$installed) {
-            screenContext.push({
-                component: ScreenSetup,
-                props: {},
-            });
+            screenContext.push(ScreenSetup, {});
         }
     }
 
@@ -42,7 +41,7 @@
     });
 </script>
 
-<Screen title="installing" windowed={false} noDecorated>
+<Screen {screen} title="installing" windowed={false} noDecorated>
     <div class="background">
         <Background />
     </div>

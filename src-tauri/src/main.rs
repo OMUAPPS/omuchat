@@ -6,7 +6,7 @@
 
 use std::{
     fs,
-    io::{self, stderr, stdout},
+    io::{self},
 };
 
 use anyhow::Result;

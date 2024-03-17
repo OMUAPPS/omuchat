@@ -9,10 +9,11 @@
     import InputText from '$lib/common/input/InputText.svelte';
     import { getClient } from '$lib/common/omuchat/client.js';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
-    import { screenContext } from '$lib/common/screen/screen.js';
+    import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import Screen from '$lib/common/screen/Screen.svelte';
     import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
 
+    export let screen: ScreenHandle;
     const { chat, client } = getClient();
 
     let result: Map<string, { channel: models.Channel; active: boolean }> | undefined;
@@ -45,7 +46,7 @@
         if (!result?.size) return;
         const channels = [...result.values()].filter((v) => v.active).map((v) => v.channel);
         chat.channels!.add(...channels);
-        screenContext.pop();
+        screen.pop();
         $installed = true;
     }
 
@@ -75,7 +76,7 @@
     });
 </script>
 
-<Screen title="setup" windowed={false} noDecorated noClose>
+<Screen {screen} title="setup" windowed={false} noDecorated noClose>
     <div class="background">
         <Background />
     </div>
@@ -92,22 +93,22 @@
                         <button class="item" class:active on:click={() => (active = !active)}>
                             <i class="ti ti-{active ? 'check' : 'plus'}" />
                             <div class="channel-icon">
-                                {#if channel.icon_url}
-                                    <img src={client.proxy(channel.icon_url)} alt="icon" />
+                                {#if channel.iconUrl}
+                                    <img src={client.proxy(channel.iconUrl)} alt="icon" />
                                     <Tooltip>
                                         <img
-                                            src={client.proxy(channel.icon_url)}
+                                            src={client.proxy(channel.iconUrl)}
                                             alt="icon"
                                             class="tooltip-image"
                                         />
                                     </Tooltip>
                                 {:else}
-                                    <ProviderIcon providerId={channel.provider_id} />
+                                    <ProviderIcon providerId={channel.providerId} />
                                 {/if}
                             </div>
                             <div class="description">
                                 <div class="channel-name">
-                                    {channel.name || channel.provider_id}
+                                    {channel.name || channel.providerId}
                                 </div>
                                 <small class="channel-url">{channel.url}</small>
                             </div>
@@ -135,7 +136,7 @@
                 </div>
             {/if}
         </div>
-        <button on:click={screenContext.pop} class="skip">
+        <button on:click={screen.pop} class="skip">
             セットアップをスキップ
             <i class="ti ti-arrow-right" />
         </button>

@@ -11,26 +11,26 @@
         {
             icon: 'ti ti-bolt',
             name: '接続中',
-            panel: () => ({ component: PanelRooms, props: {} }),
+            component: PanelRooms,
+            props: {},
         },
         {
             icon: 'ti ti-message',
             name: 'コメント／メッセージ',
             width: 300,
             fit: true,
-            panel: () => ({ component: PanelMessages, props: {} }),
+            component: PanelMessages,
+            props: {},
         },
         {
             icon: 'ti ti-message',
             name: 'ギフト／投げ銭',
             width: 400,
-            panel: () => ({
-                component: PanelMessages,
-                props: {
-                    filter: (_key: string, message: models.Message) =>
-                        !!(message.gifts?.length || message.paid),
-                },
-            }),
+            component: PanelMessages,
+            props: {
+                filter: (_key: string, message: models.Message) =>
+                    !!(message.gifts?.length || message.paid),
+            },
         },
     ]);
 </script>

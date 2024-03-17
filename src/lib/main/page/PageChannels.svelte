@@ -10,13 +10,15 @@
         {
             icon: 'ti ti-bolt',
             name: 'ルーム',
-            panel: () => ({ component: PanelRooms, props: {} }),
+            component: PanelRooms,
+            props: {},
         },
         {
             icon: 'ti ti-home',
             name: 'チャンネル',
             fit: true,
-            panel: () => ({ component: PanelChannels, props: {} }),
+            component: PanelChannels,
+            props: {},
         },
     ]);
 </script>

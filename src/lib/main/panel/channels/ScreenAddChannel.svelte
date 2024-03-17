@@ -4,10 +4,11 @@
 
     import { getClient } from '$lib/common/omuchat/client.js';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
-    import { screenContext } from '$lib/common/screen/screen.js';
+    import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import Screen from '$lib/common/screen/Screen.svelte';
 
     const { chat } = getClient();
+    export let screen: ScreenHandle;
     let providers: Map<string, models.Provider> | undefined;
     let url: string = '';
 
@@ -62,7 +63,7 @@
                 name: '',
             }),
         );
-        screenContext.pop();
+        screen.pop();
     }
 
     function onKeyPress(e: KeyboardEvent) {
@@ -104,7 +105,7 @@
 
 <svelte:window on:keydown={onKeyPress} />
 
-<Screen title="add_channel">
+<Screen {screen} title="add_channel">
     <div class="container">
         <!-- svelte-ignore a11y-autofocus -->
         <span>

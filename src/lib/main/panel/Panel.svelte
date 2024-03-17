@@ -1,11 +1,6 @@
 <script lang="ts">
     import { getPanelContext, type PanelEntry } from './panel.js';
 
-    import PropedComponent from '$lib/common/component/PropedComponent.svelte';
-    import ButtonMini from '$lib/common/input/ButtonMini.svelte';
-    import { screenContext } from '$lib/common/screen/screen.js';
-    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
-    import { t } from '$lib/i18n/i18n-context.js';
     import { style } from '$lib/utils/class-helper.js';
 
     export let panel: PanelEntry;
@@ -40,11 +35,6 @@
         dragging = false;
         context.dragPanel(panel, event.clientX - offset.x);
     }
-
-    function openSettings() {
-        if (!panel.settings) throw new Error('Panel does not have settings');
-        screenContext.push(panel.settings());
-    }
 </script>
 
 <svelte:window on:mouseup={handleMouseUp} on:mousemove={handleMouseMove} />
@@ -66,17 +56,9 @@
                 <i class={panel.icon} />
                 {panel.name}
             </button>
-            {#if panel.settings}
-                <div class="right">
-                    <ButtonMini on:click={openSettings}>
-                        <Tooltip>{$t('general.settings')}</Tooltip>
-                        <i class="ti ti-settings" />
-                    </ButtonMini>
-                </div>
-            {/if}
         </div>
         <div class="panel">
-            <PropedComponent component={panel.panel()} />
+            <svelte:component this={panel.component} {...panel.props} />
         </div>
     </div>
 </div>

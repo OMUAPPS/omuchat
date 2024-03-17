@@ -8,11 +8,12 @@
 
     import Background from '$lib/common/Background.svelte';
     import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
-    import { screenContext } from '$lib/common/screen/screen.js';
+    import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import { t } from '$lib/i18n/i18n-context.js';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
     import { invoke } from '$lib/utils/tauri.js';
 
+    export let screen: ScreenHandle;
     let result: ShareResnponse | undefined;
     let url: string = '';
     let qrImage: HTMLImageElement;
@@ -39,7 +40,7 @@
     }
 </script>
 
-<Screen title="remote_connect" windowed={false} noDecorated>
+<Screen {screen} title="remote_connect" windowed={false} noDecorated>
     <Background />
     <div class="container">
         <div class="result">
@@ -57,7 +58,7 @@
             {/if}
         </div>
         <div class="close-button">
-            <Button on:click={screenContext.pop} outline rounded filled>
+            <Button on:click={screen.pop} outline rounded filled>
                 <JustifyBaselineWrapper>
                     {$t('general.close')}
                     <i class="ti ti-x" />
