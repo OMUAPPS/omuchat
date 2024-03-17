@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 import type { PropedComponent } from '$lib/common/component/proped-component.js';
-import { LOCALES } from '$lib/i18n/locales/index.js';
+import { LOCALES } from '$lib/i18n/index.js';
 import Checkbox from './settings/CheckboxField.svelte';
 import Combobox from './settings/ComboboxField.svelte';
 import Licenses from './settings/Licenses.svelte';
