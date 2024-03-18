@@ -52,6 +52,7 @@
             updateCache(items);
             update();
             loadingLock = false;
+            resolve();
             return;
         }
         const items = await table.fetch({
