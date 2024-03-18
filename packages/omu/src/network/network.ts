@@ -66,7 +66,7 @@ export class Network {
         listeners.listeners.subscribe(handler as (packet: unknown) => void);
     }
 
-    public async connect(recconect = false): Promise<void> {
+    public async connect(recconect = true): Promise<void> {
         if (this.connected) {
             throw new Error('Already connected');
         }
