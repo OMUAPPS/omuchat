@@ -42,11 +42,14 @@
     }
 
     code {
-        white-space: pre-wrap;
-        word-break: break-word;
-        white-space: normal;
+        display: flex;
+        flex-direction: row wrap;
+        gap: 5px;
+        align-items: center;
         background-color: var(--color-bg-1);
         color: var(--color-1);
+        padding: 5px 10px;
+        margin: 5px 0;
         font-weight: bold;
     }
 
