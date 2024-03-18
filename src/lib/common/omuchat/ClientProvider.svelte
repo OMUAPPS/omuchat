@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Address } from '@omuchatjs/omu/connection/address.js';
+    import type { Address } from '@omuchatjs/omu/network/address.js';
 
     import { App, Client } from '@omuchatjs/chat';
 
@@ -37,13 +37,13 @@
         token: new TokenProvider('omu-token'),
     });
     setClient({
-        chat: client,
-        client: client.omu,
+        chat: client.chat,
+        client: client,
         dashboard: new Dashboard(client),
     });
 
     if (connect) {
-        client.run();
+        client.start();
     }
 </script>
 

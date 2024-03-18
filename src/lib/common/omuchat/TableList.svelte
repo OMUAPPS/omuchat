@@ -31,8 +31,8 @@
     let loadingLock = false;
     let fetchLock: Promise<void> | undefined;
 
-    async function fetch() {
-        if (!client.network.connected) return;
+    async function fetch(): Promise<boolean> {
+        if (!client.network.connected) return false;
         if (fetchLock) {
             await fetchLock;
         }
@@ -41,24 +41,15 @@
             resolve = r;
         });
         loadingLock = true;
-        if (last) {
-            const items = await table.fetch({
-                cursor: last,
-                before: initial,
-            });
-            updateCache(items);
-            update();
-            loadingLock = false;
-            resolve();
-            return;
-        }
         const items = await table.fetch({
+            cursor: last,
             before: initial,
         });
         updateCache(items);
-        updated = false;
+        update();
         loadingLock = false;
         resolve();
+        return items.size > 0;
     }
 
     client.network.addTask(async () => {
@@ -157,7 +148,8 @@
         const target = e.target as HTMLDivElement;
         let { scrollTop, scrollHeight, clientHeight } = target;
         while (scrollTop + clientHeight >= scrollHeight - 4000) {
-            await fetch();
+            const result = await fetch();
+            if (!result) break;
             await tick();
             scrollHeight = target.scrollHeight;
         }
