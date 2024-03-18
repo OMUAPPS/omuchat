@@ -22,6 +22,12 @@
             <svelte:self component={sibling} />
         {/each}
     </a>
+{:else if component instanceof content.System}
+    <code>
+        {#each component.children || [] as sibling}
+            <svelte:self component={sibling} />
+        {/each}
+    </code>
 {:else if component.isParent()}
     {#each component.children as sibling}
         <svelte:self component={sibling} />
@@ -33,6 +39,15 @@
         max-height: 30px;
         object-fit: contain;
         vertical-align: middle;
+    }
+
+    code {
+        white-space: pre-wrap;
+        word-break: break-word;
+        white-space: normal;
+        background-color: var(--color-bg-1);
+        color: var(--color-1);
+        font-weight: bold;
     }
 
     .preview {
