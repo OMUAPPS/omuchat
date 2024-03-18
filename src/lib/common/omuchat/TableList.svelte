@@ -32,9 +32,18 @@
     let viewport: HTMLDivElement;
     let last: string | undefined;
     let loadingLock = false;
+    let fetchLock: Promise<void> | undefined;
 
     async function fetch() {
         if (!client.network.connected) return;
+        if (fetchLock) {
+            await fetchLock;
+        }
+        let resolve = () => {};
+        fetchLock = new Promise<void>((r) => {
+            resolve = r;
+        });
+        loadingLock = true;
         if (last) {
             const items = await table.fetch({
                 cursor: last,
@@ -42,6 +51,7 @@
             });
             updateCache(items);
             update();
+            loadingLock = false;
             return;
         }
         const items = await table.fetch({
@@ -49,6 +59,8 @@
         });
         updateCache(items);
         updated = false;
+        loadingLock = false;
+        resolve();
     }
 
     client.network.addTask(async () => {
@@ -58,15 +70,15 @@
 
     function updateCache(cache: Map<string, T>) {
         if (cache.size === 0) return;
-        last = [...cache.entries()].pop()?.[0];
+        last = [...cache.keys()].at(-1);
         let newItems = [...cache.entries()];
         if (filter) {
             newItems = newItems.filter(([key, entry]) => filter(key, entry));
         }
         if (newItems.length === 0) return;
-        const length = [...entries.keys()].length;
+        const prevSize = entries.size;
         entries = new Map([...entries.entries(), ...newItems]);
-        if (length !== [...entries.keys()].length) {
+        if (prevSize !== entries.size) {
             updated = true;
         }
         if (startIndex === 0) {
@@ -121,7 +133,6 @@
 
     function scrollToTop() {
         viewport.scrollTo({ top: 0 });
-        fetch();
     }
 
     function update() {
@@ -145,8 +156,6 @@
     }
 
     async function handleScroll(e: Event) {
-        if (loadingLock) return;
-        loadingLock = true;
         const target = e.target as HTMLDivElement;
         let { scrollTop, scrollHeight, clientHeight } = target;
         while (scrollTop + clientHeight >= scrollHeight - 4000) {
@@ -154,7 +163,6 @@
             await tick();
             scrollHeight = target.scrollHeight;
         }
-        loadingLock = false;
     }
 
     function handleSelectItem(e: KeyboardEvent) {
@@ -310,6 +318,7 @@
         border: none;
         border-radius: 50px;
         outline: none;
+        text-wrap: nowrap;
         transform: translateX(50%);
 
         i {
