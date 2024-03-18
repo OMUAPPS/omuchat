@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.1.2 (2024-03-18)
+
+### Bug Fixes
+
+-   **omu:** assetのurlを取得する関数をpython側と同じように更新 ([e0ea52b](https://github.com/OMUCHAT/dashboard/commit/e0ea52bd0b52033c010196881444f2e363e3d4da))
+
 ## 0.1.1 (2024-03-18)
 
 **Note:** Version bump only for package dashboard
