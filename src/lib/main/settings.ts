@@ -4,8 +4,7 @@ import type { PropedComponent } from '$lib/common/component/proped-component.js'
 import { LOCALES } from '$lib/i18n/i18n.js';
 import Checkbox from './settings/CheckboxField.svelte';
 import Combobox from './settings/ComboboxField.svelte';
-import Licenses from './settings/Licenses.svelte';
-import Contributors from "./settings/Contributors.svelte"
+import About from './settings/about/About.svelte';
 
 function getSystemLanguage(): keyof typeof LOCALES {
     if (typeof window === 'undefined') {
@@ -91,11 +90,7 @@ registerSetting('language', 'language', {
         ) as (keyof typeof LOCALES)[],
     },
 });
-registerSetting('licenses', 'licenses', {
-    component: Licenses,
-    props: {},
-});
-registerSetting('contributors', 'contributors', {
-    component: Contributors,
+registerSetting('about', 'licenses', {
+    component: About,
     props: {},
 });

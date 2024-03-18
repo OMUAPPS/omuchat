@@ -163,21 +163,21 @@
                 "description": "詳細な設定を変更できます。",
                 "icon": "ti ti-settings"
             },
-            "licenses": {
-                "name": "ライセンス",
-                "description": "ライセンスを表示します。",
+            "about": {
+                "name": "情報",
+                "description": "このアプリの情報を表示します。",
                 "icon": "ti ti-license"
-            },
-            "contributors": {
-                "name": "貢献者",
-                "description": "制作に関わってくださった人たちを表示します。",
-                "icon": "ti ti-users"
             }
         },
         "setting": {
             "devMode": "開発者モード",
             "language": "言語",
             "layoutInvert": "レイアウトを反転"
+        },
+        "about": {
+            "version": "バージョン",
+            "contributors": "貢献者",
+            "licenses": "ライセンス"
         }
     },
     "apps": {

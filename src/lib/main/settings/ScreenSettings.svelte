@@ -63,7 +63,7 @@
                 </button>
             {/each}
         </div>
-        <div class="settings" class:fit={$currentCategory.name === 'licenses'}>
+        <div class="settings" class:fit={$currentCategory.name === 'about'}>
             {#each $currentCategory.settings as setting (setting.name)}
                 <svelte:component this={setting.component} {...setting.props} />
             {/each}
@@ -95,6 +95,8 @@
     }
 
     .settings {
+        display: flex;
+        flex-direction: column;
         width: 300px;
         height: calc(100% - 60px);
         padding-top: 40px;

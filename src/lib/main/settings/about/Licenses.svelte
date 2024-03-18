@@ -1,28 +1,34 @@
 <script lang="ts">
     import ExternalLink from '$lib/common/input/ExternalLink.svelte';
+    import { t } from '$lib/i18n/i18n-context.js';
     import { LICENSES } from '$lib/license/license.js';
     import SvelteMarkdown from 'svelte-markdown';
 
-    let selected: string | undefined;
+    let selectedLicense: string | undefined;
 </script>
 
 <div class="container">
+    <h2>
+        <i class="ti ti-license" />
+        {$t('settings.about.licenses')}
+    </h2>
     {#each LICENSES as license (license.name)}
+        {@const selected = selectedLicense === license.name}
         <button
-            class="license"
-            on:click={() => (selected = license.name === selected ? undefined : license.name)}
+            on:click={() => (selectedLicense = selected ? undefined : license.name)}
+            class:selected
         >
             <div class="body">
-                <h3>
+                <h4>
                     {license.name}
-                </h3>
+                </h4>
                 {license.license}
                 {#if license.url}
                     <ExternalLink href={license.url}>
                         {license.url}
                     </ExternalLink>
                 {/if}
-                {#if selected === license.name && license.licenseText}
+                {#if selected && license.licenseText}
                     <div class="content">
                         <SvelteMarkdown
                             source={license.licenseText}
@@ -43,13 +49,9 @@
         flex-direction: column;
         align-items: flex-start;
         width: 100%;
-        height: 100%;
-        padding-top: 40px;
-        padding-left: 80px;
-        overflow: auto;
     }
 
-    .license {
+    button {
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -60,22 +62,23 @@
         background: none;
         border: none;
 
-        .content {
-            margin-top: 10px;
-            font-size: 10px;
-            white-space: pre-wrap;
-        }
-
-        .body {
-            padding-left: 10px;
-        }
-
+        &.selected,
         &:hover {
             .body {
                 padding-left: 8px;
                 border-left: 2px solid var(--color-1);
             }
         }
+    }
+
+    .content {
+        margin-top: 10px;
+        font-size: 10px;
+        white-space: pre-wrap;
+    }
+
+    .body {
+        padding-left: 10px;
     }
 
     h3 {
