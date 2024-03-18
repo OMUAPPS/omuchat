@@ -31,6 +31,13 @@ export class ByteWriter {
         return this;
     }
 
+    writeBoolean(value: boolean): ByteWriter {
+        this.allocate(1);
+        this.dataArray.setInt8(this.offset, value ? 1 : 0);
+        this.offset += 1;
+        return this;
+    }
+
     writeBigInt(value: bigint): ByteWriter {
         this.allocate(8);
         this.dataArray.setBigInt64(this.offset, value);
@@ -104,6 +111,12 @@ export class ByteReader {
         const value = new Uint8Array(this.dataArray.buffer, this.offset, size);
         this.offset += size;
         return value;
+    }
+
+    readBoolean(): boolean {
+        const value = this.dataArray.getInt8(this.offset);
+        this.offset += 1;
+        return value !== 0;
     }
 
     readBigInt(): bigint {
