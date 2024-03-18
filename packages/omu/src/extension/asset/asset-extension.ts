@@ -72,6 +72,6 @@ export class AssetExtension {
     url(identifier: Identifier): string {
         const address = this.client.network.address;
         const protocol = address.secure ? 'https' : 'http';
-        return `${protocol}://${address.host}:${address.port}/asset/${identifier.key()}`;
+        return `${protocol}://${address.host}:${address.port}/asset?id=${encodeURIComponent(identifier.key())}`;
     }
 }
