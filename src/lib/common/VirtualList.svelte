@@ -1,13 +1,10 @@
 <!-- Modified version of https://github.com/sveltejs/svelte-virtual-list -->
 
-<script lang="ts" generics="_T">
+<script lang="ts" generics="T">
     import { onMount, tick } from 'svelte';
 
-    // eslint-disable-next-line no-undef
-    type T = [string, _T];
-
     // props
-    export let items: T[] = [];
+    export let items: [string, T][] = [];
 
     export let height = '100%';
     export let itemHeight: number | undefined = undefined;
@@ -22,7 +19,7 @@
     let rows: HTMLElement[];
     let contents: HTMLDivElement;
     let viewport_height = 0;
-    let visible: { index: number; data: T }[];
+    let visible: { index: number; data: [string, T] }[];
     let mounted: boolean;
 
     let top = 0;
@@ -40,7 +37,11 @@
         return { index: i + start, data };
     });
 
-    async function refresh(items: T[], viewport_height: number, itemHeight: number | undefined) {
+    async function refresh(
+        items: [string, T][],
+        viewport_height: number,
+        itemHeight: number | undefined,
+    ) {
         if (first) {
             first = false;
             // render first 3 rows

@@ -1,4 +1,4 @@
-<script lang="ts" generics="_T extends Keyable">
+<script lang="ts" generics="T extends Keyable">
     import TableListEntry from './TableListEntry.svelte';
 
     import type { Table } from '@omuchatjs/omu/extension/table/table.js';
@@ -8,9 +8,6 @@
     import { getClient } from './client.js';
 
     import VirtualList from '$lib/common/VirtualList.svelte';
-
-    // eslint-disable-next-line no-undef
-    type T = _T & Keyable;
 
     export let table: Table<T>;
     export let component: ComponentType<SvelteComponent<{ entry: T; selected?: boolean }>>;
