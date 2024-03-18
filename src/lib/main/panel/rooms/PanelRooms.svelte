@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { models } from '@omuchatjs/chat';
-    import { onMount, SvelteComponent } from 'svelte';
+    import { onMount } from 'svelte';
 
     import { t } from '$lib/i18n/i18n-context.js';
 
@@ -37,10 +37,7 @@
     });
 
     function openSetup() {
-        screenContext.push({
-            component: ScreenSetup,
-            props: {},
-        });
+        screenContext.push(ScreenSetup, {});
     }
 </script>
 
