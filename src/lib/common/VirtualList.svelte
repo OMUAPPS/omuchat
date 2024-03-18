@@ -30,15 +30,15 @@
     export let average_height: number = 0;
     let first = true;
 
-    $: visible = items.slice(start, end + 1).map((data, i) => {
-        return { index: i + start, data };
-    });
-
     // whenever `items` changes, invalidate the current heightmap
     $: if (mounted) {
         refresh(items, viewport_height, itemHeight);
         handleUpdate();
     }
+
+    $: visible = items.slice(start, end + 1).map((data, i) => {
+        return { index: i + start, data };
+    });
 
     async function refresh(items: T[], viewport_height: number, itemHeight: number | undefined) {
         if (first) {
