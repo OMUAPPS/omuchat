@@ -5,6 +5,7 @@ import { LOCALES } from '$lib/i18n/i18n.js';
 import Checkbox from './settings/CheckboxField.svelte';
 import Combobox from './settings/ComboboxField.svelte';
 import Licenses from './settings/Licenses.svelte';
+import Contributors from "./settings/Contributors.svelte"
 
 function getSystemLanguage(): keyof typeof LOCALES {
     if (typeof window === 'undefined') {
@@ -92,5 +93,9 @@ registerSetting('language', 'language', {
 });
 registerSetting('licenses', 'licenses', {
     component: Licenses,
+    props: {},
+});
+registerSetting('contributors', 'contributors', {
+    component: Contributors,
     props: {},
 });

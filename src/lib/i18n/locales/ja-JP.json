@@ -167,6 +167,11 @@
                 "name": "ライセンス",
                 "description": "ライセンスを表示します。",
                 "icon": "ti ti-license"
+            },
+            "contributors": {
+                "name": "貢献者",
+                "description": "制作に関わってくださった人たちを表示します。",
+                "icon": "ti ti-users"
             }
         },
         "setting": {
