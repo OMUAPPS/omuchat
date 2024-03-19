@@ -177,7 +177,10 @@
         "about": {
             "version": "バージョン",
             "contributors": "貢献者",
-            "licenses": "ライセンス"
+            "licenses": "ライセンス",
+            "links": "リンク",
+            "source_code": "ソースコード",
+            "website": "ウェブサイト"
         }
     },
     "apps": {
