@@ -65,18 +65,6 @@ export class OmuClient implements Client {
         });
     }
 
-    proxy(url: string): string {
-        const protocol = this.address.secure ? 'https' : 'http';
-        const { host, port } = this.address;
-        return `${protocol}://${host}:${port}/proxy?url=${encodeURIComponent(url)}`;
-    }
-
-    asset(url: string): string {
-        const protocol = this.address.secure ? 'https' : 'http';
-        const { host, port } = this.address;
-        return `${protocol}://${host}:${port}/assets?path=${encodeURIComponent(url)}`;
-    }
-
     start(): void {
         if (this.running) {
             throw new Error('Client already running');

@@ -36,7 +36,7 @@
             <span class="preview">
                 {role.name}
                 {#if role.iconUrl}
-                    <img src={client.proxy(role.iconUrl)} alt="role icon" />
+                    <img src={client.assets.proxy(role.iconUrl)} alt="role icon" />
                 {/if}
             </span>
             <small>

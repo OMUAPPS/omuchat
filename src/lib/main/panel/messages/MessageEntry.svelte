@@ -49,27 +49,29 @@
     )}
 >
     <FlexRowWrapper widthFull gap>
-        <div>
-            {#if author && author.avatarUrl}
-                <img
-                    src={client.proxy(author.avatarUrl)}
-                    alt="avatar"
-                    class="author-avatar"
-                    width="32"
-                    height="32"
-                />
-                <Tooltip noBackground>
+        {#if author && author.avatarUrl}
+            <FlexColWrapper>
+                <div>
                     <img
-                        src={client.proxy(author.avatarUrl)}
+                        src={client.assets.proxy(author.avatarUrl)}
                         alt="avatar"
-                        class="author-avatar-preview"
+                        class="author-avatar"
+                        width="32"
+                        height="32"
                     />
-                </Tooltip>
-            {/if}
-        </div>
+                    <Tooltip noBackground>
+                        <img
+                            src={client.assets.proxy(author.avatarUrl)}
+                            alt="avatar"
+                            class="author-avatar-preview"
+                        />
+                    </Tooltip>
+                </div>
+            </FlexColWrapper>
+        {/if}
         <FlexColWrapper widthFull>
-            <FlexRowWrapper widthFull gap>
-                {#if author}
+            {#if author}
+                <FlexRowWrapper widthFull gap>
                     <FlexRowWrapper baseline>
                         <span class="name">
                             {author.name}
@@ -81,49 +83,79 @@
                             {author.screenId || author.id}
                         </small>
                     </FlexRowWrapper>
-                {/if}
-                {#if entry.createdAt}
-                    <span class="time">
-                        <Tooltip>
-                            {$dateTimeFormats.full.format(entry.createdAt)}
-                        </Tooltip>
-                        {$dateTimeFormats.time.format(entry.createdAt)}
-                    </span>
-                {/if}
-            </FlexRowWrapper>
-            <FlexRowWrapper widthFull between>
-                <FlexColWrapper>
-                    {#if entry.content}
-                        <div class="message-content">
-                            <MessageContent component={entry.content} />
+                    {#if entry.createdAt}
+                        <span class="time">
+                            <Tooltip>
+                                {$dateTimeFormats.full.format(entry.createdAt)}
+                            </Tooltip>
+                            {$dateTimeFormats.time.format(entry.createdAt)}
+                        </span>
+                    {/if}
+                </FlexRowWrapper>
+                <FlexRowWrapper widthFull between>
+                    <FlexColWrapper>
+                        {#if entry.content}
+                            <div class="message-content">
+                                <MessageContent component={entry.content} />
+                            </div>
+                        {/if}
+                        {#if entry.paid}
+                            <div class="paid">
+                                {entry.paid.currency}{entry.paid.amount}
+                            </div>
+                        {/if}
+                        {#if entry.gifts?.length}
+                            <div>
+                                {#each entry.gifts as gift}
+                                    <Gift {gift} />
+                                {/each}
+                            </div>
+                        {/if}
+                    </FlexColWrapper>
+                    {#if selected}
+                        <div class="actions">
+                            <button on:click={handleBookmark}>
+                                <Tooltip>{$t('panels.messages.bookmark')}</Tooltip>
+                                <i class="ti ti-bookmark" />
+                            </button>
+                            <button on:click={handleCopy}>
+                                <Tooltip>{$t('panels.messages.copy')}</Tooltip>
+                                <i class="ti ti-files" />
+                            </button>
                         </div>
                     {/if}
-                    {#if entry.paid}
-                        <div class="paid">
-                            {entry.paid.currency}{entry.paid.amount}
-                        </div>
+                </FlexRowWrapper>
+            {:else}
+                <FlexRowWrapper widthFull between>
+                    <FlexColWrapper>
+                        {#if entry.content}
+                            <div class="message-content">
+                                <MessageContent component={entry.content} />
+                            </div>
+                        {/if}
+                        {#if entry.paid}
+                            <div class="paid">
+                                {entry.paid.currency}{entry.paid.amount}
+                            </div>
+                        {/if}
+                        {#if entry.gifts?.length}
+                            <div>
+                                {#each entry.gifts as gift}
+                                    <Gift {gift} />
+                                {/each}
+                            </div>
+                        {/if}
+                    </FlexColWrapper>
+                    {#if entry.createdAt}
+                        <span class="time">
+                            <Tooltip>
+                                {$dateTimeFormats.full.format(entry.createdAt)}
+                            </Tooltip>
+                            {$dateTimeFormats.time.format(entry.createdAt)}
+                        </span>
                     {/if}
-                    {#if entry.gifts?.length}
-                        <div>
-                            {#each entry.gifts as gift}
-                                <Gift {gift} />
-                            {/each}
-                        </div>
-                    {/if}
-                </FlexColWrapper>
-                {#if selected}
-                    <div class="actions">
-                        <button on:click={handleBookmark}>
-                            <Tooltip>{$t('panels.messages.bookmark')}</Tooltip>
-                            <i class="ti ti-bookmark" />
-                        </button>
-                        <button on:click={handleCopy}>
-                            <Tooltip>{$t('panels.messages.copy')}</Tooltip>
-                            <i class="ti ti-files" />
-                        </button>
-                    </div>
-                {/if}
-            </FlexRowWrapper>
+                </FlexRowWrapper>
+            {/if}
         </FlexColWrapper>
     </FlexRowWrapper>
 </article>

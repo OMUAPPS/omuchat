@@ -96,10 +96,10 @@
                             <i class="ti ti-{active ? 'check' : 'plus'}" />
                             <div class="channel-icon">
                                 {#if channel.iconUrl}
-                                    <img src={client.proxy(channel.iconUrl)} alt="icon" />
+                                    <img src={client.assets.proxy(channel.iconUrl)} alt="icon" />
                                     <Tooltip>
                                         <img
-                                            src={client.proxy(channel.iconUrl)}
+                                            src={client.assets.proxy(channel.iconUrl)}
                                             alt="icon"
                                             class="tooltip-image"
                                         />

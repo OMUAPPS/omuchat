@@ -74,4 +74,10 @@ export class AssetExtension {
         const protocol = address.secure ? 'https' : 'http';
         return `${protocol}://${address.host}:${address.port}/asset?id=${encodeURIComponent(identifier.key())}`;
     }
+
+    proxy(url: string): string {
+        const address = this.client.network.address;
+        const protocol = address.secure ? 'https' : 'http';
+        return `${protocol}://${address.host}:${address.port}/proxy?url=${encodeURIComponent(url)}`;
+    }
 }

@@ -11,7 +11,7 @@
 
 <button class="channel-entry" class:active on:click>
     <div class="icon">
-        <img src={client.proxy(channel.icon_url)} alt="icon" />
+        <img src={client.assets.proxy(channel.icon_url)} alt="icon" />
     </div>
     <div class="info">
         <div class="name">{channel.name}</div>

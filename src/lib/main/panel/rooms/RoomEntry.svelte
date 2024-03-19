@@ -29,13 +29,13 @@
         <div>
             {#if entry.metadata && entry.metadata.thumbnail}
                 <img
-                    src={client.proxy(entry.metadata.thumbnail)}
+                    src={client.assets.proxy(entry.metadata.thumbnail)}
                     alt="thumbnail"
                     class="room-thumbnail"
                 />
                 <Tooltip noBackground>
                     <img
-                        src={client.proxy(entry.metadata.thumbnail)}
+                        src={client.assets.proxy(entry.metadata.thumbnail)}
                         alt="thumbnail"
                         class="room-thumbnail-preview"
                     />

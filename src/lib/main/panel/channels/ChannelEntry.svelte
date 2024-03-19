@@ -30,9 +30,13 @@
     <div class="left">
         <div class="channel-icon">
             {#if entry.iconUrl}
-                <img src={client.proxy(entry.iconUrl)} alt="icon" />
+                <img src={client.assets.proxy(entry.iconUrl)} alt="icon" />
                 <Tooltip>
-                    <img src={client.proxy(entry.iconUrl)} alt="icon" class="tooltip-image" />
+                    <img
+                        src={client.assets.proxy(entry.iconUrl)}
+                        alt="icon"
+                        class="tooltip-image"
+                    />
                 </Tooltip>
             {:else}
                 <ProviderIcon providerId={entry.providerId} />

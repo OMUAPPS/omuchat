@@ -19,7 +19,7 @@
     </Tooltip>
     <div class="image">
         {#if gift.image_url}
-            <img src={client.proxy(gift.image_url)} alt="gift" width="32" height="32" />
+            <img src={client.assets.proxy(gift.image_url)} alt="gift" width="32" height="32" />
         {:else}
             {gift.name}
         {/if}
