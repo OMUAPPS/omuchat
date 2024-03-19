@@ -45,6 +45,7 @@
             cursor: last,
             before: initial,
         });
+        last = [...items.keys()].at(-1);
         updateCache(items);
         update();
         loadingLock = false;
@@ -59,7 +60,6 @@
 
     function updateCache(cache: Map<string, T>) {
         if (cache.size === 0) return;
-        last = [...cache.keys()].at(-1);
         let newItems = [...cache.entries()];
         if (filter) {
             newItems = newItems.filter(([key, entry]) => filter(key, entry));
@@ -73,7 +73,6 @@
         if (startIndex === 0) {
             entries = new Map([...entries.entries()].slice(-limit));
         }
-        return;
     }
 
     onMount(() => {
