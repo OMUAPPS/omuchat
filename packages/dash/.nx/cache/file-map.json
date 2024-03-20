@@ -1,0 +1,731 @@
+{
+  "version": "6.0",
+  "nxVersion": "18.1.2",
+  "deps": {
+    "svelte-markdown": "^0.4.1",
+    "@fontsource/noto-sans-jp": "^5.0.18",
+    "@omuchatjs/chat": "workspace:*",
+    "@omuchatjs/omu": "workspace:*",
+    "@sveltejs/adapter-static": "^3.0.1",
+    "@sveltejs/kit": "^2.5.4",
+    "@sveltejs/vite-plugin-svelte": "^3.0.2",
+    "@tabler/icons-webfont": "^2.47.0",
+    "@tauri-apps/api": "^1.5.3",
+    "@tauri-apps/cli": "^1.5.11",
+    "@tsconfig/svelte": "^5.0.2",
+    "@types/node": "^20.11.29",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "axios": "^1.6.8",
+    "concurrently": "^8.2.2",
+    "csstype": "^3.1.3",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-svelte": "^2.35.1",
+    "eslint-plugin-unused-imports": "^3.1.0",
+    "lerna": "^8.1.2",
+    "license-checker": "^25.0.1",
+    "postcss-html": "^1.6.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-svelte": "^3.2.2",
+    "qrious": "^4.0.2",
+    "sass": "^1.72.0",
+    "stylelint": "^16.2.1",
+    "stylelint-config-html": "^1.1.0",
+    "stylelint-config-prettier": "9.0.5",
+    "stylelint-config-recess-order": "^5.0.0",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-config-standard-scss": "^13.0.0",
+    "sugarss": "^4.0.1",
+    "svelte": "^4.2.12",
+    "svelte-check": "^3.6.7",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.6",
+    "vitest": "^1.4.0"
+  },
+  "pathMappings": {
+    "$lib": [
+      "./src/lib"
+    ],
+    "$lib/*": [
+      "./src/lib/*"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {},
+    "nonProjectFiles": [
+      {
+        "file": ".eslintignore",
+        "hash": "10388311981923542829"
+      },
+      {
+        "file": ".eslintrc.cjs",
+        "hash": "5355550035987383816"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "7820866249040952378"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "7737174035684757677"
+      },
+      {
+        "file": ".stylelintignore",
+        "hash": "10742387419674189249"
+      },
+      {
+        "file": ".stylelintrc.json",
+        "hash": "6242813145406349104"
+      },
+      {
+        "file": "package.json",
+        "hash": "692282105657755877"
+      },
+      {
+        "file": "src-tauri/.gitignore",
+        "hash": "7271627090440559682"
+      },
+      {
+        "file": "src-tauri/.vscode/settings.json",
+        "hash": "15429137333757072148"
+      },
+      {
+        "file": "src-tauri/Cargo.lock",
+        "hash": "17213973746509413038"
+      },
+      {
+        "file": "src-tauri/Cargo.toml",
+        "hash": "7571137429687512285"
+      },
+      {
+        "file": "src-tauri/build.rs",
+        "hash": "5676094898456963749"
+      },
+      {
+        "file": "src-tauri/icons/128x128.png",
+        "hash": "1311760796848860497"
+      },
+      {
+        "file": "src-tauri/icons/128x128@2x.png",
+        "hash": "6904694301788863759"
+      },
+      {
+        "file": "src-tauri/icons/32x32.png",
+        "hash": "16921457256449392034"
+      },
+      {
+        "file": "src-tauri/icons/Square107x107Logo.png",
+        "hash": "17863205754746916059"
+      },
+      {
+        "file": "src-tauri/icons/Square142x142Logo.png",
+        "hash": "5165990844704622778"
+      },
+      {
+        "file": "src-tauri/icons/Square150x150Logo.png",
+        "hash": "7970396128404200309"
+      },
+      {
+        "file": "src-tauri/icons/Square284x284Logo.png",
+        "hash": "3437870365738296792"
+      },
+      {
+        "file": "src-tauri/icons/Square30x30Logo.png",
+        "hash": "16895584663250047223"
+      },
+      {
+        "file": "src-tauri/icons/Square310x310Logo.png",
+        "hash": "1483932812528390439"
+      },
+      {
+        "file": "src-tauri/icons/Square44x44Logo.png",
+        "hash": "15246001438358473855"
+      },
+      {
+        "file": "src-tauri/icons/Square71x71Logo.png",
+        "hash": "15835881915396102063"
+      },
+      {
+        "file": "src-tauri/icons/Square89x89Logo.png",
+        "hash": "2780980558751422607"
+      },
+      {
+        "file": "src-tauri/icons/StoreLogo.png",
+        "hash": "8066188246373923382"
+      },
+      {
+        "file": "src-tauri/icons/icon.icns",
+        "hash": "16256068412406784433"
+      },
+      {
+        "file": "src-tauri/icons/icon.ico",
+        "hash": "16573544840471349588"
+      },
+      {
+        "file": "src-tauri/icons/icon.png",
+        "hash": "16245766770388031905"
+      },
+      {
+        "file": "src-tauri/src/app/gui.rs",
+        "hash": "13333236184196039951"
+      },
+      {
+        "file": "src-tauri/src/app/mod.rs",
+        "hash": "16724555298042393800"
+      },
+      {
+        "file": "src-tauri/src/app/runtime.rs",
+        "hash": "7137029758068034515"
+      },
+      {
+        "file": "src-tauri/src/app/state.rs",
+        "hash": "12039151210684055786"
+      },
+      {
+        "file": "src-tauri/src/main.rs",
+        "hash": "8575279324941546045"
+      },
+      {
+        "file": "src-tauri/src/python/mod.rs",
+        "hash": "9896484466233431687"
+      },
+      {
+        "file": "src-tauri/src/python/python_downloader.rs",
+        "hash": "6004666800982608133"
+      },
+      {
+        "file": "src-tauri/src/python/runtime.rs",
+        "hash": "5245828752907172967"
+      },
+      {
+        "file": "src-tauri/src/server/mod.rs",
+        "hash": "4640648636017957422"
+      },
+      {
+        "file": "src-tauri/src/server/server.rs",
+        "hash": "7722175672662724794"
+      },
+      {
+        "file": "src-tauri/src/util/download.rs",
+        "hash": "9171708678022346992"
+      },
+      {
+        "file": "src-tauri/src/util/extract.rs",
+        "hash": "15333941930331739953"
+      },
+      {
+        "file": "src-tauri/src/util/mod.rs",
+        "hash": "5781943117399060098"
+      },
+      {
+        "file": "src-tauri/tauri.conf.json",
+        "hash": "3468308855909640190"
+      },
+      {
+        "file": "src/app.d.ts",
+        "hash": "2128099006218118354"
+      },
+      {
+        "file": "src/app.html",
+        "hash": "11301692394974490604"
+      },
+      {
+        "file": "src/favicon.png",
+        "hash": "16245766770388031905"
+      },
+      {
+        "file": "src/lib/Window.svelte",
+        "hash": "8125800596958097901"
+      },
+      {
+        "file": "src/lib/common/Background.svelte",
+        "hash": "631641266147571611"
+      },
+      {
+        "file": "src/lib/common/FlexColWrapper.svelte",
+        "hash": "8539007944224486989"
+      },
+      {
+        "file": "src/lib/common/FlexRowWrapper.svelte",
+        "hash": "4318474884272515060"
+      },
+      {
+        "file": "src/lib/common/JustifyBaselineWrapper.svelte",
+        "hash": "9221613015094061126"
+      },
+      {
+        "file": "src/lib/common/LinkableText.svelte",
+        "hash": "7657075828026834498"
+      },
+      {
+        "file": "src/lib/common/RelativeDate.svelte",
+        "hash": "6187910591636467264"
+      },
+      {
+        "file": "src/lib/common/Split.svelte",
+        "hash": "12498971164247546108"
+      },
+      {
+        "file": "src/lib/common/VirtualList.svelte",
+        "hash": "370637064209154179"
+      },
+      {
+        "file": "src/lib/common/component/proped-component.ts",
+        "hash": "10090579235978962933"
+      },
+      {
+        "file": "src/lib/common/input/Button.svelte",
+        "hash": "6702947061667489915"
+      },
+      {
+        "file": "src/lib/common/input/ButtonIcon.svelte",
+        "hash": "17666327261297395844"
+      },
+      {
+        "file": "src/lib/common/input/ButtonMini.svelte",
+        "hash": "8796346911494768074"
+      },
+      {
+        "file": "src/lib/common/input/Checkbox.svelte",
+        "hash": "13336712645042201162"
+      },
+      {
+        "file": "src/lib/common/input/ExternalLink.svelte",
+        "hash": "2746647452557475505"
+      },
+      {
+        "file": "src/lib/common/input/FileInput.svelte",
+        "hash": "11965059882056925735"
+      },
+      {
+        "file": "src/lib/common/input/InputText.svelte",
+        "hash": "9677733433502119953"
+      },
+      {
+        "file": "src/lib/common/input/InputTextLazy.svelte",
+        "hash": "6038657391863134036"
+      },
+      {
+        "file": "src/lib/common/omuchat/ClientProvider.svelte",
+        "hash": "17532930593893694545"
+      },
+      {
+        "file": "src/lib/common/omuchat/ProviderIcon.svelte",
+        "hash": "18167616850372354838"
+      },
+      {
+        "file": "src/lib/common/omuchat/StatusBar.svelte",
+        "hash": "509160276623023432"
+      },
+      {
+        "file": "src/lib/common/omuchat/TableList.svelte",
+        "hash": "10223622332490155285"
+      },
+      {
+        "file": "src/lib/common/omuchat/TableListEntry.svelte",
+        "hash": "7666743400271878110"
+      },
+      {
+        "file": "src/lib/common/omuchat/app-metadata.ts",
+        "hash": "8122931733404322181"
+      },
+      {
+        "file": "src/lib/common/omuchat/asset.ts",
+        "hash": "14673866127162623227"
+      },
+      {
+        "file": "src/lib/common/omuchat/bookmark.ts",
+        "hash": "3736209458200070229"
+      },
+      {
+        "file": "src/lib/common/omuchat/client.ts",
+        "hash": "3961237143834296995"
+      },
+      {
+        "file": "src/lib/common/omuchat/dashboard.ts",
+        "hash": "8958075474403647886"
+      },
+      {
+        "file": "src/lib/common/qrcode/QRCode.svelte",
+        "hash": "8546418211674260799"
+      },
+      {
+        "file": "src/lib/common/qrcode/qrious.d.ts",
+        "hash": "11307042510584313904"
+      },
+      {
+        "file": "src/lib/common/screen/Screen.svelte",
+        "hash": "3205449880236843722"
+      },
+      {
+        "file": "src/lib/common/screen/ScreenHeader.svelte",
+        "hash": "17190344674058655855"
+      },
+      {
+        "file": "src/lib/common/screen/ScreenRenderer.svelte",
+        "hash": "12064936873443949060"
+      },
+      {
+        "file": "src/lib/common/screen/screen.ts",
+        "hash": "4377543038158885528"
+      },
+      {
+        "file": "src/lib/common/theme/ThemeProvider.svelte",
+        "hash": "1809206541410342196"
+      },
+      {
+        "file": "src/lib/common/theme/theme.ts",
+        "hash": "6007598596975985956"
+      },
+      {
+        "file": "src/lib/common/titlebar/ButtonClose.svelte",
+        "hash": "18301063524088297974"
+      },
+      {
+        "file": "src/lib/common/titlebar/ButtonMaximize.svelte",
+        "hash": "5224769696445033469"
+      },
+      {
+        "file": "src/lib/common/titlebar/ButtonMinimize.svelte",
+        "hash": "5147186255331433553"
+      },
+      {
+        "file": "src/lib/common/titlebar/TitleBar.svelte",
+        "hash": "3038828831094596055"
+      },
+      {
+        "file": "src/lib/common/tooltip/Tooltip.svelte",
+        "hash": "6666511129983738607"
+      },
+      {
+        "file": "src/lib/const.ts",
+        "hash": "8734213417141520673"
+      },
+      {
+        "file": "src/lib/i18n/i18n-context.ts",
+        "hash": "10021645072883195095"
+      },
+      {
+        "file": "src/lib/i18n/i18n.ts",
+        "hash": "14333711672092940941"
+      },
+      {
+        "file": "src/lib/i18n/locales/ja-JP.json",
+        "hash": "1477322525062241660"
+      },
+      {
+        "file": "src/lib/i18n/types/i18n.d.ts",
+        "hash": "2633768379741114097"
+      },
+      {
+        "file": "src/lib/images/comment.svg",
+        "hash": "16281032670259927728"
+      },
+      {
+        "file": "src/lib/images/svg.d.ts",
+        "hash": "1943838096764099587"
+      },
+      {
+        "file": "src/lib/images/title.svg",
+        "hash": "10998734052786218501"
+      },
+      {
+        "file": "src/lib/license/license.ts",
+        "hash": "2350510269098112188"
+      },
+      {
+        "file": "src/lib/license/licenses.json",
+        "hash": "4117579363602943782"
+      },
+      {
+        "file": "src/lib/license/tabler-icons.ts",
+        "hash": "9698413163775739450"
+      },
+      {
+        "file": "src/lib/main/ButtonOpenRemoteConnect.svelte",
+        "hash": "7813981595364280855"
+      },
+      {
+        "file": "src/lib/main/ButtonOpenSettings.svelte",
+        "hash": "1196716156942372371"
+      },
+      {
+        "file": "src/lib/main/MainWindow.svelte",
+        "hash": "7456420444349522981"
+      },
+      {
+        "file": "src/lib/main/ScreenRemoteConnect.svelte",
+        "hash": "1595721114434458034"
+      },
+      {
+        "file": "src/lib/main/page/PageChannels.svelte",
+        "hash": "16191685122876925639"
+      },
+      {
+        "file": "src/lib/main/page/PageMessages.svelte",
+        "hash": "18076075555688356673"
+      },
+      {
+        "file": "src/lib/main/page/apps/AppEntry.svelte",
+        "hash": "16483197523531570932"
+      },
+      {
+        "file": "src/lib/main/page/apps/PageApps.svelte",
+        "hash": "1509204239014842005"
+      },
+      {
+        "file": "src/lib/main/page/apps/index.ts",
+        "hash": "17979533477211174495"
+      },
+      {
+        "file": "src/lib/main/page/assets/AssetEntry.svelte",
+        "hash": "2370385062468054367"
+      },
+      {
+        "file": "src/lib/main/page/assets/PageAssets.svelte",
+        "hash": "14758296269058543159"
+      },
+      {
+        "file": "src/lib/main/page/assets/assets-page.ts",
+        "hash": "7966953188829364603"
+      },
+      {
+        "file": "src/lib/main/page/dev/AppEntry.svelte",
+        "hash": "15614486944692354941"
+      },
+      {
+        "file": "src/lib/main/page/dev/PageDev.svelte",
+        "hash": "13553322467946089762"
+      },
+      {
+        "file": "src/lib/main/page/home/AppEntry.svelte",
+        "hash": "695155049819151596"
+      },
+      {
+        "file": "src/lib/main/page/home/PageHome.svelte",
+        "hash": "17485633776800200109"
+      },
+      {
+        "file": "src/lib/main/page/home/PanelApps.svelte",
+        "hash": "8992514591171120616"
+      },
+      {
+        "file": "src/lib/main/page/home/omuhub.svg",
+        "hash": "15789580396373784203"
+      },
+      {
+        "file": "src/lib/main/page/page.ts",
+        "hash": "2093657225989699256"
+      },
+      {
+        "file": "src/lib/main/panel/Panel.svelte",
+        "hash": "3898593025091818977"
+      },
+      {
+        "file": "src/lib/main/panel/PanelExternal.svelte",
+        "hash": "3447819615137560571"
+      },
+      {
+        "file": "src/lib/main/panel/PanelProvider.svelte",
+        "hash": "9495973673060927647"
+      },
+      {
+        "file": "src/lib/main/panel/channels/ChannelEntry.svelte",
+        "hash": "15923327691351595004"
+      },
+      {
+        "file": "src/lib/main/panel/channels/PanelChannels.svelte",
+        "hash": "18148559473448603556"
+      },
+      {
+        "file": "src/lib/main/panel/channels/ScreenAddChannel.svelte",
+        "hash": "14261265533720408510"
+      },
+      {
+        "file": "src/lib/main/panel/messages/Gift.svelte",
+        "hash": "11880765435993304733"
+      },
+      {
+        "file": "src/lib/main/panel/messages/MessageContent.svelte",
+        "hash": "17180760937619661771"
+      },
+      {
+        "file": "src/lib/main/panel/messages/MessageEntry.svelte",
+        "hash": "4108616553683749950"
+      },
+      {
+        "file": "src/lib/main/panel/messages/PanelMessages.svelte",
+        "hash": "12162725837228186780"
+      },
+      {
+        "file": "src/lib/main/panel/messages/PanelMessagesSettings.svelte",
+        "hash": "16654180698279779019"
+      },
+      {
+        "file": "src/lib/main/panel/messages/Role.svelte",
+        "hash": "3819670290218049079"
+      },
+      {
+        "file": "src/lib/main/panel/panel.ts",
+        "hash": "6991625860490087237"
+      },
+      {
+        "file": "src/lib/main/panel/rooms/PanelRooms.svelte",
+        "hash": "15768550155273238832"
+      },
+      {
+        "file": "src/lib/main/panel/rooms/RoomEntry.svelte",
+        "hash": "10561372795910103488"
+      },
+      {
+        "file": "src/lib/main/settings.ts",
+        "hash": "14594366744087567322"
+      },
+      {
+        "file": "src/lib/main/settings/CheckboxField.svelte",
+        "hash": "14651999664316125048"
+      },
+      {
+        "file": "src/lib/main/settings/ComboboxField.svelte",
+        "hash": "8826041293043785886"
+      },
+      {
+        "file": "src/lib/main/settings/ScreenSettings.svelte",
+        "hash": "1550810234192906600"
+      },
+      {
+        "file": "src/lib/main/settings/about/About.svelte",
+        "hash": "18253038883387410098"
+      },
+      {
+        "file": "src/lib/main/settings/about/Contributors.svelte",
+        "hash": "5351928609639477515"
+      },
+      {
+        "file": "src/lib/main/settings/about/Licenses.svelte",
+        "hash": "7869836403177296312"
+      },
+      {
+        "file": "src/lib/main/settings/about/Links.svelte",
+        "hash": "275503362067475645"
+      },
+      {
+        "file": "src/lib/main/settings/about/Version.svelte",
+        "hash": "7969519245166680912"
+      },
+      {
+        "file": "src/lib/main/setup/ChannelEntry.svelte",
+        "hash": "14753095386783849686"
+      },
+      {
+        "file": "src/lib/main/setup/ScreenInstalling.svelte",
+        "hash": "4346126299928200087"
+      },
+      {
+        "file": "src/lib/main/setup/ScreenSetup.svelte",
+        "hash": "18079532305483614903"
+      },
+      {
+        "file": "src/lib/utils/browser-helper.ts",
+        "hash": "14822552868391624179"
+      },
+      {
+        "file": "src/lib/utils/callback-helper.ts",
+        "hash": "17447968078763221629"
+      },
+      {
+        "file": "src/lib/utils/class-helper.ts",
+        "hash": "16368305302284175120"
+      },
+      {
+        "file": "src/lib/utils/clipboard-helper.ts",
+        "hash": "12231694247617564807"
+      },
+      {
+        "file": "src/lib/utils/device-helper.ts",
+        "hash": "1122739407047124742"
+      },
+      {
+        "file": "src/lib/utils/drag-helper.ts",
+        "hash": "4701283615691514197"
+      },
+      {
+        "file": "src/lib/utils/location.ts",
+        "hash": "10097085642747175294"
+      },
+      {
+        "file": "src/lib/utils/tauri.ts",
+        "hash": "6283424108234787516"
+      },
+      {
+        "file": "src/routes/+layout.svelte",
+        "hash": "11496865872148771874"
+      },
+      {
+        "file": "src/routes/+layout.ts",
+        "hash": "733105382030209824"
+      },
+      {
+        "file": "src/routes/+page.svelte",
+        "hash": "12022292426333354517"
+      },
+      {
+        "file": "src/routes/+page.ts",
+        "hash": "14652161136502518409"
+      },
+      {
+        "file": "src/routes/remote/+page.svelte",
+        "hash": "10346243887239889209"
+      },
+      {
+        "file": "src/routes/remote/styles.scss",
+        "hash": "5286475244652437585"
+      },
+      {
+        "file": "src/routes/styles.scss",
+        "hash": "16405061341527712111"
+      },
+      {
+        "file": "src/vite-env.d.ts",
+        "hash": "864982458534215445"
+      },
+      {
+        "file": "static/favicon.png",
+        "hash": "11504680974745960892"
+      },
+      {
+        "file": "static/img/assets/comment-thumbnail.png",
+        "hash": "15681732083544679370"
+      },
+      {
+        "file": "static/img/assets/youtube-reaction-thumbnail.png",
+        "hash": "8400107367679597470"
+      },
+      {
+        "file": "static/img/comment.svg",
+        "hash": "16281032670259927728"
+      },
+      {
+        "file": "static/img/user.png",
+        "hash": "1311760796848860497"
+      },
+      {
+        "file": "svelte.config.js",
+        "hash": "13975179201206991678"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "17613825085805831447"
+      },
+      {
+        "file": "vite.config.ts",
+        "hash": "13201832637735839529"
+      }
+    ]
+  }
+}
