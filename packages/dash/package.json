@@ -33,6 +33,7 @@
         "@fontsource/noto-sans-jp": "^5.0.18",
         "@omuchatjs/chat": "workspace:*",
         "@omuchatjs/omu": "workspace:*",
+        "@omuchatjs/ui": "workspace:*",
         "@sveltejs/adapter-static": "^3.0.1",
         "@sveltejs/kit": "^2.5.4",
         "@sveltejs/vite-plugin-svelte": "^3.0.2",

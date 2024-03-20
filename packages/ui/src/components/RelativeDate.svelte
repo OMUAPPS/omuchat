@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { t } from '$lib/i18n/i18n-context.js';
-
+    import { translate } from '../stores.js';
     export let date: Date | undefined;
 
     let formattedDate: string = '';
@@ -35,14 +34,14 @@
         const diff = now.getTime() - date.getTime();
 
         if (diff < 0) {
-            formattedDate = $t('date.in_the_future');
+            formattedDate = $translate('date.in_the_future');
         }
 
         for (let i = 0; i < timeUnits.length; i++) {
             const unit = timeUnits[i];
             const diffValue = Math.floor(diff / unit.value);
             if (diffValue > 0) {
-                formattedDate = $t(unit.label, {
+                formattedDate = $translate(unit.label, {
                     time: diffValue,
                 });
                 delay(unit.value - (diff % timeUnits[i].value));
@@ -51,7 +50,7 @@
         }
 
         if (!formattedDate) {
-            formattedDate = $t('date.just_now');
+            formattedDate = $translate('date.just_now');
             delay(1000 - (diff % 1000));
         }
     }

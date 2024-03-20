@@ -1,6 +1,6 @@
 {
     "type": "module",
-    "name": "@omuchatjs/omu",
+    "name": "@omuchatjs/i18n",
     "version": "0.1.3",
     "repository": "https://github.com/OMUCHAT/omuchat/",
     "publishConfig": {
