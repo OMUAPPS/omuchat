@@ -14,20 +14,18 @@ export interface AppJson {
 }
 
 export class App implements Keyable, Model<AppJson> {
-    readonly identifer: Identifier;
-    readonly name: string;
-    readonly group: string;
-    version?: string;
-    description?: string;
-    authors?: string[];
-    site_url?: string;
-    repository_url?: string;
-    license?: string;
-    image_url?: string;
+    public readonly identifier: Identifier;
+    public readonly name: string;
+    public readonly group: string;
+    public version?: string;
+    public description?: string;
+    public authors?: string[];
+    public site_url?: string;
+    public repository_url?: string;
+    public license?: string;
+    public image_url?: string;
 
-    constructor(options: {
-        name: string;
-        group: string;
+    constructor(identifier: Identifier, options: {
         version?: string;
         description?: string;
         authors?: string[];
@@ -36,9 +34,9 @@ export class App implements Keyable, Model<AppJson> {
         license?: string;
         image_url?: string;
     }) {
-        this.identifer = new Identifier(options.group, options.name);
-        this.name = options.name;
-        this.group = options.group;
+        this.identifier = identifier;
+        this.name = identifier.path.join('/');
+        this.group = identifier.namespace;
         this.version = options.version;
         this.description = options.description;
         this.authors = options.authors;
@@ -48,43 +46,13 @@ export class App implements Keyable, Model<AppJson> {
         this.image_url = options.image_url;
     }
 
-    static fromIdentifier(
-        identifier: Identifier,
-        options: {
-            version?: string;
-            description?: string;
-            authors?: string[];
-            site_url?: string;
-            repository_url?: string;
-            license?: string;
-            image_url?: string;
-        },
-    ): App {
-        if (identifier.path.length !== 1) {
-            throw new Error(`Invalid identifier path length: ${identifier.key()}`);
-        }
-        return new App({
-            name: identifier.name,
-            group: identifier.namespace,
-            version: options.version,
-            description: options.description,
-            authors: options.authors,
-            site_url: options.site_url,
-            repository_url: options.repository_url,
-            license: options.license,
-            image_url: options.image_url,
-        });
-    }
-
     key(): string {
         return Identifier.format(this.group, this.name);
     }
 
     static fromJson(info: AppJson): App {
         const identifier = Identifier.fromKey(info.identifier);
-        return new App({
-            name: identifier.name,
-            group: identifier.namespace,
+        return new App(identifier, {
             version: info.version,
             description: info.description,
             authors: info.authors,

@@ -44,7 +44,7 @@ export class MessageExtension implements Extension {
     }
 
     create<T>(name: string): Message<T> {
-        const identifier = this.client.app.identifer.join(name);
+        const identifier = this.client.app.identifier.join(name);
         if (this.messageIdentifiers.has(identifier.key())) {
             throw new Error(`Message for key ${identifier.key()} already created`);
         }
