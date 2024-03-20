@@ -13,14 +13,32 @@
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "paths": {
-            "$lib": ["./src/lib"],
-            "$lib/*": ["./src/lib/*"],
+            "$lib": [
+                "./src/lib"
+            ],
+            "$lib/*": [
+                "./src/lib/*"
+            ],
         },
-        "rootDirs": ["..", "./types"],
-        "lib": ["es2022", "dom"],
+        "baseUrl": "./src",
+        "rootDirs": [
+            "..",
+            "./types"
+        ],
+        "lib": [
+            "es2022",
+            "dom"
+        ],
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-    "exclude": ["node_modules"],
+    "include": [
+        "**/*.ts",
+        "**/*.svelte",
+    ],
+    "exclude": [
+        "node_modules",
+        "packages",
+        ".eslint.cjs",
+    ],
     // Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
     //
     // If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
