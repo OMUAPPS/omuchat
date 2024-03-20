@@ -20,7 +20,6 @@
                 "./src/lib/*"
             ],
         },
-        "baseUrl": "./src",
         "rootDirs": [
             "..",
             "./types"
