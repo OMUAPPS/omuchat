@@ -41,7 +41,7 @@
         "hours_ago": "{time} 時間前",
         "minutes_ago": "{time} 分前",
         "seconds_ago": "{time} 秒前",
-        "future": "未来"
+        "in_the_future": "未来"
     },
     "status": {
         "connecting": "接続中...",
