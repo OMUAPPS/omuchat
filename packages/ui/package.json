@@ -1,0 +1,38 @@
+{
+    "type": "module",
+    "name": "@omuchatjs/ui",
+    "private": true,
+    "version": "1.0.0",
+    "exports": {
+        ".": {
+            "import": "./built/esm/index.js",
+            "types": "./built/dts/index.d.ts",
+            "svelte": "./built/esm/index.js"
+        },
+        "./*": {
+            "import": "./built/esm/*",
+            "types": "./built/dts/*",
+            "svelte": "./built/esm/*"
+        }
+    },
+    "scripts": {
+        "prepare": "npm run build",
+        "build:esm": "tsc --outDir built/esm",
+        "build:dts": "tsc --outDir built/dts --declaration true --emitDeclarationOnly true --declarationMap true",
+        "build:svelte": "svelte-strip strip src/ built/esm/",
+        "build:svelte-dts": "svelte-check --tsconfig ./tsconfig.svelte.json --tsconfig ./tsconfig.svelte.dts.json",
+        "dev": "npm run watch",
+        "build": "npm run build:esm && npm run build:dts && npm run build:svelte",
+        "lint": "eslint . --ext .js,.ts",
+        "fix": "eslint . --ext .js,.ts --fix"
+    },
+    "devDependencies": {
+        "@omuchatjs/i18n": "workspace:*",
+        "@sveltejs/kit": "^2.5.4",
+        "svelte-check": "^3.6.2",
+        "svelte-strip": "^3.1.1",
+        "svelte": "^4.2.12",
+        "vite": "^5.1.6",
+        "typescript": "^5.3.3"
+    }
+}

@@ -1,0 +1,96 @@
+@import url('@tabler/icons-webfont/tabler-icons.scss');
+@import url('@fontsource/noto-sans-jp/400.css');
+@import url('@fontsource/noto-sans-jp/700.css');
+@import url('@fontsource/noto-sans-jp/900.css');
+
+h1,
+h2,
+p {
+    font-weight: 400;
+}
+
+p {
+    line-height: 1.5;
+}
+
+h1 {
+    font-size: 2rem;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1rem;
+}
+
+pre {
+    padding: 0.5em;
+    overflow-x: auto;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 16px;
+    color: var(--color-text);
+    background-color: rgb(255 255 255 / 45%);
+    box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
+}
+
+.text-column {
+    display: flex;
+    flex: 0.6;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 48rem;
+    margin: 0 auto;
+}
+
+input,
+button {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+button:focus:not(:focus-visible) {
+    outline: none;
+}
+
+@media (width >=720px) {
+    h1 {
+        font-size: 2.4rem;
+    }
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+a {
+    color: var(--color-1);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    font-weight: 400;
+    color: var(--color-text);
+    background-attachment: fixed;
+    background-size: 100vw 100vh;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+    user-select: none;
+}

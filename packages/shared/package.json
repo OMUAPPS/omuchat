@@ -3,7 +3,6 @@
     "name": "@omuchatjs/shared",
     "private": true,
     "version": "1.0.0",
-    "main": ".eslintrc.cjs",
     "files": [
         "tsconfig.json",
         ".eslintrc.cjs"
