@@ -14,6 +14,7 @@
     import { dateTimeFormats } from '$lib/const.js';
     import { applyOpacity, style } from '$lib/utils/class-helper.js';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
+    import RelativeDate from '../../../common/RelativeDate.svelte';
 
     export let entry: models.Message;
     export let selected: boolean = false;
@@ -88,7 +89,7 @@
                             <Tooltip>
                                 {$dateTimeFormats.full.format(entry.createdAt)}
                             </Tooltip>
-                            {$dateTimeFormats.time.format(entry.createdAt)}
+                            <RelativeDate date={entry.createdAt} />
                         </span>
                     {/if}
                 </FlexRowWrapper>
@@ -151,7 +152,7 @@
                             <Tooltip>
                                 {$dateTimeFormats.full.format(entry.createdAt)}
                             </Tooltip>
-                            {$dateTimeFormats.time.format(entry.createdAt)}
+                            <RelativeDate date={entry.createdAt} />
                         </span>
                     {/if}
                 </FlexRowWrapper>
