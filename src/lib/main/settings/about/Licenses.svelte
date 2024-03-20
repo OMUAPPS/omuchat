@@ -62,6 +62,10 @@
         background: none;
         border: none;
 
+        .body {
+            padding-left: 10px;
+        }
+
         &.selected,
         &:hover {
             .body {
@@ -75,14 +79,5 @@
         margin-top: 10px;
         font-size: 10px;
         white-space: pre-wrap;
-    }
-
-    .body {
-        padding-left: 10px;
-    }
-
-    h3 {
-        font-size: 20px;
-        color: var(--color-1);
     }
 </style>

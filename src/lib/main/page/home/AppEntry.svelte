@@ -61,22 +61,22 @@
 
     .right {
         position: absolute;
-        right: 5px;
         top: 5px;
+        right: 5px;
         bottom: 5px;
         display: flex;
         flex-direction: column;
+        gap: 5px;
+        align-items: flex-end;
         justify-content: center;
+        padding-right: 20px;
+        text-wrap: nowrap;
+        visibility: hidden;
         background: linear-gradient(
             90deg,
             color-mix(in srgb, var(--color-bg-1) 50%, transparent 0%),
             var(--color-bg-1)
         );
-        gap: 5px;
-        align-items: flex-end;
-        padding-right: 20px;
-        visibility: hidden;
-        text-wrap: nowrap;
     }
 
     .selected {

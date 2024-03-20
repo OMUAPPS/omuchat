@@ -1,8 +1,9 @@
 import type { Client } from '../../client/index.js';
-import { Identifier } from '../../identifier.js';
+import type { Identifier } from '../../identifier.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 import { PacketType } from '../../network/packet/index.js';
-import { Serializable, Serializer } from '../../serializer.js';
+import type { Serializable } from '../../serializer.js';
+import { Serializer } from '../../serializer.js';
 import { EndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType, type Extension } from '../extension.js';
 
@@ -104,7 +105,7 @@ const DATA_SERIALIZER = new Serializer<RegistryData, Uint8Array>(
         const value = reader.readByteArray();
         return { key, existing, value };
     },
-)
+);
 
 export const RegistryExtensionType = new ExtensionType(
     'registry',

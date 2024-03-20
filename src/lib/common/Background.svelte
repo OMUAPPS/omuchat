@@ -45,9 +45,9 @@
     .background {
         position: absolute;
         inset: 0;
+        object-fit: contain;
         background: url('/img/comment.svg') repeat;
         background-size: 200px 100px;
-        object-fit: contain;
         opacity: 0.5;
 
         &.a {

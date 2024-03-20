@@ -303,11 +303,11 @@
         font-size: 12px;
         font-weight: 600;
         color: var(--color-bg-1);
+        text-wrap: nowrap;
         background: var(--color-1);
         border: none;
         border-radius: 50px;
         outline: none;
-        text-wrap: nowrap;
         transform: translateX(50%);
 
         i {

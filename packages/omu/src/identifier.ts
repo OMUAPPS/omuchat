@@ -49,7 +49,7 @@ export class Identifier implements Keyable {
         const namespace = key.slice(0, separator);
         const path = key.slice(separator + 1);
         if (!namespace || !path) {
-            throw new Error(`Invalid key: Namespace and path cannot be empty`);
+            throw new Error('Invalid key: Namespace and path cannot be empty');
         }
         return new Identifier(namespace, ...path.split('/'));
     }

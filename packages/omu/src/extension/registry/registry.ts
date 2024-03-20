@@ -1,5 +1,6 @@
-import { Identifier } from "../../identifier.js";
-import { Serializable, Serializer } from "../../serializer.js";
+import type { Identifier } from '../../identifier.js';
+import type { Serializable } from '../../serializer.js';
+import { Serializer } from '../../serializer.js';
 
 export class RegistryType<T> {
     constructor(
@@ -38,7 +39,6 @@ export class RegistryType<T> {
         );
     }
 }
-
 
 export interface Registry<T> {
     get(): Promise<T>;

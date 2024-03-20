@@ -12,7 +12,7 @@
     import { screenContext } from '$lib/common/screen/screen.js';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
 
-    export let filter: (key: string, room: models.Room) => boolean = (_, room) => true;
+    export let filter: (key: string, room: models.Room) => boolean = () => true;
     export let sort: (a: models.Room, b: models.Room) => number = (a, b) => {
         if (!a.createdAt || !b.createdAt) return 0;
         return a.createdAt.getTime() - b.createdAt.getTime();

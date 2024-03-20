@@ -169,9 +169,10 @@
 
         &::-webkit-scrollbar-thumb {
             background: color-mix(in srgb, var(--color-1) 10%, transparent 0%);
-            border-radius: 1px;
             border: 1px solid var(--color-bg-2);
+            border-radius: 1px;
         }
+
         &:hover {
             &::-webkit-scrollbar-thumb {
                 background: var(--color-1);

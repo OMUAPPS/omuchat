@@ -33,7 +33,6 @@ export class Client extends omu.OmuClient {
         this.chat = new Chat(this);
     }
 
-
     on<T extends unknown[]>(event: EventKey<T>, handler: EventHandler<T>): void {
         this.eventRegistry.on(event, handler);
     }

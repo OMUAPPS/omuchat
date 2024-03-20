@@ -1,9 +1,10 @@
+import type { Client } from '@omuchatjs/omu';
 import { EndpointType } from '@omuchatjs/omu/extension/endpoint/endpoint.js';
-import { Table, TableType } from '@omuchatjs/omu/extension/table/table.js';
+import type { Table } from '@omuchatjs/omu/extension/table/table.js';
+import { TableType } from '@omuchatjs/omu/extension/table/table.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import { Serializer } from '@omuchatjs/omu/serializer.js';
 
-import { Client } from '@omuchatjs/omu';
 import { Author, Channel, Message, Provider, Room } from './models/index.js';
 
 export const IDENTIFIER = new Identifier('cc.omuchat', 'chat');

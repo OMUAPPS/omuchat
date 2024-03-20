@@ -6,9 +6,10 @@
     import { tauriWindow } from '$lib/utils/tauri.js';
     import { onMount } from 'svelte';
 
+    import type { AppMetadata } from '$lib/common/omuchat/app-metadata.js';
     import { t } from '$lib/i18n/i18n-context.js';
 
-    export let filter: (key: string, app: models.App) => boolean = () => true;
+    export let filter: (key: string, app: AppMetadata) => boolean = () => true;
     const { dashboard } = getClient();
 
     onMount(() => {

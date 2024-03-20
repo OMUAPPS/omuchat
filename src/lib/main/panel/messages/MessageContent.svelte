@@ -37,8 +37,8 @@
 <style>
     img {
         max-height: 30px;
-        object-fit: contain;
         vertical-align: middle;
+        object-fit: contain;
     }
 
     code {
@@ -46,11 +46,11 @@
         flex-direction: row wrap;
         gap: 5px;
         align-items: center;
-        background-color: var(--color-bg-1);
-        color: var(--color-1);
         padding: 5px 10px;
         margin: 5px 0;
         font-weight: bold;
+        color: var(--color-1);
+        background-color: var(--color-bg-1);
     }
 
     .preview {

@@ -55,12 +55,12 @@
 
 <style lang="scss">
     h4 {
-        margin: 0;
         width: 100%;
+        margin: 0;
 
         &:hover {
-            border-left: 2px solid var(--color-1);
             padding-left: 10px;
+            border-left: 2px solid var(--color-1);
         }
     }
 </style>

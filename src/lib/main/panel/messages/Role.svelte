@@ -71,8 +71,8 @@
 
     .img {
         height: 100%;
-        object-fit: contain;
         vertical-align: middle;
+        object-fit: contain;
     }
 
     .preview {
