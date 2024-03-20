@@ -4,6 +4,7 @@ build
 
 # vite
 vite.config.ts.*.mjs
+.nx/*
 
 # tauri
 src-tauri/target
