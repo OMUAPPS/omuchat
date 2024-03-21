@@ -7,4 +7,4 @@ export { default as RelativeDate } from './RelativeDate.svelte';
 export { default as Tooltip } from './Tooltip.svelte';
 export { default as VirtualList } from './VirtualList.svelte';
 export { translate } from './stores.js';
-
+export type { TypedComponent } from './typed-component.js';

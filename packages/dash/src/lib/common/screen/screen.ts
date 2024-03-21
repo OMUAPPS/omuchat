@@ -1,6 +1,6 @@
+import type { TypedComponent } from '@omuchatjs/ui';
 import { get, writable } from 'svelte/store';
 
-import type { TypedComponent } from '$lib/common/typed-component.js';
 
 
 export type ScreenHandle = {
