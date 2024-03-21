@@ -1,4 +1,4 @@
-import type { TypedComponent } from '$lib/common/component/proped-component.js';
+import type { TypedComponent } from '$lib/common/typed-component.js';
 import { getContext, setContext } from 'svelte';
 import type { Readable } from 'svelte/motion';
 import type { Writable } from 'svelte/store';
