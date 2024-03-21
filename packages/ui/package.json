@@ -31,6 +31,8 @@
 		"svelte": "^4.0.0"
 	},
 	"devDependencies": {
+		"@omuchatjs/chat": "workspace:*",
+		"@omuchatjs/omu": "workspace:*",
 		"@chromatic-com/storybook": "1.2.25",
 		"@storybook/addon-essentials": "^8.0.2",
 		"@storybook/addon-interactions": "^8.0.2",

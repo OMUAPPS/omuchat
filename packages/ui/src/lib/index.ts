@@ -4,7 +4,9 @@ export { default as FlexRowWrapper } from './FlexRowWrapper.svelte';
 export { default as JustifyBaselineWrapper } from './JustifyBaselineWrapper.svelte';
 export { default as LinkableText } from './LinkableText.svelte';
 export { default as RelativeDate } from './RelativeDate.svelte';
+export { default as TableList } from './TableList.svelte';
 export { default as Tooltip } from './Tooltip.svelte';
 export { default as VirtualList } from './VirtualList.svelte';
-export { translate } from './stores.js';
+export { client, translate } from './stores.js';
 export type { TypedComponent } from './typed-component.js';
+
