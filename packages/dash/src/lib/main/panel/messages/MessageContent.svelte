@@ -1,7 +1,6 @@
 <script lang="ts">
-    import LinkableText from '$lib/common/LinkableText.svelte';
     import { content } from '@omuchatjs/chat/models/index.js';
-    import { Tooltip } from '@omuchatjs/ui';
+    import { LinkableText, Tooltip } from '@omuchatjs/ui';
 
     export let component: content.Component;
 </script>

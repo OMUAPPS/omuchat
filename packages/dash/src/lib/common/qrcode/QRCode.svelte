@@ -2,7 +2,7 @@
     import QrCode from 'qrious';
     import { onMount } from 'svelte';
 
-    const QRcode = new QrCode();
+    const qrCode = new QrCode();
 
     export let errorCorrection: string = 'L';
     export let background: string = 'transparent';
@@ -16,7 +16,7 @@
     let image = '';
 
     function generateQrCode() {
-        QRcode.set({
+        qrCode.set({
             background,
             foreground: color,
             level: errorCorrection,
@@ -25,7 +25,7 @@
             value,
         });
 
-        image = QRcode.toDataURL('image/png');
+        image = qrCode.toDataURL('image/png');
     }
 
     export function getImage() {

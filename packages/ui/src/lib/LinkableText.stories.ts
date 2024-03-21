@@ -1,24 +1,22 @@
 import type { Meta, StoryObj } from "@storybook/svelte";
-import TooltipView from "./TooltipView.svelte";
+import LinkableText from "./LinkableText.svelte";
 
 // More on how to set up stories at: https://storybook.js.org/docs/svelte/writing-stories/introduction
 const meta = {
-    title: "UI/Tooltip",
-    component: TooltipView,
+    title: "UI/LinkableText",
+    component: LinkableText,
     tags: ["autodocs"],
     argTypes: {
         text: { control: "text" },
-        image: { control: "text" },
     },
-} satisfies Meta<TooltipView>;
+} satisfies Meta<LinkableText>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/svelte/writing-stories/args
-export const Example: Story = {
+export const LinkableTextStory: Story = {
     args: {
-        text: "Hello, World!",
-        image: "https://via.placeholder.com/150",
+        text: `This is a linkable text. It can contain links like this one: https://example.com or this one: https://example.com`
     },
 };

@@ -1,16 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/svelte";
-import TooltipView from "./TooltipView.svelte";
+import VirtualListView from "./VirtualListView.svelte";
 
 // More on how to set up stories at: https://storybook.js.org/docs/svelte/writing-stories/introduction
 const meta = {
-    title: "UI/Tooltip",
-    component: TooltipView,
+    title: "UI/VirtualList",
+    component: VirtualListView,
     tags: ["autodocs"],
     argTypes: {
-        text: { control: "text" },
-        image: { control: "text" },
+        length: { control: "number" },
     },
-} satisfies Meta<TooltipView>;
+} satisfies Meta<VirtualListView>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -18,7 +17,6 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/svelte/writing-stories/args
 export const Example: Story = {
     args: {
-        text: "Hello, World!",
-        image: "https://via.placeholder.com/150",
+        length: 100,
     },
 };

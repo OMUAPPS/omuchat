@@ -1,13 +1,19 @@
 <script lang="ts">
-	import Tooltip from './Tooltip.svelte.js';
+	import Tooltip from './Tooltip.svelte';
 
 	export let text: string;
 	export let image: string;
 </script>
 
-<Tooltip>
-	{text}
-</Tooltip>
-<Tooltip>
-	<img src={image} alt={text} />
-</Tooltip>
+<button>
+    <Tooltip>
+        {text}
+    </Tooltip>
+    Text
+</button>
+<button>
+    <Tooltip>
+        <img src={image} alt={text} />
+    </Tooltip>
+    Image
+</button>

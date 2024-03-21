@@ -16,7 +16,7 @@
 		{ label: 'date.seconds_ago', value: 1000 }
 	];
 
-	function delay(ms: number) {
+	function sleep(ms: number) {
 		window.clearTimeout(timer);
 		timer = window.setTimeout(() => {
 			timer = 0;
@@ -34,6 +34,8 @@
 
 		if (diff < 0) {
 			formattedDate = $translate('date.in_the_future');
+			sleep(-1 * diff);
+			return;
 		}
 
 		for (let i = 0; i < timeUnits.length; i++) {
@@ -43,14 +45,14 @@
 				formattedDate = $translate(unit.label, {
 					time: diffValue
 				});
-				delay(unit.value - (diff % timeUnits[i].value));
+				sleep(unit.value - (diff % timeUnits[i].value));
 				break;
 			}
 		}
 
 		if (!formattedDate) {
 			formattedDate = $translate('date.just_now');
-			delay(1000 - (diff % 1000));
+			sleep(1000 - (diff % 1000));
 		}
 	}
 
