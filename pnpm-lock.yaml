@@ -403,6 +403,12 @@ importers:
 
   packages/ui:
     dependencies:
+      '@omuchatjs/chat':
+        specifier: workspace:*
+        version: link:../chat
+      '@omuchatjs/omu':
+        specifier: workspace:*
+        version: link:../omu
       '@sveltejs/kit':
         specifier: ^2.5.4
         version: 2.5.4(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.2)
@@ -410,12 +416,6 @@ importers:
       '@chromatic-com/storybook':
         specifier: 1.2.25
         version: 1.2.25(react@18.2.0)
-      '@omuchatjs/chat':
-        specifier: workspace:*
-        version: link:../chat
-      '@omuchatjs/omu':
-        specifier: workspace:*
-        version: link:../omu
       '@storybook/addon-essentials':
         specifier: ^8.0.2
         version: 8.0.2(@types/react@18.2.67)(react-dom@18.2.0)(react@18.2.0)
@@ -11298,7 +11298,7 @@ packages:
     dependencies:
       lilconfig: 2.1.0
       postcss: 8.4.36
-      ts-node: 10.0.0(@types/node@20.11.16)(typescript@5.3.3)
+      ts-node: 10.0.0(@types/node@20.11.29)(typescript@5.4.2)
       yaml: 1.10.2
     dev: true
 
