@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ButtonMini from './ButtonMini.svelte';
-	import Theme from './Theme.svelte.js';
-	import Tooltip from './Tooltip.svelte.js';
+	import Theme from './Theme.svelte';
+	import Tooltip from './Tooltip.svelte';
 
 	export let icon: string;
 	export let text: string;
