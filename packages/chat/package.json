@@ -27,6 +27,7 @@
         "fix": "eslint . --ext .js,.ts --fix"
     },
     "devDependencies": {
+        "@omuchatjs/omu": "workspace:*",
         "@types/node": "^20.11.2",
         "@types/websocket": "1.0.2",
         "@types/ws": "7.4.6",
