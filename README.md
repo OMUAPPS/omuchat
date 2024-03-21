@@ -2,8 +2,8 @@
 <p align="center">
     <a href="https://omuchat.cc">
         <picture>
-            <source srcset="https://raw.githubusercontent.com/OMUCHAT/dashboard/master/src/lib/images/title.svg">
-            <img width="200" alt="OMUCHAT" src="https://raw.githubusercontent.com/OMUCHAT/dashboard/master/src/lib/images/title.svg">
+            <source srcset="./assets/title.svg">
+            <img width="200" alt="OMUCHAT" src="./assets/title.svg">
         </picture>
     </a>
 </p>
