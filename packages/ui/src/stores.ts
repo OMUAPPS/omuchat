@@ -1,4 +1,4 @@
-import { Writable, writable } from "svelte/store";
+import { writable, type Writable } from "svelte/store";
 
 type TranslateFunction = (key: string, options?: Record<string, unknown>) => string;
 
