@@ -406,6 +406,9 @@ importers:
       '@omuchatjs/chat':
         specifier: workspace:*
         version: link:../chat
+      '@omuchatjs/i18n':
+        specifier: workspace:*
+        version: link:../i18n
       '@omuchatjs/omu':
         specifier: workspace:*
         version: link:../omu
@@ -485,6 +488,12 @@ importers:
       publint:
         specifier: ^0.1.16
         version: 0.1.16
+      react:
+        specifier: 18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: 18.2.0
+        version: 18.2.0(react@18.2.0)
       storybook:
         specifier: ^8.0.2
         version: 8.0.2(react-dom@18.2.0)(react@18.2.0)
@@ -11298,7 +11307,7 @@ packages:
     dependencies:
       lilconfig: 2.1.0
       postcss: 8.4.36
-      ts-node: 10.0.0(@types/node@20.11.29)(typescript@5.4.2)
+      ts-node: 10.0.0(@types/node@20.11.16)(typescript@5.3.3)
       yaml: 1.10.2
     dev: true
 

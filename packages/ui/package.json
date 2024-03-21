@@ -39,7 +39,8 @@
 	},
 	"dependencies": {
 		"@omuchatjs/chat": "workspace:*",
-		"@omuchatjs/omu": "workspace:*"
+		"@omuchatjs/omu": "workspace:*",
+		"@omuchatjs/i18n": "workspace:*"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "1.2.25",
@@ -68,6 +69,8 @@
 		"publint": "^0.1.16",
 		"storybook": "^8.0.2",
 		"svelte": "^4.2.12",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
 		"svelte-check": "^3.6.8",
 		"tslib": "^2.6.2",
 		"typescript": "^5.4.3",

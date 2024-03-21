@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import { translate } from './stores.js';
+
 	export let date: Date | undefined;
 
 	let formattedDate: string = '';
