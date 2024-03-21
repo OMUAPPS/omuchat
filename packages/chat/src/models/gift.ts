@@ -15,12 +15,18 @@ export class Gift implements Model<GiftJson> {
     isPaid: boolean;
     imageUrl?: string;
 
-    constructor(options: GiftJson) {
+    constructor(options: {
+        id: string;
+        name: string;
+        amount: number;
+        isPaid: boolean;
+        imageUrl?: string;
+    }) {
         this.id = options.id;
         this.name = options.name;
         this.amount = options.amount;
-        this.imageUrl = options.image_url;
-        this.isPaid = options.is_paid;
+        this.isPaid = options.isPaid;
+        this.imageUrl = options.imageUrl;
     }
 
     static fromJson(options: GiftJson): Gift {
@@ -28,8 +34,8 @@ export class Gift implements Model<GiftJson> {
             id: options.id,
             name: options.name,
             amount: options.amount,
-            is_paid: options.is_paid,
-            image_url: options.image_url,
+            isPaid: options.is_paid,
+            imageUrl: options.image_url,
         });
     }
 

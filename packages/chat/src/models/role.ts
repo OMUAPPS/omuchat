@@ -17,13 +17,31 @@ export class Role implements Model<RoleJson> {
     iconUrl?: string;
     color?: string;
 
-    constructor(info: RoleJson) {
-        this.id = info.id;
-        this.name = info.name;
-        this.isOwner = info.is_owner;
-        this.isModerator = info.is_moderator;
-        this.iconUrl = info.icon_url;
-        this.color = info.color;
+    constructor(options: {
+        id?: string;
+        name: string;
+        isOwner: boolean;
+        isModerator: boolean;
+        iconUrl?: string;
+        color?: string;
+    }) {
+        this.id = options.id;
+        this.name = options.name;
+        this.isOwner = options.isOwner;
+        this.isModerator = options.isModerator;
+        this.iconUrl = options.iconUrl;
+        this.color = options.color;
+    }
+
+    static fromJson(json: RoleJson): Role {
+        return new Role({
+            id: json.id,
+            name: json.name,
+            isOwner: json.is_owner,
+            isModerator: json.is_moderator,
+            iconUrl: json.icon_url,
+            color: json.color,
+        });
     }
 
     toJson(): RoleJson {

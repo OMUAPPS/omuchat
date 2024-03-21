@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/svelte";
 import RelativeDate from "./RelativeDate.svelte";
 
 const meta = {
-    title: "UI/Date",
+    title: "Components/Date",
     component: RelativeDate,
     tags: ["autodocs"],
     argTypes: {

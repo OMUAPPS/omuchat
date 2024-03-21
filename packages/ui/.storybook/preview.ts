@@ -1,6 +1,5 @@
 import type { Preview } from '@storybook/svelte';
-import ThemeDecorator from '../src/lib/decorators/ThemeDecorator.svelte';
-import TranslateDecorator from '../src/lib/decorators/TranslateDecorator.svelte';
+import { decorators } from '../src/lib/decorators/index.js';
 
 const preview: Preview = {
     parameters: {
@@ -11,10 +10,7 @@ const preview: Preview = {
             }
         },
     },
-    decorators: [
-        () => ThemeDecorator as any,
-        () => TranslateDecorator as any,
-    ]
+    decorators
 };
 
 

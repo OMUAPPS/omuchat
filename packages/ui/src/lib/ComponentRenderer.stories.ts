@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/svelte";
 import ComponentRenderer from "./ComponentRenderer.svelte";
 
 const meta = {
-    title: "UI/ComponentRenderer",
+    title: "Components/ComponentRenderer",
     component: ComponentRenderer,
     tags: ["autodocs"],
     argTypes: {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/svelte";
 import ButtonMiniView from "./ButtonMiniView.svelte";
 
 const meta = {
-    title: "UI/ButtonMini",
+    title: "Components/ButtonMini",
     component: ButtonMiniView,
     tags: ["autodocs"],
     argTypes: {

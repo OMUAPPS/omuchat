@@ -44,7 +44,7 @@ export class Author implements Keyable, Model<AuthorJson> {
             name: info.name,
             screen_id: info.screen_id,
             avatar_url: info.avatar_url,
-            roles: info.roles?.map((role) => new Role(role)),
+            roles: info.roles?.map((role) => Role.fromJson(role)),
         });
     }
 
