@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { BROWSER } from 'esm-env';
 	import { afterUpdate, onDestroy } from 'svelte';
-
 	import { style } from './utils/class-helper.js';
 
 	export let noBackground = false;
@@ -56,19 +56,24 @@
 		}
 	}
 
-	afterUpdate(() => {
-		if (!element.parentElement) {
-			throw new Error('TooltipInline must be a child of another element');
-		}
-		target = element.parentElement;
-		target.addEventListener('mouseenter', showTooltip);
-		target.addEventListener('mouseleave', hideTooltip);
-	});
+	if (BROWSER) {
+		afterUpdate(() => {
+			if (!element.parentElement) {
+				throw new Error('TooltipInline must be a child of another element');
+			}
+			target = element.parentElement;
+			if (!target.addEventListener || !target.removeEventListener) {
+				throw new Error('target must support addEventListener and removeEventListener');
+			}
+			target.addEventListener('mouseenter', showTooltip);
+			target.addEventListener('mouseleave', hideTooltip);
+		});
 
-	onDestroy(() => {
-		target.removeEventListener('mouseenter', showTooltip);
-		target.removeEventListener('mouseleave', hideTooltip);
-	});
+		onDestroy(() => {
+			target.removeEventListener('mouseenter', showTooltip);
+			target.removeEventListener('mouseleave', hideTooltip);
+		});
+	}
 </script>
 
 <span class="wrapper" bind:this={element}>

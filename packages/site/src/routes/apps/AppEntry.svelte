@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Tooltip from '$lib/components/Tooltip.svelte';
+    import { Tooltip } from '@omuchatjs/ui';
     import { client } from '../client.js';
     import type { AppMetadata } from './app-metadata.js';
     import { appsTable } from './apps.js';

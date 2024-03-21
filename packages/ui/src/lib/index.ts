@@ -9,6 +9,6 @@ export { default as TableList } from './TableList.svelte';
 export { default as Theme } from './Theme.svelte';
 export { default as Tooltip } from './Tooltip.svelte';
 export { default as VirtualList } from './VirtualList.svelte';
-export { client, theme, translate } from './stores.js';
+export { client, setClient, theme, translate } from './stores.js';
 export type { TypedComponent } from './typed-component.js';
 

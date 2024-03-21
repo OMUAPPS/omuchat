@@ -9,6 +9,11 @@ export const translate: Writable<TranslateFunction> = writable((key: string, opt
 
 export const client: Writable<Client> = writable();
 
+export function setClient<T extends Client>(newClient: T): T {
+    client.set(newClient);
+    return newClient;
+}
+
 type Theme = {
     [key: string]: string;
 }

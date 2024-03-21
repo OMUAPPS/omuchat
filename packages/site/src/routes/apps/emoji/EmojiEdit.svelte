@@ -1,7 +1,5 @@
 <script lang="ts">
-    import FlexColWrapper from '$lib/components/FlexColWrapper.svelte';
-    import FlexRowWrapper from '$lib/components/FlexRowWrapper.svelte';
-    import Tooltip from '$lib/components/Tooltip.svelte';
+    import { FlexColWrapper, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
     import { client } from './client.js';
     import { deleteEmoji, saveEmoji, type Emoji, type Pettern } from './emoji.js';
 

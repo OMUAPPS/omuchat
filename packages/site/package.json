@@ -22,6 +22,7 @@
         "@neoconfetti/svelte": "^2.2.1",
         "@omuchatjs/chat": "workspace:*",
         "@omuchatjs/omu": "workspace:*",
+        "@omuchatjs/ui": "workspace:*",
         "@sveltejs/adapter-cloudflare": "^4.2.0",
         "@sveltejs/kit": "2.5.4",
         "@sveltejs/vite-plugin-svelte": "^3.0.2",
