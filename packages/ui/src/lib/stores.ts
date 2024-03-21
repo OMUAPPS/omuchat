@@ -5,3 +5,5 @@ type TranslateFunction = (key: string, options?: Record<string, unknown>) => str
 export const translate: Writable<TranslateFunction> = writable((key: string, options?: Record<string, unknown>) => {
     return `(translation for ${key} not found. options: ${JSON.stringify(options)})`;
 });
+
+
