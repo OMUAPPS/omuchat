@@ -41,6 +41,9 @@ jobs:
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: pnpm i --frozen-lockfile
 
+            - name: Build
+              run: node scripts/init.mjs
+
             - name: Build storybook
               run: pnpm --filter ui build-storybook
             - name: Upload Storybook
