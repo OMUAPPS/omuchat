@@ -2,7 +2,7 @@
     import type { models } from '@omuchatjs/chat';
 
     import { getClient } from '$lib/common/omuchat/client.js';
-    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
+    import { Tooltip } from '@omuchatjs/ui';
 
     export let gift: models.Gift;
 
@@ -18,8 +18,8 @@
         </small>
     </Tooltip>
     <div class="image">
-        {#if gift.image_url}
-            <img src={client.assets.proxy(gift.image_url)} alt="gift" width="32" height="32" />
+        {#if gift.imageUrl}
+            <img src={client.assets.proxy(gift.imageUrl)} alt="gift" width="32" height="32" />
         {:else}
             {gift.name}
         {/if}

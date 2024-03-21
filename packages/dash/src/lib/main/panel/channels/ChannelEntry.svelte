@@ -8,7 +8,7 @@
     import Checkbox from '$lib/common/input/Checkbox.svelte';
     import { getClient } from '$lib/common/omuchat/client.js';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
-    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
+    import { Tooltip } from '@omuchatjs/ui';
 
     export let entry: models.Channel;
     export let selected: boolean = false;

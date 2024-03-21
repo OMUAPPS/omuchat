@@ -3,8 +3,7 @@
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
-    import { FlexColWrapper } from '@omuchatjs/ui';
-    import Tooltip from '../tooltip/Tooltip.svelte';
+    import { FlexColWrapper, Tooltip } from '@omuchatjs/ui';
 
     import { getClient } from './client.js';
 

@@ -13,7 +13,7 @@
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import Screen from '$lib/common/screen/Screen.svelte';
-    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
+    import { Tooltip } from '@omuchatjs/ui';
 
     export let screen: ScreenHandle;
     const { chat, client } = getClient();

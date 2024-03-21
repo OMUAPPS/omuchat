@@ -8,11 +8,10 @@
     import Role from './Role.svelte';
 
     import { getClient } from '$lib/common/omuchat/client.js';
-    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { dateTimeFormats } from '$lib/const.js';
     import { applyOpacity, style } from '$lib/utils/class-helper.js';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
-    import { FlexColWrapper, FlexRowWrapper, RelativeDate } from '@omuchatjs/ui';
+    import { FlexColWrapper, FlexRowWrapper, RelativeDate, Tooltip } from '@omuchatjs/ui';
 
     export let entry: models.Message;
     export let selected: boolean = false;

@@ -3,9 +3,8 @@
 
     import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import { getClient } from '$lib/common/omuchat/client.js';
-    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
-    import { FlexRowWrapper } from '@omuchatjs/ui';
+    import { FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
 
     import { t } from '$lib/i18n/i18n-context.js';
 
