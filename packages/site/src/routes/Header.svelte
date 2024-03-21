@@ -1,8 +1,8 @@
 <script>
     import { page } from '$app/stores';
-    import Tooltip from '$lib/components/Tooltip.svelte';
     import github from '$lib/images/github.svg';
     import title from '$lib/images/title.svg';
+    import { Tooltip } from '@omuchatjs/ui';
 </script>
 
 <header>

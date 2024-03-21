@@ -1,13 +1,13 @@
 <script lang="ts">
     import AppEntry from './AppEntry.svelte';
 
-    import TableList from '$lib/common/omuchat/TableList.svelte';
     import { getClient } from '$lib/common/omuchat/client.js';
     import { tauriWindow } from '$lib/utils/tauri.js';
     import { onMount } from 'svelte';
 
     import type { AppMetadata } from '$lib/common/omuchat/app-metadata.js';
     import { t } from '$lib/i18n/i18n-context.js';
+    import { TableList } from '@omuchatjs/ui';
 
     export let filter: (key: string, app: AppMetadata) => boolean = () => true;
     const { dashboard } = getClient();
@@ -23,7 +23,7 @@
 
 <div class="container">
     <TableList table={dashboard.apps} component={AppEntry} fitHeight={true} {filter} />
-    <a href="https://omuchat.cc/" target="_blank">
+    <a href={import.meta.env.DEV ? 'http://localhost:5173' : 'https://omuchat.cc/'} target="_blank">
         {$t('panels.apps.found_apps')}
         <i class="ti ti-external-link" />
     </a>

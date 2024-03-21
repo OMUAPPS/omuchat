@@ -2,8 +2,6 @@
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
-    import Tooltip from '../common/tooltip/Tooltip.svelte';
-
     import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
     import ButtonOpenSettings from './ButtonOpenSettings.svelte';
     import PageApps from './page/apps/PageApps.svelte';
@@ -21,7 +19,7 @@
     import { t } from '$lib/i18n/i18n-context.js';
     import { style } from '$lib/utils/class-helper.js';
     import { invoke, isOnTauri, listen } from '$lib/utils/tauri.js';
-    import { FlexColWrapper, FlexRowWrapper } from '@omuchatjs/ui';
+    import { FlexColWrapper, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
 
     const { client } = getClient();
 

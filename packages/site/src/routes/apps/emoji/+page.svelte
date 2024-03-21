@@ -1,6 +1,5 @@
 <script lang="ts">
-    import TableList from '$lib/components/omu/TableList.svelte';
-    import { setClient } from '$lib/components/omu/client.js';
+    import { TableList } from '@omuchatjs/ui';
     import EmojiEdit from './EmojiEdit.svelte';
     import EmojiEntry from './EmojiEntry.svelte';
     import { IDENTIFIER } from './app.js';
@@ -11,8 +10,6 @@
 
     let search: string = '';
     let uploading: number = 0;
-
-    setClient(client);
 
     async function upload(files: Array<{ key: string; buffer: Uint8Array }>) {
         uploading++;

@@ -1,9 +1,9 @@
 import { browser } from '$app/environment';
 import { App, Client } from '@omuchatjs/chat';
+import { Identifier } from '@omuchatjs/omu/identifier.js';
 
-const app = new App({
-    group: 'cc.omuchat',
-    name: 'page',
+const identifier = new Identifier('cc.omuchat', 'page');
+const app = new App(identifier, {
     version: '1.0.0',
 });
 export const client = new Client({ app });

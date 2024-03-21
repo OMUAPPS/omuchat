@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Tooltip from '$lib/components/Tooltip.svelte';
+    import { Tooltip } from '@omuchatjs/ui';
     import type { QuestionOption } from '../quiz.js';
 
     export let option: QuestionOption;

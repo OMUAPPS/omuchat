@@ -12,6 +12,15 @@
         if (selected) {
             element.focus();
         }
+
+        const timeout = transition
+            ? window.setTimeout(() => {
+                  transition = false;
+              }, 200)
+            : 0;
+        return () => {
+            window.clearTimeout(timeout);
+        };
     });
 </script>
 

@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "ui:dev",
+            "label": "dev",
             "type": "shell",
             // `dev` keeps running in the background
             // ideally you should also configure a `problemMatcher`
@@ -14,15 +14,6 @@
             "command": "pnpm",
             "args": [
                 "dev"
-            ]
-        },
-        {
-            "label": "ui:build",
-            "type": "shell",
-            // change this to your `beforeBuildCommand`:
-            "command": "pnpm",
-            "args": [
-                "build"
             ]
         }
     ]

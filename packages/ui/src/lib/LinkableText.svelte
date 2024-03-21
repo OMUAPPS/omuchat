@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
+    import { Tooltip } from '@omuchatjs/ui';
     export let text: string;
 
     interface Part {

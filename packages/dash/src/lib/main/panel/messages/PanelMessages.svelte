@@ -3,8 +3,8 @@
     import { onMount } from 'svelte';
 
     import { getClient } from '$lib/common/omuchat/client.js';
-    import TableList from '$lib/common/omuchat/TableList.svelte';
     import MessageEntry from '$lib/main/panel/messages/MessageEntry.svelte';
+    import { TableList } from '@omuchatjs/ui';
 
     const { chat } = getClient();
 

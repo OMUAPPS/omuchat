@@ -4,7 +4,7 @@
     import { t } from '$lib/i18n/i18n-context.js';
 
     import { getClient } from '$lib/common/omuchat/client.js';
-    import TableList from '$lib/common/omuchat/TableList.svelte';
+    import { TableList } from '@omuchatjs/ui';
 
     const { dashboard } = getClient();
 </script>

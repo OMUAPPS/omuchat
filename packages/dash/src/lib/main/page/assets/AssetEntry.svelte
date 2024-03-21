@@ -2,10 +2,10 @@
     import { origin } from './assets-page.js';
 
     import type { Asset } from '$lib/common/omuchat/asset.js';
-    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { t } from '$lib/i18n/i18n-context.js';
     import { DragHelper } from '$lib/utils/drag-helper.js';
     import { tauriWindow } from '$lib/utils/tauri.js';
+    import { Tooltip } from '@omuchatjs/ui';
 
     export let entry: Asset;
     let preview: HTMLDivElement;

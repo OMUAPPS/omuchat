@@ -2,8 +2,8 @@
     import type { models } from '@omuchatjs/chat';
 
     import { getClient } from '$lib/common/omuchat/client.js';
-    import Tooltip from '$lib/common/tooltip/Tooltip.svelte';
     import { applyOpacity, style } from '$lib/utils/class-helper.js';
+    import { Tooltip } from '@omuchatjs/ui';
 
     const { client } = getClient();
 
