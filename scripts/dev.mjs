@@ -1,5 +1,4 @@
 import { execa } from 'execa';
-import.meta.url;
 
 execa('pnpm', ['--filter', 'ui', 'storybook'], { stderr: process.stderr, stdout: process.stdout });
 execa('pnpm', ['--filter', 'ui', 'watch'], { stderr: process.stderr, stdout: process.stdout });

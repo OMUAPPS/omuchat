@@ -2,6 +2,7 @@
 	"name": "@omuchatjs/ui",
 	"version": "0.0.1",
 	"scripts": {
+		"prepare": "svelte-kit sync",
 		"dev": "vite dev",
 		"watch": "svelte-package --watch",
 		"build": "vite build && npm run package",

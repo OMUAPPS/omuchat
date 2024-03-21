@@ -1,5 +1,4 @@
-import { execa } from 'execa';
-import.meta.url;
+import { execaSync } from 'execa';
 
-execa('pnpm', ['--filter', 'omu', 'ts'], { stderr: process.stderr, stdout: process.stdout });
-execa('pnpm', ['--filter', 'chat', 'ts'], { stderr: process.stderr, stdout: process.stdout });
+execaSync('pnpm', ['--filter', 'omu', 'ts'], { stderr: process.stderr, stdout: process.stdout });
+execaSync('pnpm', ['--filter', 'chat', 'ts'], { stderr: process.stderr, stdout: process.stdout });
