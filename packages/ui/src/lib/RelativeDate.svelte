@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { translate } from './stores.js';
 	export let date: Date | undefined;
 
@@ -16,9 +17,7 @@
 	];
 
 	function delay(ms: number) {
-		if (timer) {
-			window.clearTimeout(timer);
-		}
+		window.clearTimeout(timer);
 		timer = window.setTimeout(() => {
 			timer = 0;
 			formatDate(date);
@@ -56,11 +55,13 @@
 	}
 
 	$: {
-		if (timer) {
-			window.clearTimeout(timer);
-		}
+		window.clearTimeout(timer);
 		formatDate(date);
 	}
+
+	onDestroy(() => {
+		window.clearTimeout(timer);
+	});
 </script>
 
 {#if formattedDate}
