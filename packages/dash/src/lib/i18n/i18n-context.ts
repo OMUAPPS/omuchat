@@ -1,4 +1,4 @@
-import { translate } from "@omuchatjs/ui/stores.js";
+import { translate } from "@omuchatjs/ui";
 import { writable, type Writable } from 'svelte/store';
 import { type I18n, type TranslateFunction } from "./types/i18n.d.js";
 
@@ -13,5 +13,4 @@ i18n.subscribe((i18n) => {
         translate.set(i18n.translate);
         t.set(i18n.translate);
     }
-
 });

@@ -14,7 +14,7 @@
     import { dateTimeFormats } from '$lib/const.js';
     import { applyOpacity, style } from '$lib/utils/class-helper.js';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
-    import { RelativeDate } from '@omuchatjs/ui/components/index.js';
+    import { RelativeDate } from '@omuchatjs/ui';
 
     export let entry: models.Message;
     export let selected: boolean = false;
