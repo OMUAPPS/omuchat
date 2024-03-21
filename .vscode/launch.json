@@ -34,6 +34,14 @@
             },
             // task for the `beforeBuildCommand` if used, must be configured in `.vscode/tasks.json`
             "preLaunchTask": "ui:build"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}",
+            "preLaunchTask": "dev"
         }
     ]
 }

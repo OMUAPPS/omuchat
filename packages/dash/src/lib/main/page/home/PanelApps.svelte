@@ -23,10 +23,7 @@
 
 <div class="container">
     <TableList table={dashboard.apps} component={AppEntry} fitHeight={true} {filter} />
-    <a
-        href={import.meta.env.DEV ? 'http://localhost:26420' : 'https://omuchat.cc/'}
-        target="_blank"
-    >
+    <a href={import.meta.env.DEV ? 'http://localhost:5173' : 'https://omuchat.cc/'} target="_blank">
         {$t('panels.apps.found_apps')}
         <i class="ti ti-external-link" />
     </a>
