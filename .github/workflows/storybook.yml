@@ -4,6 +4,7 @@ on:
     push:
         paths:
             - packages/ui/**
+    workflow_dispatch:
 
 jobs:
     build:
