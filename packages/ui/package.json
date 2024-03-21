@@ -1,6 +1,10 @@
 {
 	"name": "@omuchatjs/ui",
 	"version": "0.1.4",
+	"repository": "https://github.com/OMUCHAT/omuchat/",
+	"publishConfig": {
+		"access": "public"
+	},
 	"scripts": {
 		"prepare": "svelte-kit sync",
 		"dev": "vite dev",
