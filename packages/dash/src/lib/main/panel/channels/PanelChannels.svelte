@@ -7,11 +7,10 @@
     import ChannelEntry from './ChannelEntry.svelte';
     import ScreenAddChannel from './ScreenAddChannel.svelte';
 
-    import ButtonMini from '$lib/common/input/ButtonMini.svelte';
     import { getClient } from '$lib/common/omuchat/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
-    import { TableList, Tooltip } from '@omuchatjs/ui';
+    import { ButtonMini, TableList, Tooltip } from '@omuchatjs/ui';
 
     export let filter: (key: string, message: models.Channel) => boolean = () => true;
 

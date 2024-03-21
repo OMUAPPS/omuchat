@@ -8,3 +8,17 @@ export const translate: Writable<TranslateFunction> = writable((key: string, opt
 });
 
 export const client: Writable<Client> = writable();
+
+type Theme = {
+    [key: string]: string;
+}
+
+export const theme: Writable<Theme> = writable({
+    '--color-bg-1': '#f6f3eb',
+    '--color-bg-2': '#fffefc',
+    '--color-1': '#0b6f72',
+    '--color-2': '#35dfe1',
+    '--color-text': '#444',
+    '--color-outline': 'rgba(0, 0, 0, 0.1)',
+    '--margin': '10px',
+});

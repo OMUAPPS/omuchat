@@ -4,10 +4,9 @@
     import AppEntry from './AppEntry.svelte';
 
     import { getClient } from '$lib/common/omuchat/client.js';
-    import { theme } from '$lib/common/theme/theme.js';
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { invoke } from '$lib/utils/tauri.js';
-    import { TableList } from '@omuchatjs/ui';
+    import { TableList, theme } from '@omuchatjs/ui';
 
     const { client, chat } = getClient();
     let text = `test-${Date.now()}`;

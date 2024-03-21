@@ -1,11 +1,10 @@
 <script lang="ts">
-    import ThemeProvider from '$lib/common/theme/ThemeProvider.svelte';
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { DEFAULT_LOCALE, LOCALES, createI18nUnion } from '$lib/i18n/i18n.js';
     import { language } from '$lib/main/settings.js';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
     import { waitForTauri } from '$lib/utils/tauri.js';
-    import { Tooltip } from '@omuchatjs/ui';
+    import { Theme, Tooltip } from '@omuchatjs/ui';
     import './styles.scss';
 
     async function init() {
@@ -29,7 +28,7 @@
 <svelte:head>
     <title>Dashboard</title>
     <meta name="description" content="Svelte demo app" />
-    <ThemeProvider />
+    <Theme />
 </svelte:head>
 
 <div class="app">
