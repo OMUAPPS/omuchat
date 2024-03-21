@@ -41,7 +41,7 @@ jobs:
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: pnpm i --frozen-lockfile
 
-            - name: Build
-              run: pnpm --filter ui chromatic
-              env:
-                  CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+            - name: Build storybook
+              run: pnpm --filter ui build-storybook
+            - name: Upload Storybook
+              run: pnpm --filter ui chromatic -d storybook-static --project-token=${{secrets.CHROMATIC_PROJECT_TOKEN}}
