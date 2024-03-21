@@ -4,14 +4,19 @@
     import { t } from '$lib/i18n/i18n-context.js';
 
     import Gift from './Gift.svelte';
-    import MessageContent from './MessageContent.svelte';
     import Role from './Role.svelte';
 
     import { getClient } from '$lib/common/omuchat/client.js';
     import { dateTimeFormats } from '$lib/const.js';
     import { applyOpacity, style } from '$lib/utils/class-helper.js';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
-    import { FlexColWrapper, FlexRowWrapper, RelativeDate, Tooltip } from '@omuchatjs/ui';
+    import {
+        ComponentRenderer,
+        FlexColWrapper,
+        FlexRowWrapper,
+        RelativeDate,
+        Tooltip,
+    } from '@omuchatjs/ui';
 
     export let entry: models.Message;
     export let selected: boolean = false;
@@ -94,7 +99,7 @@
                     <FlexColWrapper>
                         {#if entry.content}
                             <div class="message-content">
-                                <MessageContent component={entry.content} />
+                                <ComponentRenderer component={entry.content} />
                             </div>
                         {/if}
                         {#if entry.paid}
@@ -128,7 +133,7 @@
                     <FlexColWrapper>
                         {#if entry.content}
                             <div class="message-content">
-                                <MessageContent component={entry.content} />
+                                <ComponentRenderer component={entry.content} />
                             </div>
                         {/if}
                         {#if entry.paid}

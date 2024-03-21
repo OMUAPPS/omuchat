@@ -1,5 +1,6 @@
 // Reexport your entry components here
 export { default as ButtonMini } from './ButtonMini.svelte';
+export { default as ComponentRenderer } from './ComponentRenderer.svelte';
 export { default as FlexColWrapper } from './FlexColWrapper.svelte';
 export { default as FlexRowWrapper } from './FlexRowWrapper.svelte';
 export { default as JustifyBaselineWrapper } from './JustifyBaselineWrapper.svelte';
