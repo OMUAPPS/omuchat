@@ -7,9 +7,10 @@ import { IDENTIFIER } from './app.js';
 const app = new App(IDENTIFIER, {
     version: '0.1.0',
 });
-export const client = setClient(new Client({
+export const client = new Client({
     app,
-}));
+});
+setClient(client);
 
 if (browser) {
     client.start();
