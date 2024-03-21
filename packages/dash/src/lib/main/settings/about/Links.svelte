@@ -1,7 +1,7 @@
 <script lang="ts">
-    import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
     import ExternalLink from '$lib/common/input/ExternalLink.svelte';
     import { t } from '$lib/i18n/i18n-context.js';
+    import { FlexColWrapper } from '@omuchatjs/ui';
 </script>
 
 <FlexColWrapper gap>

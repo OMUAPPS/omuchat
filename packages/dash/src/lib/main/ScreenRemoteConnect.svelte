@@ -7,11 +7,11 @@
     import Tooltip from '../common/tooltip/Tooltip.svelte';
 
     import Background from '$lib/common/Background.svelte';
-    import JustifyBaselineWrapper from '$lib/common/JustifyBaselineWrapper.svelte';
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import { t } from '$lib/i18n/i18n-context.js';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
     import { invoke } from '$lib/utils/tauri.js';
+    import { JustifyBaselineWrapper } from '@omuchatjs/ui';
 
     export let screen: ScreenHandle;
     let result: ShareResnponse | undefined;

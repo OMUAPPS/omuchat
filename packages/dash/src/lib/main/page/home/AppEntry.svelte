@@ -1,8 +1,7 @@
 <script lang="ts">
-    import FlexColWrapper from '$lib/common/FlexColWrapper.svelte';
-    import FlexRowWrapper from '$lib/common/FlexRowWrapper.svelte';
     import type { AppMetadata } from '$lib/common/omuchat/app-metadata.js';
     import { tauriWindow } from '$lib/utils/tauri.js';
+    import { FlexColWrapper, FlexRowWrapper } from '@omuchatjs/ui';
 
     import { t } from '$lib/i18n/i18n-context.js';
 

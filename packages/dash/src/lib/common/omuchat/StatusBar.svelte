@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { ConnectionStatus } from '@omuchatjs/omu/connection/index.js';
+    import type { ConnectionStatus } from '@omuchatjs/omu/network/index.js';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
-    import FlexColWrapper from '../FlexColWrapper.svelte';
+    import { FlexColWrapper } from '@omuchatjs/ui';
     import Tooltip from '../tooltip/Tooltip.svelte';
 
     import { getClient } from './client.js';

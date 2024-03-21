@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { App } from '@omuchatjs/omu';
 
-    import FlexRowWrapper from './common/FlexRowWrapper.svelte';
+    import { FlexRowWrapper } from '@omuchatjs/ui';
     import OmuChatProvider from './common/omuchat/ClientProvider.svelte';
     import StatusBar from './common/omuchat/StatusBar.svelte';
     import ScreenRenderer from './common/screen/ScreenRenderer.svelte';
