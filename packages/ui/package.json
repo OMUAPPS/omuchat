@@ -15,7 +15,7 @@
 		"format": "prettier --write .",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"chromatic": "npx chromatic --project-token=chpt_2378321b6b53f6d"
+		"chromatic": "chromatic"
 	},
 	"exports": {
 		".": {
