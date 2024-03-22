@@ -1,5 +1,6 @@
 import type * as event from '@tauri-apps/api/event';
 import type * as api from '@tauri-apps/api/tauri';
+import { BROWSER } from 'esm-env';
 
 let _invoke: typeof api.invoke;
 let _listen: typeof event.listen;
@@ -172,7 +173,6 @@ export function waitForTauri() {
     });
 }
 
-export const SSR = import.meta.env.SSR;
-if (!SSR) {
+if (BROWSER) {
     load();
 }
