@@ -84,8 +84,8 @@ export class Emoji implements Model<EmojiData>, Keyable {
     }
 }
 
-export const EMOJI_TABLE = TableType.model(IDENTIFIER, {
-    name: "string",
+export const EMOJI_TABLE = TableType.model(IDENTIFIER.join("plugin"), {
+    name: "emoji",
     model: Emoji
 })
 
