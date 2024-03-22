@@ -1,5 +1,6 @@
 import type { Chat } from "@omuchatjs/chat";
 import type { Client } from "@omuchatjs/omu";
+import { BROWSER } from "esm-env";
 import { writable, type Writable } from "svelte/store";
 
 type TranslateFunction = (key: string, options?: Record<string, unknown>) => string;
@@ -34,19 +35,27 @@ export const theme: Writable<Theme> = writable({
     '--margin': '10px',
 });
 
-export const dateTimeFormats = writable({
-    full: new Intl.DateTimeFormat(window.navigator.language, {
-        dateStyle: 'full',
-        timeStyle: 'long',
-        hour12: false,
-    }),
-    short: new Intl.DateTimeFormat(window.navigator.language, {
-        dateStyle: 'short',
-        timeStyle: 'short',
-        hour12: false,
-    }),
-    time: new Intl.DateTimeFormat(window.navigator.language, {
-        timeStyle: 'short',
-        hour12: false,
-    }),
-});
+export const dateTimeFormats = writable<{
+    full: Intl.DateTimeFormat,
+    short: Intl.DateTimeFormat,
+    time: Intl.DateTimeFormat,
+}>();
+
+if (BROWSER) {
+    dateTimeFormats.set({
+        full: new Intl.DateTimeFormat(window.navigator.language, {
+            dateStyle: 'full',
+            timeStyle: 'long',
+            hour12: false,
+        }),
+        short: new Intl.DateTimeFormat(window.navigator.language, {
+            dateStyle: 'short',
+            timeStyle: 'short',
+            hour12: false,
+        }),
+        time: new Intl.DateTimeFormat(window.navigator.language, {
+            timeStyle: 'short',
+            hour12: false,
+        }),
+    });
+}
