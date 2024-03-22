@@ -22,6 +22,7 @@
 	let entries: Map<string, T> = new Map();
 	let items: Array<[string, T]> = [];
 	let addedItems: string[] = [];
+	let animationTimeout: number | undefined;
 	let startIndex = 0;
 	let endIndex = 0;
 	let updated = false;
@@ -109,6 +110,12 @@
 			},
 			onAdd(items) {
 				addedItems = [...items.keys()];
+				if (animationTimeout) {
+					clearTimeout(animationTimeout);
+				}
+				animationTimeout = window.setTimeout(() => {
+					addedItems = [];
+				});
 			}
 		});
 		viewport.addEventListener('scroll', handleScroll);
