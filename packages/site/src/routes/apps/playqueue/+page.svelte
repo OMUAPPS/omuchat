@@ -3,6 +3,7 @@
     import { App } from '@omuchatjs/omu';
 
     import { browser } from '$app/environment';
+    import { Header } from '@omuchatjs/ui';
     import PlayQueueEntry from './PlayQueueEntry.svelte';
     import { identifier } from './app.js';
     import type { Entry } from './playqueue.js';
@@ -18,13 +19,13 @@
     client.on(events.MessageCreate, async (message) => {
         if (!active) return;
         if (!message.authorId) return;
-        const regex = new RegExp(joinWord);
-        processJoinLeave(regex, message);
+        processJoinLeave(message);
     });
 
-    async function processJoinLeave(regex: RegExp, message: models.Message) {
+    async function processJoinLeave(message: models.Message) {
         const author = message.authorId && (await client.chat.authors.get(message.authorId));
         if (!author) return;
+        const regex = new RegExp(joinWord);
         if (regex.test(message.text)) {
             entries = [
                 ...entries,
@@ -54,32 +55,26 @@
 </script>
 
 <main>
-    <div class="header">
-        <span class="top">
-            <div class="title">
-                <i class="ti ti-list" />
-                <span>参加型管理</span>
-            </div>
-            <div class="actions">
-                <button on:click={() => (settingOpen = !settingOpen)}>
-                    {#if settingOpen}
-                        設定を閉じる
-                    {:else}
-                        設定を編集
-                        <i class="ti ti-chevron-down" />
-                    {/if}
+    <Header title="参加型管理" icon="ti-icons">
+        <div class="actions">
+            <button on:click={() => (settingOpen = !settingOpen)}>
+                {#if settingOpen}
+                    設定を閉じる
+                {:else}
+                    設定を編集
+                    <i class="ti ti-chevron-down" />
+                {/if}
+            </button>
+            <div class="action">
+                <span>
+                    {active ? `終了する` : `開始する`}
+                </span>
+                <button class="toggle" on:click={() => (active = !active)} class:active>
+                    <i class="ti ti-check" />
                 </button>
-                <div class="action">
-                    <span>
-                        {active ? `終了する` : `開始する`}
-                    </span>
-                    <button class="toggle" on:click={() => (active = !active)} class:active>
-                        <i class="ti ti-check" />
-                    </button>
-                </div>
             </div>
-        </span>
-    </div>
+        </div>
+    </Header>
     {#if settingOpen}
         <div class="settings">
             <span class="setting">
@@ -124,75 +119,45 @@
         background: var(--color-bg-2);
     }
 
-    .header {
+    .actions {
         display: flex;
-        flex-direction: column;
-        gap: 40px;
+        flex-direction: row;
+        gap: 20px;
         align-items: center;
-        width: 100%;
-        min-height: 80px;
-        background: var(--color-bg-2);
-        border-bottom: 1px solid var(--color-1);
+        margin-left: auto;
 
-        .top {
+        .action {
             display: flex;
             flex-direction: row;
-            gap: 40px;
+            gap: 10px;
             align-items: center;
-            width: 100%;
-            padding: 20px 40px;
+        }
 
-            .title {
-                display: flex;
-                flex-direction: row;
-                gap: 10px;
-                align-items: baseline;
-                font-size: 18px;
-                font-weight: 600;
-                color: var(--color-1);
+        .toggle {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            color: transparent;
+            background: var(--color-bg-1);
+            border: 1px solid var(--color-1);
+            border-radius: 5px;
+            outline: none;
+
+            &:hover {
+                outline: 1px solid var(--color-1);
             }
 
-            .actions {
-                display: flex;
-                flex-direction: row;
-                gap: 20px;
-                align-items: center;
-                margin-left: auto;
+            &.active {
+                color: var(--color-bg-1);
+                background: var(--color-1);
+            }
 
-                .action {
-                    display: flex;
-                    flex-direction: row;
-                    gap: 10px;
-                    align-items: center;
-                }
-
-                .toggle {
-                    display: flex;
-                    flex-direction: row;
-                    gap: 10px;
-                    align-items: center;
-                    justify-content: center;
-                    width: 30px;
-                    height: 30px;
-                    color: transparent;
-                    background: var(--color-bg-1);
-                    border: 1px solid var(--color-1);
-                    border-radius: 5px;
-                    outline: none;
-
-                    &:hover {
-                        outline: 1px solid var(--color-1);
-                    }
-
-                    &.active {
-                        color: var(--color-bg-1);
-                        background: var(--color-1);
-                    }
-
-                    i {
-                        font-size: 14px;
-                    }
-                }
+            i {
+                font-size: 14px;
             }
         }
     }

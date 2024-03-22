@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { TableList } from '@omuchatjs/ui';
+    import { Header, TableList } from '@omuchatjs/ui';
     import EmojiEdit from './EmojiEdit.svelte';
     import EmojiEntry from './EmojiEntry.svelte';
     import { IDENTIFIER } from './app.js';
@@ -54,15 +54,11 @@
 </script>
 
 <main>
-    <div class="header">
-        <div class="title">
-            <i class="ti ti-icons" />
-            絵文字
-        </div>
+    <Header title="絵文字" icon="ti-icons">
         <div class="search">
             <input placeholder="検索" bind:value={search} />
         </div>
-    </div>
+    </Header>
     {#if $selectedEmoji}
         <div class="emoji-edit">
             <EmojiEdit emoji={$selectedEmoji} />
@@ -113,29 +109,6 @@
         max-height: calc(100vh - 170px);
         overflow: hidden;
         background: var(--color-bg-2);
-    }
-
-    .header {
-        display: flex;
-        flex-direction: row;
-        gap: 40px;
-        align-items: center;
-        width: 100%;
-        min-height: 80px;
-        padding: 20px;
-        background: var(--color-bg-2);
-        border-bottom: 1px solid var(--color-1);
-
-        .title {
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-            align-items: baseline;
-            padding-left: 20px;
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--color-1);
-        }
     }
 
     .emoji-edit {
