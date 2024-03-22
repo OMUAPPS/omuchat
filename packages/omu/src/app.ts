@@ -47,7 +47,7 @@ export class App implements Keyable, Model<AppJson> {
     }
 
     key(): string {
-        return Identifier.format(this.group, this.name);
+        return this.identifier.key();
     }
 
     static fromJson(info: AppJson): App {
