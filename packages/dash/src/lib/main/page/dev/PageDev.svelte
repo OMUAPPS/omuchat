@@ -21,9 +21,17 @@
             avatar_url: authorIcon,
         });
         chat.authors.add(author);
+        const room = new models.Room({
+            id: 'test',
+            connected: false,
+            createdAt: new Date(),
+            providerId: 'test',
+            status: 'offline',
+        });
+        chat.rooms.set(room);
         chat.messages.add(
             new models.Message({
-                room_id: 'test',
+                room_id: room.key(),
                 id: `test-${Date.now()}`,
                 content: models.content.Text.of(text),
                 author_id: author.key(),
