@@ -7,7 +7,7 @@
 	export let heightFull = false;
 	export let baseline = false;
 	export let gap = false;
-	export let alignItems: 'start' | 'center' | 'end' = 'start';
+	export let alignItems: 'start' | 'center' | 'end' | undefined = undefined;
 </script>
 
 <div
@@ -15,8 +15,8 @@
 	class:reverse
 	class:width={widthFull}
 	class:height={heightFull}
-	class:baseline
 	class:gap
+	class:baseline
 	style={style({ alignItems })}
 >
 	<slot />
@@ -44,11 +44,11 @@
 		height: 100%;
 	}
 
-	.baseline {
-		align-items: baseline;
-	}
-
 	.gap {
 		gap: 10px;
+	}
+
+	.baseline {
+		align-items: baseline;
 	}
 </style>
