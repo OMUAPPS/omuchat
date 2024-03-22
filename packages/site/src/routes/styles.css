@@ -81,7 +81,7 @@ a:hover {
 body {
     min-height: 100vh;
     margin: 0;
-    font-weight: 400;
+    font-weight: bold;
     color: var(--color-text);
     background-attachment: fixed;
     background-size: 100vw 100vh;

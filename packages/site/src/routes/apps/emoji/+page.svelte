@@ -91,17 +91,27 @@
                 </span>
             {/if}
         </div>
-        <TableList table={emojis} component={EmojiEntry} />
+        <div class="list">
+            <TableList table={emojis} component={EmojiEntry} />
+        </div>
     </div>
 </main>
 
 <style lang="scss">
     main {
-        position: fixed;
-        inset: 0;
+        position: relative;
         display: flex;
         flex-direction: column;
-        margin: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--color-bg-1);
+    }
+
+    .list {
+        position: relative;
+        width: 100%;
+        max-height: calc(100vh - 170px);
+        overflow: hidden;
         background: var(--color-bg-2);
     }
 

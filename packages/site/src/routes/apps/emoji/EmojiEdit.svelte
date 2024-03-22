@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { FlexColWrapper, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
+    import { ButtonMini, FlexColWrapper, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
     import { client } from './client.js';
     import { deleteEmoji, saveEmoji, type Emoji, type Pettern } from './emoji.js';
 
@@ -42,53 +42,52 @@
                 <input class="name" type="text" bind:value={emoji.id} placeholder="Name" />
             </FlexRowWrapper>
             <FlexRowWrapper gap>
-                <button on:click={() => saveEmoji(emoji)}>
+                <ButtonMini on:click={() => saveEmoji(emoji)}>
                     <Tooltip>保存</Tooltip>
                     <i class="ti ti-device-floppy" />
-                </button>
-                <button on:click={() => deleteEmoji(emoji)}>
+                </ButtonMini>
+                <ButtonMini on:click={() => deleteEmoji(emoji)}>
                     <Tooltip>削除</Tooltip>
                     <i class="ti ti-trash" />
-                </button>
+                </ButtonMini>
             </FlexRowWrapper>
         </FlexRowWrapper>
         <div class="petterns">
             <small>パターン</small>
             {#each emoji.petterns as pettern}
-                <FlexRowWrapper widthFull between gap>
+                <div class="pettern">
                     <FlexRowWrapper widthFull between baseline>
                         {#if pettern.type === 'text'}
-                            text
+                            文字
                             <input type="text" bind:value={pettern.text} placeholder="text" />
                         {:else if pettern.type === 'image'}
-                            image
+                            絵文字
                             <input type="text" bind:value={pettern.id} placeholder="image id" />
                         {:else if pettern.type === 'regex'}
-                            regex
+                            正規表現
                             <input type="text" bind:value={pettern.regex} placeholder="regex" />
                         {/if}
                     </FlexRowWrapper>
-                    <button
+                    <ButtonMini
                         on:click={() =>
                             (emoji.petterns = emoji.petterns.filter((p) => p !== pettern))}
-                        class="delete"
                     >
                         <Tooltip>削除</Tooltip>
                         <i class="ti ti-trash" />
-                    </button>
-                </FlexRowWrapper>
+                    </ButtonMini>
+                </div>
             {/each}
-            <FlexRowWrapper widthFull baseline>
+            <FlexRowWrapper widthFull baseline gap>
                 <small>タイプ</small>
                 <select bind:value={type} class="type">
                     <option value="text">テキスト</option>
                     <option value="regex">正規表現</option>
                     <option value="image">画像</option>
                 </select>
-                <button on:click={() => addPettern()} class="add">
+                <ButtonMini on:click={() => addPettern()}>
                     <Tooltip>追加</Tooltip>
                     <i class="ti ti-plus" />
-                </button>
+                </ButtonMini>
             </FlexRowWrapper>
         </div>
     </FlexColWrapper>
@@ -120,6 +119,15 @@
         width: 100%;
         padding: 10px;
         background: var(--color-bg-1);
+    }
+
+    .pettern {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: space-between;
+        border-left: 2px solid var(--color-1);
+        padding-left: 10px;
     }
 
     img {

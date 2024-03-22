@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Client, events } from '@omuchatjs/chat';
+    import { Client, events, models } from '@omuchatjs/chat';
     import { App } from '@omuchatjs/omu';
 
     import { browser } from '$app/environment';
@@ -7,21 +7,25 @@
     import { identifier } from './app.js';
     import type { Entry } from './playqueue.js';
 
-    const app = App.fromIdentifier(identifier, {
+    const app = new App(identifier, {
         version: '0.1.0',
     });
     const client = new Client({
         app,
     });
 
-    client.authors.listen();
+    client.chat.authors.listen();
     client.on(events.MessageCreate, async (message) => {
         if (!active) return;
         if (!message.authorId) return;
         const regex = new RegExp(joinWord);
+        processJoinLeave(regex, message);
+    });
+
+    async function processJoinLeave(regex: RegExp, message: models.Message) {
+        const author = message.authorId && (await client.chat.authors.get(message.authorId));
+        if (!author) return;
         if (regex.test(message.text)) {
-            const author = await client.authors.get(message.authorId);
-            if (!author) return;
             entries = [
                 ...entries,
                 {
@@ -30,8 +34,13 @@
                     element: null,
                 },
             ];
+        } else {
+            const regex = new RegExp(leaveWord);
+            if (regex.test(message.text)) {
+                entries = entries.filter((entry) => entry.author.key() !== message.authorId);
+            }
         }
-    });
+    }
 
     let active: boolean = false;
     let settingOpen: boolean = false;
@@ -40,7 +49,7 @@
     let entries: Entry[] = [];
 
     if (browser) {
-        client.run();
+        client.start();
     }
 </script>
 

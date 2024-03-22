@@ -9,9 +9,7 @@
 
 {#if appMode}
     <div class="app">
-        <main>
-            <slot />
-        </main>
+        <slot />
         <ThemeProvider />
     </div>
 {:else}
