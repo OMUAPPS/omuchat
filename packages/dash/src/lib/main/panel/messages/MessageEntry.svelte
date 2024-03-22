@@ -53,22 +53,20 @@
     <FlexRowWrapper widthFull gap>
         {#if author && author.avatarUrl}
             <FlexColWrapper>
-                <div>
+                <img
+                    src={client.assets.proxy(author.avatarUrl)}
+                    alt="avatar"
+                    class="author-avatar"
+                    width="32"
+                    height="32"
+                />
+                <Tooltip noBackground>
                     <img
                         src={client.assets.proxy(author.avatarUrl)}
                         alt="avatar"
-                        class="author-avatar"
-                        width="32"
-                        height="32"
+                        class="author-avatar-preview"
                     />
-                    <Tooltip noBackground>
-                        <img
-                            src={client.assets.proxy(author.avatarUrl)}
-                            alt="avatar"
-                            class="author-avatar-preview"
-                        />
-                    </Tooltip>
-                </div>
+                </Tooltip>
             </FlexColWrapper>
         {/if}
         <FlexColWrapper widthFull>
