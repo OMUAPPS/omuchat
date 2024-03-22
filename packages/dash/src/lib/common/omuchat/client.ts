@@ -1,6 +1,6 @@
 import type { Chat } from '@omuchatjs/chat';
 import type { Client as OmuClient } from '@omuchatjs/omu';
-import { client } from '@omuchatjs/ui';
+import { chat, client } from '@omuchatjs/ui';
 import { getContext, setContext } from 'svelte';
 import type { Dashboard } from './dashboard.js';
 
@@ -14,6 +14,7 @@ interface ClientContext {
 
 export function setClient(context: ClientContext) {
     client.set(context.client);
+    chat.set(context.chat);
     return setContext<ClientContext>(CLIENT_CONTEXT, context);
 }
 

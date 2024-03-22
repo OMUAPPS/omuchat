@@ -1,3 +1,4 @@
+import type { Chat } from "@omuchatjs/chat";
 import type { Client } from "@omuchatjs/omu";
 import { writable, type Writable } from "svelte/store";
 
@@ -8,10 +9,15 @@ export const translate: Writable<TranslateFunction> = writable((key: string, opt
 });
 
 export const client: Writable<Client> = writable();
+export const chat: Writable<Chat> = writable();
 
 export function setClient<T extends Client>(newClient: T): T {
     client.set(newClient);
     return newClient;
+}
+export function setChat<T extends Chat>(newChat: T): T {
+    chat.set(newChat);
+    return newChat;
 }
 
 type Theme = {
@@ -26,4 +32,21 @@ export const theme: Writable<Theme> = writable({
     '--color-text': '#444',
     '--color-outline': 'rgba(0, 0, 0, 0.1)',
     '--margin': '10px',
+});
+
+export const dateTimeFormats = writable({
+    full: new Intl.DateTimeFormat(window.navigator.language, {
+        dateStyle: 'full',
+        timeStyle: 'long',
+        hour12: false,
+    }),
+    short: new Intl.DateTimeFormat(window.navigator.language, {
+        dateStyle: 'short',
+        timeStyle: 'short',
+        hour12: false,
+    }),
+    time: new Intl.DateTimeFormat(window.navigator.language, {
+        timeStyle: 'short',
+        hour12: false,
+    }),
 });
