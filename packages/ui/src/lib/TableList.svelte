@@ -111,11 +111,11 @@
 			onAdd(items) {
 				addedItems = [...items.keys()];
 				if (animationTimeout) {
-					clearTimeout(animationTimeout);
+					window.clearTimeout(animationTimeout);
 				}
 				animationTimeout = window.setTimeout(() => {
 					addedItems = [];
-				});
+				}, 200);
 			}
 		});
 		viewport.addEventListener('scroll', handleScroll);
