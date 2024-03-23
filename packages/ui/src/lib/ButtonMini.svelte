@@ -13,7 +13,7 @@
 		align-items: center;
 		justify-content: center;
 		min-width: 30px;
-		min-height: 30px;
+		height: 30px;
 		padding-right: 6px;
 		padding-left: 6px;
 		font-size: 16px;

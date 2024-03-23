@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { models } from '@omuchatjs/chat';
-
     import AppEntry from './AppEntry.svelte';
 
     import { getClient } from '$lib/common/omuchat/client.js';
@@ -8,40 +6,7 @@
     import { invoke } from '$lib/utils/tauri.js';
     import { TableList, theme } from '@omuchatjs/ui';
 
-    const { client, chat } = getClient();
-    let text = `test-${Date.now()}`;
-    let authorName = `test-author-${Date.now()}`;
-    let authorIcon = `https://picsum.photos/seed/${Date.now()}/200/200`;
-    function send() {
-        console.log(text);
-        const author = new models.Author({
-            provider_id: 'test',
-            id: 'test',
-            name: authorName,
-            avatar_url: authorIcon,
-        });
-        chat.authors.add(author);
-        const room = new models.Room({
-            id: 'test',
-            connected: false,
-            createdAt: new Date(),
-            providerId: 'test',
-            status: 'offline',
-        });
-        chat.rooms.set(room);
-        chat.messages.add(
-            new models.Message({
-                room_id: room.key(),
-                id: `test-${Date.now()}`,
-                content: models.content.Text.of(text),
-                author_id: author.key(),
-                created_at: new Date(),
-            }),
-        );
-    }
-    function clear() {
-        text = '';
-    }
+    const { client } = getClient();
 
     let starting = false;
     function start() {
@@ -113,19 +78,6 @@
         <h3>Language</h3>
         <div>
             {$i18n?.locale}
-        </div>
-    </div>
-    <div class="section">
-        <h3>Message</h3>
-        <div>
-            <button on:click={send}> send </button>
-            Message:
-            <input type="text" bind:value={text} />
-            Author:
-            <input type="text" bind:value={authorName} />
-            Icon:
-            <input type="text" bind:value={authorIcon} />
-            <button on:click={clear}> clear </button>
         </div>
     </div>
     <div class="section">

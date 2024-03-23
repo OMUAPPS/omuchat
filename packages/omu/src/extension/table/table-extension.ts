@@ -204,6 +204,7 @@ export class TableExtension implements Extension {
 class TableImpl<T> implements Table<T> {
     public cache: Map<string, T>;
     private readonly listeners: TableListener<T>[];
+    private readonly promiseMap: Map<string, Promise<T | undefined>>;
     private readonly proxies: Array<(item: T) => T | undefined>;
     private readonly key: string;
     private listening: boolean;
@@ -219,6 +220,7 @@ class TableImpl<T> implements Table<T> {
         this.cache = new Map();
         this.key = identifier.key();
         this.listeners = [];
+        this.promiseMap = new Map();
         this.proxies = [];
         this.listening = false;
 
@@ -368,23 +370,45 @@ class TableImpl<T> implements Table<T> {
         if (this.cache.has(key)) {
             return this.cache.get(key);
         }
-        const res = await this.client.endpoints.call(TableItemGetEndpoint, {
+        if (this.promiseMap.has(key)) {
+            return await this.promiseMap.get(key);
+        }
+        const promise = this.client.endpoints.call(TableItemGetEndpoint, {
             type: this.key,
             keys: [key],
+        }).then((res) => {
+            const items = this.deserializeItems(res.items);
+            this.updateCache(items);
+            return this.cache.get(key);
         });
-        const items = this.deserializeItems(res.items);
-        this.updateCache(items);
-        return this.cache.get(key);
+        this.promiseMap.set(key, promise);
+        return await promise.then((item) => {
+            this.promiseMap.delete(key);
+            return item;
+        });
     }
 
     async getMany(keys: string[]): Promise<Map<string, T>> {
-        const res = await this.client.endpoints.call(TableItemGetEndpoint, {
+        const filteredKeys = keys.filter((key) => !this.cache.has(key)).filter((key) => !this.promiseMap.has(key));
+        if (filteredKeys.length === 0) {
+            return new Map([...this.cache].filter(([key]) => keys.includes(key)));
+        }
+        const promise = this.client.endpoints.call(TableItemGetEndpoint, {
             type: this.key,
-            keys,
+            keys: filteredKeys,
+        }).then((res) => {
+            const items = this.deserializeItems(res.items);
+            this.updateCache(items);
+            return items;
         });
-        const items = this.deserializeItems(res.items);
-        this.updateCache(items);
-        return items;
+        for (const key of filteredKeys) {
+            this.promiseMap.set(key, promise.then((items) => items.get(key)));
+        }
+        const items = await promise;
+        for (const key of filteredKeys) {
+            this.promiseMap.delete(key);
+        }
+        return new Map([...this.cache, ...items].filter(([key]) => keys.includes(key)));
     }
 
     async add(...items: T[]): Promise<void> {

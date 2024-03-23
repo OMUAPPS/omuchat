@@ -27,35 +27,35 @@ export class Message implements Model<MessageJson>, Keyable, Timestamped {
     createdAt: Date;
 
     constructor(options: {
-        room_id: string;
+        roomId: string;
         id: string;
-        created_at: Date;
-        author_id?: string;
+        createdAt: Date;
+        authorId?: string;
         content?: content.Component;
         paid?: Paid;
         gifts?: Gift[];
     }) {
-        if (!(options.created_at instanceof Date)) {
+        if (!(options.createdAt instanceof Date)) {
             throw new Error('created_at must be a Date');
         }
-        this.roomId = options.room_id;
+        this.roomId = options.roomId;
         this.id = options.id;
-        this.authorId = options.author_id;
+        this.authorId = options.authorId;
         this.content = options.content;
         this.paid = options.paid;
         this.gifts = options.gifts;
-        this.createdAt = options.created_at;
+        this.createdAt = options.createdAt;
     }
 
     static fromJson(info: MessageJson): Message {
         return new Message({
-            room_id: info.room_id,
+            roomId: info.room_id,
             id: info.id,
-            author_id: info.author_id,
+            authorId: info.author_id,
             content: info.content && content.deserialize(info.content),
             paid: info.paid && Paid.fromJson(info.paid),
             gifts: info.gifts?.map((gift) => Gift.fromJson(gift)),
-            created_at: new Date(info.created_at),
+            createdAt: new Date(info.created_at),
         });
     }
 

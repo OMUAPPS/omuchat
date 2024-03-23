@@ -5,6 +5,7 @@
 	export let reverse = false;
 	export let widthFull = false;
 	export let heightFull = false;
+	export let wrap = false;
 	export let baseline = false;
 	export let gap = false;
 	export let alignItems: 'start' | 'center' | 'end' | undefined = undefined;
@@ -16,6 +17,7 @@
 	class:width={widthFull}
 	class:height={heightFull}
 	class:gap
+	class:wrap
 	class:baseline
 	style={style({ alignItems })}
 >
@@ -46,6 +48,10 @@
 
 	.gap {
 		gap: 10px;
+	}
+
+	.wrap {
+		flex-wrap: wrap;
 	}
 
 	.baseline {
