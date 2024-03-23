@@ -47,18 +47,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Cache node_modules
-              id: cache-node-modules
-
-              uses: actions/cache@v3
-              with:
-                  path: node_modules
-                  key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-                  restore-keys: |
-                      pnpm-${{ runner.os }}-
-
             - name: Install dependencies
-              if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: pnpm i --frozen-lockfile
 
             - name: Build
