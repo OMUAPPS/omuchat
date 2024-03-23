@@ -13,7 +13,7 @@ export type ComponentJson = {
     data: Primitive;
 };
 
-interface Parent {
+export interface Parent {
     children: Component[];
 }
 
