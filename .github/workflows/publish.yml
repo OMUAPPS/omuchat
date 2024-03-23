@@ -47,6 +47,18 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: Get pnpm store path
+              id: pnpm-store-path
+              run: echo "::set-output name=store_path::$(pnpm config get store-dir)"
+
+            - name: Cache pnpm store
+              uses: actions/cache@v4
+              with:
+                  path: ${{ steps.pnpm-store-path.outputs.store_path }}
+                  key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      pnpm-${{ runner.os }}-
+
             - name: Install dependencies
               run: pnpm i --frozen-lockfile
 
