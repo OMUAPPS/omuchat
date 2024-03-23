@@ -24,10 +24,12 @@
 
 {#if component}
     <FlexRowWrapper baseline>
-        <button on:click={remove}>
-            <Tooltip>コンポーネントを削除</Tooltip>
-            <i class={icon} />
-        </button>
+        {#if icon}
+            <button on:click={remove}>
+                <Tooltip>コンポーネントを削除</Tooltip>
+                <i class={icon} />
+            </button>
+        {/if}
         {#if component instanceof content.Text}
             <TextEdit bind:component />
         {:else if component instanceof content.Image}
@@ -48,7 +50,6 @@
 
 <style lang="scss">
     i {
-        color: var(--color-1);
         width: 24px;
         height: 24px;
         padding: 4px;
@@ -59,10 +60,13 @@
         border: none;
         cursor: pointer;
         padding: 0;
-        margin: 0;
+        margin: 0 1px;
+        border-radius: 5px;
+        color: var(--color-1);
 
         &:hover {
-            background: var(--color-bg-1);
+            background: var(--color-1);
+            color: var(--color-bg-2);
         }
     }
 </style>

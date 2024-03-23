@@ -41,5 +41,13 @@
 <style>
     span {
         display: block;
+        margin-left: 5px;
+    }
+
+    select {
+        width: 100%;
+        height: 28px;
+        padding: 5px;
+        border: 1px solid var(--color-1);
     }
 </style>
