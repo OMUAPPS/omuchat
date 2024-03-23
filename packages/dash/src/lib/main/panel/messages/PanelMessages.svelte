@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { models } from '@omuchatjs/chat';
-    import { onMount } from 'svelte';
+    import { onDestroy } from 'svelte';
 
     import { getClient } from '$lib/common/omuchat/client.js';
     import { MessageEntry, TableList } from '@omuchatjs/ui';
@@ -13,7 +13,18 @@
         return a.createdAt.getTime() - b.createdAt.getTime();
     };
 
-    onMount(() => chat.authors.listen());
+    const unlistenAuthors = chat.authors.listen();
+    const unlistenMessages = chat.messages.listen((items) => {
+        const authorKeys = [...items.values()]
+            .map((message) => message.authorId)
+            .filter((key): key is string => !!key);
+        chat.authors.getMany(authorKeys);
+    });
+
+    onDestroy(() => {
+        unlistenAuthors();
+        unlistenMessages();
+    });
 </script>
 
 <TableList table={chat.messages} component={MessageEntry} {filter} {sort} reverse={true} />
