@@ -46,7 +46,7 @@
 			updateCache(items);
 			update();
 			loadingLock = false;
-			resolve(items.size > 0);
+			resolve([...items.keys()].filter((key) => key !== last).length > 0);
 		}).finally(() => {
 			fetchLock = undefined;
 		});
@@ -161,7 +161,9 @@
 			const result = await fetch();
 			if (!result) break;
 			await tick();
+			scrollTop = target.scrollTop;
 			scrollHeight = target.scrollHeight;
+			clientHeight = target.clientHeight;
 		}
 	}
 
