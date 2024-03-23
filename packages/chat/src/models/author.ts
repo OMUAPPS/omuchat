@@ -22,28 +22,28 @@ export class Author implements Keyable, Model<AuthorJson> {
     roles?: Role[];
 
     constructor(options: {
-        provider_id: string;
+        providerId: string;
         id: string;
         name: string;
-        screen_id?: string;
-        avatar_url?: string;
+        screenId?: string;
+        avatarUrl?: string;
         roles?: Role[];
     }) {
-        this.providerId = options.provider_id;
+        this.providerId = options.providerId;
         this.id = options.id;
         this.name = options.name;
-        this.screenId = options.screen_id;
-        this.avatarUrl = options.avatar_url;
+        this.screenId = options.screenId;
+        this.avatarUrl = options.avatarUrl;
         this.roles = options.roles;
     }
 
     static fromJson(info: AuthorJson): Author {
         return new Author({
-            provider_id: info.provider_id,
+            providerId: info.provider_id,
             id: info.id,
             name: info.name,
-            screen_id: info.screen_id,
-            avatar_url: info.avatar_url,
+            screenId: info.screen_id,
+            avatarUrl: info.avatar_url,
             roles: info.roles?.map((role) => Role.fromJson(role)),
         });
     }
