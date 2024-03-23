@@ -20,9 +20,7 @@
     "devDependencies": {
         "concurrently": "^8.2.2",
         "lerna": "^8.1.2",
-        "license-checker": "^25.0.1"
-    },
-    "dependencies": {
+        "license-checker": "^25.0.1",
         "execa": "^8.0.1"
     }
 }
