@@ -6,12 +6,13 @@ import emoji from './emoji/app.js';
 import notifier from './notifier/app.js';
 import playqueue from './playqueue/app.js';
 import quiz from './quiz/app.js';
+import tester from './tester/app.js';
 
 export const apps = [] as AppMetadata[];
 
 export function loadApps(origin: string) {
     if (apps.length) return;
-    apps.push(...[quiz(origin), notifier(origin), playqueue(origin), emoji(origin)]);
+    apps.push(...[quiz(origin), notifier(origin), playqueue(origin), emoji(origin), tester(origin)]);
 }
 
 const DASHBOARD = Identifier.fromKey('cc.omuchat:dashboard');

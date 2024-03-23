@@ -1,0 +1,68 @@
+<script lang="ts">
+    import { content } from '@omuchatjs/chat/models/index.js';
+    import { FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
+    import AddComponent from './AddComponent.svelte';
+    import ImageEdit from './ImageEdit.svelte';
+    import TextEdit from './TextEdit.svelte';
+
+    export let component: content.Component;
+    export let remove: () => void;
+
+    const icons = {
+        text: 'ti ti-txt',
+        image: 'ti ti-photo',
+    };
+    const icon = component && icons[component.type as 'text' | 'image'];
+
+    function removeChild(child: content.Component) {
+        if (!component.isParent()) {
+            throw new Error('Component is not a parent');
+        }
+        component.children = component.children.filter((c) => c !== child);
+    }
+</script>
+
+{#if component}
+    <FlexRowWrapper baseline>
+        <button on:click={remove}>
+            <Tooltip>コンポーネントを削除</Tooltip>
+            <i class={icon} />
+        </button>
+        {#if component instanceof content.Text}
+            <TextEdit bind:component />
+        {:else if component instanceof content.Image}
+            <ImageEdit bind:component />
+        {/if}
+    </FlexRowWrapper>
+    {#if component.isParent()}
+        <FlexRowWrapper wrap>
+            {#each component.children as child}
+                <svelte:self bind:component={child} remove={() => removeChild(child)} />
+            {/each}
+            <AddComponent bind:component />
+        </FlexRowWrapper>
+    {/if}
+{:else}
+    <AddComponent bind:component />
+{/if}
+
+<style lang="scss">
+    i {
+        color: var(--color-1);
+        width: 24px;
+        height: 24px;
+        padding: 4px;
+    }
+
+    button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+
+        &:hover {
+            background: var(--color-bg-1);
+        }
+    }
+</style>
