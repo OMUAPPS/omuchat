@@ -35,8 +35,4 @@ async function generateLicense() {
     );
 }
 
-async function setup() {
-    await generateLicense();
-}
-
-await setup();
+await generateLicense();
