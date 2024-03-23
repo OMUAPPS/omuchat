@@ -155,9 +155,12 @@
 		while (scrollTop + clientHeight >= scrollHeight - 4000) {
 			if (fetchLock) {
 				await fetchLock;
+				await tick();
+				scrollTop = target.scrollTop;
+				scrollHeight = target.scrollHeight;
+				clientHeight = target.clientHeight;
 				continue;
 			}
-			console.log('fetching');
 			const result = await fetch();
 			if (!result) break;
 			await tick();
