@@ -10,7 +10,7 @@ const preview: Preview = {
             }
         },
     },
-    decorators
+    decorators: decorators as any,
 };
 
 
