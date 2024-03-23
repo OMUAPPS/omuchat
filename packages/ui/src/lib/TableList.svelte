@@ -29,28 +29,28 @@
 	let viewport: HTMLDivElement;
 	let last: string | undefined;
 	let loadingLock = false;
-	let fetchLock: Promise<void> | undefined;
+	let fetchLock: Promise<boolean> | undefined;
 
 	async function fetch(): Promise<boolean> {
 		if (!$client.network.connected) return false;
 		if (fetchLock) {
 			await fetchLock;
 		}
-		let resolve = () => {};
-		fetchLock = new Promise<void>((r) => {
-			resolve = r;
+		fetchLock = new Promise<boolean>(async (resolve) => {
+			loadingLock = true;
+			const items = await table.fetch({
+				cursor: last,
+				before: initial
+			});
+			last = [...items.keys()].at(-1);
+			updateCache(items);
+			update();
+			loadingLock = false;
+			resolve(items.size > 0);
+		}).finally(() => {
+			fetchLock = undefined;
 		});
-		loadingLock = true;
-		const items = await table.fetch({
-			cursor: last,
-			before: initial
-		});
-		last = [...items.keys()].at(-1);
-		updateCache(items);
-		update();
-		loadingLock = false;
-		resolve();
-		return items.size > 0;
+		return await fetchLock;
 	}
 
 	$client.network.addTask(async () => {
@@ -153,6 +153,11 @@
 		const target = e.target as HTMLDivElement;
 		let { scrollTop, scrollHeight, clientHeight } = target;
 		while (scrollTop + clientHeight >= scrollHeight - 4000) {
+			if (fetchLock) {
+				await fetchLock;
+				continue;
+			}
+			console.log('fetching');
 			const result = await fetch();
 			if (!result) break;
 			await tick();
