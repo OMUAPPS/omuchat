@@ -7,7 +7,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    build:
+    storybook:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
