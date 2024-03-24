@@ -1,6 +1,5 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
-
 import license from 'license-checker';
 
 async function generateLicense() {
@@ -21,18 +20,34 @@ async function generateLicense() {
     });
     const destDir = path.join('src', 'lib', 'license');
     const destFile = path.join(destDir, 'licenses.json');
-    fs.writeFileSync(
+    await fs.writeFile(
         destFile,
         JSON.stringify([
-            ...Object.entries(licenses).map(([key, license]) => ({
-                name: license.name || key,
-                repository: license.repository,
-                url: license.url,
-                license: license.licenses,
-                licenseText: license.licenseFile && fs.readFileSync(license.licenseFile, 'utf8'),
-            })),
+            ...(await Promise.all(
+                Object.entries(licenses).map(async ([key, license]) => ({
+                    name: license.name || key,
+                    repository: license.repository,
+                    url: license.url,
+                    license: license.licenses,
+                    licenseText:
+                        license.licenseFile && (await fs.readFile(license.licenseFile, 'utf8')),
+                })),
+            )),
         ]),
     );
 }
 
-await generateLicense();
+async function generateVersion() {
+    const pkg = JSON.parse(await fs.readFile('package.json', 'utf8'));
+    const destFile = path.join('src-tauri', 'tauri.conf.json');
+    const tauriConfig = JSON.parse(await fs.readFile(destFile, 'utf8'));
+    tauriConfig.package.version = pkg.version;
+    await fs.writeFile(destFile, JSON.stringify(tauriConfig, null, 4));
+}
+
+async function main() {
+    const tasks = [generateLicense(), generateVersion()];
+    await Promise.all(tasks);
+}
+
+await main();
