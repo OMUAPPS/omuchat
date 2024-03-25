@@ -1,8 +1,8 @@
+import { browser } from '$app/environment';
 import { App, Client } from '@omuchatjs/chat';
 import { identifier } from './app.js';
-import { browser } from '$app/environment';
 
-const app = App.fromIdentifier(identifier, {
+const app = new App(identifier, {
     version: '1.0.0',
 });
 export const client = new Client({ app });

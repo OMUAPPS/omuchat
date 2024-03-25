@@ -1,10 +1,10 @@
+import { browser } from '$app/environment';
 import { Client, events } from '@omuchatjs/chat';
 import { App } from '@omuchatjs/omu';
 import { identifier } from './app.js';
 import { NotifyEntry } from './model.js';
-import { browser } from '$app/environment';
 
-const app = App.fromIdentifier(identifier, {
+const app = new App(identifier, {
     version: '1.0.0',
 });
 export const client = new Client({
