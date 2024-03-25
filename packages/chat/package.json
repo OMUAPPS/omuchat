@@ -29,10 +29,10 @@
     "devDependencies": {
         "@omuchatjs/omu": "workspace:*",
         "@types/node": "^20.11.30",
-        "@types/websocket": "1.0.2",
-        "@types/ws": "7.4.6",
-        "@typescript-eslint/eslint-plugin": "^6.21.0",
-        "@typescript-eslint/parser": "^6.21.0",
+        "@types/websocket": "1.0.10",
+        "@types/ws": "8.5.10",
+        "@typescript-eslint/eslint-plugin": "^7.3.1",
+        "@typescript-eslint/parser": "^7.3.1",
         "axios": "^1.6.8",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
@@ -41,10 +41,10 @@
         "eslint-plugin-svelte": "^2.35.1",
         "eslint-plugin-unused-imports": "^3.1.0",
         "nodemon": "^3.1.0",
-        "ts-node": "10.0.0",
+        "ts-node": "10.9.2",
         "typescript": "^5.4.3",
         "websocket": "1.0.34",
-        "ws": "7.5.2"
+        "ws": "8.16.0"
     },
     "dependencies": {
         "@omuchatjs/omu": "workspace:*"

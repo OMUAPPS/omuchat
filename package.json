@@ -4,7 +4,6 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "postinstall": "node ./scripts/postinstall.mjs",
         "build-tauri": "node ./scripts/build-tauri.mjs",
         "dev": "node ./scripts/dev.mjs",
         "build": "pnpm -r build",
