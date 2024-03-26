@@ -4,37 +4,45 @@ import type { Model } from '@omuchatjs/omu/model.js';
 import type { RoleJson } from './role.js';
 import { Role } from './role.js';
 
+export type AuthorMetadata = {
+    url?: string;
+    screen_id?: string;
+    avatar_url?: string;
+    description?: string;
+    links?: string[];
+};
+
 export type AuthorJson = {
     provider_id: string;
     id: string;
     name: string;
-    screen_id?: string;
     avatar_url?: string;
     roles?: RoleJson[];
+    metadata?: AuthorMetadata;
 };
 
 export class Author implements Keyable, Model<AuthorJson> {
     providerId: string;
     id: string;
     name: string;
-    screenId?: string;
     avatarUrl?: string;
     roles?: Role[];
+    metadata?: AuthorMetadata;
 
     constructor(options: {
         providerId: string;
         id: string;
         name: string;
-        screenId?: string;
         avatarUrl?: string;
         roles?: Role[];
+        metadata?: AuthorMetadata;
     }) {
         this.providerId = options.providerId;
         this.id = options.id;
         this.name = options.name;
-        this.screenId = options.screenId;
         this.avatarUrl = options.avatarUrl;
         this.roles = options.roles;
+        this.metadata = options.metadata;
     }
 
     static fromJson(info: AuthorJson): Author {
@@ -42,9 +50,9 @@ export class Author implements Keyable, Model<AuthorJson> {
             providerId: info.provider_id,
             id: info.id,
             name: info.name,
-            screenId: info.screen_id,
             avatarUrl: info.avatar_url,
             roles: info.roles?.map((role) => Role.fromJson(role)),
+            metadata: info.metadata,
         });
     }
 
@@ -57,9 +65,9 @@ export class Author implements Keyable, Model<AuthorJson> {
             provider_id: this.providerId,
             id: this.id,
             name: this.name,
-            screen_id: this.screenId,
             avatar_url: this.avatarUrl,
             roles: this.roles?.map((role) => role.toJson()),
+            metadata: this.metadata,
         };
     }
 }

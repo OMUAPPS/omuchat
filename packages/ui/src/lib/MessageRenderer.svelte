@@ -62,7 +62,7 @@
 							<Role {role} />
 						{/each}
 						<small>
-							{author.screenId || author.id}
+							{author.metadata?.screen_id || author.id}
 						</small>
 					</FlexRowWrapper>
 					{#if createdAt}

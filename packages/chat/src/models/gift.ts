@@ -2,24 +2,24 @@ import type { Model } from '@omuchatjs/omu/model.js';
 
 export type GiftJson = {
     id: string;
-    name: string;
-    amount: number;
-    is_paid: boolean;
+    name?: string;
+    amount?: number;
+    is_paid?: boolean;
     image_url?: string;
 };
 
 export class Gift implements Model<GiftJson> {
     id: string;
-    name: string;
-    amount: number;
-    isPaid: boolean;
+    name?: string;
+    amount?: number;
+    isPaid?: boolean;
     imageUrl?: string;
 
     constructor(options: {
         id: string;
-        name: string;
-        amount: number;
-        isPaid: boolean;
+        name?: string;
+        amount?: number;
+        isPaid?: boolean;
         imageUrl?: string;
     }) {
         this.id = options.id;
@@ -47,9 +47,5 @@ export class Gift implements Model<GiftJson> {
             is_paid: this.isPaid,
             image_url: this.imageUrl,
         };
-    }
-
-    toString(): string {
-        return this.name;
     }
 }
