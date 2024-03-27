@@ -73,6 +73,7 @@ jobs:
               run: npx lerna publish --yes --no-private --conventional-graduate
 
     publish-tauri:
+        needs: publish-npm
         permissions:
             contents: write
         strategy:
