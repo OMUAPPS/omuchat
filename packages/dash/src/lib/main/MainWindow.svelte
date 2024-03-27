@@ -4,7 +4,6 @@
 
     import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
     import ButtonOpenSettings from './ButtonOpenSettings.svelte';
-    import PageApps from './page/apps/PageApps.svelte';
     import PageAssets from './page/assets/PageAssets.svelte';
     import PageDev from './page/dev/PageDev.svelte';
     import PageHome from './page/home/PageHome.svelte';
@@ -44,11 +43,6 @@
         component: PageAssets,
         props: {},
     });
-    $pages.set('app', {
-        name: 'app',
-        component: PageApps,
-        props: {},
-    });
 
     $: if ($devMode) {
         $pages.set('dev', {
@@ -71,9 +65,10 @@
 
     function handleKeydown(event: KeyboardEvent) {
         // ctrl + [1234567890] to switch pages
-        const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-        if (event.ctrlKey && event.key >= '0' && event.key <= '9') {
-            const index = numbers.indexOf(Number(event.key));
+        const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+        if (event.ctrlKey && numbers.includes(event.key)) {
+            const index = numbers.indexOf(event.key);
+            if (index >= $pages.size) return;
             $currentPage = [...$pages.keys()][index];
             event.preventDefault();
             return;
