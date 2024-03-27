@@ -4,7 +4,7 @@
     import Header from './Header.svelte';
     import './styles.css';
 
-    const appMode = /\/apps\/./gm.test($page.url.pathname);
+    const appMode = /\/app\/./gm.test($page.url.pathname);
 </script>
 
 {#if appMode}

@@ -19,8 +19,8 @@
                     ダウンロード
                 </li>
             </a>
-            <a href="/apps">
-                <li aria-current={$page.url.pathname.startsWith('/apps') ? 'page' : undefined}>
+            <a href="/app">
+                <li aria-current={$page.url.pathname.startsWith('/app') ? 'page' : undefined}>
                     <i class="ti ti-search" />
                     アプリを探す
                 </li>

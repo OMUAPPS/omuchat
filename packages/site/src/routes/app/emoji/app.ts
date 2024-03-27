@@ -1,12 +1,12 @@
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import { AppMetadata } from '../app-metadata.js';
 
-export const IDENTIFIER = new Identifier('cc.omuchat', 'tester');
+export const IDENTIFIER = new Identifier('cc.omuchat', 'emoji');
 
 export default (origin: string) =>
     new AppMetadata({
         identifier: IDENTIFIER.key(),
-        name: 'Tester',
-        url: origin + '/apps/tester',
-        icon: 'text-size',
+        name: 'Emoji',
+        url: origin + '/app/emoji',
+        icon: 'icons',
     });

@@ -16,7 +16,7 @@ export function loadApps(origin: string) {
 }
 
 const DASHBOARD = Identifier.fromKey('cc.omuchat:dashboard');
-export const appsTable = client.tables.get(
+export const appTable = client.tables.get(
     TableType.model(DASHBOARD, {
         name: 'apps',
         model: AppMetadata,

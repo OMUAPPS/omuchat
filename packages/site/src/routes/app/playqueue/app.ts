@@ -7,6 +7,6 @@ export default (origin: string) =>
     new AppMetadata({
         identifier: identifier.key(),
         name: 'Play Queue',
-        url: origin + '/apps/playqueue',
+        url: origin + '/app/playqueue',
         icon: 'player-track-next',
     });

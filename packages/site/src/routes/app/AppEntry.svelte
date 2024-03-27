@@ -2,7 +2,7 @@
     import { Tooltip } from '@omuchatjs/ui';
     import { client } from '../client.js';
     import type { AppMetadata } from './app-metadata.js';
-    import { appsTable } from './apps.js';
+    import { appTable } from './apps.js';
     export let app: AppMetadata;
 
     function launch() {
@@ -12,19 +12,19 @@
     let alreadyAdded = false;
 
     async function action() {
-        const old = await appsTable.get(app.key());
+        const old = await appTable.get(app.key());
         console.log(old);
         if (old) {
-            appsTable.remove(app);
+            appTable.remove(app);
             alreadyAdded = false;
         } else {
-            appsTable.add(app);
+            appTable.add(app);
             alreadyAdded = true;
         }
     }
 
     client.network.addTask(async () => {
-        alreadyAdded = !!(await appsTable.get(app.key()));
+        alreadyAdded = !!(await appTable.get(app.key()));
     });
 </script>
 
