@@ -60,6 +60,7 @@
 		width: fit-content;
 		height: calc(1.4rem);
 		padding: 4px 8px;
+		margin-right: 5px;
 		font-size: 0.8rem;
 		font-weight: bold;
 		line-height: 1rem;
@@ -68,6 +69,11 @@
 
 		&.icon {
 			padding: 0;
+		}
+
+		&:not(.icon) {
+			background: var(--color-1);
+			color: var(--color-bg-2);
 		}
 	}
 
