@@ -54,6 +54,18 @@ export class Identifier implements Keyable {
         return new Identifier(namespace, ...path.split('/'));
     }
 
+    static fromUrl(url: string | URL): Identifier {
+        let parsedUrl: URL;
+        if (typeof url === 'string') {
+            parsedUrl = new URL(url);
+        } else {
+            parsedUrl = url;
+        }
+        const namespace = parsedUrl.hostname.split('.').reverse().join('.');
+        const path = parsedUrl.pathname.slice(1).split('/');
+        return new Identifier(namespace, ...path);
+    }
+
     public key(): string {
         return Identifier.format(this.namespace, ...this.path);
     }

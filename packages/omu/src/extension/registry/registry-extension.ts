@@ -22,6 +22,15 @@ export class RegistryExtension implements Extension {
             registryType.serializer,
         );
     }
+
+    create<T>(name: string, defaultValue: T): Registry<T> {
+        return new RegistryImpl(
+            this.client,
+            this.client.app.identifier.join(name),
+            defaultValue,
+            Serializer.json(),
+        );
+    }
 }
 
 class RegistryImpl<T> implements Registry<T> {

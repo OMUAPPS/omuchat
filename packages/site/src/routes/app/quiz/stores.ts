@@ -1,8 +1,8 @@
+import type { Registry } from '@omuchatjs/omu/extension/registry/registry.js';
 import { writable, type Readable } from 'svelte/store';
 import { client } from './client.js';
-import type { Registry } from '@omuchatjs/omu/extension/registry/registry.js';
-import type { Quiz, QuizData } from './quiz.js';
 import type { GameData } from './game/game.js';
+import type { Quiz, QuizData } from './quiz.js';
 
 export type ScreenType = 'connecting' | 'create' | 'game';
 export const screen = writable<ScreenType | null>('connecting');
@@ -16,11 +16,11 @@ function wrapRegistry<T>(registry: Registry<T>): Readable<T> {
     return { subscribe };
 }
 
-export const GAME_DATA = client.omu.registry.get<GameData | null>({ name: 'game' }, null);
+export const GAME_DATA = client.registry.create<GameData | null>('game', null);
 export const gameData = wrapRegistry(GAME_DATA);
 
 type Quizzes = Record<string, QuizData>;
-const QUIZZES = client.omu.registry.get<Quizzes>({ name: 'quizzes' }, {});
+const QUIZZES = client.registry.create<Quizzes>('quizzes', {});
 export const quizzes = wrapRegistry(QUIZZES);
 
 export async function getQuizzes() {

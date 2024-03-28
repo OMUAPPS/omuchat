@@ -20,7 +20,7 @@
         "ts": "npm run ts-esm && npm run ts-dts",
         "ts-esm": "tsc --outDir built/esm",
         "ts-dts": "tsc --outDir built/dts --declaration true --emitDeclarationOnly true --declarationMap true",
-        "watch": "nodemon --watch src --exec \"npm run ts\"",
+        "watch": "nodemon -w src -e ts,json --exec \"npm run ts\"",
         "dev": "npm run watch",
         "build": "npm run ts",
         "lint": "eslint . --ext .js,.ts",

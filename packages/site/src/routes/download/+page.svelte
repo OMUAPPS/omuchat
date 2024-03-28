@@ -50,7 +50,7 @@
                 <i class="ti ti-download" />
             </a>
         {/if}
-        <a href="/apps">
+        <a href="/app">
             アプリを探す
             <i class="ti ti-player-play" />
         </a>
