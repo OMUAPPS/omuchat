@@ -129,7 +129,11 @@
 		viewport.scrollTo({ top: 0 });
 	}
 
-	function update() {
+	function update(
+		filter?: (key: string, entry: T) => boolean,
+		sort?: (a: T, b: T) => number,
+		reverse?: boolean
+	) {
 		items = Array.from(entries.entries());
 		if (filter) {
 			items = items.filter(([key, entry]) => filter(key, entry));
@@ -145,8 +149,12 @@
 
 	$: {
 		if (!items.length || (startIndex === 0 && updated)) {
-			update();
+			update(filter, sort, reverse);
 		}
+	}
+
+	$: {
+		update(filter, sort, reverse);
 	}
 
 	async function handleScroll(e: Event) {
