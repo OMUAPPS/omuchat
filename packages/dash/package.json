@@ -1,7 +1,7 @@
 {
     "name": "dash",
     "private": true,
-    "version": "0.1.1",
+    "version": "0.0.0",
     "type": "module",
     "scripts": {
         "prepare": "svelte-kit sync",

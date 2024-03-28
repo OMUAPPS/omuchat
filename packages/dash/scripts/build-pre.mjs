@@ -38,10 +38,11 @@ async function generateLicense() {
 }
 
 async function generateVersion() {
-    const pkg = JSON.parse(await fs.readFile('package.json', 'utf8'));
+    const rootWorkspace = path.resolve(process.cwd(), '..', '..');
+    const lerna = JSON.parse(await fs.readFile(path.join(rootWorkspace, 'lerna.json'), 'utf8'));
     const destFile = path.join('src-tauri', 'tauri.conf.json');
     const tauriConfig = JSON.parse(await fs.readFile(destFile, 'utf8'));
-    tauriConfig.package.version = pkg.version;
+    tauriConfig.package.version = lerna.version;
     await fs.writeFile(destFile, JSON.stringify(tauriConfig, null, 4));
 }
 

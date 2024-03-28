@@ -27,17 +27,32 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v3
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - uses: pnpm/action-setup@v3
+              name: Install pnpm
               with:
                   version: 8
                   run_install: false
 
-            - uses: actions/setup-node@v4.0.1
+            - name: Get pnpm store directory
+              shell: bash
+              run: |
+                  echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+            - uses: actions/cache@v4
+              name: Setup pnpm cache
               with:
-                  node-version: '20.x'
-                  registry-url: 'https://registry.npmjs.org'
-                  cache: 'pnpm'
+                  path: ${{ env.STORE_PATH }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-store-
+
+            - name: Install dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Git Identity
               run: |
@@ -46,21 +61,6 @@ jobs:
                   git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Get pnpm store path
-              id: pnpm-store-path
-              run: echo "::set-output name=store_path::$(pnpm store path)"
-
-            - name: Cache pnpm store
-              uses: actions/cache@v4
-              with:
-                  path: ${{ steps.pnpm-store-path.outputs.store_path }}
-                  key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-                  restore-keys: |
-                      pnpm-${{ runner.os }}-
-
-            - name: Install dependencies
-              run: pnpm i --frozen-lockfile
 
             - name: Build
               run: npx lerna run build
@@ -89,23 +89,29 @@ jobs:
 
             - run: corepack enable
 
-            - name: Setup Node.js 20.10.0
-              uses: actions/setup-node@v4.0.2
+            - name: Install Node.js
+              uses: actions/setup-node@v4
               with:
-                  node-version: 20.10.0
-                  cache: 'pnpm'
+                  node-version: 20
 
-            - name: Get pnpm store path
-              id: pnpm-store-path
-              run: echo "::set-output name=store_path::$(pnpm store path)"
-
-            - name: Cache pnpm store
-              uses: actions/cache@v4
+            - uses: pnpm/action-setup@v3
+              name: Install pnpm
               with:
-                  path: ${{ steps.pnpm-store-path.outputs.store_path }}
-                  key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  version: 8
+                  run_install: false
+
+            - name: Get pnpm store directory
+              shell: bash
+              run: |
+                  echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+            - uses: actions/cache@v4
+              name: Setup pnpm cache
+              with:
+                  path: ${{ env.STORE_PATH }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
                   restore-keys: |
-                      pnpm-${{ runner.os }}-
+                      ${{ runner.os }}-pnpm-store-
 
             - name: Install dependencies
               run: pnpm i --frozen-lockfile
