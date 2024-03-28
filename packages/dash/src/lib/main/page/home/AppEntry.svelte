@@ -36,7 +36,7 @@
         </FlexRowWrapper>
         <div class="right">
             {$t('panels.apps.start_apps')}
-            <i class="ti ti-arrow-right" />
+            <i class="ti ti-player-play" />
         </div>
     </FlexRowWrapper>
 </button>
@@ -64,11 +64,11 @@
         right: 5px;
         bottom: 5px;
         display: flex;
-        flex-direction: column;
         gap: 5px;
-        align-items: flex-end;
+        align-items: baseline;
         justify-content: center;
         padding-right: 20px;
+        padding-top: 20px;
         text-wrap: nowrap;
         visibility: hidden;
         background: linear-gradient(
