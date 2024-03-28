@@ -124,7 +124,7 @@ export function testEmoji(emoji: Emoji) {
     client.chat.messages.add(
         new models.Message({
             id: Date.now().toString(),
-            room_id: room.key(),
+            roomId: room.key(),
             content: new models.content.System([
                 models.content.Image.of({
                     url: client.assets.url(emoji.asset),
@@ -133,7 +133,7 @@ export function testEmoji(emoji: Emoji) {
                 }),
                 models.content.Text.of(emoji.id),
             ]),
-            created_at: new Date(),
+            createdAt: new Date(),
         }),
     );
 }

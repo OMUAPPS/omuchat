@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
+    import { ButtonMini, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
     import { client } from './client.js';
     import { EMOJI_TABLE, deleteEmoji, editEmoji, testEmoji, type Emoji } from './emoji.js';
 
@@ -22,7 +22,7 @@
     </FlexRowWrapper>
     <div class="info">
         <button class="name" on:click={copyName}>
-            <Tooltip>クリックでコピー</Tooltip>
+            <Tooltip>クリックで名前をコピー</Tooltip>
             {entry.id}
         </button>
         <small>
@@ -30,20 +30,20 @@
         </small>
     </div>
     {#if selected}
-        <div class="buttons">
-            <button on:click={() => testEmoji(entry)}>
+        <FlexRowWrapper>
+            <ButtonMini on:click={() => testEmoji(entry)}>
                 <Tooltip>テスト</Tooltip>
                 <i class="ti ti-send" />
-            </button>
-            <button on:click={() => editEmoji(entry)}>
+            </ButtonMini>
+            <ButtonMini on:click={() => editEmoji(entry)}>
                 <Tooltip>編集</Tooltip>
                 <i class="ti ti-pencil" />
-            </button>
-            <button on:click={() => deleteEmoji(entry)}>
+            </ButtonMini>
+            <ButtonMini on:click={() => deleteEmoji(entry)}>
                 <Tooltip>削除</Tooltip>
                 <i class="ti ti-trash" />
-            </button>
-        </div>
+            </ButtonMini>
+        </FlexRowWrapper>
     {/if}
 </div>
 
@@ -63,6 +63,10 @@
         max-height: 128px;
     }
 
+    small {
+        font-size: 0.6em;
+    }
+
     img {
         width: 40px;
         height: 40px;
@@ -73,23 +77,6 @@
     .selected {
         outline: 1px solid var(--color-1);
         outline-offset: -4px;
-    }
-
-    .buttons {
-        display: flex;
-
-        > button {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            width: 2rem;
-            height: 2rem;
-            color: var(--color-text);
-            cursor: pointer;
-            background: none;
-            border: none;
-        }
     }
 
     .info {

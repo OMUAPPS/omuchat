@@ -9,6 +9,17 @@
     const emojis = client.tables.get(EMOJI_TABLE);
 
     let search: string = '';
+
+    let searchFilter = (key: string, emoji: Emoji) => true;
+
+    function createFilter(search: string) {
+        return (key: string, emoji: Emoji) => emoji.id.includes(search);
+    }
+
+    function updateFilter() {
+        searchFilter = createFilter(search);
+    }
+
     let uploading: number = 0;
 
     async function upload(files: Array<{ key: string; buffer: Uint8Array }>) {
@@ -56,7 +67,7 @@
 <main>
     <Header title="絵文字" icon="ti-icons">
         <div class="search">
-            <input placeholder="検索" bind:value={search} />
+            <input placeholder="検索" bind:value={search} on:input={updateFilter} />
         </div>
     </Header>
     {#if $selectedEmoji}
@@ -65,30 +76,28 @@
         </div>
     {/if}
     <div class="emojis">
-        <div class="upload">
-            <button on:click={() => fileDrop.click()}>
-                ファイルを選択してアップロード
+        <button on:click={() => fileDrop.click()}>
+            ファイルを選択してアップロード
+            <i class="ti ti-upload" />
+        </button>
+        <input
+            type="file"
+            multiple
+            hidden
+            bind:files
+            bind:this={fileDrop}
+            on:change={uploadFiles}
+            accept="image/*"
+            placeholder="画像を選択"
+        />
+        {#if uploading > 0}
+            <span>
                 <i class="ti ti-upload" />
-            </button>
-            <input
-                type="file"
-                multiple
-                hidden
-                bind:files
-                bind:this={fileDrop}
-                on:change={uploadFiles}
-                accept="image/*"
-                placeholder="画像を選択"
-            />
-            {#if uploading > 0}
-                <span>
-                    <i class="ti ti-upload" />
-                    アップロード中…
-                </span>
-            {/if}
-        </div>
+                アップロード中…
+            </span>
+        {/if}
         <div class="list">
-            <TableList table={emojis} component={EmojiEntry} />
+            <TableList table={emojis} component={EmojiEntry} filter={searchFilter} />
         </div>
     </div>
 </main>
@@ -117,6 +126,7 @@
         align-items: center;
         width: 100%;
         padding: 20px;
+        padding-bottom: 0;
     }
 
     .emojis {
@@ -126,36 +136,18 @@
         width: 100%;
         height: 100%;
         padding: 20px;
+        padding-top: 10px;
         background: var(--color-bg-1);
     }
 
-    .upload {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        align-items: center;
-        width: 100%;
-        height: 40px;
-
-        span {
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-            align-items: center;
-            padding: 0 10px;
-            font-size: 12px;
-            font-weight: bold;
-            color: var(--color-1);
-        }
-    }
-
     button {
+        align-self: flex-end;
         display: flex;
         flex-direction: row;
         gap: 5px;
         align-items: center;
         width: fit-content;
-        padding: 5px;
+        padding: 5px 10px;
         font-size: 14px;
         font-weight: bold;
         color: var(--color-1);
@@ -165,6 +157,10 @@
 
         i {
             font-size: 1.2em;
+        }
+
+        &:hover {
+            outline: 1px solid var(--color-1);
         }
     }
 </style>
