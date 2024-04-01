@@ -13,6 +13,7 @@
     import { JustifyBaselineWrapper, Tooltip } from '@omuchatjs/ui';
 
     export let screen: ScreenHandle;
+    export let props: {};
     let result: ShareResnponse | undefined;
     let url: string = '';
     let qrImage: HTMLImageElement;

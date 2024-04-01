@@ -81,10 +81,11 @@ export class Network {
                 token: await this.tokenProcider.get(this.address, this.client.app),
             }),
         });
+        const listen = this.listen();
         await this.listeners.status.emit('connected');
         await this.listeners.connected.emit();
         this.dispatchTasks();
-        await this.listen();
+        await listen;
 
         if (recconect) {
             await this.connect(recconect);

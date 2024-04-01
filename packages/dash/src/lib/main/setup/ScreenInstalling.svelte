@@ -13,6 +13,7 @@
     import { invoke, listen } from '$lib/utils/tauri.js';
 
     export let screen: ScreenHandle;
+    export let props: {};
 
     let progress: {
         progress: number;

@@ -16,6 +16,7 @@
     import { Tooltip } from '@omuchatjs/ui';
 
     export let screen: ScreenHandle;
+    export let props: {};
     const { chat, client } = getClient();
 
     let result: Map<string, { channel: models.Channel; active: boolean }> | undefined;

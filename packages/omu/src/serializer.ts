@@ -12,6 +12,10 @@ export class Serializer<T, D> {
         public deserialize: (data: D) => T,
     ) { }
 
+    static of<T, D>(serializer: Serializable<T, D>): Serializer<T, D> {
+        return new Serializer<T, D>(serializer.serialize, serializer.deserialize);
+    }
+
     static noop<T>(): Serializer<T, T> {
         return new Serializer<T, T>(
             (data) => data,

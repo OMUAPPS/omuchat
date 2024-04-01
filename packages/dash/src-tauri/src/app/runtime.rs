@@ -167,7 +167,7 @@ pub fn get_status() -> ServerStatus {
 
 pub fn generate_token() -> String {
     if cfg!(dev) {
-        "dev-admin-token".to_string()
+        "dev-token".to_string()
     } else {
         rand::thread_rng()
             .sample_iter(&rand::distributions::Alphanumeric)

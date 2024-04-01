@@ -1,8 +1,10 @@
 import { EventEmitter } from '../event-emitter.js';
 import type { AssetExtension } from '../extension/asset/asset-extension.js';
+import type { DashboardExtension } from '../extension/dashboard/dashboard-extension.js';
 import type { EndpointExtension } from '../extension/endpoint/index.js';
-import type { ExtensionManager as ExtensionManager } from '../extension/extension-manager.js';
+import type { ExtensionManager } from '../extension/extension-manager.js';
 import type { MessageExtension } from '../extension/message/message-extension.js';
+import type { PermissionExtension } from '../extension/permission/permission-extension.js';
 import type { RegistryExtension } from '../extension/registry/registry-extension.js';
 import type { App, ServerExtension } from '../extension/server/index.js';
 import type { TableExtension } from '../extension/table/table-extension.js';
@@ -23,6 +25,8 @@ export interface Client {
     readonly network: Network;
     readonly extensions: ExtensionManager;
     readonly endpoints: EndpointExtension;
+    readonly permissions: PermissionExtension;
+    readonly dashboard: DashboardExtension;
     readonly tables: TableExtension;
     readonly registry: RegistryExtension;
     readonly message: MessageExtension;

@@ -16,14 +16,16 @@ export class EndpointType<Req = unknown, Res = unknown> {
             responseSerializer,
         }: {
             name: string,
-            requestSerializer?: Serializable<Req, Uint8Array>,
-            responseSerializer?: Serializable<Res, Uint8Array>,
+            requestSerializer?: Serializable<Req, any>,
+            responseSerializer?: Serializable<Res, any>,
         },
     ): EndpointType<Req, Res> {
         return new EndpointType<Req, Res>(
             identifier.join(name),
-            requestSerializer ?? Serializer.json<Req>(),
-            responseSerializer ?? Serializer.json<Res>(),
+            Serializer.of<Req, any>(requestSerializer ?? Serializer.noop())
+                .pipe(Serializer.json()),
+            Serializer.of<Res, any>(responseSerializer ?? Serializer.noop())
+                .pipe(Serializer.json()),
         );
     }
 

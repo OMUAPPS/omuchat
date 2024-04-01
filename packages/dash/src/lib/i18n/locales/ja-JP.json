@@ -152,6 +152,11 @@
             "name": "チャンネルを追加",
             "icon": "ti ti-plus",
             "description": "チャンネルを追加します。"
+        },
+        "permission_request": {
+            "name": "権限を要求",
+            "icon": "ti ti-lock",
+            "description": "権限を要求します。"
         }
     },
     "settings": {
