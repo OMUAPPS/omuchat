@@ -9,6 +9,14 @@
 	export let baseline = false;
 	export let gap = false;
 	export let alignItems: 'start' | 'center' | 'end' | undefined = undefined;
+	export let justifyContent:
+		| 'start'
+		| 'center'
+		| 'end'
+		| 'space-between'
+		| 'space-around'
+		| 'space-evenly'
+		| undefined = undefined;
 </script>
 
 <div
@@ -19,7 +27,7 @@
 	class:gap
 	class:wrap
 	class:baseline
-	style={style({ alignItems })}
+	style={style({ alignItems, justifyContent })}
 >
 	<slot />
 </div>

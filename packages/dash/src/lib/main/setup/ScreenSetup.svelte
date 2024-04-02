@@ -79,7 +79,7 @@
     });
 </script>
 
-<Screen {screen} title="setup" windowed={false} noDecorated noClose>
+<Screen {screen} title="setup" windowed={false} disableDecorations noClose>
     <div class="background">
         <Background />
     </div>

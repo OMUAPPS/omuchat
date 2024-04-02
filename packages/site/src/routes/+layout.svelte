@@ -1,6 +1,6 @@
 <script>
     import { page } from '$app/stores';
-    import ThemeProvider from '$lib/theme/ThemeProvider.svelte';
+    import { Theme } from '@omuchatjs/ui';
     import Header from './Header.svelte';
     import './styles.css';
 
@@ -10,7 +10,7 @@
 {#if appMode}
     <div class="app">
         <slot />
-        <ThemeProvider />
+        <Theme />
     </div>
 {:else}
     <div class="app">
@@ -23,7 +23,7 @@
         <footer>
             <p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
         </footer>
-        <ThemeProvider />
+        <Theme />
     </div>
 {/if}
 

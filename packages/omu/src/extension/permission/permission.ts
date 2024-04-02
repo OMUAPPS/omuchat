@@ -14,11 +14,9 @@ export class PermissionType implements Model<PermissionTypeJson> {
         this.identifier = options.identifier;
     }
 
-    static create({
-        identifier,
+    static create(identifier: Identifier, {
         name,
     }: {
-        identifier: Identifier,
         name: string,
     }): PermissionType {
         return new PermissionType({

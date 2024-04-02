@@ -2,10 +2,18 @@ import fs from 'fs/promises';
 import path from 'path';
 
 const paths = [
+    'node_modules',
+    'packages/omu/node_modules',
     'packages/omu/built',
+    'packages/chat/node_modules',
     'packages/chat/built',
+    'packages/i18n/node_modules',
     'packages/i18n/built',
+    'packages/ui/node_modules',
     'packages/ui/dist',
+    'packages/ui/.svelte-kit',
+    'packages/dash/node_modules',
+    'packages/dash/.svelte-kit',
 ];
 
 async function clean() {

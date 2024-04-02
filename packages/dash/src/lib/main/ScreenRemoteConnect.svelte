@@ -40,7 +40,7 @@
     }
 </script>
 
-<Screen {screen} title="remote_connect" windowed={false} noDecorated>
+<Screen {screen} title="remote_connect" windowed={false} disableDecorations>
     <Background />
     <div class="container">
         <div class="result">

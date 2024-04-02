@@ -7,18 +7,24 @@
     export let screen: ScreenHandle;
     export let title: string;
     export let windowed: boolean = true;
-    export let noDecorated: boolean = false;
-    export let noClose: boolean = false;
+    export let disableDecorations: boolean = false;
+    export let disableClose: boolean = false;
     let container: HTMLButtonElement;
 
     function onClick(event: MouseEvent) {
+        if (disableClose) {
+            return;
+        }
         if (event.target === container) {
             screen.pop();
         }
     }
 
     function onKeyPress(e: KeyboardEvent) {
-        if (!noClose && e.key === 'Escape') {
+        if (disableClose) {
+            return;
+        }
+        if (e.key === 'Escape') {
             screen.pop();
         }
     }
@@ -28,11 +34,11 @@
 
 <button class="container" class:windowed on:click={onClick} bind:this={container}>
     <div class="screen" class:windowed>
-        {#if !noDecorated && windowed}
+        {#if !disableDecorations && windowed}
             <ScreenHeader {title} />
         {/if}
-        <div class:windowed class={classes('content', noDecorated && 'no-decorated')}>
-            {#if !noDecorated && !windowed}
+        <div class:windowed class={classes('content', disableDecorations && 'no-decorated')}>
+            {#if !disableDecorations && !windowed}
                 <ScreenHeader {title} />
             {/if}
             <slot />
@@ -81,7 +87,6 @@
             width: 500px;
             height: 300px;
             border: 2px solid var(--color-1);
-            box-shadow: 0 8px 0 0 var(--color-2);
         }
 
         &:not(.windowed) {

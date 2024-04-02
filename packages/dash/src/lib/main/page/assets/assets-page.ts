@@ -1,12 +1,12 @@
 import { writable } from 'svelte/store';
 
 import { browser } from '$app/environment';
-import { invoke, isOnTauri } from '$lib/utils/tauri.js';
+import { invoke, IS_TAURI } from '$lib/utils/tauri.js';
 
 export const origin = writable<string>();
 
 async function setOrigin() {
-    if (isOnTauri) {
+    if (IS_TAURI) {
         const res = await invoke('share_url');
         origin.set(`http://${res.host}:${res.port}`);
     } else {

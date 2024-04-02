@@ -86,6 +86,7 @@ export class Network {
         await this.listeners.connected.emit();
         this.dispatchTasks();
         await listen;
+        this.disconnect();
 
         if (recconect) {
             await this.connect(recconect);
@@ -103,17 +104,19 @@ export class Network {
     }
 
     public send(packet: Packet): void {
+        if (!this.connected) {
+            throw new Error('Not connected');
+        }
         this.connection.send(packet, this.packetMapper);
     }
 
     private async listen(): Promise<void> {
-        try {
-            while (!this.connection.closed) {
-                const packet = await this.connection.receive(this.packetMapper);
-                this.dispatchPacket(packet);
+        while (!this.connection.closed) {
+            const packet = await this.connection.receive(this.packetMapper);
+            if (!packet) {
+                return;
             }
-        } finally {
-            this.disconnect();
+            this.dispatchPacket(packet);
         }
     }
 
