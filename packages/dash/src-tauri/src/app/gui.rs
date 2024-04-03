@@ -127,7 +127,7 @@ pub fn gui_main() {
 
     let server_state = get_status();
 
-    let token = if server_state == ServerStatus::AlreadyRunning {
+    let token = if !cfg!(dev) && server_state == ServerStatus::AlreadyRunning {
         None
     } else {
         Some(generate_token())
