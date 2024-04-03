@@ -5,7 +5,7 @@
 
     import { setClient } from './client.js';
 
-    import { invoke, isOnTauri } from '$lib/utils/tauri.js';
+    import { invoke, IS_TAURI } from '$lib/utils/tauri.js';
     import { BrowserTokenProvider } from '@omuchatjs/chat/client.js';
     import { Dashboard } from './dashboard.js';
 
@@ -20,7 +20,7 @@
 
     class TokenProvider extends BrowserTokenProvider {
         async get(serverAddress: Address, app: App): Promise<string | undefined> {
-            if (isOnTauri) {
+            if (IS_TAURI) {
                 return await invoke('get_token');
             }
             return super.get(serverAddress, app);
@@ -40,6 +40,10 @@
         chat: client.chat,
         client: client,
         dashboard: new Dashboard(client),
+    });
+    client.plugins.require({
+        omuplugin_chat: null,
+        omuchatprovider: null,
     });
 
     if (connect) {

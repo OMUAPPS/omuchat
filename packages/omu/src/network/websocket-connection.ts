@@ -57,9 +57,12 @@ export class WebsocketConnection implements Connection {
         }
     }
 
-    public async receive(serializer: Serializable<Packet<unknown>, PacketData>): Promise<Packet> {
+    public async receive(serializer: Serializable<Packet<unknown>, PacketData>): Promise<Packet | null> {
         if (this.receiveWaiter) {
             throw new Error('Already receiving');
+        }
+        if (!this.connected || !this.socket) {
+            return null;
         }
         while (this.packetQueue.length === 0) {
             await new Promise<void>((resolve) => {

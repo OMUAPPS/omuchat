@@ -13,6 +13,7 @@
     import { invoke, listen } from '$lib/utils/tauri.js';
 
     export let screen: ScreenHandle;
+    export let props: {};
 
     let progress: {
         progress: number;
@@ -43,7 +44,7 @@
     });
 </script>
 
-<Screen {screen} title="installing" windowed={false} noDecorated>
+<Screen {screen} title="installing" windowed={false} disableDecorations>
     <div class="background">
         <Background />
     </div>

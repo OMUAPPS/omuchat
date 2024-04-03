@@ -13,6 +13,7 @@
     import { JustifyBaselineWrapper, Tooltip } from '@omuchatjs/ui';
 
     export let screen: ScreenHandle;
+    export let props: {};
     let result: ShareResnponse | undefined;
     let url: string = '';
     let qrImage: HTMLImageElement;
@@ -39,7 +40,7 @@
     }
 </script>
 
-<Screen {screen} title="remote_connect" windowed={false} noDecorated>
+<Screen {screen} title="remote_connect" windowed={false} disableDecorations>
     <Background />
     <div class="container">
         <div class="result">

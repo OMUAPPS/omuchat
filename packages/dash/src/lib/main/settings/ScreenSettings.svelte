@@ -10,6 +10,7 @@
     import { JustifyBaselineWrapper } from '@omuchatjs/ui';
 
     export let screen: ScreenHandle;
+    export let props: {};
 
     const categories = [
         ...[...SETTING_REGISTRY.entries()].map(([name, settings]) => {

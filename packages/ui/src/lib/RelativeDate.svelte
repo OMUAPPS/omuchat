@@ -34,8 +34,8 @@
 		const diff = now.getTime() - date.getTime();
 
 		if (diff < 0) {
-			formattedDate = $translate('date.in_the_future');
 			sleep(-1 * diff);
+			formattedDate = $translate('date.in_the_future');
 			return;
 		}
 

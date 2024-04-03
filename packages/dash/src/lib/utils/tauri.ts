@@ -159,7 +159,7 @@ export function checkOnTauri() {
     if (typeof window.__TAURI_IPC__ === 'undefined') return false;
     return true;
 }
-export const isOnTauri = checkOnTauri();
+export const IS_TAURI = checkOnTauri();
 
 export function waitForTauri() {
     if (!checkOnTauri()) {

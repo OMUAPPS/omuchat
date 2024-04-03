@@ -20,19 +20,19 @@ export class App implements Keyable, Model<AppJson> {
     public version?: string;
     public description?: string;
     public authors?: string[];
-    public site_url?: string;
-    public repository_url?: string;
+    public siteUrl?: string;
+    public repositoryUrl?: string;
     public license?: string;
-    public image_url?: string;
+    public imageUrl?: string;
 
     constructor(identifier: Identifier, options: {
         version?: string;
         description?: string;
         authors?: string[];
-        site_url?: string;
-        repository_url?: string;
+        siteUrl?: string;
+        repositoryUrl?: string;
         license?: string;
-        image_url?: string;
+        imageUrl?: string;
     }) {
         this.identifier = identifier;
         this.name = identifier.path.join('/');
@@ -40,10 +40,10 @@ export class App implements Keyable, Model<AppJson> {
         this.version = options.version;
         this.description = options.description;
         this.authors = options.authors;
-        this.site_url = options.site_url;
-        this.repository_url = options.repository_url;
+        this.siteUrl = options.siteUrl;
+        this.repositoryUrl = options.repositoryUrl;
         this.license = options.license;
-        this.image_url = options.image_url;
+        this.imageUrl = options.imageUrl;
     }
 
     key(): string {
@@ -56,10 +56,10 @@ export class App implements Keyable, Model<AppJson> {
             version: info.version,
             description: info.description,
             authors: info.authors,
-            site_url: info.site_url,
-            repository_url: info.repository_url,
+            siteUrl: info.site_url,
+            repositoryUrl: info.repository_url,
             license: info.license,
-            image_url: info.image_url,
+            imageUrl: info.image_url,
         });
     }
 
@@ -69,10 +69,10 @@ export class App implements Keyable, Model<AppJson> {
             version: this.version,
             description: this.description,
             authors: this.authors,
-            site_url: this.site_url,
-            repository_url: this.repository_url,
+            site_url: this.siteUrl,
+            repository_url: this.repositoryUrl,
             license: this.license,
-            image_url: this.image_url,
+            image_url: this.imageUrl,
         };
     }
 }

@@ -37,7 +37,7 @@ export class PacketMapper implements Serializable<Packet, PacketData> {
 export interface Connection {
     connect(): Promise<void>;
     send(packet: Packet, serializer: Serializable<Packet, PacketData>): void;
-    receive(serializer: Serializable<Packet, PacketData>): Promise<Packet>;
+    receive(serializer: Serializable<Packet, PacketData>): Promise<Packet | null>;
     close(): void;
     closed: boolean;
 }

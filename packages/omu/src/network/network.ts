@@ -81,10 +81,12 @@ export class Network {
                 token: await this.tokenProcider.get(this.address, this.client.app),
             }),
         });
+        const listen = this.listen();
         await this.listeners.status.emit('connected');
         await this.listeners.connected.emit();
         this.dispatchTasks();
-        await this.listen();
+        await listen;
+        this.disconnect();
 
         if (recconect) {
             await this.connect(recconect);
@@ -102,17 +104,19 @@ export class Network {
     }
 
     public send(packet: Packet): void {
+        if (!this.connected) {
+            throw new Error('Not connected');
+        }
         this.connection.send(packet, this.packetMapper);
     }
 
     private async listen(): Promise<void> {
-        try {
-            while (!this.connection.closed) {
-                const packet = await this.connection.receive(this.packetMapper);
-                this.dispatchPacket(packet);
+        while (!this.connection.closed) {
+            const packet = await this.connection.receive(this.packetMapper);
+            if (!packet) {
+                return;
             }
-        } finally {
-            this.disconnect();
+            this.dispatchPacket(packet);
         }
     }
 

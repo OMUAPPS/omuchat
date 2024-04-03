@@ -15,7 +15,7 @@
         flex-direction: row;
         gap: 10px;
         align-items: baseline;
-        height: 40px;
+        height: 32px;
         font-size: 18px;
         font-style: normal;
         font-weight: 600;

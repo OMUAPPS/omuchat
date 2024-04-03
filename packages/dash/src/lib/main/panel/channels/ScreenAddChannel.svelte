@@ -11,6 +11,7 @@
 
     const { chat } = getClient();
     export let screen: ScreenHandle;
+    export let props: {};
     let providers: Map<string, models.Provider> | undefined;
     let url: string = '';
 

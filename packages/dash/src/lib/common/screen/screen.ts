@@ -1,5 +1,5 @@
 import type { TypedComponent } from '@omuchatjs/ui';
-import { get, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
 
 
@@ -10,7 +10,7 @@ export type ScreenHandle = {
 
 export type ScreenComponentType<T> = TypedComponent<{
     screen: ScreenHandle;
-    props?: T;
+    props: T;
 }>;
 
 export interface ScreenComponent<T> {
@@ -24,9 +24,6 @@ const stack = writable<Map<number, ScreenComponent<unknown>>>(new Map());
 const current = writable<ScreenComponent<unknown> | null>(null);
 
 function push<T>(component: ScreenComponentType<T>, props: T) {
-    if (get(current)?.component === component) {
-        return;
-    }
     stack.update((stack) => {
         const newId = id++;
         stack.set(newId, {
