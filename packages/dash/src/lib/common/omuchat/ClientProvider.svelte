@@ -41,6 +41,10 @@
         client: client,
         dashboard: new Dashboard(client),
     });
+    client.plugins.require({
+        omuplugin_chat: null,
+        omuchatprovider: null,
+    });
 
     if (connect) {
         client.start();
