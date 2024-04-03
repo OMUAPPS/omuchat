@@ -7,6 +7,8 @@ import { ExtensionManager } from '../extension/extension-manager.js';
 import type { MessageExtension } from '../extension/message/message-extension.js';
 import { MessageExtensionType as MESSAGE_EXTENSION_TYPE } from '../extension/message/message-extension.js';
 import { PERMISSION_EXTENSION_TYPE, type PermissionExtension } from '../extension/permission/permission-extension.js';
+import type { PluginExtension } from '../extension/plugin/plugin-extension.js';
+import { PLUGIN_EXTENSION_TYPE } from '../extension/plugin/plugin-extension.js';
 import type { RegistryExtension } from '../extension/registry/registry-extension.js';
 import { RegistryExtensionType as REGISTRY_EXTENSION_TYPE } from '../extension/registry/registry-extension.js';
 import type { App, ServerExtension } from '../extension/server/index.js';
@@ -31,6 +33,7 @@ export class OmuClient implements Client {
     readonly network: Network;
     readonly endpoints: EndpointExtension;
     readonly permissions: PermissionExtension;
+    readonly plugins: PluginExtension;
     readonly dashboard: DashboardExtension;
     readonly extensions: ExtensionManager;
     readonly tables: TableExtension;
@@ -55,6 +58,7 @@ export class OmuClient implements Client {
 
         this.endpoints = this.extensions.register(ENDPOINT_EXTENSION_TYPE);
         this.permissions = this.extensions.register(PERMISSION_EXTENSION_TYPE);
+        this.plugins = this.extensions.register(PLUGIN_EXTENSION_TYPE);
         this.dashboard = this.extensions.register(DASHBOARD_EXTENSION_TYPE);
         this.tables = this.extensions.register(TABLE_EXTENSION_TYPE);
         this.registry = this.extensions.register(REGISTRY_EXTENSION_TYPE);

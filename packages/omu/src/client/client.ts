@@ -5,6 +5,7 @@ import type { EndpointExtension } from '../extension/endpoint/index.js';
 import type { ExtensionManager } from '../extension/extension-manager.js';
 import type { MessageExtension } from '../extension/message/message-extension.js';
 import type { PermissionExtension } from '../extension/permission/permission-extension.js';
+import type { PluginExtension } from '../extension/plugin/plugin-extension.js';
 import type { RegistryExtension } from '../extension/registry/registry-extension.js';
 import type { App, ServerExtension } from '../extension/server/index.js';
 import type { TableExtension } from '../extension/table/table-extension.js';
@@ -26,6 +27,7 @@ export interface Client {
     readonly extensions: ExtensionManager;
     readonly endpoints: EndpointExtension;
     readonly permissions: PermissionExtension;
+    readonly plugins: PluginExtension;
     readonly dashboard: DashboardExtension;
     readonly tables: TableExtension;
     readonly registry: RegistryExtension;

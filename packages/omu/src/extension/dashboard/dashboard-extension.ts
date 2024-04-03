@@ -40,6 +40,9 @@ export class DashboardExtension {
     }
 
     private async handleConnected(): Promise<void> {
+        if (this.dashboard === null) {
+            return;
+        }
         const response = await this.client.endpoints.call(DASHBOARD_SET_ENDPOINT, this.client.app.identifier);
         if (!response.success) {
             throw new Error('Failed to set dashboard');

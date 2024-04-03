@@ -16,13 +16,13 @@ const PERMISSION_REQUEST_ENDPOINT = EndpointType.createJson(PERMISSION_EXTENSION
     name: 'request',
     requestSerializer: Serializer.model(Identifier).array(),
 });
-const PERMISSION_GRANTED_PACKET = PacketType.createJson(PERMISSION_EXTENSION_TYPE, {
-    name: 'granted',
-    serializer: Serializer.model(Identifier).array(),
+const PERMISSION_GRANT_PACKET = PacketType.createJson(PERMISSION_EXTENSION_TYPE, {
+    name: 'grant',
+    serializer: Serializer.model(PermissionType).array(),
 });
 
 export class PermissionExtension {
-    private permissions: Map<string, Identifier>;
+    private permissions: Map<string, PermissionType>;
     private readonly registeredPermissions: Map<string, PermissionType>;
     private readonly requiredPermissions: Map<string, Identifier>;
 
@@ -32,12 +32,14 @@ export class PermissionExtension {
         this.requiredPermissions = new Map();
         client.network.registerPacket(
             PERMISSION_REGISTER_PACKET,
-            PERMISSION_GRANTED_PACKET,
+            PERMISSION_GRANT_PACKET,
         );
-        client.network.addPacketHandler(PERMISSION_GRANTED_PACKET, (permissions) => {
-            this.permissions = new Map(permissions.map((permission) => [permission.key(), permission]));
+        client.network.addPacketHandler(PERMISSION_GRANT_PACKET, (permissions) => {
+            for (const permission of permissions) {
+                this.permissions.set(permission.identifier.key(), permission);
+            }
         });
-        client.network.listeners.connected.subscribe(async () => {
+        client.network.listeners.connected.subscribe(() => {
             client.send(PERMISSION_REGISTER_PACKET, Array.from(this.registeredPermissions.values()));
             client.endpoints.call(PERMISSION_REQUEST_ENDPOINT, Array.from(this.requiredPermissions.values()));
         });
