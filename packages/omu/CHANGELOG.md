@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.1.11 (2024-04-03)
+
+
+### Bug Fixes
+
+* **dash:** devモードの時用のtokenが設定されない問題を修正 ([2228bee](https://github.com/OMUCHAT/omuchat/commit/2228beee005982722d39f75d348827b855f19673))
+
+
+
+
+
 ## 0.1.10 (2024-03-28)
 
 **Note:** Version bump only for package @omuchatjs/omu
