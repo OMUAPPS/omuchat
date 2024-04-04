@@ -36,7 +36,7 @@
         </FlexRowWrapper>
         <div class="right">
             {$t('panels.apps.start_apps')}
-            <i class="ti ti-player-play" />
+            <i class="ti ti-chevron-right" />
         </div>
     </FlexRowWrapper>
 </button>
