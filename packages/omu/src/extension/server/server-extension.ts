@@ -4,23 +4,20 @@ import { EndpointType } from '../endpoint/endpoint.js';
 import type { Extension } from '../extension.js';
 import { ExtensionType } from '../extension.js';
 import type { Table } from '../table/index.js';
-import { TableExtensionType } from '../table/table-extension.js';
+import { TABLE_EXTENSION_TYPE } from '../table/table-extension.js';
 import { TableType } from '../table/table.js';
 
-export const ServerExtensionType: ExtensionType<ServerExtension> = new ExtensionType(
+export const SERVER_EXTENSION_TYPE: ExtensionType<ServerExtension> = new ExtensionType(
     'server',
     (client: Client) => new ServerExtension(client),
-    () => [TableExtensionType],
+    () => [TABLE_EXTENSION_TYPE],
 );
 
-const AppsTableKey = TableType.model(ServerExtensionType, {
+const APP_TABLE = TableType.model(SERVER_EXTENSION_TYPE, {
     name: 'apps',
     model: App,
 });
-const ShutdownEndpointType = EndpointType.createJson<boolean, boolean>(ServerExtensionType, {
-    name: 'shutdown',
-});
-const PrintTasksEndpointType = EndpointType.createJson<undefined, void>(ServerExtensionType, {
+const SHUTDOWN_ENDPOINT = EndpointType.createJson<boolean, boolean>(SERVER_EXTENSION_TYPE, {
     name: 'shutdown',
 });
 
@@ -28,15 +25,11 @@ export class ServerExtension implements Extension {
     apps: Table<App>;
 
     constructor(private readonly client: Client) {
-        const listExtension = client.extensions.get(TableExtensionType);
-        this.apps = listExtension.get(AppsTableKey);
+        const listExtension = client.extensions.get(TABLE_EXTENSION_TYPE);
+        this.apps = listExtension.get(APP_TABLE);
     }
 
     shutdown(restart?: boolean): Promise<boolean> {
-        return this.client.endpoints.call(ShutdownEndpointType, restart ?? false);
-    }
-
-    printTasks(): Promise<void> {
-        return this.client.endpoints.call(PrintTasksEndpointType, undefined);
+        return this.client.endpoints.call(SHUTDOWN_ENDPOINT, restart ?? false);
     }
 }
