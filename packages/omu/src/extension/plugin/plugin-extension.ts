@@ -21,6 +21,10 @@ export class PluginExtension {
 
     private async handleConnected(): Promise<void> {
         this.client.send(PLUGIN_REQUIRE_PACKET, Object.fromEntries(this.plugins));
+        await this.waitForPlugins();
+    }
+
+    public async waitForPlugins(): Promise<void> {
         const response = await this.client.endpoints.call(PLUGIN_WAIT_ENDPOINT, Array.from(this.plugins.keys()));
         if (!response.success) {
             throw new Error('Failed to wait for plugins');
