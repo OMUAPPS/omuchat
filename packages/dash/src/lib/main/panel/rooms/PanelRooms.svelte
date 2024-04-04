@@ -7,7 +7,7 @@
     import RoomEntry from './RoomEntry.svelte';
 
     import Button from '$lib/common/input/Button.svelte';
-    import { getClient } from '$lib/common/omuchat/client.js';
+    import { chat, client } from '$lib/common/omuchat/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
     import { TableList } from '@omuchatjs/ui';
@@ -18,8 +18,7 @@
         return a.createdAt.getTime() - b.createdAt.getTime();
     };
 
-    const { chat, client } = getClient();
-    let rooms = chat.rooms!.cache;
+    let rooms = chat.rooms.cache;
 
     const unlisten = chat.rooms.listen((newRooms: Map<string, models.Room>) => {
         rooms = newRooms;

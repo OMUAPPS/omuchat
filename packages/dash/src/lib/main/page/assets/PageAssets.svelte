@@ -5,10 +5,8 @@
 
     import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
     import type { Asset } from '$lib/common/omuchat/asset.js';
-    import { getClient } from '$lib/common/omuchat/client.js';
+    import { dashboard } from '$lib/common/omuchat/client.js';
     import { Header, TableList } from '@omuchatjs/ui';
-
-    const { dashboard } = getClient();
 
     function getSearchString(asset: Asset) {
         return `${asset.name} ${asset.tags.join(' ')} ${asset.description}`;

@@ -2,9 +2,8 @@
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { DEFAULT_LOCALE, LOCALES, createI18nUnion } from '$lib/i18n/i18n.js';
     import { language } from '$lib/main/settings.js';
-    import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
     import { waitForTauri } from '$lib/utils/tauri.js';
-    import { Theme, Tooltip } from '@omuchatjs/ui';
+    import { Theme } from '@omuchatjs/ui';
     import './styles.scss';
 
     async function init() {
@@ -37,57 +36,6 @@
             <div class="loading" data-tauri-drag-region></div>
         {:then}
             <slot />
-        {:catch error}
-            <div class="error" data-tauri-drag-region>
-                <div class="container">
-                    <div class="title">
-                        <div>
-                            <i class="ti ti-alert-small" />
-                            エラーが発生しました
-                            <small> よければdiscordにてお問い合わせいただければ幸いです。 </small>
-                        </div>
-                        <small>
-                            <b>error occurred</b>
-                            please contact us on discord.
-                        </small>
-                    </div>
-                    <button
-                        on:click={() => {
-                            ClipboardHelper.writeText(
-                                JSON.stringify({
-                                    message: error.message,
-                                    stack: error.stack,
-                                }),
-                            );
-                        }}
-                        class="message"
-                    >
-                        <Tooltip>
-                            <div class="description">
-                                クリックしてエラー情報をクリップボードにコピーします。
-                            </div>
-                        </Tooltip>
-                        {error.message}
-                        {#if error.stack}
-                            <pre>{error.stack}</pre>
-                        {/if}
-                    </button>
-                    <div class="buttons">
-                        <button on:click={loadLocale}>
-                            <i class="ti ti-reload" />
-                            Retry
-                        </button>
-                        <button
-                            on:click={() => {
-                                window.close();
-                            }}
-                        >
-                            <i class="ti ti-x" />
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
         {/await}
     </main>
 </div>

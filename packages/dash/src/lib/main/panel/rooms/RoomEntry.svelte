@@ -1,16 +1,14 @@
 <script lang="ts">
     import type { models } from '@omuchatjs/chat';
 
-    import { getClient } from '$lib/common/omuchat/client.js';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
     import { ButtonMini, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
 
+    import { client } from '$lib/common/omuchat/client.js';
     import { t } from '$lib/i18n/i18n-context.js';
 
     export let entry: models.Room;
     export let selected: boolean = false;
-
-    const { client } = getClient();
 
     function open() {
         window.open(entry.metadata?.url, '_blank');

@@ -1,8 +1,5 @@
 <script lang="ts">
-    import type { App } from '@omuchatjs/omu';
-
     import { FlexRowWrapper } from '@omuchatjs/ui';
-    import OmuChatProvider from './common/omuchat/ClientProvider.svelte';
     import StatusBar from './common/omuchat/StatusBar.svelte';
     import ScreenRenderer from './common/screen/ScreenRenderer.svelte';
     import ButtonClose from './common/titlebar/ButtonClose.svelte';
@@ -10,30 +7,26 @@
     import ButtonMinimize from './common/titlebar/ButtonMinimize.svelte';
     import TitleBar from './common/titlebar/TitleBar.svelte';
     import Title from './images/title.svg';
-
-    export let app: App;
 </script>
 
 <div class="window">
-    <OmuChatProvider {app} connect={false}>
-        <div class="drag-area" data-tauri-drag-region>
-            <div class="title">
-                <img src={Title} alt="title" width="64" height="10" />
-                <StatusBar />
-            </div>
-            <TitleBar>
-                <FlexRowWrapper>
-                    <ButtonMinimize />
-                    <ButtonMaximize />
-                    <ButtonClose />
-                </FlexRowWrapper>
-            </TitleBar>
+    <div class="drag-area" data-tauri-drag-region>
+        <div class="title">
+            <img src={Title} alt="title" width="64" height="10" />
+            <StatusBar />
         </div>
-        <div class="content">
-            <slot />
-        </div>
-        <ScreenRenderer />
-    </OmuChatProvider>
+        <TitleBar>
+            <FlexRowWrapper>
+                <ButtonMinimize />
+                <ButtonMaximize />
+                <ButtonClose />
+            </FlexRowWrapper>
+        </TitleBar>
+    </div>
+    <div class="content">
+        <slot />
+    </div>
+    <ScreenRenderer />
 </div>
 
 <style lang="scss">

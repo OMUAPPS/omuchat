@@ -1,21 +1,18 @@
 <script lang="ts">
+    import { client } from '$lib/common/omuchat/client.js';
     import type { models } from '@omuchatjs/chat';
-
-    import { getClient } from '$lib/common/omuchat/client.js';
 
     export let channel: models.Channel;
     export let active = false;
-
-    const { client } = getClient();
 </script>
 
 <button class="channel-entry" class:active on:click>
     <div class="icon">
-        <img src={client.assets.proxy(channel.icon_url)} alt="icon" />
+        <img src={client.assets.proxy(channel.iconUrl)} alt="icon" />
     </div>
     <div class="info">
         <div class="name">{channel.name}</div>
-        <div class="provider">{channel.provider_id}</div>
+        <div class="provider">{channel.providerId}</div>
     </div>
     <i class={active ? `ti ti-check` : `ti ti-plus`} />
 </button>

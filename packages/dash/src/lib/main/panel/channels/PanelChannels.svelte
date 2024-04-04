@@ -7,14 +7,12 @@
     import ChannelEntry from './ChannelEntry.svelte';
     import ScreenAddChannel from './ScreenAddChannel.svelte';
 
-    import { getClient } from '$lib/common/omuchat/client.js';
+    import { chat } from '$lib/common/omuchat/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
     import { ButtonMini, TableList, Tooltip } from '@omuchatjs/ui';
 
     export let filter: (key: string, message: models.Channel) => boolean = () => true;
-
-    const { chat } = getClient();
 
     function openSetupScreen() {
         screenContext.push(ScreenSetup, {});

@@ -1,13 +1,10 @@
 <script lang="ts">
     import type { Provider } from '@omuchatjs/chat/models/index.js';
 
-    import { getClient } from './client.js';
-
     import { classes } from '$lib/utils/class-helper.js';
+    import { chat, client } from './client.js';
 
     export let providerId: string;
-
-    const { chat, client } = getClient();
 
     async function getProvider(): Promise<Provider | undefined> {
         const provider = await chat.providers.get(providerId);

@@ -9,15 +9,14 @@
     import Background from '$lib/common/Background.svelte';
     import Button from '$lib/common/input/Button.svelte';
     import InputText from '$lib/common/input/InputText.svelte';
-    import { getClient } from '$lib/common/omuchat/client.js';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
-    import { type ScreenHandle } from '$lib/common/screen/screen.js';
+    import { chat, client } from '$lib/common/omuchat/client.js';
     import Screen from '$lib/common/screen/Screen.svelte';
+    import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import { Tooltip } from '@omuchatjs/ui';
 
     export let screen: ScreenHandle;
     export let props: {};
-    const { chat, client } = getClient();
 
     let result: Map<string, { channel: models.Channel; active: boolean }> | undefined;
 

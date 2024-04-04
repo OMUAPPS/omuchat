@@ -1,12 +1,10 @@
 <script lang="ts">
     import AppEntry from './AppEntry.svelte';
 
-    import { getClient } from '$lib/common/omuchat/client.js';
+    import { client } from '$lib/common/omuchat/client.js';
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { invoke } from '$lib/utils/tauri.js';
     import { TableList, theme } from '@omuchatjs/ui';
-
-    const { client } = getClient();
 
     let starting = false;
     function start() {
@@ -62,11 +60,6 @@
                 >
                     stop
                 </button>
-                <button
-                    on:click={() => {
-                        client.server.printTasks();
-                    }}>print tasks</button
-                >
                 <button on:click={delete_runtime}>delete runtime</button>
                 <button on:click={install_runtime}>install runtime</button>
                 <button on:click={update_libraries}>update libraries</button>

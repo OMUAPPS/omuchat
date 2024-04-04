@@ -4,23 +4,22 @@
 
     import { t } from '$lib/i18n/i18n-context.js';
 
-    import { getClient } from '$lib/common/omuchat/client.js';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
-    import { type ScreenHandle } from '$lib/common/screen/screen.js';
+    import { chat } from '$lib/common/omuchat/client.js';
     import Screen from '$lib/common/screen/Screen.svelte';
+    import { type ScreenHandle } from '$lib/common/screen/screen.js';
 
-    const { chat } = getClient();
     export let screen: ScreenHandle;
     export let props: {};
     let providers: Map<string, models.Provider> | undefined;
     let url: string = '';
 
-    chat.providers!.addListener({
+    chat.providers.addListener({
         onCacheUpdate(cache) {
             providers = cache;
         },
     });
-    chat.providers!.fetch({});
+    chat.providers.fetchAll();
 
     let matches:
         | Map<

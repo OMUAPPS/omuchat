@@ -13,14 +13,12 @@
     import { currentPage, devMode } from './settings.js';
     import ScreenInstalling from './setup/ScreenInstalling.svelte';
 
-    import { getClient } from '$lib/common/omuchat/client.js';
+    import { client } from '$lib/common/omuchat/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
     import { t } from '$lib/i18n/i18n-context.js';
     import { style } from '$lib/utils/class-helper.js';
     import { invoke, IS_TAURI, listen } from '$lib/utils/tauri.js';
     import { FlexColWrapper, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
-
-    const { client } = getClient();
 
     pages.set(new Map());
     $pages.set('main', {

@@ -4,10 +4,8 @@
     import { writable } from 'svelte/store';
 
     import { FlexColWrapper, Tooltip } from '@omuchatjs/ui';
+    import { client } from './client.js';
 
-    import { getClient } from './client.js';
-
-    const { client } = getClient();
     const status = writable<ConnectionStatus>('disconnected');
 
     onMount(() => client.network.listeners.status.subscribe((newStatus) => status.set(newStatus)));

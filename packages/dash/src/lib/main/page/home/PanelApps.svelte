@@ -2,17 +2,16 @@
     import { DEV } from 'esm-env';
     import AppEntry from './AppEntry.svelte';
 
-    import { getClient } from '$lib/common/omuchat/client.js';
     import { tauriWindow } from '$lib/utils/tauri.js';
     import { onMount } from 'svelte';
 
     import type { AppMetadata } from '$lib/common/omuchat/app-metadata.js';
+    import { dashboard } from '$lib/common/omuchat/client.js';
     import { t } from '$lib/i18n/i18n-context.js';
     import { currentPage } from '$lib/main/settings.js';
     import { TableList } from '@omuchatjs/ui';
 
     export let filter: (key: string, app: AppMetadata) => boolean = () => true;
-    const { dashboard } = getClient();
 
     onMount(() => {
         dashboard.apps.addListener({
