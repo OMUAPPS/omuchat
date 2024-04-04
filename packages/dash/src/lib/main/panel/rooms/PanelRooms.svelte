@@ -27,7 +27,7 @@
 
     onMount(() => {
         client.network.listeners.connected.subscribe(() => {
-            chat.rooms.fetch({
+            chat.rooms.fetchItems({
                 after: 100,
             });
         });

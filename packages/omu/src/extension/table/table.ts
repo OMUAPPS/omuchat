@@ -10,15 +10,15 @@ export type TableConfig = {
 };
 
 export interface Table<T> {
-    readonly cache: Map<string, T>;
+    readonly cache: ReadonlyMap<string, T>;
     get(key: string): Promise<T | undefined>;
-    getMany(keys: string[]): Promise<Map<string, T>>;
+    getMany(...keys: string[]): Promise<Map<string, T>>;
     add(...item: T[]): Promise<void>;
-    set(...item: T[]): Promise<void>;
+    update(...item: T[]): Promise<void>;
     remove(...items: T[]): Promise<void>;
     clear(): Promise<void>;
 
-    fetch({
+    fetchItems({
         before,
         after,
         cursor,
@@ -27,7 +27,8 @@ export interface Table<T> {
         after?: number;
         cursor?: string;
     }): Promise<Map<string, T>>;
-    iter({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T>;
+    fetchAll(): Promise<Map<string, T>>;
+    iterate({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T>;
     size(): Promise<number>;
 
     proxy(proxy: (item: T) => T | undefined): () => void;

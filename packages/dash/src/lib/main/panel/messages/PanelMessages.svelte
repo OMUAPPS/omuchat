@@ -18,7 +18,7 @@
         const authorKeys = [...items.values()]
             .map((message) => message.authorId)
             .filter((key): key is string => !!key);
-        chat.authors.getMany(authorKeys);
+        chat.authors.getMany(...authorKeys);
     });
 
     onDestroy(() => {

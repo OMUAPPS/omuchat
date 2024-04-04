@@ -380,7 +380,7 @@ class TableImpl<T> implements Table<T> {
         });
     }
 
-    async getMany(keys: string[]): Promise<Map<string, T>> {
+    async getMany(...keys: string[]): Promise<Map<string, T>> {
         const filteredKeys = keys.filter((key) => !this.cache.has(key)).filter((key) => !this.promiseMap.has(key));
         if (filteredKeys.length === 0) {
             return new Map([...this.cache].filter(([key]) => keys.includes(key)));
@@ -411,7 +411,7 @@ class TableImpl<T> implements Table<T> {
         });
     }
 
-    async set(...items: T[]): Promise<void> {
+    async update(...items: T[]): Promise<void> {
         const data = this.serializeItems(items);
         this.client.send(TABLE_ITEM_UPDATE_PACKET, {
             type: this.key,
@@ -435,7 +435,7 @@ class TableImpl<T> implements Table<T> {
         });
     }
 
-    async fetch({
+    async fetchItems({
         before,
         after,
         cursor,
@@ -455,8 +455,17 @@ class TableImpl<T> implements Table<T> {
         return items;
     }
 
-    async *iter({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T> {
-        let items: Map<string, T> = await this.fetch(
+    async fetchAll(): Promise<Map<string, T>> {
+        const res = await this.client.endpoints.call(TABLE_FETCH_ALL_ENDPOINT, {
+            type: this.key,
+        });
+        const items = this.deserializeItems(res.items);
+        this.updateCache(items);
+        return items;
+    }
+
+    async *iterate({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T> {
+        let items: Map<string, T> = await this.fetchItems(
             backward
                 ? {
                     before: 0,
@@ -474,7 +483,7 @@ class TableImpl<T> implements Table<T> {
             const cursor = this.keyFunc(
                 backward ? items.values().next().value : [...items.values()].pop(),
             );
-            items = await this.fetch(
+            items = await this.fetchItems(
                 backward
                     ? { before: 0, after: this.cacheSize ?? 100, cursor }
                     : { before: this.cacheSize ?? 100, after: 0, cursor },

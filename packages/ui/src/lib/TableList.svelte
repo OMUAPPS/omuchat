@@ -38,7 +38,7 @@
 		}
 		fetchLock = new Promise<boolean>(async (resolve) => {
 			loadingLock = true;
-			const items = await table.fetch({
+			const items = await table.fetchItems({
 				cursor: last,
 				before: initial
 			});
