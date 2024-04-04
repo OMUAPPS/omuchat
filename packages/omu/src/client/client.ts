@@ -3,7 +3,7 @@ import { EventEmitter } from '../event-emitter.js';
 import type { AssetExtension } from '../extension/asset/index.js';
 import type { DashboardExtension } from '../extension/dashboard/index.js';
 import type { EndpointExtension } from '../extension/endpoint/index.js';
-import type { ExtensionManager } from '../extension/index.js';
+import type { ExtensionRegistry } from '../extension/index.js';
 import type { MessageExtension } from '../extension/message/index.js';
 import type { PermissionExtension } from '../extension/permission/index.js';
 import type { PluginExtension } from '../extension/plugin/index.js';
@@ -25,7 +25,7 @@ export interface Client {
     readonly app: App;
     readonly token: TokenProvider;
     readonly network: Network;
-    readonly extensions: ExtensionManager;
+    readonly extensions: ExtensionRegistry;
     readonly endpoints: EndpointExtension;
     readonly permissions: PermissionExtension;
     readonly plugins: PluginExtension;

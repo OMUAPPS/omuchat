@@ -2,7 +2,7 @@ import type { App } from '../app.js';
 import { ASSET_EXTENSION_TYPE, type AssetExtension } from '../extension/asset/index.js';
 import { DASHBOARD_EXTENSION_TYPE, type DashboardExtension } from '../extension/dashboard/index.js';
 import { ENDPOINT_EXTENSION_TYPE, type EndpointExtension } from '../extension/endpoint/index.js';
-import { ExtensionManager } from '../extension/index.js';
+import { ExtensionRegistry } from '../extension/index.js';
 import { MESSAGE_EXTENSION_TYPE, type MessageExtension } from '../extension/message/index.js';
 import { PERMISSION_EXTENSION_TYPE, type PermissionExtension } from '../extension/permission/index.js';
 import { PLUGIN_EXTENSION_TYPE, type PluginExtension } from '../extension/plugin/index.js';
@@ -29,7 +29,7 @@ export class OmuClient implements Client {
     readonly permissions: PermissionExtension;
     readonly plugins: PluginExtension;
     readonly dashboard: DashboardExtension;
-    readonly extensions: ExtensionManager;
+    readonly extensions: ExtensionRegistry;
     readonly tables: TableExtension;
     readonly registry: RegistryExtension;
     readonly message: MessageExtension;
@@ -48,7 +48,7 @@ export class OmuClient implements Client {
         this.token = options.token;
         this.address = options.address;
         this.network = new Network(this, options.address, this.token, options.connection ?? new WebsocketConnection(options.address));
-        this.extensions = new ExtensionManager(this);
+        this.extensions = new ExtensionRegistry(this);
 
         this.endpoints = this.extensions.register(ENDPOINT_EXTENSION_TYPE);
         this.permissions = this.extensions.register(PERMISSION_EXTENSION_TYPE);

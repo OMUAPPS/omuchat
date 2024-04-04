@@ -2,7 +2,7 @@ import type { Client } from '../client/index.js';
 
 import type { Extension, ExtensionType } from './extension.js';
 
-export class ExtensionManager {
+export class ExtensionRegistry {
     private readonly extensionMap: Map<string, Extension> = new Map();
     constructor(private readonly client: Client) { }
     register<T extends Extension>(type: ExtensionType<T>): T {
