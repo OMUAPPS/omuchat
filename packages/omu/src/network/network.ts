@@ -129,6 +129,20 @@ export class Network {
         await packetHandlers.listeners.emit(packet.data);
     }
 
+    public waitForConnection(): Promise<void> {
+        return new Promise((resolve) => {
+            if (this.connected) {
+                resolve();
+                return;
+            }
+            const onConnected = (): void => {
+                this.listeners.connected.unsubscribe(onConnected);
+                resolve();
+            };
+            this.listeners.connected.subscribe(onConnected);
+        });
+    }
+
     public addTask(task: () => Promise<void> | void): void {
         this.tasks.push(task);
         if (this.connected) {

@@ -30,6 +30,7 @@
             client.start();
         }
 
+        await client.network.waitForConnection();
         await client.plugins.waitForPlugins();
 
         language.subscribe(loadLocale);
