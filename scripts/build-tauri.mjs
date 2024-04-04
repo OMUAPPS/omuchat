@@ -1,4 +1,4 @@
-import { execa } from 'execa';
+import { execa, execaSync } from 'execa';
 
 execaSync('pnpm', ['--filter', 'i18n', 'build'], {
     stderr: process.stderr,
