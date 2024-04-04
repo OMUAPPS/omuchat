@@ -72,23 +72,29 @@ export class Network {
         }
 
         this.disconnect();
-        await this.connection.connect();
-        this.connected = true;
-        this.send({
-            type: PACKET_TYPES.CONNECT,
-            data: new ConnectPacket({
-                app: this.client.app,
-                token: await this.tokenProcider.get(this.address, this.client.app),
-            }),
-        });
-        const listen = this.listen();
-        await this.listeners.status.emit('connected');
-        await this.listeners.connected.emit();
-        this.dispatchTasks();
-        await listen;
-        this.disconnect();
+        try {
+            await this.connection.connect();
+            this.connected = true;
+            this.send({
+                type: PACKET_TYPES.CONNECT,
+                data: new ConnectPacket({
+                    app: this.client.app,
+                    token: await this.tokenProcider.get(this.address, this.client.app),
+                }),
+            });
+            const listenPromise = this.listen();
+            await this.listeners.status.emit('connected');
+            await this.listeners.connected.emit();
+            this.dispatchTasks();
+            await listenPromise;
+        } catch (error) {
+            console.error('Failed to connect', error);
+        } finally {
+            this.disconnect();
+        }
 
         if (recconect) {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             await this.connect(recconect);
         }
     }
