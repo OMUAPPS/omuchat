@@ -214,6 +214,8 @@
 		margin-right: 5px;
 		white-space: nowrap;
 		user-select: text;
+		font-weight: 600;
+		font-size: 12px;
 	}
 
 	small {
