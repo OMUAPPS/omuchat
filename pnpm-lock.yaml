@@ -28,7 +28,7 @@ importers:
         version: link:../omu
     devDependencies:
       '@types/node':
-        specifier: ^20.12.3
+        specifier: ^20.12.4
         version: 20.12.4
       '@types/websocket':
         specifier: 1.0.10
@@ -116,7 +116,7 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
       '@types/node':
-        specifier: ^20.12.3
+        specifier: ^20.12.4
         version: 20.12.4
       '@typescript-eslint/eslint-plugin':
         specifier: ^7.5.0
@@ -164,7 +164,7 @@ importers:
         specifier: ^4.0.2
         version: 4.0.2
       sass:
-        specifier: ^1.72.0
+        specifier: ^1.74.1
         version: 1.74.1
       stylelint:
         specifier: ^16.3.1
@@ -209,7 +209,7 @@ importers:
   packages/i18n:
     devDependencies:
       '@types/node':
-        specifier: ^20.12.3
+        specifier: ^20.12.4
         version: 20.12.4
       '@types/websocket':
         specifier: 1.0.10
@@ -263,7 +263,7 @@ importers:
   packages/omu:
     devDependencies:
       '@types/node':
-        specifier: ^20.12.3
+        specifier: ^20.12.4
         version: 20.12.4
       '@types/websocket':
         specifier: 1.0.10
@@ -335,16 +335,16 @@ importers:
         version: link:../ui
       '@sveltejs/adapter-cloudflare':
         specifier: 4.2.0
-        version: 4.2.0(@sveltejs/kit@2.5.4)(wrangler@3.46.0)
+        version: 4.2.0(@sveltejs/kit@2.5.5)(wrangler@3.46.0)
       '@sveltejs/kit':
-        specifier: 2.5.4
-        version: 2.5.4(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.8)
+        specifier: 2.5.5
+        version: 2.5.5(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.8)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.2
         version: 3.0.2(svelte@4.2.12)(vite@5.2.8)
       '@types/eslint':
-        specifier: 8.56.6
-        version: 8.56.6
+        specifier: 8.56.7
+        version: 8.56.7
       '@typescript-eslint/eslint-plugin':
         specifier: ^7.5.0
         version: 7.5.0(@typescript-eslint/parser@7.5.0)(eslint@8.57.0)(typescript@5.4.3)
@@ -373,7 +373,7 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(prettier@3.2.5)(svelte@4.2.12)
       sass:
-        specifier: ^1.72.0
+        specifier: ^1.74.1
         version: 1.74.1
       stylelint:
         specifier: ^16.3.1
@@ -421,12 +421,12 @@ importers:
         specifier: ^2.5.4
         version: 2.5.5(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.8)
       '@tabler/icons-webfont':
-        specifier: ^2.47.0
-        version: 2.47.0
+        specifier: ^3.1.0
+        version: 3.1.0
     devDependencies:
       '@chromatic-com/storybook':
-        specifier: 1.2.25
-        version: 1.2.25(react@18.2.0)
+        specifier: 1.2.26
+        version: 1.2.26(react@18.2.0)
       '@fontsource/noto-sans-jp':
         specifier: ^5.0.18
         version: 5.0.18
@@ -1823,8 +1823,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@chromatic-com/storybook@1.2.25(react@18.2.0):
-    resolution: {integrity: sha512-3ga2sWa39PeFZxV6gqJoFQh1c60v2rCh92TPE8KrBg+WwEdcrKijDIq+BILGCSg0oVUVplx8siQOrknBL5af6g==}
+  /@chromatic-com/storybook@1.2.26(react@18.2.0):
+    resolution: {integrity: sha512-uLZ0gURTkDTr545g35rq0jXbpg3MTjUB763Z5tWyGuQj3JO0j+t3vkwNUvD6Nas0YGl4MWgrkqqekM/2jpQ70w==}
     engines: {node: '>=16.0.0', yarn: '>=1.22.18'}
     dependencies:
       chromatic: 11.3.0
@@ -4181,14 +4181,14 @@ packages:
       import-meta-resolve: 4.0.0
     dev: true
 
-  /@sveltejs/adapter-cloudflare@4.2.0(@sveltejs/kit@2.5.4)(wrangler@3.46.0):
+  /@sveltejs/adapter-cloudflare@4.2.0(@sveltejs/kit@2.5.5)(wrangler@3.46.0):
     resolution: {integrity: sha512-CMpz8AvnCOyDvzO+OdZJrRU8OAxs1hRAmfYd0IC2CyzFCuQaFJADeYmLhWGE4+CxhK16nsLYhBFbBc1DWpq0Pg==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
       wrangler: ^3.28.4
     dependencies:
       '@cloudflare/workers-types': 4.20240403.0
-      '@sveltejs/kit': 2.5.4(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.8)
+      '@sveltejs/kit': 2.5.5(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.8)
       esbuild: 0.19.12
       worktop: 0.8.0-next.18
       wrangler: 3.46.0
@@ -4200,33 +4200,6 @@ packages:
       '@sveltejs/kit': ^2.0.0
     dependencies:
       '@sveltejs/kit': 2.5.5(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.8)
-    dev: true
-
-  /@sveltejs/kit@2.5.4(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.8):
-    resolution: {integrity: sha512-eDxK2d4EGzk99QsZNoPXe7jlzA5EGqfcCpUwZ912bhnalsZ2ZsG5wGRthkydupVjYyqdmzEanVKFhLxU2vkPSQ==}
-    engines: {node: '>=18.13'}
-    hasBin: true
-    requiresBuild: true
-    peerDependencies:
-      '@sveltejs/vite-plugin-svelte': ^3.0.0
-      svelte: ^4.0.0 || ^5.0.0-next.0
-      vite: ^5.0.3
-    dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.0.2(svelte@4.2.12)(vite@5.2.8)
-      '@types/cookie': 0.6.0
-      cookie: 0.6.0
-      devalue: 4.3.2
-      esm-env: 1.0.0
-      import-meta-resolve: 4.0.0
-      kleur: 4.1.5
-      magic-string: 0.30.9
-      mrmime: 2.0.0
-      sade: 1.8.1
-      set-cookie-parser: 2.6.0
-      sirv: 2.0.4
-      svelte: 4.2.12
-      tiny-glob: 0.2.9
-      vite: 5.2.8(@types/node@20.12.4)(sass@1.74.1)(sugarss@4.0.1)
     dev: true
 
   /@sveltejs/kit@2.5.5(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.8):
@@ -4306,14 +4279,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@tabler/icons-webfont@2.47.0:
-    resolution: {integrity: sha512-yfV9zDal0iYDmyGz4BS9IlhaaMydtLdyOrY2UAZToP65sVWj7AFIi6symNzsoBaX867xAZWVHdKcocah0BfSog==}
+  /@tabler/icons-webfont@3.1.0:
+    resolution: {integrity: sha512-eYqGUTeD0qBvToVjWhfSOCYEwGfkJinPflHU59ShGE1Fv1VmQjYybMPbJIa5M4MpVBSazHJb1Sr3b9XnyvG0aA==}
     dependencies:
-      '@tabler/icons': 2.47.0
+      '@tabler/icons': 3.1.0
     dev: false
 
-  /@tabler/icons@2.47.0:
-    resolution: {integrity: sha512-4w5evLh+7FUUiA1GucvGj2ReX2TvOjEr4ejXdwL/bsjoSkof6r1gQmzqI+VHrE2CpJpB3al7bCTulOkFa/RcyA==}
+  /@tabler/icons@3.1.0:
+    resolution: {integrity: sha512-CpZGyS1IVJKFcv88yZ2sYZIpWWhQ6oy76BQKQ5SF0fGgOqgyqKdBGG/YGyyMW632on37MX7VqQIMTzN/uQqmFg==}
     dev: false
 
   /@tauri-apps/api@1.5.3:
@@ -4574,13 +4547,6 @@ packages:
 
   /@types/emscripten@1.39.10:
     resolution: {integrity: sha512-TB/6hBkYQJxsZHSqyeuO1Jt0AB/bW6G7rHt9g7lML7SOF6lbgcHvw/Lr+69iqN0qxgXLhWKScAon73JNnptuDw==}
-    dev: true
-
-  /@types/eslint@8.56.6:
-    resolution: {integrity: sha512-ymwc+qb1XkjT/gfoQwxIeHZ6ixH23A+tCT2ADSA/DPVKzAjwYkTXBMCQ/f6fe4wEa85Lhp26VPeUxI7wMhAi7A==}
-    dependencies:
-      '@types/estree': 1.0.5
-      '@types/json-schema': 7.0.15
     dev: true
 
   /@types/eslint@8.56.7:

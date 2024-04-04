@@ -19,5 +19,5 @@ export { default as VirtualList } from './VirtualList.svelte';
 export { chat, client, setClient, theme, translate } from './stores.js';
 export type { TypedComponent } from './typed-component.js';
 
-import '@tabler/icons-webfont/tabler-icons.scss'; // Import the Tabler Icons CSS
+import '@tabler/icons-webfont/dist/tabler-icons.scss'; // Import the Tabler Icons CSS
 
