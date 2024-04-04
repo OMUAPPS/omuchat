@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.1.13 (2024-04-04)
+
+
+### Bug Fixes
+
+* **omu:** 再接続が出来ない問題を修正 ([9a8ee49](https://github.com/OMUCHAT/omuchat/commit/9a8ee49ef2a2444e3021fa17ff753eca77d417fb))
+
+
+
+
+
 ## 0.1.12 (2024-04-03)
 
 **Note:** Version bump only for package omuchat
