@@ -36,7 +36,6 @@
         "@sveltejs/adapter-static": "^3.0.1",
         "@sveltejs/kit": "^2.5.5",
         "@sveltejs/vite-plugin-svelte": "^3.0.2",
-        "@tabler/icons-webfont": "^2.47.0",
         "@tauri-apps/api": "^1.5.3",
         "@tauri-apps/cli": "^1.5.11",
         "@tsconfig/svelte": "^5.0.4",
