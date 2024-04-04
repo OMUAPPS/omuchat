@@ -6,7 +6,7 @@ import type { Address } from '@omuchatjs/omu/network/address.js';
 import { App, Client } from '@omuchatjs/chat';
 
 
-import { invoke, IS_TAURI, waitForTauri } from '$lib/utils/tauri.js';
+import { invoke, IS_TAURI } from '$lib/utils/tauri.js';
 import { BrowserTokenProvider } from '@omuchatjs/chat/client.js';
 
 import { Identifier } from '@omuchatjs/omu/identifier.js';
@@ -45,13 +45,10 @@ setClient(client)
 setChat(client.chat);
 const dashboard = new Dashboard(client);
 const chat = client.chat;
+
 client.plugins.require({
     omuplugin_chat: null,
     omuchatprovider: null,
-});
-
-waitForTauri().then(() => {
-    client.start();
 });
 
 export {

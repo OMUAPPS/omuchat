@@ -1,15 +1,35 @@
 <script lang="ts">
     import { client } from '$lib/common/omuchat/client.js';
+    import { screenContext } from '$lib/common/screen/screen.js';
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { DEFAULT_LOCALE, LOCALES, createI18nUnion } from '$lib/i18n/i18n.js';
     import { language } from '$lib/main/settings.js';
-    import { waitForTauri } from '$lib/utils/tauri.js';
+    import ScreenInstalling from '$lib/main/setup/ScreenInstalling.svelte';
+    import { IS_TAURI, invoke, listen, waitForTauri } from '$lib/utils/tauri.js';
     import { Theme } from '@omuchatjs/ui';
     import './styles.scss';
 
     async function init() {
         await loadLocale();
         await waitForTauri();
+
+        if (IS_TAURI) {
+            const state = await invoke('get_server_state');
+            if (state == 'Installed' || state == 'AlreadyRunning') {
+                client.start();
+                return;
+            }
+            screenContext.push(ScreenInstalling, {});
+            listen('server-state', (state) => {
+                console.log(state);
+                if (state.payload === 'Installed') {
+                    client.start();
+                }
+            });
+        } else {
+            client.start();
+        }
+
         await client.plugins.waitForPlugins();
 
         language.subscribe(loadLocale);
