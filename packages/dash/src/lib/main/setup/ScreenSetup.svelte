@@ -37,9 +37,6 @@
                 );
                 console.log(result);
             })
-            .catch((err) => {
-                console.log(err);
-            })
             .finally(() => {
                 locked = false;
             });
@@ -79,7 +76,7 @@
     });
 </script>
 
-<Screen {screen} title="setup" windowed={false} disableDecorations noClose>
+<Screen {screen} title="setup" windowed={false} disableDecorations disableClose>
     <div class="background">
         <Background />
     </div>
