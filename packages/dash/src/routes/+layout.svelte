@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { client } from '$lib/common/omuchat/client.js';
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { DEFAULT_LOCALE, LOCALES, createI18nUnion } from '$lib/i18n/i18n.js';
     import { language } from '$lib/main/settings.js';
@@ -9,6 +10,7 @@
     async function init() {
         await loadLocale();
         await waitForTauri();
+        await client.plugins.waitForPlugins();
 
         language.subscribe(loadLocale);
     }
