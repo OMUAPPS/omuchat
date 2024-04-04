@@ -1,3 +1,3 @@
-export * from './table-extension.js';
-export * from './table.js';
-export * from '../../model.js';
+export { TABLE_EXTENSION_TYPE, TableExtension } from './table-extension.js';
+export { Table, TableConfig } from './table.js';
+

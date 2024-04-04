@@ -11,7 +11,7 @@ import type { Registry, RegistryType } from './registry.js';
 
 export class RegistryExtension implements Extension {
     constructor(private readonly client: Client) {
-        client.network.registerPacket(RegistryUpdateEvent);
+        client.network.registerPacket(REGISTRY_UPDATE_PACKET);
     }
 
     get<T>(registryType: RegistryType<T>): Registry<T> {
@@ -45,11 +45,11 @@ class RegistryImpl<T> implements Registry<T> {
         private readonly serializer: Serializable<T, Uint8Array>,
     ) {
         this.key = identifier.key();
-        client.network.addPacketHandler(RegistryUpdateEvent, (data) => this.handleUpdate(data));
+        client.network.addPacketHandler(REGISTRY_UPDATE_PACKET, (data) => this.handleUpdate(data));
     }
 
     async get(): Promise<T> {
-        const result = await this.client.endpoints.call(RegistryGetEndpoint, this.key);
+        const result = await this.client.endpoints.call(REGISTRY_GET_ENDPOINT, this.key);
         if (!result.existing) {
             return this.defaultValue;
         }
@@ -59,7 +59,7 @@ class RegistryImpl<T> implements Registry<T> {
     async update(fn: (value: T) => T): Promise<void> {
         const value = await this.get();
         const newValue = await fn(value);
-        this.client.send(RegistryUpdateEvent, {
+        this.client.send(REGISTRY_UPDATE_PACKET, {
             key: this.key,
             existing: true,
             value: this.serializer.serialize(newValue),
@@ -69,7 +69,7 @@ class RegistryImpl<T> implements Registry<T> {
     listen(handler: (value: T) => void): () => void {
         if (!this.listening) {
             this.client.network.addTask(() => {
-                this.client.send(RegistryListenEvent, this.key);
+                this.client.send(REGISTRY_LISTEN_PACKET, this.key);
             });
             this.listening = true;
         }
@@ -79,7 +79,7 @@ class RegistryImpl<T> implements Registry<T> {
         };
     }
 
-    private handleUpdate(data: RegistryData): void {
+    private handleUpdate(data: RegistryPacket): void {
         if (data.key !== this.key) {
             return;
         }
@@ -93,14 +93,14 @@ class RegistryImpl<T> implements Registry<T> {
     }
 }
 
-type RegistryData = {
+type RegistryPacket = {
     key: string,
     existing: boolean,
     value: Uint8Array,
 }
 
-const DATA_SERIALIZER = new Serializer<RegistryData, Uint8Array>(
-    (data: RegistryData) => {
+const DATA_SERIALIZER = new Serializer<RegistryPacket, Uint8Array>(
+    (data: RegistryPacket) => {
         const writer = new ByteWriter();
         writer.writeString(data.key);
         writer.writeBoolean(data.existing);
@@ -116,25 +116,19 @@ const DATA_SERIALIZER = new Serializer<RegistryData, Uint8Array>(
     },
 );
 
-export const RegistryExtensionType = new ExtensionType(
+export const REGISTRY_EXTENSION_TYPE = new ExtensionType(
     'registry',
     (client: Client) => new RegistryExtension(client),
 );
-export const RegistryUpdateEvent = PacketType.createSerialized<RegistryData>(
-    RegistryExtensionType,
-    {
-        name: 'update',
-        serializer: DATA_SERIALIZER,
-    },
-);
-export const RegistryListenEvent = PacketType.createJson<string>(RegistryExtensionType, {
+const REGISTRY_UPDATE_PACKET = PacketType.createSerialized<RegistryPacket>(REGISTRY_EXTENSION_TYPE, {
+    name: 'update',
+    serializer: DATA_SERIALIZER,
+});
+const REGISTRY_LISTEN_PACKET = PacketType.createJson<string>(REGISTRY_EXTENSION_TYPE, {
     name: 'listen',
 });
-export const RegistryGetEndpoint = EndpointType.createSerialized<string, RegistryData>(
-    RegistryExtensionType,
-    {
-        name: 'get',
-        requestSerializer: Serializer.json(),
-        responseSerializer: DATA_SERIALIZER,
-    },
-);
+const REGISTRY_GET_ENDPOINT = EndpointType.createSerialized<string, RegistryPacket>(REGISTRY_EXTENSION_TYPE, {
+    name: 'get',
+    requestSerializer: Serializer.json(),
+    responseSerializer: DATA_SERIALIZER,
+});

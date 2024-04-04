@@ -16,9 +16,11 @@ export const TABLE_EXTENSION_TYPE: ExtensionType<TableExtension> = new Extension
     'table',
     (client) => new TableExtension(client),
 );
+
 type TableEventData = { type: string };
 type TableItemsData = TableEventData & { items: Record<string, Uint8Array> };
-type TableProxyData = TableEventData & { items: Record<string, Uint8Array>; key: number };
+type TableProxyData = TableItemsData & { key: number };
+type TableFetchData = TableEventData & { before?: number; after?: number; cursor?: string, };
 
 const ITEMS_SERIALIZER = new Serializer<TableItemsData, Uint8Array>(
     (data) => {
@@ -73,35 +75,35 @@ const ITEM_PROXY_SERIALIZER = new Serializer<TableProxyData, Uint8Array>(
     },
 );
 
-export const TABLE_CONFIG_PACKET = PacketType.createJson<{
+const TABLE_CONFIG_PACKET = PacketType.createJson<{
     type: string;
     config: TableConfig;
 }>(TABLE_EXTENSION_TYPE, {
     name: 'config',
 });
-export const TABLE_LISTEN_PACKET = PacketType.createJson<string>(TABLE_EXTENSION_TYPE, {
+const TABLE_LISTEN_PACKET = PacketType.createJson<string>(TABLE_EXTENSION_TYPE, {
     name: 'listen',
 });
-export const TABLE_PROXY_LISTEN_PACKET = PacketType.createJson<string>(TABLE_EXTENSION_TYPE, {
+const TABLE_PROXY_LISTEN_PACKET = PacketType.createJson<string>(TABLE_EXTENSION_TYPE, {
     name: 'proxy_listen',
 });
-export const TABLE_PROXY_PACKET = PacketType.createSerialized<TableProxyData>(TABLE_EXTENSION_TYPE, {
+const TABLE_PROXY_PACKET = PacketType.createSerialized<TableProxyData>(TABLE_EXTENSION_TYPE, {
     name: 'proxy',
     serializer: ITEM_PROXY_SERIALIZER,
 });
-export const TABLE_ITEM_ADD_PACKET = PacketType.createSerialized<TableItemsData>(TABLE_EXTENSION_TYPE, {
+const TABLE_ITEM_ADD_PACKET = PacketType.createSerialized<TableItemsData>(TABLE_EXTENSION_TYPE, {
     name: 'item_add',
     serializer: ITEMS_SERIALIZER,
 });
-export const TABLE_ITEM_UPDATE_PACKET = PacketType.createSerialized<TableItemsData>(TABLE_EXTENSION_TYPE, {
+const TABLE_ITEM_UPDATE_PACKET = PacketType.createSerialized<TableItemsData>(TABLE_EXTENSION_TYPE, {
     name: 'item_update',
     serializer: ITEMS_SERIALIZER,
 });
-export const TABLE_ITEM_REMOVE_PACKET = PacketType.createSerialized<TableItemsData>(TABLE_EXTENSION_TYPE, {
+const TABLE_ITEM_REMOVE_PACKET = PacketType.createSerialized<TableItemsData>(TABLE_EXTENSION_TYPE, {
     name: 'item_remove',
     serializer: ITEMS_SERIALIZER,
 });
-export const TABLE_ITEM_GET_ENDPOINT = EndpointType.createSerialized<
+const TABLE_ITEM_GET_ENDPOINT = EndpointType.createSerialized<
     TableEventData & { keys: string[] },
     TableItemsData
 >(TABLE_EXTENSION_TYPE, {
@@ -109,26 +111,26 @@ export const TABLE_ITEM_GET_ENDPOINT = EndpointType.createSerialized<
     requestSerializer: Serializer.json(),
     responseSerializer: ITEMS_SERIALIZER,
 });
-export const TABLE_FETCH_ENDPOINT = EndpointType.createSerialized<
-    TableEventData & { before?: number; after?: number; cursor?: string },
+const TABLE_FETCH_ENDPOINT = EndpointType.createSerialized<
+    TableFetchData,
     TableItemsData
 >(TABLE_EXTENSION_TYPE, {
     name: 'fetch',
     requestSerializer: Serializer.json(),
     responseSerializer: ITEMS_SERIALIZER,
 });
-export const TABLE_FETCH_ALL_ENDPOINT = EndpointType.createSerialized<
-    TableEventData & { before?: number; after?: number; cursor?: string },
+const TABLE_FETCH_ALL_ENDPOINT = EndpointType.createSerialized<
+    TableFetchData,
     TableItemsData
 >(TABLE_EXTENSION_TYPE, {
     name: 'fetch_all',
     requestSerializer: Serializer.json(),
     responseSerializer: ITEMS_SERIALIZER,
 });
-export const TABLE_SIZE_ENDPOINT = EndpointType.createJson<TableEventData, number>(TABLE_EXTENSION_TYPE, {
+const TABLE_SIZE_ENDPOINT = EndpointType.createJson<TableEventData, number>(TABLE_EXTENSION_TYPE, {
     name: 'size',
 });
-export const TABLE_CLEAR_PACKET = PacketType.createJson<TableEventData>(TABLE_EXTENSION_TYPE, {
+const TABLE_CLEAR_PACKET = PacketType.createJson<TableEventData>(TABLE_EXTENSION_TYPE, {
     name: 'clear',
 });
 

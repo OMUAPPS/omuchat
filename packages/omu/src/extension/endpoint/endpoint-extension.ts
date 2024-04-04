@@ -14,25 +14,25 @@ type FutureResult = {
 export class EndpointExtension {
     private readonly endpointMap: Map<string, EndpointType>;
     private readonly futureResultMap: Map<number, FutureResult>;
-    private requestId: number;
+    private callId: number;
 
     constructor(private readonly client: Client) {
         this.endpointMap = new Map();
         this.futureResultMap = new Map();
-        this.requestId = 0;
+        this.callId = 0;
         client.network.registerPacket(
-            EndpointRegisterEvent,
-            EndpointCallEvent,
-            EndpointReceiveEvent,
-            EndpointErrorEvent,
+            ENDPOINT_REGISTER_PACKET,
+            ENDPOINT_CALL_PACKET,
+            ENDPOINT_RECEIVE_PACKET,
+            ENDPOINT_ERROR_PACKET,
         );
-        client.network.addPacketHandler(EndpointReceiveEvent, (event) => {
+        client.network.addPacketHandler(ENDPOINT_RECEIVE_PACKET, (event) => {
             const promise = this.futureResultMap.get(event.id);
             if (!promise) return;
             this.futureResultMap.delete(event.id);
             promise.resolve(event.data);
         });
-        client.network.addPacketHandler(EndpointErrorEvent, (event) => {
+        client.network.addPacketHandler(ENDPOINT_ERROR_PACKET, (event) => {
             const promise = this.futureResultMap.get(event.id);
             if (!promise) return;
             this.futureResultMap.delete(event.id);
@@ -48,11 +48,11 @@ export class EndpointExtension {
     }
 
     async call<Req, Res>(endpoint: EndpointType<Req, Res>, data: Req): Promise<Res> {
-        const id = this.requestId++;
+        const id = this.callId++;
         const promise = new Promise<Uint8Array>((resolve, reject) => {
             this.futureResultMap.set(id, { resolve, reject });
         });
-        this.client.send(EndpointCallEvent, {
+        this.client.send(ENDPOINT_CALL_PACKET, {
             type: endpoint.identifier.key(),
             id,
             data: endpoint.requestSerializer.serialize(data),
@@ -62,29 +62,27 @@ export class EndpointExtension {
     }
 }
 
-export const EndpointExtensionType = new ExtensionType(
+export const ENDPOINT_EXTENSION_TYPE = new ExtensionType(
     'endpoint',
     (client: Client) => new EndpointExtension(client),
 );
-
-export const EndpointRegisterEvent = PacketType.createJson<string>(
-    EndpointExtensionType,
-    {
-        name: 'register',
-    },
-);
-type EndpointReq = {
+type EndpointPacket = {
     type: string;
     id: number;
 };
 
-type EndpointReqData = {
-    type: string;
-    id: number;
+type EndpointDataPacket = EndpointPacket & {
     data: Uint8Array;
 };
 
-const serializer = new Serializer<EndpointReqData, Uint8Array>(
+type EndpointErrorPacket = EndpointPacket & {
+    error: string;
+};
+
+const ENDPOINT_REGISTER_PACKET = PacketType.createJson<string>(ENDPOINT_EXTENSION_TYPE, {
+    name: 'register',
+});
+const ENDPOINT_DATA_SERIALIZER = new Serializer<EndpointDataPacket, Uint8Array>(
     (data) => {
         const writer = new ByteWriter();
         writer.writeString(data.type);
@@ -102,23 +100,14 @@ const serializer = new Serializer<EndpointReqData, Uint8Array>(
     },
 );
 
-export const EndpointCallEvent = PacketType.createSerialized<EndpointReqData>(
-    EndpointExtensionType,
-    {
-        name: 'call',
-        serializer,
-    },
-);
-export const EndpointReceiveEvent = PacketType.createSerialized<EndpointReqData>(
-    EndpointExtensionType,
-    {
-        name: 'receive',
-        serializer,
-    },
-);
-export const EndpointErrorEvent = PacketType.createJson<EndpointReq & { error: string }>(
-    EndpointExtensionType,
-    {
-        name: 'error',
-    },
-);
+const ENDPOINT_CALL_PACKET = PacketType.createSerialized<EndpointDataPacket>(ENDPOINT_EXTENSION_TYPE, {
+    name: 'call',
+    serializer: ENDPOINT_DATA_SERIALIZER,
+});
+const ENDPOINT_RECEIVE_PACKET = PacketType.createSerialized<EndpointDataPacket>(ENDPOINT_EXTENSION_TYPE, {
+    name: 'receive',
+    serializer: ENDPOINT_DATA_SERIALIZER,
+});
+const ENDPOINT_ERROR_PACKET = PacketType.createJson<EndpointErrorPacket>(ENDPOINT_EXTENSION_TYPE, {
+    name: 'error',
+});

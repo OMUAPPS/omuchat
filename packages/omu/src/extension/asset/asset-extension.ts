@@ -5,7 +5,7 @@ import { Serializer } from '../../serializer.js';
 import { EndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType } from '../extension.js';
 
-export const AssetExtensionType = new ExtensionType(
+export const ASSET_EXTENSION_TYPE = new ExtensionType(
     'asset',
     (client: Client) => new AssetExtension(client),
 );
@@ -36,24 +36,19 @@ const FILES_SERIALIZER = new Serializer<Files, Uint8Array>(
     },
 );
 
-const IDENTIFIER_SERIALIZER = new Serializer<Identifier, string>(
-    (identifier) => identifier.key(),
-    (key) => Identifier.fromKey(key),
-).array().pipe(Serializer.json());
-
-export const AssetUploadEndpoint = EndpointType.createSerialized<Files, Identifier[]>(
-    AssetExtensionType,
+const ASSET_UPLOAD_ENDPOINT = EndpointType.createJson<Files, Identifier[]>(
+    ASSET_EXTENSION_TYPE,
     {
         name: 'upload',
         requestSerializer: FILES_SERIALIZER,
-        responseSerializer: IDENTIFIER_SERIALIZER,
+        responseSerializer: Serializer.model(Identifier).array(),
     },
 );
-export const AssetDownloadEndpoint = EndpointType.createSerialized<Identifier[], Files>(
-    AssetExtensionType,
+const ASSET_DOWNLOAD_ENDPOINT = EndpointType.createJson<Identifier[], Files>(
+    ASSET_EXTENSION_TYPE,
     {
         name: 'download',
-        requestSerializer: IDENTIFIER_SERIALIZER,
+        requestSerializer: Serializer.model(Identifier).array(),
         responseSerializer: FILES_SERIALIZER,
     },
 );
@@ -62,11 +57,11 @@ export class AssetExtension {
     constructor(private readonly client: Client) { }
 
     async upload(...files: Files): Promise<Identifier[]> {
-        return this.client.endpoints.call(AssetUploadEndpoint, files);
+        return this.client.endpoints.call(ASSET_UPLOAD_ENDPOINT, files);
     }
 
     async download(...identifiers: Identifier[]): Promise<Files> {
-        return this.client.endpoints.call(AssetDownloadEndpoint, identifiers);
+        return this.client.endpoints.call(ASSET_DOWNLOAD_ENDPOINT, identifiers);
     }
 
     url(identifier: Identifier): string {

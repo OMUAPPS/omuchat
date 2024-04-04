@@ -66,9 +66,9 @@ type DashboardSetResponse = {
     success: boolean;
 }
 
-const DASHBOARD_SET_ENDPOINT = EndpointType.createSerialized<Identifier, DashboardSetResponse>(DASHBOARD_EXTENSION_TYPE, {
+const DASHBOARD_SET_ENDPOINT = EndpointType.createJson<Identifier, DashboardSetResponse>(DASHBOARD_EXTENSION_TYPE, {
     name: 'set',
-    requestSerializer: Serializer.model(Identifier).pipe(Serializer.json()),
+    requestSerializer: Serializer.model(Identifier),
     responseSerializer: Serializer.json(),
 });
 const DASHBOARD_PERMISSION_REQUEST_PACKET = PacketType.createJson<PermissionRequest>(DASHBOARD_EXTENSION_TYPE, {

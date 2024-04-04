@@ -9,30 +9,30 @@ import { Author, Channel, Message, Provider, Room } from './models/index.js';
 
 export const IDENTIFIER = new Identifier('cc.omuchat', 'chat');
 
-export const MessagesTableKey = TableType.model(IDENTIFIER, {
+export const MESSAGE_TABLE_TYPE = TableType.model(IDENTIFIER, {
     name: 'messages',
     model: Message,
 });
-export const AuthorsTableKey = TableType.model(IDENTIFIER, {
+export const AUTHOR_TABLE_TYPE = TableType.model(IDENTIFIER, {
     name: 'authors',
     model: Author,
 });
-export const ChannelsTableKey = TableType.model(IDENTIFIER, {
+export const CHANNEL_TABLE_TYPE = TableType.model(IDENTIFIER, {
     name: 'channels',
     model: Channel,
 });
-export const ProvidersTableKey = TableType.model(IDENTIFIER, {
+export const PROVIDER_TABLE_TYPE = TableType.model(IDENTIFIER, {
     name: 'providers',
     model: Provider,
 });
-export const RoomsTableKey = TableType.model(IDENTIFIER, {
+export const ROOM_TABLE_TYPE = TableType.model(IDENTIFIER, {
     name: 'rooms',
     model: Room,
 });
-export const CreateChannelTree = EndpointType.createJson(IDENTIFIER, {
+export const CREATE_CHANNEL_TREE_ENDPOINT = EndpointType.createJson(IDENTIFIER, {
     name: 'create_channel_tree',
-    requestSerializer: Serializer.noop<string>().pipe(Serializer.json()),
-    responseSerializer: Serializer.model(Channel).array().pipe(Serializer.json()),
+    requestSerializer: Serializer.noop<string>(),
+    responseSerializer: Serializer.model(Channel).array(),
 });
 
 export class Chat {
@@ -43,16 +43,16 @@ export class Chat {
     readonly rooms: Table<Room>;
 
     constructor(private readonly client: Client) {
-        this.messages = client.tables.get(MessagesTableKey);
-        this.authors = client.tables.get(AuthorsTableKey);
-        this.channels = client.tables.get(ChannelsTableKey);
-        this.providers = client.tables.get(ProvidersTableKey);
-        this.rooms = client.tables.get(RoomsTableKey);
+        this.messages = client.tables.get(MESSAGE_TABLE_TYPE);
+        this.authors = client.tables.get(AUTHOR_TABLE_TYPE);
+        this.channels = client.tables.get(CHANNEL_TABLE_TYPE);
+        this.providers = client.tables.get(PROVIDER_TABLE_TYPE);
+        this.rooms = client.tables.get(ROOM_TABLE_TYPE);
         this.messages.setCacheSize(1000);
         this.authors.setCacheSize(500);
     }
 
     async createChannelTree(url: string): Promise<Channel[]> {
-        return await this.client.endpoints.call(CreateChannelTree, url);
+        return await this.client.endpoints.call(CREATE_CHANNEL_TREE_ENDPOINT, url);
     }
 }

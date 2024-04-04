@@ -1,2 +1,1 @@
-export * from '../../app.js';
-export * from './server-extension.js';
+export { SERVER_EXTENSION_TYPE, ServerExtension } from './server-extension.js';

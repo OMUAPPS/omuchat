@@ -1,1 +1,2 @@
-export { AssetExtension, AssetExtensionType } from './asset-extension.js';
+export { ASSET_EXTENSION_TYPE, AssetExtension } from './asset-extension.js';
+

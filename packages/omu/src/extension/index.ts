@@ -1,2 +1,3 @@
-export * from './extension-manager.js';
-export * from './extension.js';
+export { ExtensionManager } from './extension-manager.js';
+export { Extension, ExtensionType } from './extension.js';
+

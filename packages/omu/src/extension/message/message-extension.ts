@@ -6,41 +6,39 @@ import { ExtensionType, type Extension } from '../extension.js';
 import type { Message } from './message.js';
 import { MessageType } from './message.js';
 
-export const MessageExtensionType = new ExtensionType(
+export const MESSAGE_EXTENSION_TYPE = new ExtensionType(
     'message',
     (client: Client) => new MessageExtension(client),
 );
-export const MessageListenEvent = PacketType.createJson<string>(MessageExtensionType, {
+
+type MessagePacket = { key: string; body: Uint8Array };
+const MESSAGE_LISTEN_PACKET = PacketType.createJson<string>(MESSAGE_EXTENSION_TYPE, {
     name: 'listen',
 });
-type MessageData = { key: string; body: Uint8Array };
-export const MessageBroadcastEvent = PacketType.createSerialized<MessageData>(
-    MessageExtensionType,
-    {
-        name: 'broadcast',
-        serializer: {
-            serialize: (data) => {
-                const writer = new ByteWriter();
-                writer.writeString(data.key);
-                writer.writeByteArray(data.body);
-                return writer.finish();
-            },
-            deserialize: (data) => {
-                const reader = new ByteReader(data);
-                const key = reader.readString();
-                const body = reader.readByteArray();
-                reader.finish();
-                return { key, body };
-            },
+const MESSAGE_BROADCAST_PACKET = PacketType.createSerialized<MessagePacket>(MESSAGE_EXTENSION_TYPE, {
+    name: 'broadcast',
+    serializer: {
+        serialize: (data) => {
+            const writer = new ByteWriter();
+            writer.writeString(data.key);
+            writer.writeByteArray(data.body);
+            return writer.finish();
+        },
+        deserialize: (data) => {
+            const reader = new ByteReader(data);
+            const key = reader.readString();
+            const body = reader.readByteArray();
+            reader.finish();
+            return { key, body };
         },
     },
-);
+});
 
 export class MessageExtension implements Extension {
     private readonly messageIdentifiers: Set<string> = new Set();
 
     constructor(private readonly client: Client) {
-        client.network.registerPacket(MessageListenEvent, MessageBroadcastEvent);
+        client.network.registerPacket(MESSAGE_LISTEN_PACKET, MESSAGE_BROADCAST_PACKET);
     }
 
     create<T>(name: string): Message<T> {
@@ -62,12 +60,12 @@ class MessageImpl<T> implements Message<T> {
         private readonly client: Client,
         private readonly type: MessageType<T>,
     ) {
-        client.network.addPacketHandler(MessageBroadcastEvent, this.handleBroadcast);
+        client.network.addPacketHandler(MESSAGE_BROADCAST_PACKET, this.handleBroadcast);
     }
 
     broadcast(body: T): void {
         const data = this.type.serializer.serialize(body);
-        this.client.send(MessageBroadcastEvent, {
+        this.client.send(MESSAGE_BROADCAST_PACKET, {
             key: this.type.identifier.key(),
             body: data,
         });
@@ -77,7 +75,7 @@ class MessageImpl<T> implements Message<T> {
         this.listeners.push(handler);
         if (!this.listening) {
             this.client.network.addTask(() => {
-                this.client.send(MessageListenEvent, this.type.identifier.key());
+                this.client.send(MESSAGE_LISTEN_PACKET, this.type.identifier.key());
             });
             this.listening = true;
         }
@@ -86,7 +84,7 @@ class MessageImpl<T> implements Message<T> {
         };
     }
 
-    private handleBroadcast(data: MessageData): void {
+    private handleBroadcast(data: MessagePacket): void {
         if (data.key !== this.type.identifier.key()) {
             return;
         }
