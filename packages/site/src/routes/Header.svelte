@@ -54,6 +54,7 @@
         height: fit-content;
         padding: 1rem;
         background: var(--color-bg-2);
+        border-bottom: 1px solid var(--color-outline);
     }
 
     nav {
