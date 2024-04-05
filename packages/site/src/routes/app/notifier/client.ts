@@ -11,7 +11,7 @@ export const client = new Client({
     app,
 });
 
-export const NotifyTable = client.omu.tables.model(app, {
+export const notifyTable = client.tables.model(identifier, {
     name: 'notify',
     model: NotifyEntry,
 });
@@ -24,5 +24,5 @@ client.on(events.MessageCreate, (message) => {
 });
 
 if (BROWSER) {
-    client.run();
+    client.start();
 }

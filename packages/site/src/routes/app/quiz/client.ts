@@ -8,5 +8,5 @@ const app = new App(identifier, {
 export const client = new Client({ app });
 
 if (BROWSER) {
-    client.run();
+    client.start();
 }

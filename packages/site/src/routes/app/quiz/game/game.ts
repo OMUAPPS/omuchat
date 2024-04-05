@@ -127,7 +127,7 @@ client.on(events.MessageCreate, async (message) => {
     if (!answered) {
         return;
     }
-    const author = await client.authors.get(authorId);
+    const author = await client.chat.authors.get(authorId);
     if (!author) {
         return;
     }
