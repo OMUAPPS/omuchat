@@ -1,6 +1,6 @@
-import { browser } from '$app/environment';
 import { App, Client } from '@omuchatjs/chat';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
+import { BROWSER } from 'esm-env';
 
 const identifier = new Identifier('cc.omuchat', 'page');
 const app = new App(identifier, {
@@ -8,6 +8,6 @@ const app = new App(identifier, {
 });
 export const client = new Client({ app });
 
-if (browser) {
+if (BROWSER) {
     client.start();
 }

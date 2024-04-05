@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { browser } from '$app/environment';
+    import { BROWSER } from 'esm-env';
 
     let messages: string[] = [];
     let audio: HTMLAudioElement;
 
-    if (browser) {
+    if (BROWSER) {
         audio = new Audio('https://www.myinstants.com/media/sounds/roblox-death-sound_1.mp3');
     }
 </script>

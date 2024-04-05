@@ -2,8 +2,8 @@
     import { Client, events, models } from '@omuchatjs/chat';
     import { App } from '@omuchatjs/omu';
 
-    import { browser } from '$app/environment';
     import { Header } from '@omuchatjs/ui';
+    import { BROWSER } from 'esm-env';
     import PlayQueueEntry from './PlayQueueEntry.svelte';
     import { identifier } from './app.js';
     import type { Entry } from './playqueue.js';
@@ -49,7 +49,7 @@
     let leaveWord = '辞退';
     let entries: Entry[] = [];
 
-    if (browser) {
+    if (BROWSER) {
         client.start();
     }
 </script>

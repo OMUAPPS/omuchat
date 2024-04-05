@@ -1,10 +1,10 @@
-import { get } from 'svelte/store';
-import type { Quiz, QuizData } from '../quiz.js';
-import { GAME_DATA, gameData } from '../stores.js';
-import { client } from '../client.js';
 import { events } from '@omuchatjs/chat';
 import type { AuthorJson } from '@omuchatjs/chat/models/author.js';
-import { browser } from '$app/environment';
+import { BROWSER } from 'esm-env';
+import { get } from 'svelte/store';
+import { client } from '../client.js';
+import type { Quiz, QuizData } from '../quiz.js';
+import { GAME_DATA, gameData } from '../stores.js';
 
 export interface GameData {
     id: string;
@@ -56,7 +56,7 @@ export async function endGame() {
 
 import se01 from '../se/se01.mp3';
 let se01audio: HTMLAudioElement;
-if (browser) {
+if (BROWSER) {
     se01audio = new Audio(se01);
 }
 

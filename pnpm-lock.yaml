@@ -363,6 +363,9 @@ importers:
       eslint-plugin-svelte:
         specifier: ^2.35.1
         version: 2.35.1(eslint@8.57.0)(svelte@4.2.12)
+      esm-env:
+        specifier: ^1.0.0
+        version: 1.0.0
       postcss-html:
         specifier: ^1.6.0
         version: 1.6.0

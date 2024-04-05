@@ -1,6 +1,6 @@
-import { browser } from '$app/environment';
 import { Client, events } from '@omuchatjs/chat';
 import { App } from '@omuchatjs/omu';
+import { BROWSER } from 'esm-env';
 import { identifier } from './app.js';
 import { NotifyEntry } from './model.js';
 
@@ -23,6 +23,6 @@ client.on(events.MessageCreate, (message) => {
     }
 });
 
-if (browser) {
+if (BROWSER) {
     client.run();
 }

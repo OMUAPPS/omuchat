@@ -1,5 +1,5 @@
-import { browser } from '$app/environment';
 import { App, Client } from '@omuchatjs/chat';
+import { BROWSER } from 'esm-env';
 import { identifier } from './app.js';
 
 const app = new App(identifier, {
@@ -7,6 +7,6 @@ const app = new App(identifier, {
 });
 export const client = new Client({ app });
 
-if (browser) {
+if (BROWSER) {
     client.run();
 }

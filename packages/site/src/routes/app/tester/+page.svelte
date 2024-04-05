@@ -40,7 +40,7 @@
             providerId: 'test',
             status: 'offline',
         });
-        chat.rooms.set(room);
+        chat.rooms.update(room);
         chat.messages.add(
             new Message({
                 roomId: room.key(),
