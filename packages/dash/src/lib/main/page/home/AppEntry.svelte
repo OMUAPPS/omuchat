@@ -9,7 +9,11 @@
     export let selected: boolean = false;
 
     function openApp() {
-        const window = new tauriWindow.WebviewWindow(entry.url, {
+        const safeAppLabel =
+            entry.identifier.namespace.replace(/\./g, '-') +
+            btoa(entry.identifier.key()).replace(/=/g, '');
+        console.log('openApp', safeAppLabel);
+        const window = new tauriWindow.WebviewWindow(safeAppLabel, {
             url: entry.url,
             title: entry.name,
         });
