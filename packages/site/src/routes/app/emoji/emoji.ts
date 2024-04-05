@@ -104,7 +104,7 @@ export function deleteEmoji(emoji: Emoji) {
 }
 
 export function saveEmoji(emoji: Emoji) {
-    emojis.set(emoji);
+    emojis.update(emoji);
     selectedEmoji.set(null);
 }
 
@@ -120,7 +120,7 @@ export function testEmoji(emoji: Emoji) {
         status: 'offline',
         createdAt: new Date(),
     });
-    client.chat.rooms.set(room);
+    client.chat.rooms.update(room);
     client.chat.messages.add(
         new models.Message({
             id: Date.now().toString(),
