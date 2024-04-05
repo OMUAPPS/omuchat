@@ -18,8 +18,8 @@
         "fix:eslint": "eslint . --ext .ts,.svelte --fix --ignore-path .gitignore",
         "lint:prettier": "prettier --check .",
         "fix:prettier": "prettier --write .",
-        "lint": "npm run lint:stylelint && npm run lint:eslint && npm run lint:prettier",
-        "fix": "npm run fix:stylelint && npm run fix:eslint && npm run format:prettier"
+        "lint": "pnpm run lint:stylelint && pnpm run lint:eslint && pnpm run lint:prettier",
+        "fix": "pnpm run fix:stylelint && pnpm run fix:eslint && pnpm run format:prettier"
     },
     "packageManager": "pnpm@8.14.1",
     "engines": {
