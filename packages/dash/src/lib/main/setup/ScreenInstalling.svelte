@@ -12,8 +12,10 @@
     import Screen from '$lib/common/screen/Screen.svelte';
     import { invoke, listen } from '$lib/utils/tauri.js';
 
-    export let screen: ScreenHandle;
-    export let props: {};
+    export let screen: {
+        handle: ScreenHandle;
+        props: {};
+    };
 
     let progress: {
         progress: number;
@@ -22,7 +24,7 @@
     } | null = null;
 
     function close() {
-        screen.pop();
+        screen.handle.pop();
         if (!$installed) {
             screenContext.push(ScreenSetup, {});
         }

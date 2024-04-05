@@ -12,8 +12,10 @@
     import { invoke } from '$lib/utils/tauri.js';
     import { JustifyBaselineWrapper, Tooltip } from '@omuchatjs/ui';
 
-    export let screen: ScreenHandle;
-    export let props: {};
+    export let screen: {
+        handle: ScreenHandle;
+        props: {};
+    };
     let result: ShareResnponse | undefined;
     let url: string = '';
     let qrImage: HTMLImageElement;
@@ -58,7 +60,7 @@
             {/if}
         </div>
         <div class="close-button">
-            <Button on:click={screen.pop} outline rounded filled>
+            <Button on:click={screen.handle.pop} outline rounded filled>
                 <JustifyBaselineWrapper>
                     {$t('general.close')}
                     <i class="ti ti-x" />

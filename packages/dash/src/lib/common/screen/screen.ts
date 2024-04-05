@@ -9,8 +9,10 @@ export type ScreenHandle = {
 };
 
 export type ScreenComponentType<T> = TypedComponent<{
-    screen: ScreenHandle;
-    props: T;
+    screen: {
+        handle: ScreenHandle,
+        props: T,
+    };
 }>;
 
 export interface ScreenComponent<T> {

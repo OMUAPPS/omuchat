@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
 
 import { LOCALES } from '$lib/i18n/i18n.js';
+import type { TypedComponent } from '@omuchatjs/ui';
 import Checkbox from './settings/CheckboxField.svelte';
 import Combobox from './settings/ComboboxField.svelte';
 import About from './settings/about/About.svelte';
@@ -63,33 +64,35 @@ function calcLanguageScore(lang: string): number {
     return score;
 }
 
-export const SETTING_REGISTRY: Map<string, Record<string, PropedComponent>> = new Map();
+type Setting<T extends Record<string, unknown> = Record<string, unknown>> = {
+    component: TypedComponent<T>;
+    props: T;
+}
+export const SETTING_REGISTRY: Map<string, Record<string, Setting>> = new Map();
 
-export function registerSetting<T extends Record<string, unknown>>(category: string, key: string, setting: PropedComponent<T>) {
+export function registerSetting<T extends Record<string, unknown>>(category: string, key: string, setting: TypedComponent<T>, props: T) {
     if (!SETTING_REGISTRY.has(category)) {
         SETTING_REGISTRY.set(category, {});
     }
-    SETTING_REGISTRY.get(category)![key] = setting;
+    const categorySettings = SETTING_REGISTRY.get(category);
+    if (!categorySettings) {
+        return;
+    }
+    categorySettings[key] = {
+        component: setting,
+        props,
+    } as Setting<T>;
 }
 
-registerSetting('general', 'devMode', {
-    component: Checkbox,
-    props: {
-        label: 'settings.setting.devMode',
-        value: devMode,
-    },
+registerSetting('general', 'devMode', Checkbox, {
+    label: 'settings.setting.devMode',
+    value: devMode,
 });
-registerSetting('language', 'language', {
-    component: Combobox,
-    props: {
-        label: 'settings.setting.language',
-        value: language,
-        options: Object.keys(LOCALES).sort(
-            (a, b) => calcLanguageScore(b) - calcLanguageScore(a),
-        ) as (keyof typeof LOCALES)[],
-    },
+registerSetting('language', 'language', Combobox, {
+    label: 'settings.setting.language',
+    value: language,
+    options: Object.keys(LOCALES).sort(
+        (a, b) => calcLanguageScore(b) - calcLanguageScore(a),
+    ) as (keyof typeof LOCALES)[],
 });
-registerSetting('about', 'licenses', {
-    component: About,
-    props: {},
-});
+registerSetting('about', 'licenses', About, {});

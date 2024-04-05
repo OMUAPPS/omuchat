@@ -1,4 +1,5 @@
-import type { Keyable, Model } from '@omuchatjs/omu/interface.js';
+import type { Keyable } from '@omuchatjs/omu/interface.js';
+import type { Model } from '@omuchatjs/omu/model.js';
 
 export type AssetType = 'app' | 'panel' | 'image';
 

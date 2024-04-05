@@ -5,20 +5,23 @@
     import Screen from './Screen.svelte';
     import type { ScreenHandle } from './screen.js';
 
-    export let screen: ScreenHandle;
-    export let props: {
-        request: PermissionRequest;
-        resolve: (accept: boolean) => void;
+    export let screen: {
+        handle: ScreenHandle;
+        props: {
+            request: PermissionRequest;
+            resolve: (accept: boolean) => void;
+        };
     };
+    const { request, resolve } = screen.props;
 
     function accept() {
-        props.resolve(true);
-        screen.pop();
+        resolve(true);
+        screen.handle.pop();
     }
 
     function reject() {
-        props.resolve(false);
-        screen.pop();
+        resolve(false);
+        screen.handle.pop();
     }
 </script>
 
@@ -29,14 +32,14 @@
                 <FlexColWrapper>
                     <JustifyBaselineWrapper>
                         <small>
-                            {props.request.app.group.split('.').reverse().join('.')}
+                            {request.app.group.split('.').reverse().join('.')}
                             <i class="ti ti-slash" />
                         </small>
                         <b>
-                            {props.request.app.name}
+                            {request.app.name}
                         </b>
                         <small>
-                            v{props.request.app.version}
+                            v{request.app.version}
                         </small>
                     </JustifyBaselineWrapper>
                 </FlexColWrapper>
@@ -44,7 +47,7 @@
             は以下の権限を要求しています。
         </span>
         <FlexRowWrapper widthFull justifyContent="center">
-            {#each props.request.permissions as permission}
+            {#each request.permissions as permission}
                 <PermissionEntry {permission} />
             {/each}
         </FlexRowWrapper>
@@ -73,10 +76,6 @@
         outline: none;
         outline-offset: -1px;
         margin-right: 1px;
-    }
-
-    .identifier {
-        opacity: 0.6;
     }
 
     .text {

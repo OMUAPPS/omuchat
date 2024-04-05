@@ -19,8 +19,8 @@
                 client.start();
                 return;
             }
-            screenContext.push(ScreenInstalling, {});
             listen('server-state', (state) => {
+                screenContext.push(ScreenInstalling, {});
                 console.log(state);
                 if (state.payload === 'Installed') {
                     client.start();
@@ -87,93 +87,5 @@
         font-weight: bold;
         color: var(--color-1);
         background: var(--color-bg-1);
-    }
-
-    .error {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        font-size: 20px;
-        color: var(--color-bg-1);
-        background: var(--color-1);
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-
-            .title {
-                display: flex;
-                flex-direction: column;
-                gap: 0;
-                align-items: flex-start;
-                padding: 0 10px;
-                font-size: 24px;
-                line-height: 24px;
-                color: var(--color-1);
-                background: var(--color-bg-2);
-
-                small {
-                    b {
-                        margin: 0 5px;
-                        margin-left: 30px;
-                    }
-
-                    font-size: 14px;
-                }
-            }
-
-            .message {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: flex-start;
-                font-size: 16px;
-                color: var(--color-bg-2);
-                text-align: start;
-                appearance: none;
-                background: transparent;
-                background: var(--color-1);
-                border: none;
-                outline: none;
-
-                &:hover {
-                    color: var(--color-1);
-                    background: var(--color-bg-2);
-                }
-            }
-
-            .buttons {
-                display: flex;
-                flex-direction: row;
-                gap: 10px;
-                align-items: center;
-                justify-content: center;
-                margin-top: 10px;
-
-                button {
-                    display: flex;
-                    gap: 10px;
-                    align-items: center;
-                    justify-content: center;
-                    height: 40px;
-                    padding: 0 10px;
-                    margin-top: 40px;
-                    font-size: 16px;
-                    color: var(--color-bg-1);
-                    cursor: pointer;
-                    background: var(--color-1);
-                    border: 1px solid var(--color-bg-1);
-
-                    &:hover {
-                        color: var(--color-1);
-                        background: var(--color-bg-1);
-                    }
-                }
-            }
-        }
     }
 </style>

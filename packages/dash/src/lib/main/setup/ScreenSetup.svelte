@@ -15,8 +15,10 @@
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import { Tooltip } from '@omuchatjs/ui';
 
-    export let screen: ScreenHandle;
-    export let props: {};
+    export let screen: {
+        handle: ScreenHandle;
+        props: {};
+    };
 
     let result: Map<string, { channel: models.Channel; active: boolean }> | undefined;
 
@@ -45,7 +47,7 @@
         if (!result?.size) return;
         const channels = [...result.values()].filter((v) => v.active).map((v) => v.channel);
         chat.channels!.add(...channels);
-        screen.pop();
+        screen.handle.pop();
         $installed = true;
     }
 
@@ -135,7 +137,7 @@
                 </div>
             {/if}
         </div>
-        <button on:click={screen.pop} class="skip">
+        <button on:click={screen.handle.pop} class="skip">
             {$t('setup.skip')}
             <i class="ti ti-arrow-right" />
         </button>

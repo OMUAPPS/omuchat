@@ -4,7 +4,7 @@
 
     import { classes } from '$lib/utils/class-helper.js';
 
-    export let screen: ScreenHandle;
+    export let screen: { handle: ScreenHandle };
     export let title: string;
     export let windowed: boolean = true;
     export let disableDecorations: boolean = false;
@@ -16,7 +16,7 @@
             return;
         }
         if (event.target === container) {
-            screen.pop();
+            screen.handle.pop();
         }
     }
 
@@ -25,7 +25,7 @@
             return;
         }
         if (e.key === 'Escape') {
-            screen.pop();
+            screen.handle.pop();
         }
     }
 </script>

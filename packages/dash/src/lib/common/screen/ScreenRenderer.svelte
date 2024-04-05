@@ -4,30 +4,27 @@
     let current: {
         screen: ScreenComponent<unknown>;
         handle: ScreenHandle;
+        props: unknown;
     } | null = null;
 
-    screenContext.current.subscribe((newValue) => {
-        if (!newValue) {
+    screenContext.current.subscribe((screen) => {
+        if (!screen) {
             current = null;
             return;
         }
-        const screen = newValue!;
         current = {
             screen,
             handle: {
                 id: screen.id,
                 pop() {
-                    screenContext.pop(newValue.id);
+                    screenContext.pop(screen.id);
                 },
             },
+            props: screen.props,
         };
     });
 </script>
 
 {#if current}
-    <svelte:component
-        this={current.screen.component}
-        screen={current.handle}
-        props={current.screen.props}
-    />
+    <svelte:component this={current.screen.component} screen={current} />
 {/if}

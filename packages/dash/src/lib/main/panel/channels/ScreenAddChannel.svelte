@@ -9,8 +9,10 @@
     import Screen from '$lib/common/screen/Screen.svelte';
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
 
-    export let screen: ScreenHandle;
-    export let props: {};
+    export let screen: {
+        handle: ScreenHandle;
+        props: {};
+    };
     let providers: Map<string, models.Provider> | undefined;
     let url: string = '';
 
@@ -65,7 +67,7 @@
                 name: '',
             }),
         );
-        screen.pop();
+        screen.handle.pop();
     }
 
     function onKeyPress(e: KeyboardEvent) {

@@ -9,8 +9,10 @@
     import { t } from '$lib/i18n/i18n-context.js';
     import { JustifyBaselineWrapper } from '@omuchatjs/ui';
 
-    export let screen: ScreenHandle;
-    export let props: {};
+    export let screen: {
+        handle: ScreenHandle;
+        props: {};
+    };
 
     const categories = [
         ...[...SETTING_REGISTRY.entries()].map(([name, settings]) => {
@@ -39,7 +41,7 @@
         <div class="description">{$t('screen.settings.description')}</div>
     </div>
     <div class="close-button">
-        <Button on:click={screen.pop} outline rounded filled>
+        <Button on:click={screen.handle.pop} outline rounded filled>
             <JustifyBaselineWrapper>
                 {$t('general.close')}
                 <i class="ti ti-x" />
