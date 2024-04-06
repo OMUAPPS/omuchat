@@ -23,7 +23,9 @@
 	</div>
 	<div class="info">
 		{gift.name}
-		{gift.amount > 1 ? `x${gift.amount}` : ''}
+		{#if gift.amount}
+			{gift.amount > 1 ? `x${gift.amount}` : ''}
+		{/if}
 	</div>
 </div>
 
