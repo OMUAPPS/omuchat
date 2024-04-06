@@ -7,7 +7,7 @@
 	},
 	"scripts": {
 		"prepare": "svelte-kit sync",
-		"dev": "vite dev",
+		"dev": "vite dev --port 5174",
 		"watch": "svelte-package --watch",
 		"build": "vite build && pnpm run package",
 		"preview": "vite preview",
