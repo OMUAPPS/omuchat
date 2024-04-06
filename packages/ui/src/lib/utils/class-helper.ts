@@ -6,6 +6,7 @@ function formatCSSKey(key: string) {
 
 export function style(style: CSS.Properties<string | number>) {
     return Object.entries(style)
+        .filter(([, value]) => value !== undefined && value !== null)
         .map(([key, value]) => `${formatCSSKey(key)}: ${value};`)
         .join(' ');
 }
