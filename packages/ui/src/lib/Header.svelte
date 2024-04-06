@@ -25,7 +25,7 @@
 		min-height: 80px;
 		padding: 20px;
 		background: var(--color-bg-2);
-		border-bottom: 1px solid var(--color-1);
+		border-bottom: 1px solid var(--color-outline);
 	}
 
 	.title {

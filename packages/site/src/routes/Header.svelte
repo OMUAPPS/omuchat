@@ -93,6 +93,7 @@
         &[aria-current='page'] {
             color: var(--color-bg-2);
             background: var(--color-1);
+            outline: 2px solid var(--color-bg-1);
         }
     }
 
