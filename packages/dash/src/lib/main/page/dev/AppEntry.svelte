@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { client } from '$lib/common/omuchat/client.js';
     import type { App } from '@omuchatjs/omu';
     import { FlexColWrapper, JustifyBaselineWrapper } from '@omuchatjs/ui';
 
@@ -9,14 +10,16 @@
     <FlexColWrapper heightFull>
         <JustifyBaselineWrapper>
             <small>
-                {entry.group.split('.').reverse().join('.')}
+                {entry.identifier.namespace.split('.').reverse().join('.')}
                 <i class="ti ti-slash" />
             </small>
         </JustifyBaselineWrapper>
         <JustifyBaselineWrapper>
-            <b>
-                {entry.name}
-            </b>
+            {#if entry.localizations?.name}
+                <b>
+                    {client.i18n.translate(entry.localizations?.name)}
+                </b>
+            {/if}
             <small>
                 v{entry.version}
             </small>

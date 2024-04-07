@@ -5,10 +5,10 @@
     import { Header } from '@omuchatjs/ui';
     import { BROWSER } from 'esm-env';
     import PlayQueueEntry from './PlayQueueEntry.svelte';
-    import { identifier } from './app.js';
+    import { IDENTIFIER } from './app.js';
     import type { Entry } from './playqueue.js';
 
-    const app = new App(identifier, {
+    const app = new App(IDENTIFIER, {
         version: '0.1.0',
     });
     const client = new Client({

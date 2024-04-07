@@ -2,6 +2,7 @@ import type { App } from '../app.js';
 import { ASSET_EXTENSION_TYPE, type AssetExtension } from '../extension/asset/index.js';
 import { DASHBOARD_EXTENSION_TYPE, type DashboardExtension } from '../extension/dashboard/index.js';
 import { ENDPOINT_EXTENSION_TYPE, type EndpointExtension } from '../extension/endpoint/index.js';
+import { I18N_EXTENSION_TYPE, type I18nExtension } from '../extension/i18n/index.js';
 import { ExtensionRegistry } from '../extension/index.js';
 import { MESSAGE_EXTENSION_TYPE, type MessageExtension } from '../extension/message/index.js';
 import { PERMISSION_EXTENSION_TYPE, type PermissionExtension } from '../extension/permission/index.js';
@@ -34,6 +35,7 @@ export class OmuClient implements Client {
     readonly registry: RegistryExtension;
     readonly message: MessageExtension;
     readonly assets: AssetExtension;
+    readonly i18n: I18nExtension;
     readonly server: ServerExtension;
 
     constructor(options: {
@@ -58,6 +60,7 @@ export class OmuClient implements Client {
         this.registry = this.extensions.register(REGISTRY_EXTENSION_TYPE);
         this.message = this.extensions.register(MESSAGE_EXTENSION_TYPE);
         this.assets = this.extensions.register(ASSET_EXTENSION_TYPE);
+        this.i18n = this.extensions.register(I18N_EXTENSION_TYPE);
         this.server = this.extensions.register(SERVER_EXTENSION_TYPE);
         this.listeners.initialized.emit();
     }

@@ -1,12 +1,18 @@
+import { App } from '@omuchatjs/omu';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
-import { AppMetadata } from '../app-metadata.js';
 
 export const IDENTIFIER = new Identifier('cc.omuchat', 'tester');
 
-export default (origin: string) =>
-    new AppMetadata({
-        identifier: IDENTIFIER.key(),
-        name: 'Tester',
+export default function getApp(origin: string) {
+    return new App(IDENTIFIER, {
         url: origin + '/app/tester',
-        icon: 'text-size',
+        localizations: {
+            locale: 'en',
+            name: {
+                en: 'Tester',
+                ja: 'コメントテスター',
+            },
+            icon: 'text-size',
+        }
     });
+}

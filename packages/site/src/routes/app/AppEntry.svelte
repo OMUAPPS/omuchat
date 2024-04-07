@@ -1,11 +1,14 @@
 <script lang="ts">
+    import type { App } from '@omuchatjs/omu';
     import { Tooltip } from '@omuchatjs/ui';
     import { client } from '../client.js';
-    import type { AppMetadata } from './app-metadata.js';
     import { appTable } from './apps.js';
-    export let app: AppMetadata;
+    export let app: App;
 
     function launch() {
+        if (!app.url) {
+            throw new Error('App has no URL');
+        }
         window.location.href = app.url;
     }
 
@@ -31,8 +34,8 @@
 <article>
     <div class="header">
         <h2>
-            <i class="ti ti-{app.icon}" />
-            {app.name}
+            <i class="ti ti-{app.localizations?.icon}" />
+            {app.localizations?.name}
         </h2>
         <span>
             <button on:click={action}>

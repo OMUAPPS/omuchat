@@ -1,6 +1,6 @@
-import { writable, type Writable } from 'svelte/store';
-
-import type { I18n, TranslateFunction } from './i18n.js';
+import type { I18n, TranslateFunction } from "@omuchatjs/i18n";
+import { translate } from "@omuchatjs/ui";
+import { writable, type Writable } from "svelte/store";
 
 export const i18n: Writable<I18n | null> = writable(null);
 
@@ -10,6 +10,7 @@ export const t: Writable<TranslateFunction> = writable(() => {
 
 i18n.subscribe((i18n) => {
     if (i18n) {
+        translate.set(i18n.translate);
         t.set(i18n.translate);
     }
 });

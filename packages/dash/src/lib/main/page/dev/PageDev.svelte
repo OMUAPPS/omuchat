@@ -70,7 +70,7 @@
     <div class="section">
         <h3>Language</h3>
         <div>
-            {$i18n?.locale}
+            {$i18n?.localeName}
         </div>
     </div>
     <div class="section">

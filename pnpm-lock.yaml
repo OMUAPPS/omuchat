@@ -91,6 +91,9 @@ importers:
       '@omuchatjs/chat':
         specifier: workspace:*
         version: link:../chat
+      '@omuchatjs/i18n':
+        specifier: workspace:*
+        version: link:../i18n
       '@omuchatjs/omu':
         specifier: workspace:*
         version: link:../omu
@@ -327,6 +330,9 @@ importers:
       '@omuchatjs/chat':
         specifier: workspace:*
         version: link:../chat
+      '@omuchatjs/i18n':
+        specifier: workspace:*
+        version: link:../i18n
       '@omuchatjs/omu':
         specifier: workspace:*
         version: link:../omu
