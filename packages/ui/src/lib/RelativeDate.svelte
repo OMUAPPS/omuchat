@@ -44,7 +44,7 @@
 			const diffValue = Math.floor(diff / unit.value);
 			if (diffValue > 0) {
 				formattedDate = $translate(unit.label, {
-					time: diffValue
+					time: diffValue.toString()
 				});
 				sleep(unit.value - (diff % timeUnits[i].value));
 				break;

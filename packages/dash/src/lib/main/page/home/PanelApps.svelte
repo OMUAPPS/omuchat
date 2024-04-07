@@ -5,13 +5,13 @@
     import { tauriWindow } from '$lib/utils/tauri.js';
     import { onMount } from 'svelte';
 
-    import type { AppMetadata } from '$lib/common/omuchat/app-metadata.js';
     import { dashboard } from '$lib/common/omuchat/client.js';
     import { t } from '$lib/i18n/i18n-context.js';
     import { currentPage } from '$lib/main/settings.js';
+    import type { App } from '@omuchatjs/omu';
     import { TableList } from '@omuchatjs/ui';
 
-    export let filter: (key: string, app: AppMetadata) => boolean = () => true;
+    export let filter: (key: string, app: App) => boolean = () => true;
 
     onMount(() => {
         dashboard.apps.addListener({

@@ -1,49 +1,43 @@
 import { Identifier } from './identifier.js';
 import type { Keyable } from './interface.js';
+import type { Locale } from './localization/locale.js';
+import type { LocalizedText } from './localization/localization.js';
 import type { Model } from './model.js';
 
-export interface AppJson {
+export type AppLocalization = {
+    locale: Locale;
+    name?: LocalizedText;
+    icon?: LocalizedText;
+    description?: LocalizedText;
+    image?: LocalizedText;
+    site?: LocalizedText;
+    repository?: LocalizedText;
+    authors?: LocalizedText;
+    license?: LocalizedText;
+}
+
+export type AppJson = {
     identifier: string;
     version?: string;
-    description?: string;
-    authors?: string[];
-    site_url?: string;
-    repository_url?: string;
-    license?: string;
-    image_url?: string;
+    url?: string;
+    localizations?: AppLocalization;
 }
 
 export class App implements Keyable, Model<AppJson> {
     public readonly identifier: Identifier;
-    public readonly name: string;
-    public readonly group: string;
-    public version?: string;
-    public description?: string;
-    public authors?: string[];
-    public siteUrl?: string;
-    public repositoryUrl?: string;
-    public license?: string;
-    public imageUrl?: string;
+    public readonly version?: string;
+    public readonly url?: string;
+    public readonly localizations?: AppLocalization;
 
     constructor(identifier: Identifier, options: {
         version?: string;
-        description?: string;
-        authors?: string[];
-        siteUrl?: string;
-        repositoryUrl?: string;
-        license?: string;
-        imageUrl?: string;
+        url?: string;
+        localizations?: AppLocalization;
     }) {
         this.identifier = identifier;
-        this.name = identifier.path.join('/');
-        this.group = identifier.namespace;
         this.version = options.version;
-        this.description = options.description;
-        this.authors = options.authors;
-        this.siteUrl = options.siteUrl;
-        this.repositoryUrl = options.repositoryUrl;
-        this.license = options.license;
-        this.imageUrl = options.imageUrl;
+        this.url = options.url;
+        this.localizations = options.localizations;
     }
 
     key(): string {
@@ -54,25 +48,17 @@ export class App implements Keyable, Model<AppJson> {
         const identifier = Identifier.fromKey(info.identifier);
         return new App(identifier, {
             version: info.version,
-            description: info.description,
-            authors: info.authors,
-            siteUrl: info.site_url,
-            repositoryUrl: info.repository_url,
-            license: info.license,
-            imageUrl: info.image_url,
+            url: info.url,
+            localizations: info.localizations,
         });
     }
 
     toJson(): AppJson {
         return {
-            identifier: this.key(),
+            identifier: this.identifier.key(),
             version: this.version,
-            description: this.description,
-            authors: this.authors,
-            site_url: this.siteUrl,
-            repository_url: this.repositoryUrl,
-            license: this.license,
-            image_url: this.imageUrl,
+            url: this.url,
+            localizations: this.localizations,
         };
     }
 }

@@ -2,10 +2,11 @@
     import { client } from '$lib/common/omuchat/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
     import { i18n } from '$lib/i18n/i18n-context.js';
-    import { DEFAULT_LOCALE, LOCALES, createI18nUnion } from '$lib/i18n/i18n.js';
+    import { DEFAULT_LOCALE, LOCALES } from '$lib/i18n/i18n.js';
     import { language } from '$lib/main/settings.js';
     import ScreenInstalling from '$lib/main/setup/ScreenInstalling.svelte';
     import { IS_TAURI, invoke, listen, waitForTauri } from '$lib/utils/tauri.js';
+    import { createI18nUnion } from '@omuchatjs/i18n';
     import { Theme } from '@omuchatjs/ui';
     import './styles.scss';
 

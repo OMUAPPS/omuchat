@@ -49,6 +49,7 @@ class RegistryImpl<T> implements Registry<T> {
     }
 
     async get(): Promise<T> {
+        await this.client.network.waitForConnection();
         const result = await this.client.endpoints.call(REGISTRY_GET_ENDPOINT, this.key);
         if (!result.existing) {
             return this.defaultValue;
@@ -56,14 +57,20 @@ class RegistryImpl<T> implements Registry<T> {
         return this.serializer.deserialize(result.value);
     }
 
-    async update(fn: (value: T) => T): Promise<void> {
-        const value = await this.get();
-        const newValue = await fn(value);
+    async set(value: T): Promise<void> {
+        await this.client.network.waitForConnection();
         this.client.send(REGISTRY_UPDATE_PACKET, {
             key: this.key,
             existing: true,
-            value: this.serializer.serialize(newValue),
+            value: this.serializer.serialize(value),
         });
+    }
+
+    async update(fn: (value: T) => T): Promise<void> {
+        await this.client.network.waitForConnection();
+        const value = await this.get();
+        const newValue = await fn(value);
+        await this.set(newValue);
     }
 
     listen(handler: (value: T) => void): () => void {

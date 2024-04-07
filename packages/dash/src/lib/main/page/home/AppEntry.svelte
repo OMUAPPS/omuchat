@@ -1,12 +1,15 @@
 <script lang="ts">
-    import type { AppMetadata } from '$lib/common/omuchat/app-metadata.js';
     import { tauriWindow } from '$lib/utils/tauri.js';
     import { FlexColWrapper, FlexRowWrapper } from '@omuchatjs/ui';
 
+    import { client } from '$lib/common/omuchat/client.js';
     import { t } from '$lib/i18n/i18n-context.js';
+    import type { App } from '@omuchatjs/omu';
 
-    export let entry: AppMetadata;
+    export let entry: App;
     export let selected: boolean = false;
+
+    const icon = entry.localizations?.icon && client.i18n.translate(entry.localizations.icon);
 
     function openApp() {
         const safeAppLabel =
@@ -15,7 +18,9 @@
         console.log('openApp', safeAppLabel);
         const window = new tauriWindow.WebviewWindow(safeAppLabel, {
             url: entry.url,
-            title: entry.name,
+            title: entry.localizations?.name
+                ? client.i18n.translate(entry.localizations.name)
+                : entry.identifier.key(),
         });
         window.setFocus();
     }
@@ -25,14 +30,16 @@
     <FlexRowWrapper widthFull between>
         <FlexRowWrapper>
             <div class="icon">
-                {#if entry.icon?.startsWith('http')}
-                    <img src={entry.icon} alt="icon" />
+                {#if icon && icon.startsWith('http')}
+                    <img src={icon} alt="icon" />
                 {:else}
-                    <i class="ti ti-{entry.icon ?? `box`}" />
+                    <i class="ti ti-{icon ?? `box`}" />
                 {/if}
             </div>
             <FlexColWrapper>
-                <div class="name">{entry.name}</div>
+                <div class="name">
+                    {entry.localizations?.name && client.i18n.translate(entry.localizations?.name)}
+                </div>
                 <small>
                     {entry.identifier.namespace.split('.').reverse().join('.')}
                 </small>
