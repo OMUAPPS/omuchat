@@ -21,6 +21,16 @@ export class DashboardExtension {
         client.network.listeners.connected.subscribe(() => this.handleConnected());
     }
 
+    private async handleConnected(): Promise<void> {
+        if (this.dashboard === null) {
+            return;
+        }
+        const response = await this.client.endpoints.call(DASHBOARD_SET_ENDPOINT, this.client.app.identifier);
+        if (!response.success) {
+            throw new Error('Failed to set dashboard');
+        }
+    }
+
     private async handlePermissionRequest(request: PermissionRequest): Promise<void> {
         await this.handleDashboard(async (dashboard) => {
             const response = await dashboard.handlePermissionRequest(request);
@@ -37,16 +47,6 @@ export class DashboardExtension {
             throw new Error('Dashboard not set');
         }
         await callback(this.dashboard);
-    }
-
-    private async handleConnected(): Promise<void> {
-        if (this.dashboard === null) {
-            return;
-        }
-        const response = await this.client.endpoints.call(DASHBOARD_SET_ENDPOINT, this.client.app.identifier);
-        if (!response.success) {
-            throw new Error('Failed to set dashboard');
-        }
     }
 
     public set(dashboard: DashboardHandler): void {
