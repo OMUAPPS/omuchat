@@ -8,7 +8,10 @@ export default function getApp(origin: string) {
         url: origin + '/app/tester',
         localizations: {
             locale: 'en',
-            name: 'Tester',
+            name: {
+                en: 'Tester',
+                ja: 'コメントテスター',
+            },
             icon: 'text-size',
         }
     });
