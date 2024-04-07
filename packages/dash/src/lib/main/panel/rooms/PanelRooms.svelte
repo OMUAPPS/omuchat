@@ -20,18 +20,19 @@
 
     let rooms = chat.rooms.cache;
 
-    const unlisten = chat.rooms.listen((newRooms: Map<string, models.Room>) => {
+    const unlistenRooms = chat.rooms.listen((newRooms: Map<string, models.Room>) => {
         rooms = newRooms;
     });
 
     onMount(() => {
-        client.network.listeners.connected.subscribe(() => {
+        client.network.addTask(() => {
             chat.rooms.fetchItems({
                 after: 100,
             });
+            console.log('fetchItems');
         });
         return () => {
-            unlisten();
+            unlistenRooms();
         };
     });
 
