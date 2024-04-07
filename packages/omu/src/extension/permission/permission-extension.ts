@@ -26,7 +26,7 @@ export class PermissionExtension {
     private readonly registeredPermissions: Map<string, PermissionType>;
     private readonly requiredPermissions: Map<string, Identifier>;
 
-    constructor(client: Client) {
+    constructor(private readonly client: Client) {
         this.permissions = new Map();
         this.registeredPermissions = new Map();
         this.requiredPermissions = new Map();
@@ -39,10 +39,15 @@ export class PermissionExtension {
                 this.permissions.set(permission.identifier.key(), permission);
             }
         });
-        client.network.listeners.connected.subscribe(() => {
-            client.send(PERMISSION_REGISTER_PACKET, Array.from(this.registeredPermissions.values()));
-            client.endpoints.call(PERMISSION_REQUEST_ENDPOINT, Array.from(this.requiredPermissions.values()));
-        });
+        client.network.listeners.connected.subscribe(() => this.handleConnected());
+    }
+
+    private handleConnected(): void {
+        if (this.registeredPermissions.size === 0) {
+            return;
+        }
+        this.client.send(PERMISSION_REGISTER_PACKET, Array.from(this.registeredPermissions.values()));
+        this.client.endpoints.call(PERMISSION_REQUEST_ENDPOINT, Array.from(this.requiredPermissions.values()));
     }
 
     public register(permission: PermissionType): void {
