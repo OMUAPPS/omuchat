@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { App } from '@omuchatjs/omu';
-    import { Tooltip } from '@omuchatjs/ui';
+    import { Localized, Tooltip } from '@omuchatjs/ui';
     import { client } from '../client.js';
     import { appTable } from './apps.js';
     export let app: App;
@@ -35,7 +35,7 @@
     <div class="header">
         <h2>
             <i class="ti ti-{app.localizations?.icon}" />
-            {app.localizations?.name}
+            <Localized text={app.localizations?.name} />
         </h2>
         <span>
             <button on:click={action}>
