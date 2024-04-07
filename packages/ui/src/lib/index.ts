@@ -8,6 +8,7 @@ export { default as Gift } from './Gift.svelte';
 export { default as Header } from './Header.svelte';
 export { default as JustifyBaselineWrapper } from './JustifyBaselineWrapper.svelte';
 export { default as LinkableText } from './LinkableText.svelte';
+export { default as Localized } from './Localized.svelte';
 export { default as MessageEntry } from './MessageEntry.svelte';
 export { default as MessageRenderer } from './MessageRenderer.svelte';
 export { default as RelativeDate } from './RelativeDate.svelte';

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { tauriWindow } from '$lib/utils/tauri.js';
-    import { FlexColWrapper, FlexRowWrapper } from '@omuchatjs/ui';
+    import { FlexColWrapper, FlexRowWrapper, Localized } from '@omuchatjs/ui';
 
     import { client } from '$lib/common/omuchat/client.js';
     import { t } from '$lib/i18n/i18n-context.js';
@@ -38,7 +38,7 @@
             </div>
             <FlexColWrapper>
                 <div class="name">
-                    {entry.localizations?.name && client.i18n.translate(entry.localizations?.name)}
+                    <Localized text={entry.localizations?.name} />
                 </div>
                 <small>
                     {entry.identifier.namespace.split('.').reverse().join('.')}

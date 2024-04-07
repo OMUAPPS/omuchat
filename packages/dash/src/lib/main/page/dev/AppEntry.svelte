@@ -1,7 +1,6 @@
 <script lang="ts">
-    import { client } from '$lib/common/omuchat/client.js';
     import type { App } from '@omuchatjs/omu';
-    import { FlexColWrapper, JustifyBaselineWrapper } from '@omuchatjs/ui';
+    import { FlexColWrapper, JustifyBaselineWrapper, Localized } from '@omuchatjs/ui';
 
     export let entry: App;
 </script>
@@ -17,7 +16,7 @@
         <JustifyBaselineWrapper>
             {#if entry.localizations?.name}
                 <b>
-                    {client.i18n.translate(entry.localizations?.name)}
+                    <Localized text={entry.localizations?.name} />
                 </b>
             {/if}
             <small>
