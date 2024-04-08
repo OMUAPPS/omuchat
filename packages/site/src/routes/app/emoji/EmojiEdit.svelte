@@ -3,7 +3,7 @@
     import { content } from '@omuchatjs/chat/models/index.js';
     import {
         ButtonMini,
-        ComboBox,
+        Combobox,
         FlexColWrapper,
         FlexRowWrapper,
         MessageRenderer,
@@ -145,7 +145,7 @@
                 {/each}
                 <FlexRowWrapper widthFull baseline gap>
                     <small>パターンを追加</small>
-                    <ComboBox
+                    <Combobox
                         options={patternFactory}
                         handleChange={(key, value) => addPattern(value())}
                     />

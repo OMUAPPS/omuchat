@@ -3,10 +3,9 @@
 
     import { t } from '$lib/i18n/i18n-context.js';
 
-    import InputTextLazy from '$lib/common/input/InputTextLazy.svelte';
     import type { Asset } from '$lib/common/omuchat/asset.js';
     import { dashboard } from '$lib/common/omuchat/client.js';
-    import { Header, TableList } from '@omuchatjs/ui';
+    import { Header, TableList, Textbox } from '@omuchatjs/ui';
 
     function getSearchString(asset: Asset) {
         return `${asset.name} ${asset.tags.join(' ')} ${asset.description}`;
@@ -48,7 +47,7 @@
 
 <Header title={$t('pages.asset.name')} icon="ti-package">
     <div>
-        <InputTextLazy placeholder={$t('general.search')} bind:value={search} />
+        <Textbox placeholder={$t('general.search')} bind:value={search} />
     </div>
 </Header>
 <div class="container">

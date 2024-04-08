@@ -4,10 +4,9 @@
 
     import { t } from '$lib/i18n/i18n-context.js';
 
-    import Checkbox from '$lib/common/input/Checkbox.svelte';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import { chat, client } from '$lib/common/omuchat/client.js';
-    import { ButtonMini, Tooltip } from '@omuchatjs/ui';
+    import { ButtonMini, Checkbox, Tooltip } from '@omuchatjs/ui';
 
     export let entry: models.Channel;
     export let selected: boolean = false;

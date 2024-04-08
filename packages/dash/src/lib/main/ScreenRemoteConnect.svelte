@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    import Button from '../common/input/Button.svelte';
     import QrCode from '../common/qrcode/QRCode.svelte';
     import Screen from '../common/screen/Screen.svelte';
 
@@ -10,7 +9,7 @@
     import { t } from '$lib/i18n/i18n-context.js';
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
     import { invoke } from '$lib/utils/tauri.js';
-    import { JustifyBaselineWrapper, Tooltip } from '@omuchatjs/ui';
+    import { Button, JustifyBaselineWrapper, Tooltip } from '@omuchatjs/ui';
 
     export let screen: {
         handle: ScreenHandle;

@@ -6,11 +6,10 @@
 
     import RoomEntry from './RoomEntry.svelte';
 
-    import Button from '$lib/common/input/Button.svelte';
     import { chat, client } from '$lib/common/omuchat/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
-    import { TableList } from '@omuchatjs/ui';
+    import { Button, TableList } from '@omuchatjs/ui';
 
     export let filter: (key: string, room: models.Room) => boolean = () => true;
     export let sort: (a: models.Room, b: models.Room) => number = (a, b) => {

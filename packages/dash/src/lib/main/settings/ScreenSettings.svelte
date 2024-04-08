@@ -3,11 +3,10 @@
 
     import { currentSettingsCategory, SETTING_REGISTRY } from '../settings.js';
 
-    import Button from '$lib/common/input/Button.svelte';
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import ScreenHeader from '$lib/common/screen/ScreenHeader.svelte';
     import { t } from '$lib/i18n/i18n-context.js';
-    import { JustifyBaselineWrapper } from '@omuchatjs/ui';
+    import { Button, JustifyBaselineWrapper } from '@omuchatjs/ui';
 
     export let screen: {
         handle: ScreenHandle;

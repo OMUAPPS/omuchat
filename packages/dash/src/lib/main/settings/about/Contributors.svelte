@@ -1,7 +1,6 @@
 <script lang="ts">
-    import ExternalLink from '$lib/common/input/ExternalLink.svelte';
     import { t } from '$lib/i18n/i18n-context.js';
-    import { FlexColWrapper } from '@omuchatjs/ui';
+    import { ExternalLink, FlexColWrapper } from '@omuchatjs/ui';
     import { onMount } from 'svelte';
 
     interface Contributor {

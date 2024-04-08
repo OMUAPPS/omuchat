@@ -1,34 +1,47 @@
 <script lang="ts">
+    import { onDestroy } from 'svelte';
+
+    export let value: string = '';
     export let placeholder: string = '';
     export let disabled: boolean = false;
     export let readonly: boolean = false;
-    export let value: string = '';
-    let tempValue: string = value;
+    export let lazy: boolean = false;
+    let inputValue: string = value;
     let timer: number | undefined;
 
     function handleChange(event: Event) {
-        tempValue = (event.target as HTMLInputElement).value;
+        inputValue = (event.target as HTMLInputElement).value;
+        if (!lazy) {
+            value = inputValue;
+            return;
+        }
         if (timer) {
             clearTimeout(timer);
         }
         timer = window.setTimeout(() => {
-            value = tempValue;
+            value = inputValue;
         }, 300);
     }
 
     function exit() {
         if (timer) {
-            clearTimeout(timer);
+            window.clearTimeout(timer);
         }
-        value = tempValue;
+        value = inputValue;
     }
+
+    onDestroy(() => {
+        if (timer) {
+            window.clearTimeout(timer);
+        }
+    });
 </script>
 
 <input
     class="input"
     type="text"
     {placeholder}
-    value={tempValue}
+    value={inputValue}
     {disabled}
     {readonly}
     on:input={handleChange}

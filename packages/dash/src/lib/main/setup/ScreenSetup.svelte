@@ -7,13 +7,11 @@
     import { t } from '$lib/i18n/i18n-context.js';
 
     import Background from '$lib/common/Background.svelte';
-    import Button from '$lib/common/input/Button.svelte';
-    import InputText from '$lib/common/input/InputText.svelte';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
     import { chat, client } from '$lib/common/omuchat/client.js';
     import Screen from '$lib/common/screen/Screen.svelte';
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
-    import { Tooltip } from '@omuchatjs/ui';
+    import { Button, Textbox, Tooltip } from '@omuchatjs/ui';
 
     export let screen: {
         handle: ScreenHandle;
@@ -128,7 +126,7 @@
             {:else}
                 <div class="description">{$t('setup.please_put_in_urls')}</div>
                 <div class="input">
-                    <InputText
+                    <Textbox
                         bind:value={url}
                         on:input={fetchChannels}
                         placeholder={tooltipHint}

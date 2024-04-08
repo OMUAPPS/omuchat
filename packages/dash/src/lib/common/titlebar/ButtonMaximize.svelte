@@ -1,9 +1,7 @@
 <script lang="ts">
-    import Button from '../input/Button.svelte';
-
     import { t } from '$lib/i18n/i18n-context.js';
     import { listenSync, tauriWindow } from '$lib/utils/tauri.js';
-    import { Tooltip } from '@omuchatjs/ui';
+    import { Button, Tooltip } from '@omuchatjs/ui';
     import { TauriEvent } from '@tauri-apps/api/event';
     import { onDestroy } from 'svelte';
 
