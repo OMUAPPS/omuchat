@@ -36,7 +36,7 @@
             const emoji = new Emoji({
                 id: name,
                 asset: identifier,
-                petterns: [
+                patterns: [
                     {
                         type: 'text',
                         text: name,

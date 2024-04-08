@@ -8,55 +8,55 @@ import { IDENTIFIER } from "./app.js";
 import { client } from "./client.js";
 
 
-export type TextPettern = {
+export type TextPattern = {
     type: "text";
     text: string;
 };
 
-export type ImagePettern = {
+export type ImagePattern = {
     type: "image";
     id: string;
 };
 
-export type RegexPettern = {
+export type RegexPattern = {
     type: "regex";
     regex: string;
 };
 
-export type Pettern = TextPettern | ImagePettern | RegexPettern;
+export type Pattern = TextPattern | ImagePattern | RegexPattern;
 
 export interface EmojiData {
     readonly id: string;
     asset: string;
-    petterns: Pettern[];
+    patterns: Pattern[];
 }
 
 export class Emoji implements Model<EmojiData>, Keyable {
     readonly id: string;
     asset: Identifier;
-    petterns: Pettern[];
+    patterns: Pattern[];
 
     constructor(options: {
         id: string;
         asset: Identifier;
-        petterns: Pettern[];
+        patterns: Pattern[];
     }) {
         this.id = options.id;
         this.asset = options.asset;
-        this.petterns = options.petterns;
+        this.patterns = options.patterns;
     }
 
-    public getPetternText() {
-        return this.petterns
-            .map((pettern) => {
-                if (pettern.type === "text") {
-                    return pettern.text;
+    public getPatternText() {
+        return this.patterns
+            .map((pattern) => {
+                if (pattern.type === "text") {
+                    return pattern.text;
                 }
-                if (pettern.type === "image") {
-                    return `:${pettern.id}:`;
+                if (pattern.type === "image") {
+                    return `:${pattern.id}:`;
                 }
-                if (pettern.type === "regex") {
-                    return pettern.regex;
+                if (pattern.type === "regex") {
+                    return pattern.regex;
                 }
                 return "";
             })
@@ -71,7 +71,7 @@ export class Emoji implements Model<EmojiData>, Keyable {
         return new Emoji({
             id: data.id,
             asset: Identifier.fromKey(data.asset),
-            petterns: data.petterns
+            patterns: data.patterns
         });
     }
 
@@ -79,7 +79,7 @@ export class Emoji implements Model<EmojiData>, Keyable {
         return {
             id: this.id,
             asset: this.asset.key(),
-            petterns: this.petterns
+            patterns: this.patterns
         };
     }
 }

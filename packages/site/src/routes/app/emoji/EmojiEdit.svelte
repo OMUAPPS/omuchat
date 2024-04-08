@@ -11,15 +11,15 @@
     } from '@omuchatjs/ui';
     import { client } from './client.js';
     import dummy_icon from './dummy_icon.svg';
-    import { deleteEmoji, saveEmoji, type Emoji, type Pettern } from './emoji.js';
+    import { deleteEmoji, saveEmoji, type Emoji, type Pattern } from './emoji.js';
 
     export let emoji: Emoji;
 
-    function addPettern(newPettern: Pettern) {
-        emoji.petterns = [...emoji.petterns, newPettern];
+    function addPattern(newPattern: Pattern) {
+        emoji.patterns = [...emoji.patterns, newPattern];
     }
 
-    const petternFactory: { [key: string]: { value: () => Pettern; label: string } } = {
+    const patternFactory: { [key: string]: { value: () => Pattern; label: string } } = {
         text: {
             value: () => ({ type: 'text', text: '' }),
             label: '文字',
@@ -95,40 +95,40 @@
                     </ButtonMini>
                 </FlexRowWrapper>
             </FlexRowWrapper>
-            <div class="petterns">
+            <div class="patterns">
                 <small>パターン</small>
-                {#each emoji.petterns as pettern}
+                {#each emoji.patterns as pattern}
                     <FlexRowWrapper widthFull between gap>
-                        <div class="pettern">
+                        <div class="pattern">
                             <FlexRowWrapper widthFull between baseline>
-                                {#if pettern.type === 'text'}
+                                {#if pattern.type === 'text'}
                                     <span>
                                         <i class="ti ti-txt" />
                                         文字
                                     </span>
                                     <input
                                         type="text"
-                                        bind:value={pettern.text}
+                                        bind:value={pattern.text}
                                         placeholder="text"
                                     />
-                                {:else if pettern.type === 'image'}
+                                {:else if pattern.type === 'image'}
                                     <span>
                                         <i class="ti ti-photo" />
                                         絵文字
                                     </span>
                                     <input
                                         type="text"
-                                        bind:value={pettern.id}
+                                        bind:value={pattern.id}
                                         placeholder="image id"
                                     />
-                                {:else if pettern.type === 'regex'}
+                                {:else if pattern.type === 'regex'}
                                     <span>
                                         <i class="ti ti-regex" />
                                         正規表現
                                     </span>
                                     <input
                                         type="text"
-                                        bind:value={pettern.regex}
+                                        bind:value={pattern.regex}
                                         placeholder="regex"
                                     />
                                 {/if}
@@ -136,7 +136,7 @@
                         </div>
                         <ButtonMini
                             on:click={() =>
-                                (emoji.petterns = emoji.petterns.filter((p) => p !== pettern))}
+                                (emoji.patterns = emoji.patterns.filter((p) => p !== pattern))}
                         >
                             <Tooltip>削除</Tooltip>
                             <i class="ti ti-trash" />
@@ -146,8 +146,8 @@
                 <FlexRowWrapper widthFull baseline gap>
                     <small>パターンを追加</small>
                     <ComboBox
-                        options={petternFactory}
-                        handleChange={(key, value) => addPettern(value())}
+                        options={patternFactory}
+                        handleChange={(key, value) => addPattern(value())}
                     />
                 </FlexRowWrapper>
             </div>
@@ -183,7 +183,7 @@
         height: 100%;
     }
 
-    .petterns {
+    .patterns {
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -192,7 +192,7 @@
         background: var(--color-bg-1);
     }
 
-    .pettern {
+    .pattern {
         display: flex;
         flex-direction: row;
         gap: 10px;

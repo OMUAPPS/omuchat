@@ -26,7 +26,7 @@
             {entry.id}
         </button>
         <small>
-            {entry.getPetternText()}
+            {entry.getPatternText()}
         </small>
     </div>
     {#if selected}
