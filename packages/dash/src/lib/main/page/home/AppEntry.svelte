@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { tauriWindow } from '$lib/utils/tauri.js';
     import { FlexColWrapper, FlexRowWrapper, Localized } from '@omuchatjs/ui';
 
     import { client } from '$lib/common/omuchat/client.js';
@@ -12,17 +11,7 @@
     const icon = entry.localizations?.icon && client.i18n.translate(entry.localizations.icon);
 
     function openApp() {
-        const safeAppLabel =
-            entry.identifier.namespace.replace(/\./g, '-') +
-            btoa(entry.identifier.key()).replace(/=/g, '');
-        console.log('openApp', safeAppLabel);
-        const window = new tauriWindow.WebviewWindow(safeAppLabel, {
-            url: entry.url,
-            title: entry.localizations?.name
-                ? client.i18n.translate(entry.localizations.name)
-                : entry.identifier.key(),
-        });
-        window.setFocus();
+        client.dashboard.openApp(entry);
     }
 </script>
 

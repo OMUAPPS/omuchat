@@ -1,3 +1,4 @@
+import { tauriWindow } from '$lib/utils/tauri.js';
 import { type Client } from '@omuchatjs/chat';
 import { App } from '@omuchatjs/omu';
 import type { DashboardHandler, PermissionRequest } from '@omuchatjs/omu/extension/dashboard/dashboard.js';
@@ -8,6 +9,7 @@ import PermissionRequestScreen from '../screen/PermissionRequestScreen.svelte';
 import { screenContext } from '../screen/screen.js';
 import { Asset } from './asset.js';
 import { BookmarkEntry } from './bookmark.js';
+import { client } from './client.js';
 
 export const IDENTIFIER = Identifier.fromKey('cc.omuchat:dashboard');
 
@@ -38,7 +40,7 @@ export class Dashboard implements DashboardHandler {
         client.i18n.setLocale(window.navigator.languages as Locale[]);
     }
 
-    handlePermissionRequest(request: PermissionRequest): Promise<boolean> {
+    async handlePermissionRequest(request: PermissionRequest): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             screenContext.push(PermissionRequestScreen, {
                 request,
@@ -46,4 +48,12 @@ export class Dashboard implements DashboardHandler {
             });
         });
     }
+
+    async handleOpenApp(app: App): Promise<void> {
+        const windowLabel = app.identifier.namespace.replace(/\./g, '-') + '-' + btoa(app.identifier.key()).replace(/=/g, '');
+        const windowTitle = client.i18n.translate(app.localizations?.name ?? app.identifier.key());
+        const window = new tauriWindow.WebviewWindow(windowLabel, { url: app.url, title: windowTitle });
+        window.setFocus();
+    }
+
 }

@@ -34,6 +34,13 @@ export class PermissionRequest implements Model<PermissionRequestJson> {
     }
 }
 
+export type DashboardOpenAppResponse = {
+    success: boolean;
+    already_open: boolean;
+    dashboard_not_connected: boolean;
+}
+
 export interface DashboardHandler {
     handlePermissionRequest(request: PermissionRequest): Promise<boolean>;
+    handleOpenApp(app: App): Promise<void>;
 }
