@@ -36,19 +36,19 @@ const FILES_SERIALIZER = new Serializer<Files, Uint8Array>(
     },
 );
 
-const ASSET_UPLOAD_ENDPOINT = EndpointType.createJson<Files, Identifier[]>(
+const ASSET_UPLOAD_ENDPOINT = EndpointType.createSerialized<Files, Identifier[]>(
     ASSET_EXTENSION_TYPE,
     {
         name: 'upload',
         requestSerializer: FILES_SERIALIZER,
-        responseSerializer: Serializer.model(Identifier).array(),
+        responseSerializer: Serializer.model(Identifier).array().pipe(Serializer.json()),
     },
 );
-const ASSET_DOWNLOAD_ENDPOINT = EndpointType.createJson<Identifier[], Files>(
+const ASSET_DOWNLOAD_ENDPOINT = EndpointType.createSerialized<Identifier[], Files>(
     ASSET_EXTENSION_TYPE,
     {
         name: 'download',
-        requestSerializer: Serializer.model(Identifier).array(),
+        requestSerializer: Serializer.model(Identifier).array().pipe(Serializer.json()),
         responseSerializer: FILES_SERIALIZER,
     },
 );
