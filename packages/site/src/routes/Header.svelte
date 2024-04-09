@@ -78,7 +78,8 @@
         display: flex;
         align-items: center;
         height: 100%;
-        padding: 1rem;
+        padding: 0.75rem;
+        gap: 0.25rem;
         font-size: 0;
         font-weight: 700;
         color: var(--color-text);
@@ -93,7 +94,7 @@
         &[aria-current='page'] {
             color: var(--color-bg-2);
             background: var(--color-1);
-            outline: 2px solid var(--color-bg-1);
+            outline: 1px solid var(--color-bg-1);
         }
     }
 
