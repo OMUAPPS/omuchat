@@ -6,10 +6,7 @@
     export let app: App;
 
     function launch() {
-        if (!app.url) {
-            throw new Error('App has no URL');
-        }
-        window.location.href = app.url;
+        client.dashboard.openApp(app);
     }
 
     let alreadyAdded = false;
