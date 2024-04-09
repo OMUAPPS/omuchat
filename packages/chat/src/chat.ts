@@ -32,7 +32,7 @@ export const ROOM_TABLE_TYPE = TableType.model(IDENTIFIER, {
 export const CREATE_CHANNEL_TREE_ENDPOINT = EndpointType.createJson(IDENTIFIER, {
     name: 'create_channel_tree',
     requestSerializer: Serializer.noop<string>(),
-    responseSerializer: Serializer.model(Channel).array(),
+    responseSerializer: Serializer.model(Channel).toArray(),
 });
 
 export class Chat {

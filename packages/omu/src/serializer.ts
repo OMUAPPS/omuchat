@@ -30,18 +30,21 @@ export class Serializer<T, D> {
     static json<T>(): Serializer<T, Uint8Array> {
         return new Serializer<T, Uint8Array>(
             (data) => textEncoder.encode(JSON.stringify(data)),
-            (data) => JSON.parse(textDecoder.decode(data)),
+            (data) => {
+                const text = textDecoder.decode(data);
+                return JSON.parse(text);
+            },
         );
     }
 
-    array(): Serializer<T[], D[]> {
+    public toArray(): Serializer<T[], D[]> {
         return new Serializer<T[], D[]>(
             (data) => data.map((item) => this.serialize(item)),
             (data) => data.map((item) => this.deserialize(item)),
         );
     }
 
-    map(): Serializer<Map<string, T>, Map<string, D>> {
+    public toMap(): Serializer<Map<string, T>, Map<string, D>> {
         return new Serializer<Map<string, T>, Map<string, D>>(
             (data) => {
                 const result = new Map<string, D>();

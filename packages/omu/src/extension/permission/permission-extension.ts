@@ -10,15 +10,15 @@ import { PermissionType } from './permission.js';
 export const PERMISSION_EXTENSION_TYPE = new ExtensionType('permission', (client) => new PermissionExtension(client));
 const PERMISSION_REGISTER_PACKET = PacketType.createJson(PERMISSION_EXTENSION_TYPE, {
     name: 'register',
-    serializer: Serializer.model(PermissionType).array(),
+    serializer: Serializer.model(PermissionType).toArray(),
 });
 const PERMISSION_REQUEST_ENDPOINT = EndpointType.createJson(PERMISSION_EXTENSION_TYPE, {
     name: 'request',
-    requestSerializer: Serializer.model(Identifier).array(),
+    requestSerializer: Serializer.model(Identifier).toArray(),
 });
 const PERMISSION_GRANT_PACKET = PacketType.createJson(PERMISSION_EXTENSION_TYPE, {
     name: 'grant',
-    serializer: Serializer.model(PermissionType).array(),
+    serializer: Serializer.model(PermissionType).toArray(),
 });
 
 export class PermissionExtension {
