@@ -8,14 +8,24 @@ export class MessageType<T> {
         public readonly serializer: Serializable<T, Uint8Array>,
     ) { }
 
-    static createJson<T>(identifier: Identifier, name: string): MessageType<T> {
+    static createJson<T>(identifier: Identifier, {
+        name,
+    }: {
+        name: string
+    }): MessageType<T> {
         return new MessageType(
             identifier.join(name),
             Serializer.json(),
         );
     }
 
-    static createSerialized<T>(identifier: Identifier, name: string, serializer: Serializable<T, Uint8Array>): MessageType<T> {
+    static createSerialized<T>(identifier: Identifier, {
+        name,
+        serializer,
+    }: {
+        name: string,
+        serializer: Serializable<T, Uint8Array>
+    }): MessageType<T> {
         return new MessageType(
             identifier.join(name),
             serializer,

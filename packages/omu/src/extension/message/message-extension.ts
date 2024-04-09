@@ -41,14 +41,18 @@ export class MessageExtension implements Extension {
         client.network.registerPacket(MESSAGE_LISTEN_PACKET, MESSAGE_BROADCAST_PACKET);
     }
 
-    create<T>(name: string): Message<T> {
+    public create<T>(name: string): Message<T> {
         const identifier = this.client.app.identifier.join(name);
         if (this.messageIdentifiers.has(identifier.key())) {
             throw new Error(`Message for key ${identifier.key()} already created`);
         }
         this.messageIdentifiers.add(identifier.key());
-        const type = MessageType.createJson<T>(identifier, name);
+        const type = MessageType.createJson<T>(identifier, { name });
         return new MessageImpl<T>(this.client, type);
+    }
+
+    public get<T>(messageType: MessageType<T>): Message<T> {
+        return new MessageImpl<T>(this.client, messageType);
     }
 }
 
@@ -60,7 +64,7 @@ class MessageImpl<T> implements Message<T> {
         private readonly client: Client,
         private readonly type: MessageType<T>,
     ) {
-        client.network.addPacketHandler(MESSAGE_BROADCAST_PACKET, this.handleBroadcast);
+        client.network.addPacketHandler(MESSAGE_BROADCAST_PACKET, (data) => this.handleBroadcast(data));
     }
 
     broadcast(body: T): void {
