@@ -1,4 +1,5 @@
 // Reexport your entry components here
+export { default as AppHeader } from './AppHeader.svelte';
 export { default as Button } from './Button.svelte';
 export { default as ButtonMini } from './ButtonMini.svelte';
 export { default as Checkbox } from './Checkbox.svelte';
