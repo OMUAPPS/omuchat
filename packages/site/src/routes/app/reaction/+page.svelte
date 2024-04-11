@@ -2,6 +2,7 @@
     import { page } from '$app/stores';
     import { AppHeader, FlexRowWrapper } from '@omuchatjs/ui';
     import { client } from './client.js';
+    import ReactionRenderer from './components/ReactionRenderer.svelte';
     import { REACTION_MESSAGE_TYPE } from './reaction.js';
 
     let assetUrl = $page.url.toString() + 'asset?id=' + Date.now();
@@ -38,6 +39,7 @@
             <img src={assetUrl} alt="asset" />
         </a>
     </section>
+    <ReactionRenderer {client} />
 </main>
 
 <style lang="scss">
