@@ -3,14 +3,15 @@
     import { AppHeader, FlexRowWrapper } from '@omuchatjs/ui';
     import { client } from './client.js';
     import ReactionRenderer from './components/ReactionRenderer.svelte';
-    import { REACTION_MESSAGE_TYPE } from './reaction.js';
+    import { REACTION_MESSAGE_TYPE, REACTION_REPLACE_REGISTRY_TYPE } from './reaction.js';
 
     let assetUrl = $page.url.toString() + 'asset?id=' + Date.now();
 
-    const reactions = client.message.get(REACTION_MESSAGE_TYPE);
+    const reactionsMessage = client.message.get(REACTION_MESSAGE_TYPE);
+    const replacesRegistry = client.registry.get(REACTION_REPLACE_REGISTRY_TYPE);
 
     function test() {
-        reactions.broadcast({
+        reactionsMessage.broadcast({
             room_id: 'test',
             reactions: {
                 '😳': 1,
@@ -20,6 +21,47 @@
                 '💯': 1,
             },
         });
+    }
+
+    let replaces: Record<string, string | null> = {};
+
+    replacesRegistry.listen((registry) => {
+        replaces = registry;
+    });
+
+    function setReplace(key: string, assetId: string) {
+        replacesRegistry.update((registry) => {
+            registry[key] = assetId;
+            return registry;
+        });
+    }
+
+    let fileDrop: HTMLInputElement;
+    let files: FileList | null;
+    let fileCallback: () => void;
+
+    function openFileDrop() {
+        return new Promise<void>((resolve) => {
+            fileCallback = resolve;
+            fileDrop.click();
+        });
+    }
+
+    async function handleReplace(key: string) {
+        await openFileDrop();
+        if (!files) return;
+        const file = files[0];
+        const reader = new FileReader();
+        const identifier = client.app.identifier.join('asset', key);
+        reader.onload = async () => {
+            const buffer = new Uint8Array(reader.result as ArrayBuffer);
+            const asset = await client.assets.upload({
+                buffer,
+                identifier,
+            });
+            setReplace(key, asset[0].key());
+        };
+        reader.readAsArrayBuffer(file);
     }
 </script>
 
@@ -38,6 +80,19 @@
         <a href={assetUrl} target="_blank">
             <img src={assetUrl} alt="asset" />
         </a>
+    </section>
+    <input type="file" bind:this={fileDrop} bind:files on:change={fileCallback} multiple hidden />
+    <section>
+        {#each Object.entries(replaces) as [key, assetId]}
+            <FlexRowWrapper gap>
+                <button on:click={() => handleReplace(key)}>
+                    <i class="ti ti-upload" />
+                    Replace {key}
+                </button>
+                <span>{key}</span>
+                <span>{assetId}</span>
+            </FlexRowWrapper>
+        {/each}
     </section>
     <ReactionRenderer {client} />
 </main>

@@ -1,7 +1,8 @@
 <script lang="ts">
     import { Client } from '@omuchatjs/chat';
+    import { Identifier } from '@omuchatjs/omu/identifier.js';
     import { onMount } from 'svelte';
-    import { REACTION_MESSAGE_TYPE } from '../reaction.js';
+    import { REACTION_MESSAGE_TYPE, REACTION_REPLACE_REGISTRY_TYPE } from '../reaction.js';
 
     export let client: Client;
 
@@ -17,6 +18,7 @@
     let reactionArray: Reaction[] = [];
     const spawnQueue: string[] = [];
     const MAX_REACTION_LIMIT = 100;
+    let replaceRegistry: Record<string, HTMLImageElement | null> = {};
 
     const reactionMessage = client.message.get(REACTION_MESSAGE_TYPE);
     reactionMessage.listen((message) => {
@@ -28,6 +30,22 @@
                 spawnQueue.splice(0, spawnQueue.length - MAX_REACTION_LIMIT);
             }
         });
+    });
+
+    const reactionReplaceRegistry = client.registry.get(REACTION_REPLACE_REGISTRY_TYPE);
+    reactionReplaceRegistry.listen((registry) => {
+        replaceRegistry = Object.fromEntries(
+            Object.entries(registry).map(([key, assetId]) => {
+                if (!assetId) {
+                    return [key, null];
+                }
+                const assetIdentifier = Identifier.fromKey(assetId);
+                const assetUrl = client.assets.url(assetIdentifier);
+                const img = new Image();
+                img.src = assetUrl;
+                return [key, img];
+            }),
+        );
     });
 
     let canvas: HTMLCanvasElement;
@@ -111,13 +129,16 @@
                 const newVy = -Math.pow(reaction.age, 0.2);
                 const newX = x + newVx;
                 const newY = y + newVy;
+                const newOpacity =
+                    Math.min(1, reaction.age / 10) - Math.max(0, (reaction.age - 50) / 50);
+                const newRotation = (Math.sin(reaction.age / 15 + 1) * 5 * Math.PI) / 180;
 
                 return {
                     ...reaction,
                     position: [newX, newY],
                     velocity: [newVx, newVy],
-                    opacity: Math.min(1, reaction.age / 10) - Math.max(0, (reaction.age - 50) / 50),
-                    rotation: (Math.sin(reaction.age / 15 + 1) * 5 * Math.PI) / 180,
+                    opacity: newOpacity,
+                    rotation: newRotation,
                     age: reaction.age + deltaTime,
                 } satisfies Reaction;
             })
@@ -156,7 +177,14 @@
             ctx.globalAlpha = opacity;
             ctx.translate(x, y);
             ctx.rotate(rotation);
-            ctx.fillText(text, 0, 0);
+            const replacementImage = replaceRegistry[text];
+            if (replacementImage) {
+                const height = 50;
+                const width = height * (replacementImage.width / replacementImage.height);
+                ctx.drawImage(replacementImage, -width / 2, -height / 2, width, height);
+            } else {
+                ctx.fillText(text, -15, 15);
+            }
             ctx.restore();
         });
     }

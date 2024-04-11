@@ -1,4 +1,5 @@
 import { MessageType } from "@omuchatjs/omu/extension/message/index.js";
+import { RegistryType } from "@omuchatjs/omu/extension/registry/registry.js";
 import { Identifier } from "@omuchatjs/omu/identifier.js";
 
 const PROVIDER_IDENTIFIER = new Identifier('cc.omuchat', 'chatprovider');
@@ -14,4 +15,17 @@ export type ReactionMessage = {
 
 export const REACTION_MESSAGE_TYPE = MessageType.createJson<ReactionMessage>(YOUTUBE_IDENTIFIER, {
     name: 'reaction',
+});
+
+export type ReactionReplaceRegistry = Record<string, string | null>;
+
+export const REACTION_REPLACE_REGISTRY_TYPE = RegistryType.createJson<ReactionReplaceRegistry>(YOUTUBE_IDENTIFIER, {
+    name: 'reaction_replace',
+    defaultValue: {
+        '😳': null,
+        '😄': null,
+        '❤': null,
+        '🎉': null,
+        '💯': null,
+    },
 });
