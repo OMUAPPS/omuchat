@@ -1,25 +1,9 @@
 <script lang="ts">
     import { Client } from '@omuchatjs/chat';
-    import { App } from '@omuchatjs/omu';
-    import { setClient } from '@omuchatjs/ui';
-    import { BROWSER } from 'esm-env';
     import { onMount } from 'svelte';
-    import { IDENTIFIER } from '../app.js';
     import { REACTION_MESSAGE_TYPE } from '../reaction.js';
 
-    export let id: string;
-
-    const app = new App(IDENTIFIER.join('asset', id), {
-        version: '0.1.0',
-    });
-    export const client = new Client({
-        app,
-    });
-    setClient(client);
-
-    if (BROWSER) {
-        client.start();
-    }
+    export let client: Client;
 
     type Reaction = {
         text: string;
@@ -206,7 +190,6 @@
     canvas {
         width: 100%;
         height: 100%;
-        background: var(--color-bg-1);
     }
 
     .hidden {
