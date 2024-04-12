@@ -79,6 +79,10 @@ export class Identifier implements Model<string>, Keyable {
         return Identifier.format(this.namespace, ...this.path);
     }
 
+    public is(other: Identifier): boolean {
+        return this.key() === other.key();
+    }
+
     public join(...path: string[]): Identifier {
         return new Identifier(this.namespace, ...this.path, ...path);
     }

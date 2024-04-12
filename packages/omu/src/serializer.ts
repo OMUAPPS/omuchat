@@ -37,6 +37,16 @@ export class Serializer<T, D> {
         );
     }
 
+    public toJson(): Serializer<T, Uint8Array> {
+        return new Serializer<T, Uint8Array>(
+            (data) => textEncoder.encode(JSON.stringify(this.serialize(data))),
+            (data) => {
+                const text = textDecoder.decode(data);
+                return this.deserialize(JSON.parse(text));
+            },
+        );
+    }
+
     public toArray(): Serializer<T[], D[]> {
         return new Serializer<T[], D[]>(
             (data) => data.map((item) => this.serialize(item)),
