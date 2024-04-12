@@ -41,6 +41,7 @@ export class RegistryType<T> {
 }
 
 export interface Registry<T> {
+    readonly type: RegistryType<T>;
     get(): Promise<T>;
     set(value: T): Promise<void>;
     update(fn: (value: T) => T): Promise<void>;
