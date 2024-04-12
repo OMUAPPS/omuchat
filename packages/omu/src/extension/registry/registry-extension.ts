@@ -1,4 +1,5 @@
 import type { Client } from '../../client/index.js';
+import { EventEmitter } from '../../event-emitter.js';
 import type { Identifier } from '../../identifier.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 import { PacketType } from '../../network/packet/index.js';
@@ -34,7 +35,7 @@ export class RegistryExtension implements Extension {
 }
 
 class RegistryImpl<T> implements Registry<T> {
-    private readonly listeners: Array<(value: T) => void> = [];
+    private readonly eventHandlers: EventEmitter<(value: T) => void> = new EventEmitter();
     private listening = false;
     private key: string;
 
@@ -51,7 +52,7 @@ class RegistryImpl<T> implements Registry<T> {
     async get(): Promise<T> {
         await this.client.network.waitForConnection();
         const result = await this.client.endpoints.call(REGISTRY_GET_ENDPOINT, this.key);
-        if (!result.existing) {
+        if (result.value === null) {
             return this.defaultValue;
         }
         return this.serializer.deserialize(result.value);
@@ -61,7 +62,6 @@ class RegistryImpl<T> implements Registry<T> {
         await this.client.network.waitForConnection();
         this.client.send(REGISTRY_UPDATE_PACKET, {
             key: this.key,
-            existing: true,
             value: this.serializer.serialize(value),
         });
     }
@@ -80,9 +80,9 @@ class RegistryImpl<T> implements Registry<T> {
             });
             this.listening = true;
         }
-        this.listeners.push(handler);
+        this.eventHandlers.subscribe(handler);
         return () => {
-            this.listeners.splice(this.listeners.indexOf(handler), 1);
+            this.eventHandlers.unsubscribe(handler);
         };
     }
 
@@ -91,35 +91,40 @@ class RegistryImpl<T> implements Registry<T> {
             return;
         }
         let value = this.defaultValue;
-        if (data.existing) {
+        if (data.value !== null) {
             value = this.serializer.deserialize(data.value);
         }
-        for (const listener of this.listeners) {
-            listener(value);
-        }
+        this.eventHandlers.emit(value);
     }
 }
 
 type RegistryPacket = {
     key: string,
-    existing: boolean,
-    value: Uint8Array,
+    value: Uint8Array | null,
 }
 
 const DATA_SERIALIZER = new Serializer<RegistryPacket, Uint8Array>(
     (data: RegistryPacket) => {
         const writer = new ByteWriter();
         writer.writeString(data.key);
-        writer.writeBoolean(data.existing);
-        writer.writeByteArray(data.value);
+        writer.writeBoolean(data.value !== null);
+        if (data.value !== null) {
+            writer.writeByteArray(data.value);
+        }
         return writer.finish();
     },
     (data: Uint8Array) => {
         const reader = new ByteReader(data);
         const key = reader.readString();
         const existing = reader.readBoolean();
-        const value = reader.readByteArray();
-        return { key, existing, value };
+        let value: Uint8Array | null = null;
+        if (existing) {
+            value = reader.readByteArray();
+        }
+        return {
+            key,
+            value,
+        };
     },
 );
 

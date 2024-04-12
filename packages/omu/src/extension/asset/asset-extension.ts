@@ -56,21 +56,30 @@ const ASSET_DOWNLOAD_ENDPOINT = EndpointType.createSerialized<Identifier[], File
 export class AssetExtension {
     constructor(private readonly client: Client) { }
 
-    async upload(...files: Files): Promise<Identifier[]> {
-        return this.client.endpoints.call(ASSET_UPLOAD_ENDPOINT, files);
+    public async upload(...files: Files): Promise<Identifier[]> {
+        const uploaded = await this.client.endpoints.call(ASSET_UPLOAD_ENDPOINT, files);
+        return uploaded;
     }
 
-    async download(...identifiers: Identifier[]): Promise<Files> {
-        return this.client.endpoints.call(ASSET_DOWNLOAD_ENDPOINT, identifiers);
+    public async download(...identifiers: Identifier[]): Promise<Files> {
+        const downloaded = await this.client.endpoints.call(ASSET_DOWNLOAD_ENDPOINT, identifiers);
+        return downloaded;
     }
 
-    url(identifier: Identifier): string {
+    public url(identifier: Identifier, {
+        noCache,
+    }: {
+        noCache?: boolean;
+    }): string {
         const address = this.client.network.address;
         const protocol = address.secure ? 'https' : 'http';
+        if (noCache) {
+            return `${protocol}://${address.host}:${address.port}/asset?id=${encodeURIComponent(identifier.key())}&t=${Date.now()}`;
+        }
         return `${protocol}://${address.host}:${address.port}/asset?id=${encodeURIComponent(identifier.key())}`;
     }
 
-    proxy(url: string): string {
+    public proxy(url: string): string {
         const address = this.client.network.address;
         const protocol = address.secure ? 'https' : 'http';
         return `${protocol}://${address.host}:${address.port}/proxy?url=${encodeURIComponent(url)}`;
