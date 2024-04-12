@@ -7,6 +7,7 @@
 
 	let title = '';
 	let icon = '';
+	let description = '';
 
 	const localizations = app.localizations;
 	if (localizations) {
@@ -17,8 +18,11 @@
 			if (localizations.icon) {
 				icon = $client.i18n.translate(localizations.icon);
 			}
+			if (localizations.description) {
+				description = $client.i18n.translate(localizations.description);
+			}
 		});
 	}
 </script>
 
-<Header {title} icon={`ti ti-${icon}`} />
+<Header {title} icon={`ti ti-${icon}`} subtitle={description} />

@@ -40,8 +40,9 @@
 	}
 
 	.subtitle {
+		margin-left: 30px;
 		font-size: 12px;
-		font-weight: 400;
+		font-weight: 600;
 		color: var(--color-1);
 	}
 </style>
