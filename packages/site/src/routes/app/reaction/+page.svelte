@@ -1,5 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
+    import { Identifier } from '@omuchatjs/omu/identifier.js';
     import { AppHeader, FlexRowWrapper } from '@omuchatjs/ui';
     import { client } from './client.js';
     import ReactionRenderer from './components/ReactionRenderer.svelte';
@@ -26,12 +27,26 @@
     let replaces: Record<string, string | null> = {};
 
     replacesRegistry.listen((registry) => {
-        replaces = registry;
+        replaces = {
+            '😳': null,
+            '😄': null,
+            '❤': null,
+            '🎉': null,
+            '💯': null,
+            ...registry,
+        };
     });
 
     function setReplace(key: string, assetId: string) {
         replacesRegistry.update((registry) => {
             registry[key] = assetId;
+            return registry;
+        });
+    }
+
+    function removeReplace(key: string) {
+        replacesRegistry.update((registry) => {
+            registry[key] = null;
             return registry;
         });
     }
@@ -67,6 +82,9 @@
 
 <AppHeader app={client.app} />
 <main>
+    <div class="preview">
+        <ReactionRenderer {client} />
+    </div>
     <section>
         <FlexRowWrapper gap>
             <button on:click={test}>
@@ -91,10 +109,16 @@
                 </button>
                 <span>{key}</span>
                 <span>{assetId}</span>
+                {#if assetId}
+                    <img src={client.assets.url(Identifier.fromKey(assetId), true)} alt={key} />
+                {/if}
+                <button on:click={() => removeReplace(key)}>
+                    <i class="ti ti-trash" />
+                    Remove {key}
+                </button>
             </FlexRowWrapper>
         {/each}
     </section>
-    <ReactionRenderer {client} />
 </main>
 
 <style lang="scss">
@@ -108,6 +132,14 @@
         height: 100vh;
         background: var(--color-bg-1);
         padding: 40px;
+    }
+
+    .preview {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        background: var(--color-bg-2);
     }
 
     h3 {
@@ -124,6 +156,11 @@
         width: 100%;
         padding: 0px;
         margin-bottom: 20px;
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 40px;
     }
 
     button {
