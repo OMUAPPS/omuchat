@@ -26,7 +26,10 @@ const address = {
 class TokenProvider extends BrowserTokenProvider {
     async get(serverAddress: Address, app: App): Promise<string | undefined> {
         if (IS_TAURI) {
-            return await invoke('get_token');
+            const token = await invoke('get_token');
+            if (token) {
+                return token;
+            }
         }
         return super.get(serverAddress, app);
     }

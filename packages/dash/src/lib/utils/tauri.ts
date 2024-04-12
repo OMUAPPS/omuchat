@@ -11,7 +11,7 @@ type Commands = {
         port: number;
     };
     run_server: () => void;
-    get_token: () => string;
+    get_token: () => string | null;
     delete_runtime: () => void;
     install_runtime: () => void;
     get_server_state: () => ServerStatus;
