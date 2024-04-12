@@ -2,6 +2,7 @@
     import { page } from '$app/stores';
     import { Identifier } from '@omuchatjs/omu/identifier.js';
     import { AppHeader, ButtonMini, DragLink, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
+    import { BROWSER } from 'esm-env';
     import { client } from './client.js';
     import ReactionRenderer from './components/ReactionRenderer.svelte';
     import { REACTION_MESSAGE_TYPE, REACTION_REPLACE_REGISTRY_TYPE } from './reaction.js';
@@ -102,16 +103,18 @@
 
     <h3>OBSに貼り付ける</h3>
     <section>
-        <DragLink href={createAssetUrl}>
-            <h3 slot="preview" class="drag-preview">
-                これをOBSにドロップ
-                <i class="ti ti-upload" />
-            </h3>
-            <div class="drag">
-                ここをドラッグ
-                <i class="ti ti-drag-drop" />
-            </div>
-        </DragLink>
+        {#if BROWSER}
+            <DragLink href={createAssetUrl}>
+                <h3 slot="preview" class="drag-preview">
+                    これをOBSにドロップ
+                    <i class="ti ti-upload" />
+                </h3>
+                <div class="drag">
+                    ここをドラッグ
+                    <i class="ti ti-drag-drop" />
+                </div>
+            </DragLink>
+        {/if}
     </section>
 
     <h3>画像を置き換える</h3>

@@ -7,7 +7,7 @@
     import { IDENTIFIER } from '../app.js';
     import ReactionOverlay from '../components/ReactionRenderer.svelte';
 
-    let assetId = $page.url.searchParams.get('assetId');
+    let assetId = BROWSER && $page.url.searchParams.get('assetId');
     const id = assetId || Date.now().toString();
     const app = new App(IDENTIFIER.join('asset', id), {
         version: '0.1.0',
