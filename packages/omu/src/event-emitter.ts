@@ -13,7 +13,7 @@ export class EventEmitter<T extends (...args: any[]) => any> {
     }
 
     async emit(...args: Parameters<T>): Promise<void> {
-        for (const listener of this.listeners) {
+        for (const listener of [...this.listeners]) {
             await listener(...args);
         }
     }
