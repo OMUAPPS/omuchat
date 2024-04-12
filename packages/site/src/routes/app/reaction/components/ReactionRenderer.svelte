@@ -40,7 +40,7 @@
                     return [key, null];
                 }
                 const assetIdentifier = Identifier.fromKey(assetId);
-                const assetUrl = client.assets.url(assetIdentifier);
+                const assetUrl = client.assets.url(assetIdentifier, { noCache: true });
                 const img = new Image();
                 img.src = assetUrl;
                 return [key, img];
@@ -189,18 +189,18 @@
         });
     }
 
-    let drawHandle: number;
+    let animationTimer: number;
 
     onMount(() => {
-        drawHandle = requestAnimationFrame(function drawLoop() {
+        animationTimer = requestAnimationFrame(function drawLoop() {
             updateSpawn();
             updatePosition();
             draw();
-            drawHandle = requestAnimationFrame(drawLoop);
+            animationTimer = requestAnimationFrame(drawLoop);
         });
 
         return () => {
-            cancelAnimationFrame(drawHandle);
+            cancelAnimationFrame(animationTimer);
         };
     });
 </script>
