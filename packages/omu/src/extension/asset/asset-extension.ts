@@ -70,7 +70,7 @@ export class AssetExtension {
         noCache,
     }: {
         noCache?: boolean;
-    }): string {
+    } = {}): string {
         const address = this.client.network.address;
         const protocol = address.secure ? 'https' : 'http';
         if (noCache) {
