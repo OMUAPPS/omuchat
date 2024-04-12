@@ -110,7 +110,7 @@
                     <i class="ti ti-upload" />
                 </h3>
                 <div class="drag">
-                    ここをドラッグ
+                    ここをOBSにドラッグ&ドロップ
                     <i class="ti ti-drag-drop" />
                 </div>
             </DragLink>
@@ -183,7 +183,7 @@
         gap: 10px;
         align-items: center;
         justify-content: space-between;
-        width: 100%;
+        width: min(100%, 600px);
         padding: 10px 20px;
         background: var(--color-bg-2);
     }
