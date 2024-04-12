@@ -1,12 +1,17 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import { Identifier } from '@omuchatjs/omu/identifier.js';
-    import { AppHeader, FlexRowWrapper } from '@omuchatjs/ui';
+    import { AppHeader, ButtonMini, DragLink, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
     import { client } from './client.js';
     import ReactionRenderer from './components/ReactionRenderer.svelte';
     import { REACTION_MESSAGE_TYPE, REACTION_REPLACE_REGISTRY_TYPE } from './reaction.js';
 
-    let assetUrl = $page.url.toString() + 'asset?id=' + Date.now();
+    function createAssetUrl() {
+        const url = new URL($page.url);
+        url.pathname = `${url.pathname}asset`;
+        url.searchParams.set('assetId', Date.now().toString());
+        return url;
+    }
 
     const reactionsMessage = client.message.get(REACTION_MESSAGE_TYPE);
     const replacesRegistry = client.registry.get(REACTION_REPLACE_REGISTRY_TYPE);
@@ -85,38 +90,68 @@
     <div class="preview">
         <ReactionRenderer {client} />
     </div>
+    <h3>リアクションをテストする</h3>
     <section>
         <FlexRowWrapper gap>
             <button on:click={test}>
-                <i class="ti ti-send" />
-                Send
+                <i class="ti ti-player-play" />
+                テスト
             </button>
         </FlexRowWrapper>
     </section>
-    <h3>貼り付け</h3>
+
+    <h3>OBSに貼り付ける</h3>
     <section>
-        <a href={assetUrl} target="_blank">
-            <img src={assetUrl} alt="asset" />
-        </a>
+        <DragLink href={createAssetUrl}>
+            <h3 slot="preview" class="drag-preview">
+                これをOBSにドロップ
+                <i class="ti ti-upload" />
+            </h3>
+            <div class="drag">
+                ここをドラッグ
+                <i class="ti ti-drag-drop" />
+            </div>
+        </DragLink>
     </section>
-    <input type="file" bind:this={fileDrop} bind:files on:change={fileCallback} multiple hidden />
+
+    <h3>画像を置き換える</h3>
     <section>
+        <input
+            type="file"
+            bind:this={fileDrop}
+            bind:files
+            on:change={fileCallback}
+            multiple
+            hidden
+        />
         {#each Object.entries(replaces) as [key, assetId]}
-            <FlexRowWrapper gap>
-                <button on:click={() => handleReplace(key)}>
-                    <i class="ti ti-upload" />
-                    Replace {key}
-                </button>
-                <span>{key}</span>
-                <span>{assetId}</span>
-                {#if assetId}
-                    <img src={client.assets.url(Identifier.fromKey(assetId), true)} alt={key} />
-                {/if}
-                <button on:click={() => removeReplace(key)}>
-                    <i class="ti ti-trash" />
-                    Remove {key}
-                </button>
-            </FlexRowWrapper>
+            <div class="replace-entry">
+                <FlexRowWrapper alignItems="center" gap>
+                    <h1>
+                        {key}
+                    </h1>
+                    {#if assetId}
+                        <i class="ti ti-chevron-right" />
+                        <img
+                            src={client.assets.url(Identifier.fromKey(assetId), { noCache: true })}
+                            alt={key}
+                            class="replace-image"
+                        />
+                    {/if}
+                </FlexRowWrapper>
+                <FlexRowWrapper gap>
+                    <button on:click={() => handleReplace(key)}>
+                        <i class="ti ti-upload" />
+                        置き換える
+                    </button>
+                    {#if assetId}
+                        <ButtonMini on:click={() => removeReplace(key)}>
+                            <Tooltip>置き換えを削除</Tooltip>
+                            <i class="ti ti-trash" />
+                        </ButtonMini>
+                    {/if}
+                </FlexRowWrapper>
+            </div>
         {/each}
     </section>
 </main>
@@ -130,16 +165,64 @@
         justify-content: flex-start;
         width: 100%;
         height: 100vh;
-        background: var(--color-bg-1);
         padding: 40px;
     }
 
     .preview {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .replace-entry {
         display: flex;
-        flex-direction: column;
-        gap: 20px;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
         width: 100%;
+        padding: 10px 20px;
         background: var(--color-bg-2);
+    }
+
+    .replace-image {
+        max-height: 50px;
+        min-width: 50px;
+        object-fit: contain;
+    }
+
+    .drag-preview {
+        padding: 10px 20px;
+        background: var(--color-bg-2);
+    }
+
+    .drag {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        color: var(--color-1);
+        background: var(--color-bg-2);
+        outline: 2px solid var(--color-1);
+        padding: 10px;
+        gap: 10px;
+        cursor: grab;
+
+        & > i {
+            font-size: 20px;
+        }
+
+        &:hover {
+            margin-left: 4px;
+            outline: 2px solid var(--color-1);
+            box-shadow: -4px 4px 0 2px var(--color-2);
+            transition: 0.06233s;
+        }
+    }
+
+    h1 {
+        font-family: 'Noto Color Emoji';
     }
 
     h3 {
@@ -150,7 +233,7 @@
     section {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 10px;
         align-items: start;
         justify-content: flex-start;
         width: 100%;

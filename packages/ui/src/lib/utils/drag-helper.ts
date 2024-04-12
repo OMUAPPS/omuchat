@@ -7,8 +7,9 @@ export class DragHelper {
         event.dataTransfer?.setData('text/plain', text);
     }
 
-    static setUrl(event: DragEvent, url: string) {
-        event.dataTransfer?.setData('text/uri-list', url);
+    static setUrl(event: DragEvent, url: URL | string) {
+        const urlString = typeof url === 'string' ? url : url.toString();
+        event.dataTransfer?.setData('text/uri-list', urlString);
     }
 
     static setImageUrl(event: DragEvent, url: string) {

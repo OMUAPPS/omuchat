@@ -12,6 +12,10 @@ export default function getApp(origin: string) {
                 en: 'Reaction',
                 ja: 'リアクション',
             },
+            description: {
+                en: 'Show reactions from Youtube chat.',
+                ja: 'Youtubeのチャット欄のリアクションを表示します。',
+            },
             icon: 'sparkles',
         }
     });

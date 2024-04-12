@@ -5,6 +5,7 @@ export { default as ButtonMini } from './ButtonMini.svelte';
 export { default as Checkbox } from './Checkbox.svelte';
 export { default as Combobox } from './Combobox.svelte';
 export { default as ComponentRenderer } from './ComponentRenderer.svelte';
+export { default as DragLink } from './DragLink.svelte';
 export { default as ExternalLink } from './ExternalLink.svelte';
 export { default as FlexColWrapper } from './FlexColWrapper.svelte';
 export { default as FlexRowWrapper } from './FlexRowWrapper.svelte';
