@@ -80,6 +80,7 @@
 
     .search {
         width: 400px;
+        height: 100%;
         border-right: 1px solid var(--color-outline);
         margin-right: 40px;
         padding: 20px;
