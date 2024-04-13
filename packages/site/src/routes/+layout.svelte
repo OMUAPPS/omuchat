@@ -4,10 +4,10 @@
     import Header from './Header.svelte';
     import './styles.css';
 
-    const appMode = /\/app\/./gm.test($page.url.pathname);
+    const isInApp = /\/app\/./gm.test($page.url.pathname);
 </script>
 
-{#if appMode}
+{#if isInApp}
     <div class="app">
         <slot />
         <Theme />
