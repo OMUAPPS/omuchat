@@ -119,6 +119,13 @@
         &:hover {
             outline: 1px solid;
             outline-offset: -3px;
+            transition: 0.06s;
+            transition-property: margin-left;
+            margin-left: 3px;
+        }
+
+        &:active {
+            margin-left: -1px;
         }
     }
 

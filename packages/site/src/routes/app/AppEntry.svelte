@@ -84,9 +84,13 @@
                 </small>
             </FlexColWrapper>
             <FlexRowWrapper>
-                <button on:click={action}>
-                    <i class="ti ti-{alreadyAdded ? 'check' : 'plus'}" />
-                    <Tooltip>アプリをダッシュボードに保存する</Tooltip>
+                <button on:click={action} class:active={alreadyAdded}>
+                    <i class="ti ti-{alreadyAdded ? 'minus' : 'plus'}" />
+                    <Tooltip>
+                        {alreadyAdded
+                            ? 'アプリをダッシュボードから削除する'
+                            : 'アプリをダッシュボードに保存する'}
+                    </Tooltip>
                 </button>
                 <button on:click={launch}>
                     <i class="ti ti-player-play" />
@@ -113,6 +117,12 @@
         padding: 0.5rem;
         color: var(--color-1);
         background: var(--color-bg-2);
+        border-bottom: 1px solid var(--color-outline);
+
+        &:hover {
+            transition: 0.06s;
+            margin-left: 3px;
+        }
     }
 
     img {
@@ -126,11 +136,11 @@
     .overlay {
         position: relative;
         height: 100%;
+    }
 
-        &:hover {
-            outline: 1px solid var(--color-1);
-            outline-offset: 2px;
-        }
+    article:hover .overlay {
+        outline: 1px solid var(--color-1);
+        outline-offset: 2px;
     }
 
     .icon {
@@ -175,5 +185,13 @@
         border: none;
         color: var(--color-bg-1);
         background: var(--color-1);
+        border-bottom: 1px solid var(--color-outline);
+
+        &.active {
+            background: var(--color-bg-1);
+            color: var(--color-1);
+            outline: 1px solid var(--color-1);
+            outline-offset: -2px;
+        }
     }
 </style>
