@@ -52,5 +52,6 @@ export const TAG_REGISTRY = {
         icon: 'ti ti-tools',
     },
 } as const satisfies Record<string, Tag>;
+export const REGISTRIES = { ...TAG_REGISTRY } as Record<string, Tag>;
 
 export type TagKey = keyof typeof TAG_REGISTRY;

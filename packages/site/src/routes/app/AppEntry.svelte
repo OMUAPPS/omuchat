@@ -4,7 +4,7 @@
     import { BROWSER } from 'esm-env';
     import { client } from '../client.js';
     import { appTable } from './apps.js';
-    import { TAG_REGISTRY } from './category.js';
+    import { REGISTRIES, type Tag } from './category.js';
     export let app: App;
 
     function launch() {
@@ -28,6 +28,19 @@
     client.network.addTask(async () => {
         alreadyAdded = !!(await appTable.get(app.key()));
     });
+
+    let tags: (Tag | string)[] = [];
+
+    $: {
+        tags =
+            app.metadata?.tags?.map((tag) => {
+                const tagData = REGISTRIES[tag];
+                if (tagData) {
+                    return tagData;
+                }
+                return tag;
+            }) || [];
+    }
 </script>
 
 <article>
@@ -61,14 +74,14 @@
         </button>
     </span>
     <small>
-        {#each app.metadata?.tags || [] as tag (tag)}
-            {@const tagData = TAG_REGISTRY[tag]}
+        {#each tags || [] as tag (tag)}
             <span>
-                {#if tagData}
-                    <i class="ti ti-{tagData.icon}" />
-                    <Localized text={tagData.name} />
-                {:else}
+                {#if typeof tag === 'string'}
+                    <i class="ti ti-tag" />
                     {tag}
+                {:else}
+                    <i class="ti ti-{tag.icon}" />
+                    <Localized text={tag.name} />
                 {/if}
             </span>
         {/each}
