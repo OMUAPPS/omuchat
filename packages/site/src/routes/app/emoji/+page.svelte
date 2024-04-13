@@ -24,7 +24,7 @@
 
     async function upload(files: Array<{ key: string; buffer: Uint8Array }>) {
         uploading++;
-        const assets = await client.assets.upload(
+        const assets = await client.assets.uploadMany(
             ...files.map(({ key, buffer }) => ({
                 identifier: IDENTIFIER.join(key.split('.')[0]),
                 buffer,

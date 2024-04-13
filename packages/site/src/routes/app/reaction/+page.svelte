@@ -76,11 +76,8 @@
         const identifier = client.app.identifier.join('asset', key);
         reader.onload = async () => {
             const buffer = new Uint8Array(reader.result as ArrayBuffer);
-            const asset = await client.assets.upload({
-                buffer,
-                identifier,
-            });
-            setReplace(key, asset[0].key());
+            const asset = await client.assets.upload(identifier, buffer);
+            setReplace(key, asset.key());
         };
         reader.readAsArrayBuffer(file);
     }

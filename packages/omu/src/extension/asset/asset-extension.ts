@@ -10,9 +10,27 @@ export const ASSET_EXTENSION_TYPE = new ExtensionType(
     (client: Client) => new AssetExtension(client),
 );
 
-type Files = Array<{ identifier: Identifier; buffer: Uint8Array }>;
+type File = {
+    identifier: Identifier;
+    buffer: Uint8Array;
+};
 
-const FILES_SERIALIZER = new Serializer<Files, Uint8Array>(
+const FILE_SERIALIZER = new Serializer<File, Uint8Array>(
+    (file) => {
+        const writer = new ByteWriter();
+        writer.writeString(file.identifier.key());
+        writer.writeByteArray(file.buffer);
+        return writer.finish();
+    },
+    (data) => {
+        const reader = new ByteReader(data);
+        const identifier = Identifier.fromKey(reader.readString());
+        const buffer = reader.readByteArray();
+        reader.finish();
+        return { identifier, buffer };
+    },
+);
+const FILE_ARRAY_SERIALIZER = new Serializer<File[], Uint8Array>(
     (files) => {
         const writer = new ByteWriter();
         writer.writeInt(files.length);
@@ -25,7 +43,7 @@ const FILES_SERIALIZER = new Serializer<Files, Uint8Array>(
     (data) => {
         const reader = new ByteReader(data);
         const count = reader.readInt();
-        const files: Files = [];
+        const files: File[] = [];
         for (let i = 0; i < count; i++) {
             const identifier = Identifier.fromKey(reader.readString());
             const buffer = reader.readByteArray();
@@ -36,33 +54,59 @@ const FILES_SERIALIZER = new Serializer<Files, Uint8Array>(
     },
 );
 
-const ASSET_UPLOAD_ENDPOINT = EndpointType.createSerialized<Files, Identifier[]>(
+const ASSET_UPLOAD_ENDPOINT = EndpointType.createSerialized<File, Identifier>(
     ASSET_EXTENSION_TYPE,
     {
         name: 'upload',
-        requestSerializer: FILES_SERIALIZER,
+        requestSerializer: FILE_SERIALIZER,
+        responseSerializer: Serializer.model(Identifier).pipe(Serializer.json()),
+    },
+);
+const ASSET_UPLOAD_MANY_ENDPOINT = EndpointType.createSerialized<File[], Identifier[]>(
+    ASSET_EXTENSION_TYPE,
+    {
+        name: 'upload_many',
+        requestSerializer: FILE_ARRAY_SERIALIZER,
         responseSerializer: Serializer.model(Identifier).toArray().pipe(Serializer.json()),
     },
 );
-const ASSET_DOWNLOAD_ENDPOINT = EndpointType.createSerialized<Identifier[], Files>(
+const ASSET_DOWNLOAD_ENDPOINT = EndpointType.createSerialized<Identifier, File>(
     ASSET_EXTENSION_TYPE,
     {
         name: 'download',
+        requestSerializer: Serializer.model(Identifier).pipe(Serializer.json()),
+        responseSerializer: FILE_SERIALIZER,
+    },
+);
+const ASSET_DOWNLOAD_MANY_ENDPOINT = EndpointType.createSerialized<Identifier[], File[]>(
+    ASSET_EXTENSION_TYPE,
+    {
+        name: 'download_many',
         requestSerializer: Serializer.model(Identifier).toArray().pipe(Serializer.json()),
-        responseSerializer: FILES_SERIALIZER,
+        responseSerializer: FILE_ARRAY_SERIALIZER,
     },
 );
 
 export class AssetExtension {
     constructor(private readonly client: Client) { }
 
-    public async upload(...files: Files): Promise<Identifier[]> {
-        const uploaded = await this.client.endpoints.call(ASSET_UPLOAD_ENDPOINT, files);
+    public async upload(identifier: Identifier, buffer: Uint8Array): Promise<Identifier> {
+        const assetIdentifier = await this.client.endpoints.call(ASSET_UPLOAD_ENDPOINT, { identifier, buffer });
+        return assetIdentifier;
+    }
+
+    public async uploadMany(...files: File[]): Promise<Identifier[]> {
+        const uploaded = await this.client.endpoints.call(ASSET_UPLOAD_MANY_ENDPOINT, files);
         return uploaded;
     }
 
-    public async download(...identifiers: Identifier[]): Promise<Files> {
-        const downloaded = await this.client.endpoints.call(ASSET_DOWNLOAD_ENDPOINT, identifiers);
+    public async download(identifier: Identifier): Promise<File> {
+        const downloaded = await this.client.endpoints.call(ASSET_DOWNLOAD_ENDPOINT, identifier);
+        return downloaded;
+    }
+
+    public async downloadMany(...identifiers: Identifier[]): Promise<File[]> {
+        const downloaded = await this.client.endpoints.call(ASSET_DOWNLOAD_MANY_ENDPOINT, identifiers);
         return downloaded;
     }
 
