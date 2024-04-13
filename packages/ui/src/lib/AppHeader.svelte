@@ -9,17 +9,17 @@
 	let icon = '';
 	let description = '';
 
-	const localizations = app.localizations;
-	if (localizations) {
+	const metadata = app.metadata;
+	if (metadata) {
 		$client.network.addTask(() => {
-			if (localizations.name) {
-				title = $client.i18n.translate(localizations.name);
+			if (metadata.name) {
+				title = $client.i18n.translate(metadata.name);
 			}
-			if (localizations.icon) {
-				icon = $client.i18n.translate(localizations.icon);
+			if (metadata.icon) {
+				icon = $client.i18n.translate(metadata.icon);
 			}
-			if (localizations.description) {
-				description = $client.i18n.translate(localizations.description);
+			if (metadata.description) {
+				description = $client.i18n.translate(metadata.description);
 			}
 		});
 	}
