@@ -110,8 +110,8 @@
                     <i class="ti ti-upload" />
                 </h3>
                 <div class="drag">
-                    ここをOBSにドラッグ&ドロップ
                     <i class="ti ti-drag-drop" />
+                    ここをOBSにドラッグ&ドロップ
                 </div>
             </DragLink>
         {/if}
@@ -209,7 +209,7 @@
         background: var(--color-bg-2);
         outline: 2px solid var(--color-1);
         padding: 10px;
-        gap: 10px;
+        gap: 5px;
         cursor: grab;
 
         & > i {
