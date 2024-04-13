@@ -4,6 +4,7 @@
     import { BROWSER } from 'esm-env';
     import { client } from '../client.js';
     import { appTable } from './apps.js';
+    import { TAG_REGISTRY } from './category.js';
     export let app: App;
 
     function launch() {
@@ -37,7 +38,12 @@
             {:else}
                 <i class="ti ti-app" />
             {/if}
-            <Localized text={app.metadata.name} />
+            <p>
+                <Localized text={app.metadata.name} />
+            </p>
+            <p>
+                <Localized text={app.metadata.description} />
+            </p>
         {/if}
     </h2>
     <span>
@@ -54,6 +60,19 @@
             </Tooltip>
         </button>
     </span>
+    <small>
+        {#each app.metadata?.tags || [] as tag (tag)}
+            {@const tagData = TAG_REGISTRY[tag]}
+            <span>
+                {#if tagData}
+                    <i class="ti ti-{tagData.icon}" />
+                    <Localized text={tagData.name} />
+                {:else}
+                    {tag}
+                {/if}
+            </span>
+        {/each}
+    </small>
 </article>
 
 <style lang="scss">

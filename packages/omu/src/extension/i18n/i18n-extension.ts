@@ -8,57 +8,53 @@ import { RegistryType } from '../registry/registry.js';
 
 export const I18N_EXTENSION_TYPE = new ExtensionType('i18n', (client) => new I18nExtension(client));
 
-const LOCALE_REGISTRY = RegistryType.createJson<Locale[]>(I18N_EXTENSION_TYPE, {
-    name: 'locale',
+const LOCALES_REGISTRY = RegistryType.createJson<Locale[]>(I18N_EXTENSION_TYPE, {
+    name: 'locales',
     defaultValue: [],
 });
 
 export class I18nExtension implements Extension {
-    private readonly localeRegistry: Registry<Locale[]>;
-    public locale?: Locale[];
+    public readonly localesRegistry: Registry<Locale[]>;
+    public locales?: Locale[];
 
     constructor(private readonly client: Client) {
-        this.localeRegistry = client.registry.get(LOCALE_REGISTRY);
-        this.localeRegistry.listen((locale) => {
-            this.locale = locale;
+        this.localesRegistry = client.registry.get(LOCALES_REGISTRY);
+        this.localesRegistry.listen((locale) => {
+            this.locales = locale;
         });
-        client.network.addTask(async () => {
-            const locale = await this.localeRegistry.get();
-            this.locale = locale;
+        client.network.listeners.connected.subscribe(async () => {
+            const locale = await this.localesRegistry.get();
+            this.locales = locale;
         });
     }
 
-    translate(localizedText: LocalizedText): string {
-        if (!this.locale) {
+    public translate(localizedText: LocalizedText): string {
+        if (!this.locales) {
             throw new Error('Locale not set');
         }
         if (typeof localizedText === 'string') {
             return localizedText;
         }
-        const translation = this.selectBestTranslation(localizedText);
+        const translation = this.selectBestTranslation(this.locales, localizedText);
         if (!translation) {
-            throw new Error(`Missing translation for ${this.locale} in ${JSON.stringify(localizedText)}`);
+            throw new Error(`Missing translation for ${this.locales} in ${JSON.stringify(localizedText)}`);
         }
         return translation;
     }
 
-    private selectBestTranslation(localizedText: LocalizedText): string | undefined {
+    public selectBestTranslation(locales: Locale[], localizedText: LocalizedText): string | undefined {
         if (typeof localizedText === 'string') {
             return localizedText;
         }
-        const locale = this.locale;
-        if (!locale) {
-            throw new Error('Locale not set');
-        }
         const translations = localizedText;
-        const locales = locale.reduce((acc, l) => {
+        const transformedLocales = locales.reduce((acc, l) => {
             const parts = l.split('-');
             for (let i = parts.length; i > 0; i--) {
                 acc.push(parts.slice(0, i).join('-'));
             }
             return acc;
         }, [] as string[]);
-        for (const l of locales) {
+        for (const l of transformedLocales) {
             const translation = translations[l];
             if (translation) {
                 return translation;
@@ -67,7 +63,7 @@ export class I18nExtension implements Extension {
         return undefined;
     }
 
-    setLocale(locale: Locale[]): Promise<void> {
-        return this.localeRegistry.set(locale);
+    public setLocale(locale: Locale[]): Promise<void> {
+        return this.localesRegistry.set(locale);
     }
 }
