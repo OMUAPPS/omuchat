@@ -6,7 +6,7 @@ export const IDENTIFIER = new Identifier('cc.omuchat', 'quiz');
 export default function getApp(origin: string) {
     return new App(IDENTIFIER, {
         url: origin + '/app/quiz',
-        localizations: {
+        metadata: {
             locale: 'en',
             name: 'Quiz',
             icon: 'letter-q',

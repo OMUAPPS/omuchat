@@ -6,7 +6,7 @@ export const IDENTIFIER = new Identifier('cc.omuchat', 'emoji');
 export default function getApp(origin: string) {
     return new App(IDENTIFIER, {
         url: origin + '/app/emoji',
-        localizations: {
+        metadata: {
             locale: 'en',
             name: {
                 en: 'Emoji',

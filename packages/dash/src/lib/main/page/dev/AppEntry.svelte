@@ -14,9 +14,9 @@
             </small>
         </JustifyBaselineWrapper>
         <JustifyBaselineWrapper>
-            {#if entry.localizations?.name}
+            {#if entry.metadata?.name}
                 <b>
-                    <Localized text={entry.localizations?.name} />
+                    <Localized text={entry.metadata?.name} />
                 </b>
             {/if}
             <small>

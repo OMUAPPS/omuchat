@@ -6,7 +6,7 @@ export const IDENTIFIER = new Identifier('cc.omuchat', 'reaction');
 export default function getApp(origin: string) {
     return new App(IDENTIFIER, {
         url: origin + '/app/reaction',
-        localizations: {
+        metadata: {
             locale: 'en',
             name: {
                 en: 'Reaction',

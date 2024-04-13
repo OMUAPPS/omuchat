@@ -8,7 +8,7 @@
     export let entry: App;
     export let selected: boolean = false;
 
-    const icon = entry.localizations?.icon && client.i18n.translate(entry.localizations.icon);
+    const icon = entry.metadata?.icon && client.i18n.translate(entry.metadata.icon);
 
     function openApp() {
         client.dashboard.openApp(entry);
@@ -27,7 +27,7 @@
             </div>
             <FlexColWrapper>
                 <div class="name">
-                    <Localized text={entry.localizations?.name} />
+                    <Localized text={entry.metadata?.name} />
                 </div>
                 <small>
                     {entry.identifier.namespace.split('.').reverse().join('.')}

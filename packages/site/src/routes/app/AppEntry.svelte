@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { App } from '@omuchatjs/omu';
     import { Localized, Tooltip } from '@omuchatjs/ui';
+    import { BROWSER } from 'esm-env';
     import { client } from '../client.js';
     import { appTable } from './apps.js';
     export let app: App;
@@ -29,29 +30,30 @@
 </script>
 
 <article>
-    <div class="header">
-        <h2>
-            <i class="ti ti-{app.localizations?.icon}" />
-            <Localized text={app.localizations?.name} />
-        </h2>
-        <span>
-            <button on:click={action}>
-                <i class="ti ti-{alreadyAdded ? 'check' : 'plus'}" />
-                <Tooltip>
-                    <p>アプリをダッシュボードに保存する</p>
-                </Tooltip>
-            </button>
-            <button on:click={launch}>
-                <i class="ti ti-player-play" />
-                <Tooltip>
-                    <p>アプリを起動する</p>
-                </Tooltip>
-            </button>
-        </span>
-    </div>
-    <div class="body">
-        <p>...</p>
-    </div>
+    <h2>
+        {#if app.metadata}
+            {#if BROWSER && app.metadata.icon}
+                <i class="ti ti-{client.i18n.translate(app.metadata.icon)}" />
+            {:else}
+                <i class="ti ti-app" />
+            {/if}
+            <Localized text={app.metadata.name} />
+        {/if}
+    </h2>
+    <span>
+        <button on:click={action}>
+            <i class="ti ti-{alreadyAdded ? 'check' : 'plus'}" />
+            <Tooltip>
+                <p>アプリをダッシュボードに保存する</p>
+            </Tooltip>
+        </button>
+        <button on:click={launch}>
+            <i class="ti ti-player-play" />
+            <Tooltip>
+                <p>アプリを起動する</p>
+            </Tooltip>
+        </button>
+    </span>
 </article>
 
 <style lang="scss">
@@ -62,36 +64,14 @@
         width: 100%;
         height: 100%;
         background: var(--color-bg-1);
-    }
-
-    .header {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        button {
-            width: 2rem;
-            height: 2rem;
-            cursor: pointer;
-            background: var(--color-bg-2);
-            border: none;
-            border-radius: 5px;
-
-            &:hover {
-                background: var(--color-bg-3);
-            }
-        }
+        width: 100%;
+        height: 140px;
+        padding: 1rem;
+        background: var(--color-bg-2);
     }
 
     h2 {
         font-weight: bold;
-    }
-
-    .body {
-        display: flex;
-        width: 100%;
-        height: 10rem;
-        padding: 1rem;
-        background: var(--color-bg-2);
     }
 </style>

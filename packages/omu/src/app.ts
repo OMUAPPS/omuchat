@@ -4,7 +4,7 @@ import type { Locale } from './localization/locale.js';
 import type { LocalizedText } from './localization/localization.js';
 import type { Model } from './model.js';
 
-export type AppLocalization = {
+export type AppMetadata = {
     locale: Locale;
     name?: LocalizedText;
     icon?: LocalizedText;
@@ -14,30 +14,31 @@ export type AppLocalization = {
     repository?: LocalizedText;
     authors?: LocalizedText;
     license?: LocalizedText;
+    tags?: string[];
 }
 
 export type AppJson = {
     identifier: string;
     version?: string;
     url?: string;
-    localizations?: AppLocalization;
+    metadata?: AppMetadata;
 }
 
 export class App implements Keyable, Model<AppJson> {
     public readonly identifier: Identifier;
     public readonly version?: string;
     public readonly url?: string;
-    public readonly localizations?: AppLocalization;
+    public readonly metadata?: AppMetadata;
 
     constructor(identifier: Identifier, options: {
         version?: string;
         url?: string;
-        localizations?: AppLocalization;
+        metadata?: AppMetadata;
     }) {
         this.identifier = identifier;
         this.version = options.version;
         this.url = options.url;
-        this.localizations = options.localizations;
+        this.metadata = options.metadata;
     }
 
     key(): string {
@@ -49,7 +50,7 @@ export class App implements Keyable, Model<AppJson> {
         return new App(identifier, {
             version: info.version,
             url: info.url,
-            localizations: info.localizations,
+            metadata: info.metadata,
         });
     }
 
@@ -58,7 +59,7 @@ export class App implements Keyable, Model<AppJson> {
             identifier: this.identifier.key(),
             version: this.version,
             url: this.url,
-            localizations: this.localizations,
+            metadata: this.metadata,
         };
     }
 }
