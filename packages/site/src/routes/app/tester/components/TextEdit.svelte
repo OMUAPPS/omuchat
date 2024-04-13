@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { style } from '$lib/utils/class-helper.js';
     import { Text } from '@omuchatjs/chat/models/content.js';
+    import { style } from '@omuchatjs/ui';
 
     export let component: Text;
 

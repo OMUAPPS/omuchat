@@ -25,6 +25,7 @@ export { default as Tooltip } from './Tooltip.svelte';
 export { default as VirtualList } from './VirtualList.svelte';
 export { chat, client, setClient, theme, translate } from './stores.js';
 export type { TypedComponent } from './typed-component.js';
+export { applyOpacity, classes, style } from './utils/class-helper.js';
 
 import '@tabler/icons-webfont/dist/tabler-icons.scss'; // Import the Tabler Icons CSS
 
