@@ -1,4 +1,4 @@
-import type { Table } from '@omuchatjs/omu/extension/table/table.js';
+import type { Table } from '@omuchatjs/omu/extension/table/index.js';
 import type { Keyable } from '@omuchatjs/omu/interface.js';
 
 import type { Client } from '../client.js';

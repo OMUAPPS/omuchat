@@ -1,5 +1,5 @@
 import { models } from "@omuchatjs/chat";
-import { TableType } from "@omuchatjs/omu/extension/table/table.js";
+import { TableType } from "@omuchatjs/omu/extension/table/index.js";
 import { Identifier } from "@omuchatjs/omu/identifier.js";
 import type { Keyable } from "@omuchatjs/omu/interface.js";
 import type { Model } from "@omuchatjs/omu/model.js";

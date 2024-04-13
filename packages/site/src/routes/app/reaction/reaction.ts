@@ -1,5 +1,5 @@
 import { MessageType } from "@omuchatjs/omu/extension/message/index.js";
-import { RegistryType } from "@omuchatjs/omu/extension/registry/registry.js";
+import { RegistryType } from "@omuchatjs/omu/extension/registry/index.js";
 import { Identifier } from "@omuchatjs/omu/identifier.js";
 
 const PROVIDER_IDENTIFIER = new Identifier('cc.omuchat', 'chatprovider');

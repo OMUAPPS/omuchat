@@ -2,7 +2,7 @@ import { tauriWindow } from '$lib/utils/tauri.js';
 import { type Client } from '@omuchatjs/chat';
 import { App } from '@omuchatjs/omu';
 import type { DashboardHandler, PermissionRequest } from '@omuchatjs/omu/extension/dashboard/dashboard.js';
-import { TableType, type Table } from '@omuchatjs/omu/extension/table/table.js';
+import { TableType, type Table } from '@omuchatjs/omu/extension/table/index.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import type { Locale } from '@omuchatjs/omu/localization/locale.js';
 import PermissionRequestScreen from '../screen/PermissionRequestScreen.svelte';

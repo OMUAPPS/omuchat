@@ -3,8 +3,8 @@ import type { Locale } from '../../localization/locale.js';
 import type { LocalizedText } from '../../localization/localization.js';
 import type { Extension } from '../extension.js';
 import { ExtensionType } from '../extension.js';
-import type { Registry } from '../registry/registry.js';
-import { RegistryType } from '../registry/registry.js';
+import type { Registry } from '../registry/index.js';
+import { RegistryType } from '../registry/index.js';
 
 export const I18N_EXTENSION_TYPE = new ExtensionType('i18n', (client) => new I18nExtension(client));
 

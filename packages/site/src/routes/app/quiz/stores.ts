@@ -1,4 +1,4 @@
-import type { Registry } from '@omuchatjs/omu/extension/registry/registry.js';
+import type { Registry } from '@omuchatjs/omu/extension/registry/index.js';
 import { writable, type Readable } from 'svelte/store';
 import { client } from './client.js';
 import type { GameData } from './game/game.js';

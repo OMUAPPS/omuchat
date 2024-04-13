@@ -1,5 +1,5 @@
 import { App } from '@omuchatjs/omu';
-import { TableType } from '@omuchatjs/omu/extension/table/table.js';
+import { TableType } from '@omuchatjs/omu/extension/table/index.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import { client } from '../client.js';
 import emoji from './emoji/app.js';
