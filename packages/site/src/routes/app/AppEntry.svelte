@@ -43,61 +43,63 @@
     }
 </script>
 
-<article>
-    <FlexRowWrapper baseline widthFull heightFull between>
-        <FlexColWrapper heightFull between>
-            {#if app.metadata}
-                <FlexRowWrapper alignItems="center" gap>
-                    <span class="icon">
-                        {#if BROWSER && app.metadata.icon}
-                            <i class="ti ti-{client.i18n.translate(app.metadata.icon)}" />
-                        {:else}
-                            <i class="ti ti-app" />
-                        {/if}
-                    </span>
-                    <span>
-                        <p>
-                            <Localized text={app.metadata.name} />
-                        </p>
-                        <small>
-                            <Localized text={app.metadata.description} />
-                        </small>
-                    </span>
-                </FlexRowWrapper>
-            {/if}
-            <small>
-                {#each tags || [] as tag, i (i)}
-                    <span class="tag">
-                        {#if typeof tag === 'string'}
-                            <i class="ti ti-tag" />
-                            {tag}
-                        {:else}
-                            <i class="ti ti-{tag.icon}" />
-                            <Localized text={tag.name} />
-                        {/if}
-                    </span>
-                {/each}
-            </small>
-        </FlexColWrapper>
-        <FlexRowWrapper>
-            <button on:click={action}>
-                <i class="ti ti-{alreadyAdded ? 'check' : 'plus'}" />
-                <Tooltip>
-                    <p>アプリをダッシュボードに保存する</p>
-                </Tooltip>
-            </button>
-            <button on:click={launch}>
-                <i class="ti ti-player-play" />
-                <Tooltip>
-                    <p>アプリを起動する</p>
-                </Tooltip>
-            </button>
+<article class:added={alreadyAdded}>
+    {#if BROWSER && app.metadata?.image}
+        <img src={client.i18n.translate(app.metadata.image)} alt="" />
+    {/if}
+    <div class="overlay">
+        <FlexRowWrapper baseline widthFull heightFull between>
+            <FlexColWrapper heightFull between>
+                {#if app.metadata}
+                    <FlexRowWrapper alignItems="center" gap>
+                        <span class="icon">
+                            {#if BROWSER && app.metadata.icon}
+                                <i class="ti ti-{client.i18n.translate(app.metadata.icon)}" />
+                            {:else}
+                                <i class="ti ti-app" />
+                            {/if}
+                        </span>
+                        <span>
+                            <p>
+                                <Localized text={app.metadata.name} />
+                            </p>
+                            <small>
+                                <Localized text={app.metadata.description} />
+                            </small>
+                        </span>
+                    </FlexRowWrapper>
+                {/if}
+                <small>
+                    {#each tags || [] as tag, i (i)}
+                        <span class="tag">
+                            {#if typeof tag === 'string'}
+                                <i class="ti ti-tag" />
+                                {tag}
+                            {:else}
+                                <i class="ti ti-{tag.icon}" />
+                                <Localized text={tag.name} />
+                            {/if}
+                        </span>
+                    {/each}
+                </small>
+            </FlexColWrapper>
+            <FlexRowWrapper>
+                <button on:click={action}>
+                    <i class="ti ti-{alreadyAdded ? 'check' : 'plus'}" />
+                    <Tooltip>アプリをダッシュボードに保存する</Tooltip>
+                </button>
+                <button on:click={launch}>
+                    <i class="ti ti-player-play" />
+                    <Tooltip>アプリを起動する</Tooltip>
+                </button>
+            </FlexRowWrapper>
         </FlexRowWrapper>
-    </FlexRowWrapper>
+    </div>
 </article>
 
 <style lang="scss">
     article {
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -109,7 +111,26 @@
         width: 100%;
         height: 130px;
         padding: 0.5rem;
+        color: var(--color-1);
         background: var(--color-bg-2);
+    }
+
+    img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .overlay {
+        position: relative;
+        height: 100%;
+
+        &:hover {
+            outline: 1px solid var(--color-1);
+            outline-offset: 2px;
+        }
     }
 
     .icon {
@@ -117,11 +138,15 @@
         align-items: center;
         gap: 10px;
         margin-left: 0.5rem;
+        margin-right: 0.25rem;
         font-size: 1.25rem;
+        background: var(--color-bg-2);
     }
 
     p {
         font-weight: bold;
+        width: fit-content;
+        background: var(--color-bg-2);
     }
 
     small {
@@ -130,12 +155,11 @@
         gap: 10px;
         align-items: center;
         font-size: 0.7rem;
-        color: var(--color-1);
+        background: var(--color-bg-2);
     }
 
     .tag {
         padding: 0.25rem 0.5rem;
-        margin-bottom: 0.5rem;
         background: var(--color-bg-1);
 
         > i {
