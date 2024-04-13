@@ -8,6 +8,7 @@ import playqueue from './playqueue/app.js';
 import quiz from './quiz/app.js';
 import reaction from './reaction/app.js';
 import tester from './tester/app.js';
+import translator from './translator/app.js';
 
 export const apps = [] as App[];
 
@@ -20,6 +21,7 @@ export function loadApps(origin: string) {
         emoji,
         tester,
         reaction,
+        translator,
     ].map((app) => app(origin)));
 }
 
