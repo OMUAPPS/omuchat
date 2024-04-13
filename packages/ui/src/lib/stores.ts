@@ -1,5 +1,6 @@
 import type { Chat } from "@omuchatjs/chat";
 import type { Client } from "@omuchatjs/omu";
+import type { Locale } from "@omuchatjs/omu/localization/index.js";
 import { BROWSER } from "esm-env";
 import { writable, type Writable } from "svelte/store";
 
@@ -14,6 +15,9 @@ export const chat: Writable<Chat> = writable();
 
 export function setClient<T extends Client>(newClient: T): T {
     client.set(newClient);
+    if (BROWSER) {
+        newClient.i18n.locales = window.navigator.languages as Locale[];
+    }
     return newClient;
 }
 export function setChat<T extends Chat>(newChat: T): T {
