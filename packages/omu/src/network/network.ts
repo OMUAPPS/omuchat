@@ -33,12 +33,15 @@ export class Network {
         private readonly tokenProcider: TokenProvider,
         private connection: Connection,
     ) {
-        this.packetMapper.register(
+        this.registerPacket(
             PACKET_TYPES.CONNECT,
             PACKET_TYPES.DISCONNECT,
             PACKET_TYPES.TOKEN,
             PACKET_TYPES.READY,
         );
+        this.addPacketHandler(PACKET_TYPES.TOKEN, async (token: string) => {
+            await this.tokenProcider.set(this.address, this.client.app, token);
+        });
     }
 
     public setConnection(connection: Connection): void {
