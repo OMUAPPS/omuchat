@@ -30,7 +30,7 @@ export class Network {
     constructor(
         private readonly client: Client,
         public readonly address: Address,
-        private readonly tokenProcider: TokenProvider,
+        private readonly tokenProvider: TokenProvider,
         private connection: Connection,
     ) {
         this.registerPacket(
@@ -40,7 +40,7 @@ export class Network {
             PACKET_TYPES.READY,
         );
         this.addPacketHandler(PACKET_TYPES.TOKEN, async (token: string) => {
-            await this.tokenProcider.set(this.address, this.client.app, token);
+            await this.tokenProvider.set(this.address, this.client.app, token);
         });
     }
 
@@ -82,7 +82,7 @@ export class Network {
                 type: PACKET_TYPES.CONNECT,
                 data: new ConnectPacket({
                     app: this.client.app,
-                    token: await this.tokenProcider.get(this.address, this.client.app),
+                    token: await this.tokenProvider.get(this.address, this.client.app),
                 }),
             });
             const listenPromise = this.listen();
