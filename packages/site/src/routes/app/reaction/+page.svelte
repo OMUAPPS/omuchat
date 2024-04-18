@@ -5,7 +5,7 @@
     import { BROWSER } from 'esm-env';
     import { client } from './client.js';
     import ReactionRenderer from './components/ReactionRenderer.svelte';
-    import { REACTION_MESSAGE_TYPE, REACTION_REPLACE_REGISTRY_TYPE } from './reaction.js';
+    import { REACTION_REPLACE_REGISTRY_TYPE, REACTION_SIGNAL_TYPE } from './reaction.js';
 
     function createAssetUrl() {
         const url = new URL($page.url);
@@ -14,7 +14,7 @@
         return url;
     }
 
-    const reactionsMessage = client.message.get(REACTION_MESSAGE_TYPE);
+    const reactionsMessage = client.signal.get(REACTION_SIGNAL_TYPE);
     const replacesRegistry = client.registry.get(REACTION_REPLACE_REGISTRY_TYPE);
 
     function test() {
