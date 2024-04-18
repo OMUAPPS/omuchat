@@ -2,20 +2,19 @@ import type { Client } from '../../client/index.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 import { PacketType } from '../../network/packet/index.js';
 import { ExtensionType, type Extension } from '../extension.js';
+import { Signal, SignalType } from './signal.js';
 
-import type { Message } from './message.js';
-import { MessageType } from './message.js';
 
-export const MESSAGE_EXTENSION_TYPE = new ExtensionType(
-    'message',
-    (client: Client) => new MessageExtension(client),
+export const SIGNAL_EXTENSION_TYPE = new ExtensionType(
+    'signal',
+    (client: Client) => new SignalExtension(client),
 );
 
-type MessagePacket = { key: string; body: Uint8Array };
-const MESSAGE_LISTEN_PACKET = PacketType.createJson<string>(MESSAGE_EXTENSION_TYPE, {
+type SignalPacket = { key: string; body: Uint8Array };
+const SIGNAL_LISTEN_PACKET = PacketType.createJson<string>(SIGNAL_EXTENSION_TYPE, {
     name: 'listen',
 });
-const MESSAGE_BROADCAST_PACKET = PacketType.createSerialized<MessagePacket>(MESSAGE_EXTENSION_TYPE, {
+const SIGNAL_BROADCAST_PACKET = PacketType.createSerialized<SignalPacket>(SIGNAL_EXTENSION_TYPE, {
     name: 'broadcast',
     serializer: {
         serialize: (data) => {
@@ -34,42 +33,42 @@ const MESSAGE_BROADCAST_PACKET = PacketType.createSerialized<MessagePacket>(MESS
     },
 });
 
-export class MessageExtension implements Extension {
-    private readonly messageIdentifiers: Set<string> = new Set();
+export class SignalExtension implements Extension {
+    private readonly signals: Set<string> = new Set();
 
     constructor(private readonly client: Client) {
-        client.network.registerPacket(MESSAGE_LISTEN_PACKET, MESSAGE_BROADCAST_PACKET);
+        client.network.registerPacket(SIGNAL_LISTEN_PACKET, SIGNAL_BROADCAST_PACKET);
     }
 
-    public create<T>(name: string): Message<T> {
+    public create<T>(name: string): Signal<T> {
         const identifier = this.client.app.identifier.join(name);
-        if (this.messageIdentifiers.has(identifier.key())) {
-            throw new Error(`Message for key ${identifier.key()} already created`);
+        if (this.signals.has(identifier.key())) {
+            throw new Error(`Signal for key ${identifier.key()} already created`);
         }
-        this.messageIdentifiers.add(identifier.key());
-        const type = MessageType.createJson<T>(identifier, { name });
-        return new MessageImpl<T>(this.client, type);
+        this.signals.add(identifier.key());
+        const type = SignalType.createJson<T>(identifier, { name });
+        return new SignalImpl<T>(this.client, type);
     }
 
-    public get<T>(messageType: MessageType<T>): Message<T> {
-        return new MessageImpl<T>(this.client, messageType);
+    public get<T>(signalType: SignalType<T>): Signal<T> {
+        return new SignalImpl<T>(this.client, signalType);
     }
 }
 
-class MessageImpl<T> implements Message<T> {
+class SignalImpl<T> implements Signal<T> {
     private readonly listeners: ((value: T) => void)[] = [];
     private listening = false;
 
     constructor(
         private readonly client: Client,
-        private readonly type: MessageType<T>,
+        private readonly type: SignalType<T>,
     ) {
-        client.network.addPacketHandler(MESSAGE_BROADCAST_PACKET, (data) => this.handleBroadcast(data));
+        client.network.addPacketHandler(SIGNAL_BROADCAST_PACKET, (data) => this.handleBroadcast(data));
     }
 
     broadcast(body: T): void {
         const data = this.type.serializer.serialize(body);
-        this.client.send(MESSAGE_BROADCAST_PACKET, {
+        this.client.send(SIGNAL_BROADCAST_PACKET, {
             key: this.type.identifier.key(),
             body: data,
         });
@@ -79,7 +78,7 @@ class MessageImpl<T> implements Message<T> {
         this.listeners.push(handler);
         if (!this.listening) {
             this.client.network.addTask(() => {
-                this.client.send(MESSAGE_LISTEN_PACKET, this.type.identifier.key());
+                this.client.send(SIGNAL_LISTEN_PACKET, this.type.identifier.key());
             });
             this.listening = true;
         }
@@ -88,7 +87,7 @@ class MessageImpl<T> implements Message<T> {
         };
     }
 
-    private handleBroadcast(data: MessagePacket): void {
+    private handleBroadcast(data: SignalPacket): void {
         if (data.key !== this.type.identifier.key()) {
             return;
         }

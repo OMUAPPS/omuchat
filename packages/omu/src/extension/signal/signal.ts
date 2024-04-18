@@ -2,7 +2,7 @@ import type { Identifier } from '../../identifier.js';
 import type { Serializable } from '../../serializer.js';
 import { Serializer } from '../../serializer.js';
 
-export class MessageType<T> {
+export class SignalType<T> {
     constructor(
         public readonly identifier: Identifier,
         public readonly serializer: Serializable<T, Uint8Array>,
@@ -12,8 +12,8 @@ export class MessageType<T> {
         name,
     }: {
         name: string
-    }): MessageType<T> {
-        return new MessageType(
+    }): SignalType<T> {
+        return new SignalType(
             identifier.join(name),
             Serializer.json(),
         );
@@ -25,15 +25,15 @@ export class MessageType<T> {
     }: {
         name: string,
         serializer: Serializable<T, Uint8Array>
-    }): MessageType<T> {
-        return new MessageType(
+    }): SignalType<T> {
+        return new SignalType(
             identifier.join(name),
             serializer,
         );
     }
 }
 
-export interface Message<T> {
+export interface Signal<T> {
     listen(handler: (value: T) => void): () => void;
     broadcast(body: T): void;
 }
