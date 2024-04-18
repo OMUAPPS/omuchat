@@ -21,10 +21,10 @@
         reactionsMessage.broadcast({
             room_id: 'test',
             reactions: {
-                '😳': 1,
-                '😄': 1,
                 '❤': 1,
+                '😄': 1,
                 '🎉': 1,
+                '😳': 1,
                 '💯': 1,
             },
         });
@@ -34,11 +34,6 @@
 
     replacesRegistry.listen((registry) => {
         replaces = {
-            '😳': null,
-            '😄': null,
-            '❤': null,
-            '🎉': null,
-            '💯': null,
             ...registry,
         };
     });

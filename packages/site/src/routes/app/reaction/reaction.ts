@@ -22,10 +22,10 @@ export type ReactionReplaceRegistry = Record<string, string | null>;
 export const REACTION_REPLACE_REGISTRY_TYPE = RegistryType.createJson<ReactionReplaceRegistry>(YOUTUBE_IDENTIFIER, {
     name: 'reaction_replace',
     defaultValue: {
-        '😳': null,
-        '😄': null,
         '❤': null,
+        '😄': null,
         '🎉': null,
+        '😳': null,
         '💯': null,
     },
 });
