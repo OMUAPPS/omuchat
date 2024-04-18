@@ -1,5 +1,5 @@
-import { MessageType } from "@omuchatjs/omu/extension/message/index.js";
 import { RegistryType } from "@omuchatjs/omu/extension/registry/index.js";
+import { SignalType } from "@omuchatjs/omu/extension/signal/signal.js";
 import { Identifier } from "@omuchatjs/omu/identifier.js";
 
 const PROVIDER_IDENTIFIER = new Identifier('cc.omuchat', 'chatprovider');
@@ -13,7 +13,7 @@ export type ReactionMessage = {
     };
 }
 
-export const REACTION_MESSAGE_TYPE = MessageType.createJson<ReactionMessage>(YOUTUBE_IDENTIFIER, {
+export const REACTION_SIGNAL_TYPE = SignalType.createJson<ReactionMessage>(YOUTUBE_IDENTIFIER, {
     name: 'reaction',
 });
 

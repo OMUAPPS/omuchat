@@ -2,7 +2,7 @@
     import { Client } from '@omuchatjs/chat';
     import { Identifier } from '@omuchatjs/omu/identifier.js';
     import { onMount } from 'svelte';
-    import { REACTION_MESSAGE_TYPE, REACTION_REPLACE_REGISTRY_TYPE } from '../reaction.js';
+    import { REACTION_REPLACE_REGISTRY_TYPE, REACTION_SIGNAL_TYPE } from '../reaction.js';
 
     export let client: Client;
 
@@ -20,7 +20,7 @@
     const MAX_REACTION_LIMIT = 100;
     let replaceRegistry: Record<string, HTMLImageElement | null> = {};
 
-    const reactionMessage = client.message.get(REACTION_MESSAGE_TYPE);
+    const reactionMessage = client.signal.get(REACTION_SIGNAL_TYPE);
     reactionMessage.listen((message) => {
         Object.entries(message.reactions).forEach(([text, count]) => {
             for (let i = 0; i < count; i++) {
