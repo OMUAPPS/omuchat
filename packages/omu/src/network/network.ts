@@ -1,5 +1,6 @@
 import type { TokenProvider } from '../client/token.js';
 import { EventEmitter } from '../event-emitter.js';
+import { IdentifierMap } from '../identifier.js';
 import type { Client } from '../index.js';
 
 import type { Address } from './address.js';
@@ -25,7 +26,7 @@ export class Network {
     };
     private readonly tasks: Array<() => Promise<void> | void> = [];
     private readonly packetMapper = new PacketMapper();
-    private readonly packetHandlers = new Map<string, PacketListeners<unknown>>();
+    private readonly packetHandlers = new IdentifierMap<PacketListeners<unknown>>();
 
     constructor(
         private readonly client: Client,
@@ -54,7 +55,7 @@ export class Network {
     public registerPacket(...packetTypes: PacketType<unknown>[]): void {
         this.packetMapper.register(...packetTypes);
         for (const type of packetTypes) {
-            this.packetHandlers.set(type.identifier.key(), {
+            this.packetHandlers.set(type.identifier, {
                 type,
                 listeners: new EventEmitter(),
             });
@@ -62,7 +63,7 @@ export class Network {
     }
 
     public addPacketHandler<T>(type: PacketType<T>, handler: (packet: T) => void): void {
-        const listeners = this.packetHandlers.get(type.identifier.key()) as PacketListeners<unknown> | undefined;
+        const listeners = this.packetHandlers.get(type.identifier) as PacketListeners<unknown> | undefined;
         if (!listeners) {
             throw new Error(`Packet type ${type.identifier.key()} not registered`);
         }
@@ -131,7 +132,7 @@ export class Network {
 
     private async dispatchPacket(packet: Packet): Promise<void> {
         await this.listeners.packet.emit(packet);
-        const packetHandlers = this.packetHandlers.get(packet.type.identifier.key());
+        const packetHandlers = this.packetHandlers.get(packet.type.identifier);
         if (!packetHandlers) {
             return;
         }

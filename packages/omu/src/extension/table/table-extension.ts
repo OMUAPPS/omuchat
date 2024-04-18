@@ -1,5 +1,5 @@
 import type { Client } from '../../client/index.js';
-import type { Identifier } from '../../identifier.js';
+import { Identifier, IdentifierMap } from '../../identifier.js';
 import type { Keyable } from '../../interface.js';
 import type { Model } from '../../model.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
@@ -135,10 +135,9 @@ const TABLE_CLEAR_PACKET = PacketType.createJson<TableEventData>(TABLE_EXTENSION
 });
 
 export class TableExtension implements Extension {
-    private readonly tableMap: Map<string, Table<unknown>>;
+    private readonly tableMap = new IdentifierMap<Table<unknown>>();
 
     constructor(private readonly client: Client) {
-        this.tableMap = new Map();
         client.network.registerPacket(
             TABLE_CONFIG_PACKET,
             TABLE_PROXY_PACKET,
@@ -160,13 +159,13 @@ export class TableExtension implements Extension {
             throw new Error('Table already exists');
         }
         const table = new TableImpl<T>(this.client, identifier, serializer, keyFunc);
-        this.tableMap.set(identifier.key(), table);
+        this.tableMap.set(identifier, table);
         return table;
     }
 
     get<T extends Keyable>(type: TableType<T>): Table<T> {
         if (this.has(type.identifier)) {
-            return this.tableMap.get(type.identifier.key()) as Table<T>;
+            return this.tableMap.get(type.identifier) as Table<T>;
         }
         return this.create(type.identifier, type.serializer, type.keyFunc);
     }
@@ -189,7 +188,7 @@ export class TableExtension implements Extension {
     }
 
     has(identifier: Identifier): boolean {
-        return this.tableMap.has(identifier.key());
+        return this.tableMap.has(identifier);
     }
 }
 

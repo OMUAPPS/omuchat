@@ -1,4 +1,5 @@
 import type { Client } from '../../client/index.js';
+import { Identifier, IdentifierMap } from '../../identifier.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 import { PacketType } from '../../network/packet/index.js';
 import { Serializer } from '../../serializer.js';
@@ -17,7 +18,7 @@ type CallPromise = {
 };
 
 export class EndpointExtension {
-    private readonly endpointMap: Map<string, [EndpointType, (arg: any) => Promise<any>]> = new Map();
+    private readonly endpointMap = new IdentifierMap<[EndpointType, (arg: any) => Promise<any>]>();
     private readonly promiseMap: Map<number, CallPromise> = new Map();
     private callId: number;
 
@@ -49,10 +50,10 @@ export class EndpointExtension {
     }
 
     public register<Req, Res>(type: EndpointType<Req, Res>, handler: (data: Req) => Promise<Res>): void {
-        if (this.endpointMap.has(type.identifier.key())) {
-            throw new Error(`Endpoint for key ${type.identifier.key()} already registered`);
+        if (this.endpointMap.has(type.identifier)) {
+            throw new Error(`Endpoint for key ${type.identifier} already registered`);
         }
-        this.endpointMap.set(type.identifier.key(), [type, handler]);
+        this.endpointMap.set(type.identifier, [type, handler]);
     }
 
     public listen<Req, Res>(handler: (data: Req) => Promise<Res>, name?: string): void {
@@ -105,8 +106,9 @@ const ENDPOINT_DATA_SERIALIZER = new Serializer<EndpointDataPacket, Uint8Array>(
     },
 );
 
-const ENDPOINT_REGISTER_PACKET = PacketType.createJson<string[]>(ENDPOINT_EXTENSION_TYPE, {
+const ENDPOINT_REGISTER_PACKET = PacketType.createJson<Identifier[]>(ENDPOINT_EXTENSION_TYPE, {
     name: 'register',
+    serializer: Serializer.model(Identifier).toArray(),
 });
 const ENDPOINT_CALL_PACKET = PacketType.createSerialized<EndpointDataPacket>(ENDPOINT_EXTENSION_TYPE, {
     name: 'call',

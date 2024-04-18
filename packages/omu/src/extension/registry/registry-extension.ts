@@ -1,6 +1,6 @@
 import type { Client } from '../../client/index.js';
 import { EventEmitter } from '../../event-emitter.js';
-import { Identifier } from '../../identifier.js';
+import { Identifier, IdentifierMap } from '../../identifier.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 import { PacketType } from '../../network/packet/index.js';
 import type { Serializable } from '../../serializer.js';
@@ -11,7 +11,7 @@ import { ExtensionType, type Extension } from '../extension.js';
 import type { Registry, RegistryType } from './registry.js';
 
 export class RegistryExtension implements Extension {
-    private readonly registries: Map<string, Registry<unknown>> = new Map();
+    private readonly registries = new IdentifierMap<Registry<unknown>>();
 
     constructor(private readonly client: Client) {
         client.network.registerPacket(REGISTRY_UPDATE_PACKET);
@@ -25,18 +25,18 @@ export class RegistryExtension implements Extension {
     }
 
     public get<T>(registryType: RegistryType<T>): Registry<T> {
-        const key = registryType.identifier.key();
-        let registry = this.registries.get(key);
+        const identifier = registryType.identifier;
+        let registry = this.registries.get(identifier);
         if (registry === undefined) {
             registry = this.createRegistry(registryType);
-            this.registries.set(key, registry);
+            this.registries.set(identifier, registry);
         }
         return registry as Registry<T>;
     }
 
     public create<T>(name: string, defaultValue: T): Registry<T> {
         const identifier = this.client.app.identifier.join(name);
-        if (this.registries.has(identifier.key())) {
+        if (this.registries.has(identifier)) {
             throw new Error(`Registry with name '${name}' already exists`);
         }
         return this.createRegistry({

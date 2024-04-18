@@ -1,3 +1,4 @@
+import { Identifier, IdentifierMap } from '../identifier.js';
 import type { Serializable } from '../serializer.js';
 
 import type { PacketData, PacketType } from './packet/index.js';
@@ -6,14 +7,14 @@ import type { Packet } from './packet/packet.js';
 export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected';
 
 export class PacketMapper implements Serializable<Packet, PacketData> {
-    private readonly map = new Map<string, PacketType<unknown>>();
+    private readonly packetMap = new IdentifierMap<PacketType<unknown>>();
 
     public register(...packetTypes: PacketType<unknown>[]): void {
         for (const type of packetTypes) {
-            if (this.map.has(type.identifier.key())) {
+            if (this.packetMap.has(type.identifier)) {
                 throw new Error(`Packet id ${type.identifier.key()} already registered`);
             }
-            this.map.set(type.identifier.key(), type);
+            this.packetMap.set(type.identifier, type);
         }
     }
 
@@ -25,7 +26,8 @@ export class PacketMapper implements Serializable<Packet, PacketData> {
     }
 
     deserialize(data: PacketData): Packet {
-        const type = this.map.get(data.type);
+        const identifier = Identifier.fromKey(data.type);
+        const type = this.packetMap.get(identifier);
         if (!type) throw new Error(`Packet type ${data.type} not registered`);
         return {
             type,

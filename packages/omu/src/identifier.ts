@@ -87,3 +87,96 @@ export class Identifier implements Model<string>, Keyable {
         return new Identifier(this.namespace, ...this.path, ...path);
     }
 }
+
+export class IdentifierMap<T> {
+    private readonly map: Map<string, T> = new Map();
+
+    public get size(): number {
+        return this.map.size;
+    }
+
+    public set(identifier: Identifier, value: T): void {
+        this.map.set(identifier.key(), value);
+    }
+
+    public get(identifier: Identifier): T | undefined {
+        return this.map.get(identifier.key());
+    }
+
+    public has(identifier: Identifier): boolean {
+        return this.map.has(identifier.key());
+    }
+
+    public delete(identifier: Identifier): void {
+        this.map.delete(identifier.key());
+    }
+
+    public clear(): void {
+        this.map.clear();
+    }
+
+    public *keys(): IterableIterator<Identifier> {
+        for (const key of this.map.keys()) {
+            yield Identifier.fromKey(key);
+        }
+    }
+
+    public values(): IterableIterator<T> {
+        return this.map.values();
+    }
+
+    public *entries(): IterableIterator<[Identifier, T]> {
+        for (const [key, value] of this.map.entries()) {
+            yield [Identifier.fromKey(key), value];
+        }
+    }
+
+    public [Symbol.iterator](): IterableIterator<[Identifier, T]> {
+        return this.entries();
+    }
+}
+
+export class IdentifierSet {
+    private readonly set: Set<string> = new Set();
+
+    public get size(): number {
+        return this.set.size;
+    }
+
+    public add(identifier: Identifier): void {
+        this.set.add(identifier.key());
+    }
+
+    public has(identifier: Identifier): boolean {
+        return this.set.has(identifier.key());
+    }
+
+    public delete(identifier: Identifier): void {
+        this.set.delete(identifier.key());
+    }
+
+    public clear(): void {
+        this.set.clear();
+    }
+
+    public *keys(): IterableIterator<Identifier> {
+        for (const key of this.set.keys()) {
+            yield Identifier.fromKey(key);
+        }
+    }
+
+    public values(): IterableIterator<Identifier> {
+        return this.keys();
+    }
+
+    public *entries(): IterableIterator<[Identifier, Identifier]> {
+        for (const key of this.set.keys()) {
+            const identifier = Identifier.fromKey(key);
+            yield [identifier, identifier];
+        }
+    }
+
+    public [Symbol.iterator](): IterableIterator<[Identifier, Identifier]> {
+        return this.entries();
+    }
+}

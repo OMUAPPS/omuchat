@@ -1,4 +1,5 @@
 import type { Client } from '../../client/index.js';
+import { IdentifierMap } from '../../identifier.js';
 import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 import { PacketType } from '../../network/packet/index.js';
 import { ExtensionType, type Extension } from '../extension.js';
@@ -10,7 +11,10 @@ export const SIGNAL_EXTENSION_TYPE = new ExtensionType(
     (client: Client) => new SignalExtension(client),
 );
 
-type SignalPacket = { key: string; body: Uint8Array };
+type SignalPacket = {
+    key: string;
+    body: Uint8Array;
+};
 const SIGNAL_LISTEN_PACKET = PacketType.createJson<string>(SIGNAL_EXTENSION_TYPE, {
     name: 'listen',
 });
@@ -34,7 +38,7 @@ const SIGNAL_BROADCAST_PACKET = PacketType.createSerialized<SignalPacket>(SIGNAL
 });
 
 export class SignalExtension implements Extension {
-    private readonly signals: Set<string> = new Set();
+    private readonly signals = new IdentifierMap<SignalType<unknown>>();
 
     constructor(private readonly client: Client) {
         client.network.registerPacket(SIGNAL_LISTEN_PACKET, SIGNAL_BROADCAST_PACKET);
@@ -42,11 +46,11 @@ export class SignalExtension implements Extension {
 
     public create<T>(name: string): Signal<T> {
         const identifier = this.client.app.identifier.join(name);
-        if (this.signals.has(identifier.key())) {
-            throw new Error(`Signal for key ${identifier.key()} already created`);
+        if (this.signals.has(identifier)) {
+            throw new Error(`Signal for key ${identifier} already created`);
         }
-        this.signals.add(identifier.key());
         const type = SignalType.createJson<T>(identifier, { name });
+        this.signals.set(identifier, type);
         return new SignalImpl<T>(this.client, type);
     }
 
