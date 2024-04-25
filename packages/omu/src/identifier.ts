@@ -79,7 +79,7 @@ export class Identifier implements Model<string>, Keyable {
         return Identifier.format(this.namespace, ...this.path);
     }
 
-    public is(other: Identifier): boolean {
+    public isEqual(other: Identifier): boolean {
         return this.key() === other.key();
     }
 

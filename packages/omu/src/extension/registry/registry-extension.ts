@@ -102,7 +102,7 @@ class RegistryImpl<T> implements Registry<T> {
     }
 
     private handleUpdate(data: RegistryPacket): void {
-        if (!data.identifier.is(this.identifier)) {
+        if (!data.identifier.isEqual(this.identifier)) {
             return;
         }
         let value = this.defaultValue;
