@@ -1,3 +1,4 @@
+import { Identifier } from '@omuchatjs/omu/identifier.js';
 import type { Keyable } from '@omuchatjs/omu/interface.js';
 import type { Model } from '@omuchatjs/omu/model.js';
 
@@ -12,8 +13,8 @@ export type ChannelJson = {
 };
 
 export class Channel implements Model<ChannelJson>, Keyable {
-    providerId: string;
-    id: string;
+    providerId: Identifier;
+    id: Identifier;
     url: string;
     name: string;
     description: string;
@@ -21,8 +22,8 @@ export class Channel implements Model<ChannelJson>, Keyable {
     iconUrl: string;
 
     constructor(option: {
-        providerId: string;
-        id: string;
+        providerId: Identifier;
+        id: Identifier;
         url: string;
         name: string;
         description: string;
@@ -40,8 +41,8 @@ export class Channel implements Model<ChannelJson>, Keyable {
 
     static fromJson(json: ChannelJson): Channel {
         return new Channel({
-            providerId: json.provider_id,
-            id: json.id,
+            providerId: Identifier.fromKey(json.provider_id),
+            id: Identifier.fromKey(json.id),
             url: json.url,
             name: json.name,
             description: json.description,
@@ -51,13 +52,13 @@ export class Channel implements Model<ChannelJson>, Keyable {
     }
 
     key(): string {
-        return `${this.providerId}:${this.id}`;
+        return this.id.key();
     }
 
     toJson(): ChannelJson {
         return {
-            provider_id: this.providerId,
-            id: this.id,
+            provider_id: this.providerId.key(),
+            id: this.id.key(),
             url: this.url,
             name: this.name,
             description: this.description,

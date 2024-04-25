@@ -11,7 +11,7 @@
 	let author: models.Author | undefined;
 
 	if (entry.authorId) {
-		$chat.authors.get(entry.authorId).then((res) => {
+		$chat.authors.get(entry.authorId.key()).then((res) => {
 			author = res;
 		});
 	}

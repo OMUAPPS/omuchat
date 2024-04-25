@@ -1,3 +1,4 @@
+import { Identifier } from '@omuchatjs/omu/identifier.js';
 import type { Keyable, Timestamped } from '@omuchatjs/omu/interface.js';
 import type { Model } from '@omuchatjs/omu/model.js';
 
@@ -18,19 +19,19 @@ export type MessageJson = {
 };
 
 export class Message implements Model<MessageJson>, Keyable, Timestamped {
-    roomId: string;
-    id: string;
-    authorId?: string;
-    content?: content.Component;
-    paid?: Paid;
-    gifts?: Gift[];
-    createdAt: Date;
+    public roomId: Identifier;
+    public id: Identifier;
+    public authorId?: Identifier;
+    public content?: content.Component;
+    public paid?: Paid;
+    public gifts?: Gift[];
+    public createdAt: Date;
 
     constructor(options: {
-        roomId: string;
-        id: string;
+        roomId: Identifier;
+        id: Identifier;
+        authorId?: Identifier;
         createdAt: Date;
-        authorId?: string;
         content?: content.Component;
         paid?: Paid;
         gifts?: Gift[];
@@ -49,9 +50,9 @@ export class Message implements Model<MessageJson>, Keyable, Timestamped {
 
     static fromJson(info: MessageJson): Message {
         return new Message({
-            roomId: info.room_id,
-            id: info.id,
-            authorId: info.author_id,
+            roomId: Identifier.fromKey(info.room_id),
+            id: Identifier.fromKey(info.id),
+            authorId: info.author_id ? Identifier.fromKey(info.author_id) : undefined,
             content: info.content && content.deserialize(info.content),
             paid: info.paid && Paid.fromJson(info.paid),
             gifts: info.gifts?.map((gift) => Gift.fromJson(gift)),
@@ -67,14 +68,14 @@ export class Message implements Model<MessageJson>, Keyable, Timestamped {
     }
 
     key(): string {
-        return `${this.roomId}#${this.id}`;
+        return this.id.key();
     }
 
     toJson(): MessageJson {
         return {
-            room_id: this.roomId,
-            id: this.id,
-            author_id: this.authorId,
+            room_id: this.roomId.key(),
+            id: this.id.key(),
+            author_id: this.authorId?.key(),
             created_at: this.createdAt.toISOString(),
             content: this.content && content.serialize(this.content),
             paid: this.paid?.toJson(),

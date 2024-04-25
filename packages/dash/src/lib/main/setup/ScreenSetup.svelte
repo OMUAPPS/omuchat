@@ -11,6 +11,7 @@
     import { chat, client } from '$lib/common/omuchat/client.js';
     import Screen from '$lib/common/screen/Screen.svelte';
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
+    import { IdentifierMap } from '@omuchatjs/omu/identifier.js';
     import { Button, Textbox, Tooltip } from '@omuchatjs/ui';
 
     export let screen: {
@@ -18,7 +19,7 @@
         props: {};
     };
 
-    let result: Map<string, { channel: models.Channel; active: boolean }> | undefined;
+    let result: IdentifierMap<{ channel: models.Channel; active: boolean }> | undefined;
 
     let locked = false;
     let url: string = '';
@@ -29,11 +30,10 @@
         locked = true;
         chat.createChannelTree(url)
             .then((res) => {
-                result = new Map(
-                    res.map((channel) => {
-                        return [channel.url, { channel, active: false }];
-                    }),
-                );
+                result = new IdentifierMap();
+                for (const v of res) {
+                    result.set(v.id, { channel: v, active: false });
+                }
                 console.log(result);
             })
             .finally(() => {

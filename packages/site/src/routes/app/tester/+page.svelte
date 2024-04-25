@@ -1,6 +1,6 @@
 <script lang="ts">
     import { type Component } from '@omuchatjs/chat/models/content.js';
-    import { Author, Message, Room, content } from '@omuchatjs/chat/models/index.js';
+    import { Author, Message, Provider, Room, content } from '@omuchatjs/chat/models/index.js';
     import { FlexColWrapper, FlexRowWrapper, Header, MessageRenderer } from '@omuchatjs/ui';
     import { client } from './client.js';
     import ComponentEditor from './components/ComponentEditor.svelte';
@@ -12,41 +12,47 @@
         new content.Text('This is a test.'),
     ]);
 
-    function resetComponent() {
+    function reset() {
         component = new content.Root([
             new content.Text('Hello, World!'),
             new content.Text('This is a test.'),
         ]);
     }
 
-    function reset() {
-        resetComponent();
-    }
+    const TEST_PROVIDER = new Provider({
+        id: client.app.identifier,
+        description: 'test',
+        name: 'test',
+        regex: '(?!x)x',
+        repository_url: 'https://github.com/omuchat/omuchat',
+        url: 'https://example.com',
+        version: '0.0.1',
+    });
 
     function send() {
         const authorName = `test-author-${Date.now()}`;
         const authorIcon = `https://picsum.photos/seed/${Date.now()}/200/200`;
         const author = new Author({
-            providerId: 'test',
-            id: 'test',
+            providerId: TEST_PROVIDER.id,
+            id: TEST_PROVIDER.id.join(`${Date.now()}`),
             name: authorName,
             avatarUrl: authorIcon,
         });
         chat.authors.add(author);
         const room = new Room({
-            id: 'test',
+            id: TEST_PROVIDER.id.join(`${Date.now()}`),
             connected: false,
             createdAt: new Date(),
-            providerId: 'test',
+            providerId: TEST_PROVIDER.id,
             status: 'offline',
         });
         chat.rooms.update(room);
         chat.messages.add(
             new Message({
-                roomId: room.key(),
-                id: `test-${Date.now()}`,
+                roomId: room.id,
+                id: room.id.join(`${Date.now()}`),
                 content: component,
-                authorId: author.key(),
+                authorId: author.id,
                 createdAt: new Date(),
             }),
         );
@@ -83,7 +89,7 @@
             <FlexColWrapper widthFull heightFull>
                 <small>INPUT</small>
                 <div class="editor">
-                    <ComponentEditor bind:component remove={resetComponent} />
+                    <ComponentEditor bind:component remove={reset} />
                 </div>
             </FlexColWrapper>
             <FlexColWrapper widthFull heightFull>

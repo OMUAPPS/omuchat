@@ -5,7 +5,6 @@
     import { t } from '$lib/i18n/i18n-context.js';
 
     import ChannelEntry from './ChannelEntry.svelte';
-    import ScreenAddChannel from './ScreenAddChannel.svelte';
 
     import { chat } from '$lib/common/omuchat/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
@@ -16,10 +15,6 @@
 
     function openSetupScreen() {
         screenContext.push(ScreenSetup, {});
-    }
-
-    function openAddScreen() {
-        screenContext.push(ScreenAddChannel, {});
     }
 
     let checkIntervalLeft = 0;
@@ -36,13 +31,9 @@
 
 <div class="container">
     <div class="buttons">
-        <ButtonMini on:click={openAddScreen}>
-            <Tooltip>{$t('panels.channels.append_channel')}</Tooltip>
-            <i class="ti ti-plus" />
-        </ButtonMini>
         <ButtonMini on:click={openSetupScreen}>
             <Tooltip>{$t('panels.channels.setup_channel')}</Tooltip>
-            <i class="ti ti-external-link" />
+            <i class="ti ti-plus" />
         </ButtonMini>
         <small>
             <Tooltip>

@@ -1,4 +1,5 @@
 import { models } from "@omuchatjs/chat";
+import { Provider } from "@omuchatjs/chat/models/provider.js";
 import { TableType } from "@omuchatjs/omu/extension/table/index.js";
 import { Identifier } from "@omuchatjs/omu/identifier.js";
 import type { Keyable } from "@omuchatjs/omu/interface.js";
@@ -112,10 +113,21 @@ export function editEmoji(emoji: Emoji) {
     selectedEmoji.set(emoji);
 }
 
+
+export const EMOJI_TEST_PROVIDER = new Provider({
+    id: client.app.identifier,
+    name: 'Emoji Test',
+    description: 'Send emoji preview',
+    regex: '',
+    repository_url: 'https://github.com/omuchat/omuchat',
+    url: 'https://example.com',
+    version: '0.0.1',
+});
+
 export function testEmoji(emoji: Emoji) {
     const room = new models.Room({
-        id: 'test',
-        providerId: 'test',
+        id: EMOJI_TEST_PROVIDER.id.join('test'),
+        providerId: EMOJI_TEST_PROVIDER.id,
         connected: false,
         status: 'offline',
         createdAt: new Date(),
@@ -123,8 +135,8 @@ export function testEmoji(emoji: Emoji) {
     client.chat.rooms.update(room);
     client.chat.messages.add(
         new models.Message({
-            id: Date.now().toString(),
-            roomId: room.key(),
+            id: EMOJI_TEST_PROVIDER.id.join('test', 'message', new Date().getTime().toString()),
+            roomId: room.id,
             content: new models.content.System([
                 models.content.Image.of({
                     url: client.assets.url(emoji.asset),

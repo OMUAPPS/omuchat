@@ -1,3 +1,4 @@
+import { Identifier } from '@omuchatjs/omu/identifier.js';
 import type { Keyable } from '@omuchatjs/omu/interface.js';
 import type { Model } from '@omuchatjs/omu/model.js';
 
@@ -15,24 +16,24 @@ export type AuthorMetadata = {
 export type AuthorJson = {
     provider_id: string;
     id: string;
-    name: string;
+    name?: string;
     avatar_url?: string;
     roles?: RoleJson[];
     metadata?: AuthorMetadata;
 };
 
 export class Author implements Keyable, Model<AuthorJson> {
-    providerId: string;
-    id: string;
-    name: string;
-    avatarUrl?: string;
-    roles?: Role[];
-    metadata?: AuthorMetadata;
+    public providerId: Identifier;
+    public id: Identifier;
+    public name?: string;
+    public avatarUrl?: string;
+    public roles?: Role[];
+    public metadata?: AuthorMetadata;
 
     constructor(options: {
-        providerId: string;
-        id: string;
-        name: string;
+        providerId: Identifier;
+        id: Identifier;
+        name?: string;
         avatarUrl?: string;
         roles?: Role[];
         metadata?: AuthorMetadata;
@@ -47,8 +48,8 @@ export class Author implements Keyable, Model<AuthorJson> {
 
     static fromJson(info: AuthorJson): Author {
         return new Author({
-            providerId: info.provider_id,
-            id: info.id,
+            providerId: Identifier.fromKey(info.provider_id),
+            id: Identifier.fromKey(info.id),
             name: info.name,
             avatarUrl: info.avatar_url,
             roles: info.roles?.map((role) => Role.fromJson(role)),
@@ -62,8 +63,8 @@ export class Author implements Keyable, Model<AuthorJson> {
 
     toJson(): AuthorJson {
         return {
-            provider_id: this.providerId,
-            id: this.id,
+            provider_id: this.providerId.key(),
+            id: this.id.key(),
             name: this.name,
             avatar_url: this.avatarUrl,
             roles: this.roles?.map((role) => role.toJson()),

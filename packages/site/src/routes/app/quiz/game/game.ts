@@ -114,7 +114,7 @@ client.on(events.MessageCreate, async (message) => {
         return;
     }
     const question = game.data.questions[game.currentQuestion];
-    if (game.players[authorId]?.answers[game.currentQuestion]) {
+    if (game.players[authorId.key()]?.answers[game.currentQuestion]) {
         return;
     }
     const answers = {} as { [key: number]: number };
@@ -127,15 +127,15 @@ client.on(events.MessageCreate, async (message) => {
     if (!answered) {
         return;
     }
-    const author = await client.chat.authors.get(authorId);
+    const author = await client.chat.authors.get(authorId.key());
     if (!author) {
         return;
     }
     await updateGame((data) => {
-        data.players[authorId] = {
+        data.players[authorId.key()] = {
             author: author.toJson(),
             answers: {
-                ...data.players[authorId]?.answers,
+                ...data.players[authorId.key()]?.answers,
                 [game.currentQuestion]: answers,
             },
         };

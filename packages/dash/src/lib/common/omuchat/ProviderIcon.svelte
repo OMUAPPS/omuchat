@@ -2,12 +2,13 @@
     import type { Provider } from '@omuchatjs/chat/models/index.js';
 
     import { classes } from '$lib/utils/class-helper.js';
+    import type { Identifier } from '@omuchatjs/omu/identifier.js';
     import { chat, client } from './client.js';
 
-    export let providerId: string;
+    export let providerId: Identifier;
 
     async function getProvider(): Promise<Provider | undefined> {
-        const provider = await chat.providers.get(providerId);
+        const provider = await chat.providers.get(providerId.key());
         return provider;
     }
 </script>

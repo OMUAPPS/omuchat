@@ -3,6 +3,7 @@
     import { onDestroy } from 'svelte';
 
     import { chat } from '$lib/common/omuchat/client.js';
+    import type { Identifier } from '@omuchatjs/omu/identifier.js';
     import { MessageEntry, TableList } from '@omuchatjs/ui';
 
     export let filter: (key: string, message: models.Message) => boolean = () => true;
@@ -15,8 +16,8 @@
     const unlistenMessages = chat.messages.listen((items) => {
         const authorKeys = [...items.values()]
             .map((message) => message.authorId)
-            .filter((key): key is string => !!key);
-        chat.authors.getMany(...authorKeys);
+            .filter((key): key is Identifier => !!key);
+        chat.authors.getMany(...authorKeys.map((it) => it.key()));
     });
 
     onDestroy(() => {

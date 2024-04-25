@@ -11,7 +11,13 @@
     } from '@omuchatjs/ui';
     import { client } from './client.js';
     import dummy_icon from './dummy_icon.svg';
-    import { deleteEmoji, saveEmoji, type Emoji, type Pattern } from './emoji.js';
+    import {
+        EMOJI_TEST_PROVIDER,
+        deleteEmoji,
+        saveEmoji,
+        type Emoji,
+        type Pattern,
+    } from './emoji.js';
 
     export let emoji: Emoji;
 
@@ -39,8 +45,8 @@
     <div class="preview">
         <MessageRenderer
             author={new Author({
-                providerId: 'test',
-                id: 'test',
+                providerId: EMOJI_TEST_PROVIDER.id,
+                id: EMOJI_TEST_PROVIDER.id.join(`${Date.now()}`),
                 name: 'test',
                 avatarUrl: new URL(dummy_icon, window.location.origin).toString(),
             })}
@@ -50,8 +56,8 @@
         />
         <MessageRenderer
             author={new Author({
-                providerId: 'test',
-                id: 'test',
+                providerId: EMOJI_TEST_PROVIDER.id,
+                id: EMOJI_TEST_PROVIDER.id.join(`${Date.now()}`),
                 name: 'test',
                 avatarUrl: new URL(dummy_icon, window.location.origin).toString(),
             })}
@@ -62,8 +68,8 @@
         />
         <MessageRenderer
             author={new Author({
-                providerId: 'test',
-                id: 'test',
+                providerId: EMOJI_TEST_PROVIDER.id,
+                id: EMOJI_TEST_PROVIDER.id.join(`${Date.now()}`),
                 name: 'test',
                 avatarUrl: new URL(dummy_icon, window.location.origin).toString(),
             })}

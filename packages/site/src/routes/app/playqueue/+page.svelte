@@ -23,7 +23,7 @@
     });
 
     async function processJoinLeave(message: models.Message) {
-        const author = message.authorId && (await client.chat.authors.get(message.authorId));
+        const author = message.authorId && (await client.chat.authors.get(message.authorId.key()));
         if (!author) return;
         const regex = new RegExp(joinWord);
         if (regex.test(message.text)) {
@@ -38,7 +38,9 @@
         } else {
             const regex = new RegExp(leaveWord);
             if (regex.test(message.text)) {
-                entries = entries.filter((entry) => entry.author.key() !== message.authorId);
+                entries = entries.filter(
+                    (entry) => message.authorId && !entry.author.id.isEqual(message.authorId),
+                );
             }
         }
     }

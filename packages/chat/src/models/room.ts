@@ -1,3 +1,4 @@
+import { Identifier } from '@omuchatjs/omu/identifier.js';
 import type { Keyable, Timestamped } from '@omuchatjs/omu/interface.js';
 import type { Model } from '@omuchatjs/omu/model.js';
 
@@ -25,8 +26,8 @@ export type RoomJson = {
 };
 
 export class Room implements Model<RoomJson>, Keyable, Timestamped {
-    public id: string;
-    public providerId: string;
+    public id: Identifier;
+    public providerId: Identifier;
     public connected: boolean;
     public status: Status;
     public metadata?: MetadataJson;
@@ -34,8 +35,8 @@ export class Room implements Model<RoomJson>, Keyable, Timestamped {
     public createdAt: Date;
 
     constructor(options: {
-        id: string;
-        providerId: string;
+        id: Identifier;
+        providerId: Identifier;
         connected: boolean;
         status: Status;
         metadata?: MetadataJson;
@@ -53,8 +54,8 @@ export class Room implements Model<RoomJson>, Keyable, Timestamped {
 
     static fromJson(options: RoomJson): Room {
         return new Room({
-            id: options.id,
-            providerId: options.provider_id,
+            id: Identifier.fromKey(options.id),
+            providerId: Identifier.fromKey(options.provider_id),
             connected: options.connected,
             status: options.status,
             metadata: options.metadata,
@@ -65,8 +66,8 @@ export class Room implements Model<RoomJson>, Keyable, Timestamped {
 
     toJson(): RoomJson {
         return {
-            id: this.id,
-            provider_id: this.providerId,
+            id: this.id.key(),
+            provider_id: this.providerId.key(),
             connected: this.connected,
             status: this.status,
             metadata: this.metadata,
@@ -76,6 +77,6 @@ export class Room implements Model<RoomJson>, Keyable, Timestamped {
     }
 
     key(): string {
-        return `${this.id}@${this.providerId}`;
+        return this.id.key();
     }
 }

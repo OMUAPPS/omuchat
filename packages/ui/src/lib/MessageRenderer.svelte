@@ -74,7 +74,7 @@
 							<Role {role} />
 						{/each}
 						<small>
-							{author.metadata?.screen_id || author.id}
+							{author.metadata?.screen_id || author.id.path.at(-1)}
 						</small>
 					</FlexRowWrapper>
 					{#if createdAt}
