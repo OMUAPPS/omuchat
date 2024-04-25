@@ -1,4 +1,5 @@
 import type { TokenProvider } from '../client/token.js';
+import { AnotherConnection, InvalidOrigin, InvalidPacket, InvalidToken, InvalidVersion, OmuError, PermissionDenied } from '../errors.js';
 import { EventEmitter } from '../event-emitter.js';
 import { IdentifierMap } from '../identifier.js';
 import type { Client } from '../index.js';
@@ -6,7 +7,7 @@ import type { Client } from '../index.js';
 import type { Address } from './address.js';
 import type { Connection } from './connection.js';
 import { PacketMapper } from './connection.js';
-import { ConnectPacket, PACKET_TYPES } from './packet/packet-types.js';
+import { ConnectPacket, DisconnectType, PACKET_TYPES } from './packet/packet-types.js';
 import type { Packet, PacketType } from './packet/packet.js';
 
 type PacketListeners<T> = {
@@ -18,6 +19,7 @@ export type NetworkStatus = 'connecting' | 'connected' | 'disconnected';
 
 export class Network {
     public connected = false;
+    public closed = false;
     public readonly listeners = {
         connected: new EventEmitter<() => void>,
         disconnected: new EventEmitter<() => void>,
@@ -42,6 +44,28 @@ export class Network {
         );
         this.addPacketHandler(PACKET_TYPES.TOKEN, async (token: string) => {
             await this.tokenProvider.set(this.address, this.client.app, token);
+        });
+        this.addPacketHandler(PACKET_TYPES.DISCONNECT, (reason) => {
+            if (reason.type === DisconnectType.SHUTDOWN || reason.type === DisconnectType.CLOSE) {
+                return;
+            }
+            this.closed = true;
+            const ERROR_MAP: Record<DisconnectType, typeof OmuError | undefined> = {
+                [DisconnectType.ANOTHER_CONNECTION]: AnotherConnection,
+                [DisconnectType.PERMISSION_DENIED]: PermissionDenied,
+                [DisconnectType.INVALID_TOKEN]: InvalidToken,
+                [DisconnectType.INVALID_ORIGIN]: InvalidOrigin,
+                [DisconnectType.INVALID_VERSION]: InvalidVersion,
+                [DisconnectType.INVALID_PACKET]: InvalidPacket,
+                [DisconnectType.INVALID_PACKET_TYPE]: InvalidPacket,
+                [DisconnectType.INVALID_PACKET_DATA]: InvalidPacket,
+                [DisconnectType.CLOSE]: undefined,
+                [DisconnectType.SHUTDOWN]: undefined,
+            };
+            const error = ERROR_MAP[reason.type];
+            if (error) {
+                throw new error(reason.message);
+            }
         });
     }
 
@@ -78,29 +102,38 @@ export class Network {
         this.disconnect();
         try {
             await this.connection.connect();
-            this.connected = true;
-            this.send({
-                type: PACKET_TYPES.CONNECT,
-                data: new ConnectPacket({
-                    app: this.client.app,
-                    token: await this.tokenProvider.get(this.address, this.client.app),
-                }),
-            });
-            const listenPromise = this.listen();
-            await this.listeners.status.emit('connected');
-            await this.listeners.connected.emit();
-            this.dispatchTasks();
-            await listenPromise;
         } catch (error) {
-            console.error('Failed to connect', error);
-        } finally {
-            this.disconnect();
+            if (recconect) {
+                await this.tryReconnect();
+            } else {
+                throw error;
+            }
         }
+        this.connected = true;
+        this.send({
+            type: PACKET_TYPES.CONNECT,
+            data: new ConnectPacket({
+                app: this.client.app,
+                token: await this.tokenProvider.get(this.address, this.client.app),
+            }),
+        });
+        const listenPromise = this.listen();
+        await this.listeners.status.emit('connected');
+        await this.listeners.connected.emit();
+        this.dispatchTasks();
+        await listenPromise;
 
         if (recconect) {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            await this.connect(recconect);
+            await this.tryReconnect();
         }
+    }
+
+    private async tryReconnect() {
+        if (this.closed) {
+            return;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await this.connect();
     }
 
     public disconnect(): void {
