@@ -38,27 +38,47 @@ export class ConnectPacket implements Model<ConnectPacketJson> {
     }
 }
 
+export enum DisconnectType {
+    INVALID_TOKEN = "invalid_token",
+    INVALID_ORIGIN = "invalid_origin",
+    INVALID_VERSION = "invalid_version",
+    INVALID_PACKET_TYPE = "invalid_packet_type",
+    INVALID_PACKET_DATA = "invalid_packet_data",
+    INVALID_PACKET = "invalid_packet",
+    ANOTHER_CONNECTION = "another_connection",
+    PERMISSION_DENIED = "permission_denied",
+    SHUTDOWN = "shutdown",
+    CLOSE = "close",
+}
+
 type DisconnectPacketJson = {
-    reason: string,
+    type: DisconnectType,
+    message: string | null,
 };
 
 export class DisconnectPacket implements Model<DisconnectPacketJson> {
-    public readonly reason: string;
+    public readonly type: DisconnectType;
+    public readonly message: string | null;
+
     constructor(options: {
-        reason: string,
+        type: DisconnectType,
+        message?: string | null,
     }) {
-        this.reason = options.reason;
+        this.type = options.type;
+        this.message = options.message ?? null;
     }
 
     static fromJson(data: DisconnectPacketJson): DisconnectPacket {
         return new DisconnectPacket({
-            reason: data.reason,
+            type: data.type,
+            message: data.message,
         });
     }
 
     toJson(): DisconnectPacketJson {
         return {
-            reason: this.reason,
+            type: this.type,
+            message: this.message,
         };
     }
 }
