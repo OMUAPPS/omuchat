@@ -1,4 +1,3 @@
-// from https://github.com/astral-sh/rye/blob/main/rye/src/sources/uv.rs (MIT License)
 use anyhow::{anyhow, Error};
 use std::borrow::Cow;
 use std::env::consts::{ARCH, OS};

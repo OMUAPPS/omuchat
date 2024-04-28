@@ -1,4 +1,3 @@
-// from https://github.com/astral-sh/rye/blob/main/rye/src/sources/py.rs (MIT License)
 use std::borrow::Cow;
 use std::env::consts::{ARCH, OS};
 use std::fmt;
@@ -29,8 +28,8 @@ pub struct PythonVersion {
 
 impl Serialize for PythonVersion {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where
-            S: serde::Serializer,
+    where
+        S: serde::Serializer,
     {
         serializer.serialize_str(&self.to_string())
     }
@@ -38,8 +37,8 @@ impl Serialize for PythonVersion {
 
 impl<'de> Deserialize<'de> for PythonVersion {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where
-            D: serde::Deserializer<'de>,
+    where
+        D: serde::Deserializer<'de>,
     {
         let s = Cow::<'_, str>::deserialize(deserializer)?;
         PythonVersion::from_str(&s).map_err(|err| de::Error::custom(err.to_string()))
