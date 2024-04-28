@@ -1,6 +1,5 @@
 import type { Client } from '../../index.js';
 import { PacketType } from '../../network/packet/packet.js';
-import { EndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType } from '../extension.js';
 
 export const PLUGIN_EXTENSION_TYPE = new ExtensionType(
@@ -33,10 +32,4 @@ export class PluginExtension {
 const PLUGIN_PERMISSION = PLUGIN_EXTENSION_TYPE.join('request');
 const PLUGIN_REQUIRE_PACKET = PacketType.createJson<Record<string, string | null>>(PLUGIN_EXTENSION_TYPE, {
     name: 'require',
-});
-type WaitResponse = {
-    success: boolean;
-}
-const PLUGIN_WAIT_ENDPOINT = EndpointType.createJson<string[], WaitResponse>(PLUGIN_EXTENSION_TYPE, {
-    name: 'wait',
 });
