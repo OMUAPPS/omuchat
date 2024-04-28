@@ -2,7 +2,6 @@ import type { Client } from '../../client/index.js';
 import { Identifier, IdentifierMap } from '../../identifier.js';
 import type { Keyable } from '../../interface.js';
 import type { Model } from '../../model.js';
-import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 import { PacketType } from '../../network/packet/packet.js';
 import type { Serializable } from '../../serializer.js';
 import { Serializer } from '../../serializer.js';
@@ -10,128 +9,78 @@ import { EndpointType } from '../endpoint/endpoint.js';
 import type { Extension } from '../extension.js';
 import { ExtensionType } from '../extension.js';
 
-import { TableType, type Table, type TableConfig, type TableListener } from './table.js';
+import { SetConfigPacket, SetPermissionPacket, TableFetchPacket, TableItemsPacket, TableKeysPacket, TablePacket, TableProxyPacket } from './packets.js';
+import { TableListeners, TableType, type Table, type TableConfig } from './table.js';
 
 export const TABLE_EXTENSION_TYPE: ExtensionType<TableExtension> = new ExtensionType(
     'table',
     (client) => new TableExtension(client),
 );
 
-type TableEventData = { type: string };
-type TableItemsData = TableEventData & { items: Record<string, Uint8Array> };
-type TableProxyData = TableItemsData & { key: number };
-type TableFetchData = TableEventData & { before?: number; after?: number; cursor?: string, };
-
-const ITEMS_SERIALIZER = new Serializer<TableItemsData, Uint8Array>(
-    (data) => {
-        const writer = new ByteWriter();
-        writer.writeString(data.type);
-        writer.writeInt(Object.keys(data.items).length);
-        for (const [key, value] of Object.entries(data.items)) {
-            writer.writeString(key);
-            writer.writeByteArray(value);
-        }
-        return writer.finish();
-    },
-    (data) => {
-        const reader = new ByteReader(data);
-        const type = reader.readString();
-        const itemCount = reader.readInt();
-        const items = {};
-        for (let i = 0; i < itemCount; i++) {
-            const key = reader.readString();
-            const value = reader.readByteArray();
-            items[key] = value;
-        }
-        reader.finish();
-        return { type, items };
-    },
-);
-const ITEM_PROXY_SERIALIZER = new Serializer<TableProxyData, Uint8Array>(
-    (data) => {
-        const writer = new ByteWriter();
-        writer.writeString(data.type);
-        writer.writeInt(data.key);
-        writer.writeInt(Object.keys(data.items).length);
-        for (const [key, value] of Object.entries(data.items)) {
-            writer.writeString(key);
-            writer.writeByteArray(value);
-        }
-        return writer.finish();
-    },
-    (data) => {
-        const reader = new ByteReader(data);
-        const type = reader.readString();
-        const key = reader.readInt();
-        const itemCount = reader.readInt();
-        const items = {};
-        for (let i = 0; i < itemCount; i++) {
-            const key = reader.readString();
-            const value = reader.readByteArray();
-            items[key] = value;
-        }
-        reader.finish();
-        return { type, key, items };
-    },
-);
-
-const TABLE_CONFIG_PACKET = PacketType.createJson<{
-    type: string;
-    config: TableConfig;
-}>(TABLE_EXTENSION_TYPE, {
-    name: 'config',
+const TABLE_SET_PERMISSION_PACKET = PacketType.createSerialized<SetPermissionPacket>(TABLE_EXTENSION_TYPE, {
+    name: 'set_permission',
+    serializer: SetPermissionPacket,
 });
-const TABLE_LISTEN_PACKET = PacketType.createJson<string>(TABLE_EXTENSION_TYPE, {
+const TABLE_SET_CONFIG_PACKET = PacketType.createSerialized<SetConfigPacket>(TABLE_EXTENSION_TYPE, {
+    name: 'set_config',
+    serializer: SetConfigPacket,
+});
+const TABLE_LISTEN_PACKET = PacketType.createJson<Identifier>(TABLE_EXTENSION_TYPE, {
     name: 'listen',
+    serializer: Serializer.model(Identifier),
 });
-const TABLE_PROXY_LISTEN_PACKET = PacketType.createJson<string>(TABLE_EXTENSION_TYPE, {
+const TABLE_PROXY_LISTEN_PACKET = PacketType.createJson<Identifier>(TABLE_EXTENSION_TYPE, {
     name: 'proxy_listen',
+    serializer: Serializer.model(Identifier),
 });
-const TABLE_PROXY_PACKET = PacketType.createSerialized<TableProxyData>(TABLE_EXTENSION_TYPE, {
+const TABLE_PROXY_PACKET = PacketType.createSerialized<TableProxyPacket>(TABLE_EXTENSION_TYPE, {
     name: 'proxy',
-    serializer: ITEM_PROXY_SERIALIZER,
+    serializer: TableProxyPacket,
 });
-const TABLE_ITEM_ADD_PACKET = PacketType.createSerialized<TableItemsData>(TABLE_EXTENSION_TYPE, {
+const TABLE_ITEM_ADD_PACKET = PacketType.createSerialized<TableItemsPacket>(TABLE_EXTENSION_TYPE, {
     name: 'item_add',
-    serializer: ITEMS_SERIALIZER,
+    serializer: TableItemsPacket,
 });
-const TABLE_ITEM_UPDATE_PACKET = PacketType.createSerialized<TableItemsData>(TABLE_EXTENSION_TYPE, {
+const TABLE_ITEM_UPDATE_PACKET = PacketType.createSerialized<TableItemsPacket>(TABLE_EXTENSION_TYPE, {
     name: 'item_update',
-    serializer: ITEMS_SERIALIZER,
+    serializer: TableItemsPacket,
 });
-const TABLE_ITEM_REMOVE_PACKET = PacketType.createSerialized<TableItemsData>(TABLE_EXTENSION_TYPE, {
+const TABLE_ITEM_REMOVE_PACKET = PacketType.createSerialized<TableItemsPacket>(TABLE_EXTENSION_TYPE, {
     name: 'item_remove',
-    serializer: ITEMS_SERIALIZER,
+    serializer: TableItemsPacket,
 });
 const TABLE_ITEM_GET_ENDPOINT = EndpointType.createSerialized<
-    TableEventData & { keys: string[] },
-    TableItemsData
+    TableKeysPacket,
+    TableItemsPacket
 >(TABLE_EXTENSION_TYPE, {
     name: 'item_get',
-    requestSerializer: Serializer.json(),
-    responseSerializer: ITEMS_SERIALIZER,
+    requestSerializer: TableKeysPacket,
+    responseSerializer: TableItemsPacket,
 });
 const TABLE_FETCH_ENDPOINT = EndpointType.createSerialized<
-    TableFetchData,
-    TableItemsData
+    TableFetchPacket,
+    TableItemsPacket
 >(TABLE_EXTENSION_TYPE, {
     name: 'fetch',
-    requestSerializer: Serializer.json(),
-    responseSerializer: ITEMS_SERIALIZER,
+    requestSerializer: TableFetchPacket,
+    responseSerializer: TableItemsPacket,
 });
 const TABLE_FETCH_ALL_ENDPOINT = EndpointType.createSerialized<
-    TableFetchData,
-    TableItemsData
+    TablePacket,
+    TableItemsPacket
 >(TABLE_EXTENSION_TYPE, {
     name: 'fetch_all',
-    requestSerializer: Serializer.json(),
-    responseSerializer: ITEMS_SERIALIZER,
+    requestSerializer: TablePacket,
+    responseSerializer: TableItemsPacket,
 });
-const TABLE_SIZE_ENDPOINT = EndpointType.createJson<TableEventData, number>(TABLE_EXTENSION_TYPE, {
+const TABLE_SIZE_ENDPOINT = EndpointType.createSerialized<TablePacket, number>(TABLE_EXTENSION_TYPE, {
     name: 'size',
+    requestSerializer: TablePacket,
+    responseSerializer: Serializer.json(),
 });
-const TABLE_CLEAR_PACKET = PacketType.createJson<TableEventData>(TABLE_EXTENSION_TYPE, {
+const TABLE_ITEM_CLEAR_PACKET = PacketType.createSerialized<TablePacket>(TABLE_EXTENSION_TYPE, {
     name: 'clear',
+    serializer: TablePacket,
 });
 
 export class TableExtension implements Extension {
@@ -139,38 +88,37 @@ export class TableExtension implements Extension {
 
     constructor(private readonly client: Client) {
         client.network.registerPacket(
-            TABLE_CONFIG_PACKET,
-            TABLE_PROXY_PACKET,
-            TABLE_PROXY_LISTEN_PACKET,
+            TABLE_SET_PERMISSION_PACKET,
+            TABLE_SET_CONFIG_PACKET,
             TABLE_LISTEN_PACKET,
+            TABLE_PROXY_LISTEN_PACKET,
+            TABLE_PROXY_PACKET,
             TABLE_ITEM_ADD_PACKET,
-            TABLE_ITEM_REMOVE_PACKET,
             TABLE_ITEM_UPDATE_PACKET,
-            TABLE_CLEAR_PACKET,
+            TABLE_ITEM_REMOVE_PACKET,
+            TABLE_ITEM_CLEAR_PACKET,
         );
     }
 
-    create<T>(
-        identifier: Identifier,
-        serializer: Serializable<T, Uint8Array>,
-        keyFunc: (item: T) => string,
+    public create<T>(
+        tableType: TableType<T>,
     ): Table<T> {
-        if (this.has(identifier)) {
+        if (this.has(tableType.identifier)) {
             throw new Error('Table already exists');
         }
-        const table = new TableImpl<T>(this.client, identifier, serializer, keyFunc);
-        this.tableMap.set(identifier, table);
+        const table = new TableImpl<T>(this.client, tableType);
+        this.tableMap.set(tableType.identifier, table as Table<unknown>);
         return table;
     }
 
-    get<T extends Keyable>(type: TableType<T>): Table<T> {
+    public get<T extends Keyable>(type: TableType<T>): Table<T> {
         if (this.has(type.identifier)) {
             return this.tableMap.get(type.identifier) as Table<T>;
         }
-        return this.create(type.identifier, type.serializer, type.keyFunc);
+        return this.create(type);
     }
 
-    model<T extends Keyable & Model<D>, D = unknown>(
+    public model<T extends Keyable & Model<D>, D = unknown>(
         identifier: Identifier,
         {
             name,
@@ -184,42 +132,49 @@ export class TableExtension implements Extension {
         if (this.has(tableType.identifier)) {
             throw new Error('Table already exists');
         }
-        return this.create(tableType.identifier, tableType.serializer, tableType.keyFunc);
+        return this.create(tableType);
     }
 
-    has(identifier: Identifier): boolean {
+    public has(identifier: Identifier): boolean {
         return this.tableMap.has(identifier);
     }
 }
 
 class TableImpl<T> implements Table<T> {
     public cache: Map<string, T>;
-    private readonly listeners: TableListener<T>[];
+    public readonly listeners: TableListeners<T>;
     private readonly promiseMap: Map<string, Promise<T | undefined>>;
     private readonly proxies: Array<(item: T) => T | undefined>;
-    private readonly key: string;
+    private id: Identifier;
+    private serializer: Serializable<T, Uint8Array>;
+    private keyFunction: (item: T) => string;
     private listening: boolean;
     private cacheSize?: number;
     private config?: TableConfig;
+    private permission?: {
+        all?: Identifier;
+        read?: Identifier;
+        write?: Identifier;
+    };
 
     constructor(
         private readonly client: Client,
-        private readonly identifier: Identifier,
-        private readonly serializer: Serializable<T, Uint8Array>,
-        private readonly keyFunc: (item: T) => string,
+        tableType: TableType<T>,
     ) {
+        this.id = tableType.identifier;
+        this.serializer = tableType.serializer;
+        this.keyFunction = tableType.keyFunction;
         this.cache = new Map();
-        this.key = identifier.key();
-        this.listeners = [];
+        this.listeners = new TableListeners();
         this.promiseMap = new Map();
         this.proxies = [];
         this.listening = false;
 
-        client.network.addPacketHandler(TABLE_PROXY_PACKET, (event) => {
-            if (event.type !== this.key) {
+        client.network.addPacketHandler(TABLE_PROXY_PACKET, (packet) => {
+            if (!packet.id.isEqual(this.id)) {
                 return;
             }
-            let items = this.deserializeItems(event.items);
+            let items = this.deserializeItems(packet.items);
             this.proxies.forEach((proxy) => {
                 items = new Map(
                     [...items.entries()]
@@ -236,8 +191,8 @@ class TableImpl<T> implements Table<T> {
                 );
             });
             client.send(TABLE_PROXY_PACKET, {
-                type: this.key,
-                key: event.key,
+                id: this.id,
+                key: packet.key,
                 items: Object.fromEntries(
                     [...items.entries()].map(([key, item]) => {
                         return [key, this.serializer.serialize(item)];
@@ -245,48 +200,54 @@ class TableImpl<T> implements Table<T> {
                 ),
             });
         });
-        client.network.addPacketHandler(TABLE_ITEM_ADD_PACKET, (event) => {
-            if (event.type !== this.key) {
+        client.network.addPacketHandler(TABLE_ITEM_ADD_PACKET, (packet) => {
+            if (!packet.id.isEqual(this.id)) {
                 return;
             }
-            const items = this.deserializeItems(event.items);
+            const items = this.deserializeItems(packet.items);
             this.updateCache(items);
-            this.listeners.forEach((listener) => {
-                listener.onAdd?.(items);
-            });
+            // this.listeners.forEach((listener) => {
+            //     listener.onAdd?.(items);
+            // });
+            this.listeners.add.emit(items);
         });
-        client.network.addPacketHandler(TABLE_ITEM_UPDATE_PACKET, (event) => {
-            if (event.type !== this.key) {
+        client.network.addPacketHandler(TABLE_ITEM_UPDATE_PACKET, (packet) => {
+            if (!packet.id.isEqual(this.id)) {
                 return;
             }
-            const items = this.deserializeItems(event.items);
+            const items = this.deserializeItems(packet.items);
             this.updateCache(items);
-            this.listeners.forEach((listener) => {
-                listener.onUpdate?.(items);
-            });
+            // this.listeners.forEach((listener) => {
+            //     listener.onUpdate?.(items);
+            // });
+            this.listeners.update.emit(items);
         });
-        client.network.addPacketHandler(TABLE_ITEM_REMOVE_PACKET, (event) => {
-            if (event.type !== this.key) {
+        client.network.addPacketHandler(TABLE_ITEM_REMOVE_PACKET, (packet) => {
+            if (!packet.id.isEqual(this.id)) {
                 return;
             }
-            const items = this.deserializeItems(event.items);
+            const items = this.deserializeItems(packet.items);
             items.forEach((_, key) => {
                 this.cache.delete(key);
             });
-            this.listeners.forEach((listener) => {
-                listener.onRemove?.(items);
-                listener.onCacheUpdate?.(this.cache);
-            });
+            // this.listeners.forEach((listener) => {
+            //     listener.onRemove?.(items);
+            //     listener.onCacheUpdate?.(this.cache);
+            // });
+            this.listeners.remove.emit(items);
+            this.listeners.cacheUpdate.emit(this.cache);
         });
-        client.network.addPacketHandler(TABLE_CLEAR_PACKET, (event) => {
-            if (event.type !== this.key) {
+        client.network.addPacketHandler(TABLE_ITEM_CLEAR_PACKET, (packet) => {
+            if (!packet.id.isEqual(this.id)) {
                 return;
             }
             this.cache = new Map();
-            this.listeners.forEach((listener) => {
-                listener.onClear?.();
-                listener.onCacheUpdate?.(this.cache);
-            });
+            // this.listeners.forEach((listener) => {
+            //     listener.onClear?.();
+            //     listener.onCacheUpdate?.(this.cache);
+            // });
+            this.listeners.clear.emit();
+            this.listeners.cacheUpdate.emit(this.cache);
         });
     }
     private updateCache(items: Map<string, T>): void {
@@ -296,68 +257,43 @@ class TableImpl<T> implements Table<T> {
             const cache = new Map([...this.cache, ...items].slice(-this.cacheSize));
             this.cache = cache;
         }
-        this.listeners.forEach((listener) => {
-            listener.onCacheUpdate?.(this.cache);
-        });
+        // this.listeners.forEach((listener) => {
+        //     listener.onCacheUpdate?.(this.cache);
+        // });
+        this.listeners.cacheUpdate.emit(this.cache);
     }
 
-    addListener(listener: TableListener<T>): void {
-        if (this.listeners.includes(listener)) {
-            throw new Error('Listener already registered');
-        }
-        this.listeners.push(listener);
-    }
-
-    removeListener(listener: TableListener<T>): void {
-        this.listeners.splice(this.listeners.indexOf(listener), 1);
-    }
-
-    listen(listener?: (items: Map<string, T>) => void): () => void {
-        if (!this.listening) {
-            this.client.network.addTask(() => {
-                this.client.send(TABLE_LISTEN_PACKET, this.key);
-            });
-            this.listening = true;
-        }
-        if (!listener) {
-            return () => { };
-        }
-        const tableListener = {
-            onCacheUpdate: listener,
-        };
-        this.addListener(tableListener);
-        return () => this.unlisten(listener);
-    }
-
-    unlisten(listener?: ((items: Map<string, T>) => void) | undefined): void {
+    public listen(listener?: (items: Map<string, T>) => void): () => void {
+        this.listening = true;
         if (listener) {
-            this.removeListener({
-                onCacheUpdate: listener,
-            });
+            this.listeners.cacheUpdate.subscribe(listener);
+            return () => {
+                this.listeners.cacheUpdate.unsubscribe(listener);
+            };
         }
-        this.listening = this.listeners.length > 0;
+        return () => { };
     }
 
-    proxy(callback: (item: T) => T | undefined): () => void {
+    public proxy(callback: (item: T) => T | undefined): () => void {
         this.proxies.push(callback);
         return () => {
             this.proxies.splice(this.proxies.indexOf(callback), 1);
         };
     }
 
-    onConnect(): void {
+    private onConnect(): void {
         if (this.config) {
-            this.client.send(TABLE_CONFIG_PACKET, {
-                type: this.key,
+            this.client.send(TABLE_SET_CONFIG_PACKET, {
+                id: this.id,
                 config: this.config,
             });
         }
         if (this.proxies.length > 0) {
-            this.client.send(TABLE_PROXY_LISTEN_PACKET, this.key);
+            this.client.send(TABLE_PROXY_LISTEN_PACKET, this.id);
         }
     }
 
-    async get(key: string): Promise<T | undefined> {
+    public async get(key: string): Promise<T | undefined> {
         if (this.cache.has(key)) {
             return this.cache.get(key);
         }
@@ -365,7 +301,7 @@ class TableImpl<T> implements Table<T> {
             return await this.promiseMap.get(key);
         }
         const promise = this.client.endpoints.call(TABLE_ITEM_GET_ENDPOINT, {
-            type: this.key,
+            id: this.id,
             keys: [key],
         }).then((res) => {
             const items = this.deserializeItems(res.items);
@@ -379,13 +315,13 @@ class TableImpl<T> implements Table<T> {
         });
     }
 
-    async getMany(...keys: string[]): Promise<Map<string, T>> {
+    public async getMany(...keys: string[]): Promise<Map<string, T>> {
         const filteredKeys = keys.filter((key) => !this.cache.has(key)).filter((key) => !this.promiseMap.has(key));
         if (filteredKeys.length === 0) {
             return new Map([...this.cache].filter(([key]) => keys.includes(key)));
         }
         const promise = this.client.endpoints.call(TABLE_ITEM_GET_ENDPOINT, {
-            type: this.key,
+            id: this.id,
             keys: filteredKeys,
         }).then((res) => {
             const items = this.deserializeItems(res.items);
@@ -402,39 +338,39 @@ class TableImpl<T> implements Table<T> {
         return new Map([...this.cache, ...items].filter(([key]) => keys.includes(key)));
     }
 
-    async add(...items: T[]): Promise<void> {
+    public async add(...items: T[]): Promise<void> {
         const data = this.serializeItems(items);
         this.client.send(TABLE_ITEM_ADD_PACKET, {
-            type: this.key,
+            id: this.id,
             items: data,
         });
     }
 
-    async update(...items: T[]): Promise<void> {
+    public async update(...items: T[]): Promise<void> {
         const data = this.serializeItems(items);
         this.client.send(TABLE_ITEM_UPDATE_PACKET, {
-            type: this.key,
+            id: this.id,
             items: data,
         });
     }
 
-    async remove(...items: T[]): Promise<void> {
+    public async remove(...items: T[]): Promise<void> {
         const data = this.serializeItems(items);
         const keys = Object.keys(data);
         this.cache = new Map([...this.cache].filter(([key]) => !keys.includes(key)));
         this.client.send(TABLE_ITEM_REMOVE_PACKET, {
-            type: this.key,
+            id: this.id,
             items: data,
         });
     }
 
-    async clear(): Promise<void> {
-        this.client.send(TABLE_CLEAR_PACKET, {
-            type: this.key,
+    public async clear(): Promise<void> {
+        this.client.send(TABLE_ITEM_CLEAR_PACKET, {
+            id: this.id,
         });
     }
 
-    async fetchItems({
+    public async fetchItems({
         before,
         after,
         cursor,
@@ -443,27 +379,27 @@ class TableImpl<T> implements Table<T> {
         after: number;
         cursor?: string;
     }): Promise<Map<string, T>> {
-        const res = await this.client.endpoints.call(TABLE_FETCH_ENDPOINT, {
-            type: this.key,
+        const res = await this.client.endpoints.call(TABLE_FETCH_ENDPOINT, new TableFetchPacket(
+            this.id,
             before,
             after,
-            cursor,
-        });
+            cursor ?? null,
+        ));
         const items = this.deserializeItems(res.items);
         this.updateCache(items);
         return items;
     }
 
-    async fetchAll(): Promise<Map<string, T>> {
+    public async fetchAll(): Promise<Map<string, T>> {
         const res = await this.client.endpoints.call(TABLE_FETCH_ALL_ENDPOINT, {
-            type: this.key,
+            id: this.id,
         });
         const items = this.deserializeItems(res.items);
         this.updateCache(items);
         return items;
     }
 
-    async *iterate({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T> {
+    public async *iterate({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T> {
         let items: Map<string, T> = await this.fetchItems(
             backward
                 ? {
@@ -479,7 +415,7 @@ class TableImpl<T> implements Table<T> {
         );
         yield* items.values();
         while (items.size > 0) {
-            const cursor = this.keyFunc(
+            const cursor = this.keyFunction(
                 backward ? items.values().next().value : [...items.values()].pop(),
             );
             items = await this.fetchItems(
@@ -491,9 +427,9 @@ class TableImpl<T> implements Table<T> {
         }
     }
 
-    async size(): Promise<number> {
+    public async size(): Promise<number> {
         return await this.client.endpoints.call(TABLE_SIZE_ENDPOINT, {
-            type: this.key,
+            id: this.id,
         });
     }
 
@@ -510,16 +446,20 @@ class TableImpl<T> implements Table<T> {
     private serializeItems(items: T[]): Record<string, Uint8Array> {
         return Object.fromEntries(
             items.map((item) => {
-                return [this.keyFunc(item), this.serializer.serialize(item)];
+                return [this.keyFunction(item), this.serializer.serialize(item)];
             }),
         );
     }
 
-    setCacheSize(size: number): void {
+    public setCacheSize(size: number): void {
         this.cacheSize = size;
     }
 
-    setConfig(config: TableConfig): void {
+    public setConfig(config: TableConfig): void {
         this.config = config;
+    }
+
+    public setPermission(all: Identifier, { read, write }: { read?: Identifier | undefined; write?: Identifier | undefined; }): void {
+        this.permission = { all, read, write };
     }
 }

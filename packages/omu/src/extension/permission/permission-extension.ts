@@ -12,6 +12,10 @@ const PERMISSION_REGISTER_PACKET = PacketType.createJson<PermissionType[]>(PERMI
     name: 'register',
     serializer: Serializer.model(PermissionType).toArray(),
 });
+const PERMISSION_REQUIRE_PACKET = PacketType.createJson<Identifier[]>(PERMISSION_EXTENSION_TYPE, {
+    name: 'require',
+    serializer: Serializer.model(Identifier).toArray(),
+});
 const PERMISSION_REQUEST_ENDPOINT = EndpointType.createJson<Identifier[], void>(PERMISSION_EXTENSION_TYPE, {
     name: 'request',
     requestSerializer: Serializer.model(Identifier).toArray(),
@@ -29,30 +33,42 @@ export class PermissionExtension {
     constructor(private readonly client: Client) {
         client.network.registerPacket(
             PERMISSION_REGISTER_PACKET,
+            PERMISSION_REQUIRE_PACKET,
             PERMISSION_GRANT_PACKET,
         );
         client.network.addPacketHandler(PERMISSION_GRANT_PACKET, (permissions) => {
             for (const permission of permissions) {
-                this.permissions.set(permission.identifier, permission);
+                this.permissions.set(permission.id, permission);
             }
         });
-        client.network.listeners.connected.subscribe(() => this.handleConnected());
+        client.network.listeners.connected.subscribe(() => this.onConnected());
+        client.network.addTask(() => this.onTask());
     }
 
-    private handleConnected(): void {
+    private onConnected(): void {
         if (this.registeredPermissions.size === 0) {
             return;
         }
         this.client.send(PERMISSION_REGISTER_PACKET, Array.from(this.registeredPermissions.values()));
-        this.client.endpoints.call(PERMISSION_REQUEST_ENDPOINT, Array.from(this.requiredPermissions.values()));
+    }
+
+    private onTask(): void {
+        if (this.requiredPermissions.size === 0) {
+            return;
+        }
+        this.client.send(PERMISSION_REQUIRE_PACKET, Array.from(this.requiredPermissions.values()));
     }
 
     public register(permission: PermissionType): void {
-        this.registeredPermissions.set(permission.identifier, permission);
+        this.registeredPermissions.set(permission.id, permission);
     }
 
     public require(permission: PermissionType): void {
-        this.requiredPermissions.add(permission.identifier);
+        this.requiredPermissions.add(permission.id);
+    }
+
+    public async request(permissionIds: Identifier[]): Promise<void> {
+        await this.client.endpoints.call(PERMISSION_REQUEST_ENDPOINT, permissionIds);
     }
 
     public has(permissionIdentifier: Identifier): boolean {

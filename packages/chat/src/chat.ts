@@ -8,6 +8,8 @@ import { Serializer } from '@omuchatjs/omu/serializer.js';
 import { Author, Channel, Message, Provider, Room } from './models/index.js';
 
 export const IDENTIFIER = new Identifier('cc.omuchat', 'chat');
+export const CHAT_PERMISSION = IDENTIFIER.join('chat');
+export const CHAT_READ_PERMISSION = IDENTIFIER.join('chat', 'read');
 
 export const MESSAGE_TABLE_TYPE = TableType.model(IDENTIFIER, {
     name: 'messages',
