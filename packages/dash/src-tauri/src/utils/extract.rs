@@ -1,3 +1,4 @@
+// https://github.com/astral-sh/rye/blob/ab8d5b433d5c4342c2bb125583c6bff4d29f5fbc/rye/src/utils/mod.rs#L290-L352 - MIT License
 use std::io::{Cursor, Read};
 use std::path::Path;
 use std::{fmt, fs};
