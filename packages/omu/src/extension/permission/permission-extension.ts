@@ -63,8 +63,8 @@ export class PermissionExtension {
         this.registeredPermissions.set(permission.id, permission);
     }
 
-    public require(permission: PermissionType): void {
-        this.requiredPermissions.add(permission.id);
+    public require(permissionId: Identifier): void {
+        this.requiredPermissions.add(permissionId);
     }
 
     public async request(permissionIds: Identifier[]): Promise<void> {
