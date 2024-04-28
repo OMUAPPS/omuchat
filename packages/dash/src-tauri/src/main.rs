@@ -1,69 +1,109 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
-#![cfg_attr(
-    all(not(debug_assertions), target_os = "windows"),
-    windows_subsystem = "windows"
-)]
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::{
-    fs,
-    io::{self},
-};
-
-use anyhow::Result;
-use directories::ProjectDirs;
-use once_cell::sync::Lazy;
-use reqwest::Client;
-use tracing::debug;
-use tracing_subscriber::{fmt, layer::SubscriberExt};
-
-pub mod app;
-
+mod app;
+mod options;
 mod python;
 mod server;
-mod util;
+mod sources;
+mod sync;
+mod utils;
+mod uv;
 
-static LAUNCHER_DIRECTORY: Lazy<ProjectDirs> =
+use anyhow::Result;
+use app::{AppState, ServerStatus};
+use directories::ProjectDirs;
+use once_cell::sync::Lazy;
+use options::InstallOptions;
+use python::Python;
+use server::{Server, ServerOption};
+use sources::py::PythonVersionRequest;
+use tauri::Manager;
+use uv::Uv;
+use window_shadows::set_shadow;
+
+static APP_DIRECTORY: Lazy<ProjectDirs> =
     Lazy::new(|| match ProjectDirs::from("cc", "OMUCHAT", "Dashboard") {
         Some(proj_dirs) => proj_dirs,
         None => panic!("Failed to get project directories!"),
     });
 
-static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"),);
+static PYTHON_VERSION: PythonVersionRequest = PythonVersionRequest {
+    name: None,
+    arch: None,
+    os: None,
+    major: 3,
+    minor: Some(12),
+    patch: Some(3),
+    suffix: None,
+};
 
-/// HTTP Client with launcher agent
-static HTTP_CLIENT: Lazy<Client> = Lazy::new(|| {
-    let client = reqwest::ClientBuilder::new()
-        .user_agent(APP_USER_AGENT)
-        .build()
-        .unwrap_or_else(|_| Client::new());
+#[derive(Clone, serde::Serialize)]
+struct Payload {
+    args: Vec<String>,
+    cwd: String,
+}
 
-    client
-});
+#[tauri::command]
+fn greet(name: &str) -> String {
+    println!("Hello, {}! You've been greeted from Rust!", name);
+    format!("Hello, {}! You've been greeted from Rust!", name)
+}
 
-pub fn main() -> Result<()> {
-    let log_folder = LAUNCHER_DIRECTORY.data_dir().join("logs");
+#[tauri::command]
+fn get_token(state: tauri::State<'_, AppState>) -> Result<Option<String>, String> {
+    let token = state.get_token();
+    Ok(token)
+}
 
-    let file_appender = tracing_appender::rolling::hourly(&log_folder, "dashoboard.log");
+#[tauri::command]
+fn get_server_state(state: tauri::State<'_, AppState>) -> Result<ServerStatus, String> {
+    let server_state = state.get_server_state();
+    Ok(server_state)
+}
 
-    let subscriber = tracing_subscriber::registry()
-        .with(
-            fmt::Layer::new()
-                .pretty()
-                .with_ansi(true)
-                .with_writer(io::stdout),
-        )
-        .with(
-            fmt::Layer::new()
-                .with_ansi(false)
-                .with_writer(file_appender),
-        );
-    tracing::subscriber::set_global_default(subscriber).expect("Unable to set a global subscriber");
+fn main() {
+    let data_dir = APP_DIRECTORY.data_dir();
+    let bin_dir = APP_DIRECTORY.data_local_dir();
+    let options = InstallOptions {
+        python_version: PYTHON_VERSION.clone(),
+        python_path: bin_dir.join("python"),
+        uv_path: bin_dir.join("uv"),
+        workdir: data_dir.to_path_buf(),
+    };
+    let server_options = ServerOption {
+        data_dir: options.workdir.clone(),
+        port: 26423,
+        address: "127.0.0.1".to_string(),
+    };
 
-    debug!("Creating data directories");
-    fs::create_dir_all(LAUNCHER_DIRECTORY.data_dir()).expect("Failed to create data directory");
-    fs::create_dir_all(LAUNCHER_DIRECTORY.config_dir()).expect("Failed to create config directory");
+    let python = Python::ensure(&options).unwrap();
+    let uv = Uv::ensure(&options, &python.python_bin).unwrap();
+    let server = Server::new(server_options, python, uv);
 
-    app::gui::gui_main();
+    server.start().unwrap();
 
-    Ok(())
+    let app_state = AppState::new(server);
+
+    tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
+            println!("{}, {argv:?}, {cwd}", app.package_info().name);
+
+            app.emit_all("single-instance", Payload { args: argv, cwd })
+                .unwrap();
+        }))
+        .plugin(tauri_plugin_window_state::Builder::default().build())
+        .manage(app_state.clone())
+        .setup(move |app| {
+            let window = app.get_window("main").unwrap();
+            app_state.set_window(Some(window.clone()));
+            set_shadow(&window, true).unwrap();
+            window
+                .emit("server-state", app_state.get_server_state())
+                .unwrap();
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![greet, get_token, get_server_state])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }
