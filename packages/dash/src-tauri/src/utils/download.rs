@@ -1,3 +1,4 @@
+// https://github.com/astral-sh/rye/blob/ab8d5b433d5c4342c2bb125583c6bff4d29f5fbc/rye/src/bootstrap.rs#L510-L586 - MIT License
 use std::io::Write;
 
 use anyhow::{bail, Context, Error};

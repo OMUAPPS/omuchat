@@ -1,3 +1,4 @@
+// https://github.com/astral-sh/rye/blob/main/rye/src/sync.rs - MIT licensed
 use std::{
     fs,
     path::{Path, PathBuf},
