@@ -39,16 +39,16 @@ export class ConnectPacket implements Model<ConnectPacketJson> {
 }
 
 export enum DisconnectType {
-    INVALID_TOKEN = "invalid_token",
-    INVALID_ORIGIN = "invalid_origin",
-    INVALID_VERSION = "invalid_version",
-    INVALID_PACKET_TYPE = "invalid_packet_type",
-    INVALID_PACKET_DATA = "invalid_packet_data",
-    INVALID_PACKET = "invalid_packet",
-    ANOTHER_CONNECTION = "another_connection",
-    PERMISSION_DENIED = "permission_denied",
-    SHUTDOWN = "shutdown",
-    CLOSE = "close",
+    INVALID_TOKEN = 'invalid_token',
+    INVALID_ORIGIN = 'invalid_origin',
+    INVALID_VERSION = 'invalid_version',
+    INVALID_PACKET_TYPE = 'invalid_packet_type',
+    INVALID_PACKET_DATA = 'invalid_packet_data',
+    INVALID_PACKET = 'invalid_packet',
+    ANOTHER_CONNECTION = 'another_connection',
+    PERMISSION_DENIED = 'permission_denied',
+    SHUTDOWN = 'shutdown',
+    CLOSE = 'close',
 }
 
 type DisconnectPacketJson = {
