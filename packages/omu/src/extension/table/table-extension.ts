@@ -202,9 +202,6 @@ class TableImpl<T> implements Table<T> {
             }
             const items = this.deserializeItems(packet.items);
             this.updateCache(items);
-            // this.listeners.forEach((listener) => {
-            //     listener.onAdd?.(items);
-            // });
             this.listeners.add.emit(items);
         });
         client.network.addPacketHandler(TABLE_ITEM_UPDATE_PACKET, (packet) => {
@@ -213,9 +210,6 @@ class TableImpl<T> implements Table<T> {
             }
             const items = this.deserializeItems(packet.items);
             this.updateCache(items);
-            // this.listeners.forEach((listener) => {
-            //     listener.onUpdate?.(items);
-            // });
             this.listeners.update.emit(items);
         });
         client.network.addPacketHandler(TABLE_ITEM_REMOVE_PACKET, (packet) => {
@@ -226,10 +220,6 @@ class TableImpl<T> implements Table<T> {
             items.forEach((_, key) => {
                 this.cache.delete(key);
             });
-            // this.listeners.forEach((listener) => {
-            //     listener.onRemove?.(items);
-            //     listener.onCacheUpdate?.(this.cache);
-            // });
             this.listeners.remove.emit(items);
             this.listeners.cacheUpdate.emit(this.cache);
         });
@@ -238,10 +228,6 @@ class TableImpl<T> implements Table<T> {
                 return;
             }
             this.cache = new Map();
-            // this.listeners.forEach((listener) => {
-            //     listener.onClear?.();
-            //     listener.onCacheUpdate?.(this.cache);
-            // });
             this.listeners.clear.emit();
             this.listeners.cacheUpdate.emit(this.cache);
         });
@@ -253,9 +239,6 @@ class TableImpl<T> implements Table<T> {
             const cache = new Map([...this.cache, ...items].slice(-this.cacheSize));
             this.cache = cache;
         }
-        // this.listeners.forEach((listener) => {
-        //     listener.onCacheUpdate?.(this.cache);
-        // });
         this.listeners.cacheUpdate.emit(this.cache);
     }
 
