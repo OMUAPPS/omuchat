@@ -20,7 +20,6 @@
             },
         };
         const props = screen.props;
-        console.log('props', props);
         current = {
             screen,
             handle,
