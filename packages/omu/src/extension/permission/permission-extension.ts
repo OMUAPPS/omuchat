@@ -67,7 +67,7 @@ export class PermissionExtension {
         this.requiredPermissions.add(permissionId);
     }
 
-    public async request(permissionIds: Identifier[]): Promise<void> {
+    public async request(...permissionIds: Identifier[]): Promise<void> {
         await this.client.endpoints.call(PERMISSION_REQUEST_ENDPOINT, permissionIds);
     }
 
