@@ -24,6 +24,10 @@ export interface ScreenComponent<T> {
 let id = 0;
 const stack = writable<Map<number, ScreenComponent<unknown>>>(new Map());
 const current = writable<ScreenComponent<unknown> | null>(null);
+stack.subscribe((stack) => {
+    const last = Array.from(stack.values()).pop() || null;
+    current.set(last);
+});
 
 function push<T>(component: ScreenComponentType<T>, props: T) {
     stack.update((stack) => {
@@ -33,8 +37,6 @@ function push<T>(component: ScreenComponentType<T>, props: T) {
             component: component as ScreenComponentType<unknown>,
             props
         });
-        const last = Array.from(stack.values()).pop() || null;
-        current.set(last);
         return stack;
     });
 
@@ -43,8 +45,6 @@ function push<T>(component: ScreenComponentType<T>, props: T) {
 function pop(id: number) {
     stack.update((stack) => {
         stack.delete(id);
-        const last = Array.from(stack.values()).pop() || null;
-        current.set(last);
         return stack;
     });
 }
