@@ -1,6 +1,7 @@
 import { App } from '../../app.js';
 import type { Client } from '../../client/index.js';
 import { Identifier, IdentifierSet } from '../../identifier.js';
+import { PacketType } from '../../network/packet/packet.js';
 import { Serializer } from '../../serializer.js';
 import { EndpointType } from '../endpoint/endpoint.js';
 import type { Extension } from '../extension.js';
@@ -23,9 +24,9 @@ const APP_TABLE_TYPE = TableType.model(SERVER_EXTENSION_TYPE, {
 const SHUTDOWN_ENDPOINT_TYPE = EndpointType.createJson<boolean, boolean>(SERVER_EXTENSION_TYPE, {
     name: 'shutdown',
 });
-const REQUIRE_APPS_ENDPOINT_TYPE = EndpointType.createJson<Identifier[], void>(SERVER_EXTENSION_TYPE, {
+const REQUIRE_APPS_PACKET_TYPE = PacketType.createJson<Identifier[]>(SERVER_EXTENSION_TYPE, {
     name: 'require_apps',
-    requestSerializer: Serializer.model(Identifier).toArray(),
+    serializer: Serializer.model(Identifier).toArray(),
 });
 const VERSION_REGISTRY_TYPE = RegistryType.createJson<string | null>(SERVER_EXTENSION_TYPE, {
     name: 'version',
@@ -37,12 +38,15 @@ export class ServerExtension implements Extension {
     private requiredApps = new IdentifierSet();
 
     constructor(private readonly client: Client) {
+        client.network.registerPacket(
+            REQUIRE_APPS_PACKET_TYPE,
+        );
         this.apps = client.tables.get(APP_TABLE_TYPE);
         client.network.listeners.connected.subscribe(() => this.onConnected());
     }
 
     private async onConnected(): Promise<void> {
-        await this.client.endpoints.call(REQUIRE_APPS_ENDPOINT_TYPE, Array.from(this.requiredApps.values()));
+        this.client.send(REQUIRE_APPS_PACKET_TYPE, Array.from(this.requiredApps.values()));
     }
 
     public async shutdown(restart?: boolean): Promise<boolean> {
