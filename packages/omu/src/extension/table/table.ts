@@ -10,6 +10,14 @@ export type TableConfig = {
     cache_size: number;
 };
 
+export type TablePermissions = {
+    all?: Identifier;
+    read?: Identifier;
+    write?: Identifier;
+    remove?: Identifier;
+    proxy?: Identifier;
+};
+
 export interface Table<T> {
     readonly cache: ReadonlyMap<string, T>;
     readonly listeners: TableListeners<T>;
@@ -36,7 +44,7 @@ export interface Table<T> {
     proxy(proxy: (item: T) => T | undefined): () => void;
     setCacheSize(size: number): void;
     setConfig(config: TableConfig): void;
-    setPermission(all: Identifier, { read, write }: { read?: Identifier; write?: Identifier }): void;
+    setPermissions(permissions: TablePermissions): void;
 
     listen(listener?: (items: Map<string, T>) => void): () => void;
 }

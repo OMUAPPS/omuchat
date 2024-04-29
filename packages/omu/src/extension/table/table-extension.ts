@@ -10,13 +10,13 @@ import type { Extension } from '../extension.js';
 import { ExtensionType } from '../extension.js';
 
 import { SetConfigPacket, SetPermissionPacket, TableFetchPacket, TableItemsPacket, TableKeysPacket, TablePacket, TableProxyPacket } from './packets.js';
-import { TableListeners, TableType, type Table, type TableConfig } from './table.js';
+import type { Table, TableConfig, TablePermissions } from './table.js';
+import { TableListeners, TableType } from './table.js';
 
 export const TABLE_EXTENSION_TYPE: ExtensionType<TableExtension> = new ExtensionType(
     'table',
     (client) => new TableExtension(client),
 );
-
 const TABLE_SET_PERMISSION_PACKET = PacketType.createSerialized<SetPermissionPacket>(TABLE_EXTENSION_TYPE, {
     name: 'set_permission',
     serializer: SetPermissionPacket,
@@ -151,11 +151,7 @@ class TableImpl<T> implements Table<T> {
     private listening: boolean;
     private cacheSize?: number;
     private config?: TableConfig;
-    private permission?: {
-        all?: Identifier;
-        read?: Identifier;
-        write?: Identifier;
-    };
+    private permissions?: TablePermissions;
 
     constructor(
         private readonly client: Client,
@@ -459,7 +455,7 @@ class TableImpl<T> implements Table<T> {
         this.config = config;
     }
 
-    public setPermission(all: Identifier, { read, write }: { read?: Identifier | undefined; write?: Identifier | undefined; }): void {
-        this.permission = { all, read, write };
+    public setPermissions(permissions: TablePermissions): void {
+        this.permissions = permissions;
     }
 }

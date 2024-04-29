@@ -46,6 +46,7 @@ export class Chat {
 
     constructor(private readonly client: Client) {
         client.server.require(IDENTIFIER);
+        client.permissions.require(CHAT_PERMISSION);
         this.messages = client.tables.get(MESSAGE_TABLE_TYPE);
         this.authors = client.tables.get(AUTHOR_TABLE_TYPE);
         this.channels = client.tables.get(CHANNEL_TABLE_TYPE);

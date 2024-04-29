@@ -184,6 +184,8 @@ export class SetPermissionPacket {
         public readonly all: Identifier | null,
         public readonly read: Identifier | null,
         public readonly write: Identifier | null,
+        public readonly remove: Identifier | null,
+        public readonly proxy: Identifier | null,
     ) { }
 
     public static serialize(packet: SetPermissionPacket): Uint8Array {
@@ -199,16 +201,18 @@ export class SetPermissionPacket {
         if (packet.write !== null) {
             flags |= 0b100;
         }
+        if (packet.remove !== null) {
+            flags |= 0b1000;
+        }
+        if (packet.proxy !== null) {
+            flags |= 0b10000;
+        }
         writer.writeByte(flags);
-        if (packet.all !== null) {
-            writer.writeString(packet.all.key());
-        }
-        if (packet.read !== null) {
-            writer.writeString(packet.read.key());
-        }
-        if (packet.write !== null) {
-            writer.writeString(packet.write.key());
-        }
+        packet.all && writer.writeString(packet.all.key());
+        packet.read && writer.writeString(packet.read.key());
+        packet.write && writer.writeString(packet.write.key());
+        packet.remove && writer.writeString(packet.remove.key());
+        packet.proxy && writer.writeString(packet.proxy.key());
         return writer.finish();
     }
 
@@ -219,6 +223,15 @@ export class SetPermissionPacket {
         const all = (flags & 0b1) ? Identifier.fromKey(reader.readString()) : null;
         const read = (flags & 0b10) ? Identifier.fromKey(reader.readString()) : null;
         const write = (flags & 0b100) ? Identifier.fromKey(reader.readString()) : null;
-        return new SetPermissionPacket(id, all, read, write);
+        const remove = (flags & 0b1000) ? Identifier.fromKey(reader.readString()) : null;
+        const proxy = (flags & 0b10000) ? Identifier.fromKey(reader.readString()) : null;
+        return new SetPermissionPacket(
+            id,
+            all,
+            read,
+            write,
+            remove,
+            proxy,
+        );
     }
 }
