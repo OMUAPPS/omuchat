@@ -231,7 +231,7 @@ class TableImpl<T> implements Table<T> {
             this.listeners.clear.emit();
             this.listeners.cacheUpdate.emit(this.cache);
         });
-        client.network.listeners.connected.subscribe(() => this.onConnect());
+        client.listeners.ready.subscribe(() => this.onConnect());
     }
     private updateCache(items: Map<string, T>): void {
         if (!this.cacheSize) {
@@ -270,6 +270,9 @@ class TableImpl<T> implements Table<T> {
         }
         if (this.proxies.length > 0) {
             this.client.send(TABLE_PROXY_LISTEN_PACKET, this.id);
+        }
+        if (this.listening) {
+            this.client.send(TABLE_LISTEN_PACKET, this.id);
         }
     }
 
