@@ -231,7 +231,7 @@ class TableImpl<T> implements Table<T> {
             this.listeners.clear.emit();
             this.listeners.cacheUpdate.emit(this.cache);
         });
-        client.listeners.ready.subscribe(() => this.onConnect());
+        client.listeners.ready.subscribe(() => this.onReady());
     }
     private updateCache(items: Map<string, T>): void {
         if (!this.cacheSize) {
@@ -261,7 +261,7 @@ class TableImpl<T> implements Table<T> {
         };
     }
 
-    private onConnect(): void {
+    private onReady(): void {
         if (this.config) {
             this.client.send(TABLE_SET_CONFIG_PACKET, {
                 id: this.id,
