@@ -14,11 +14,9 @@
     export let filter: (key: string, app: App) => boolean = () => true;
 
     onMount(() => {
-        dashboard.apps.addListener({
-            onAdd: () => {
-                tauriWindow.appWindow.setFocus();
-                $currentPage = 'main';
-            },
+        dashboard.apps.listeners.add.subscribe(() => {
+            tauriWindow.appWindow.setFocus();
+            $currentPage = 'main';
         });
     });
 </script>

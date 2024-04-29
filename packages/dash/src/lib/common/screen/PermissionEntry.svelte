@@ -7,6 +7,6 @@
 <div class="permission-entry">
     <span class="text">
         <i class="ti ti-eye" />
-        {permission.identifier.key()}
+        {permission.id.key()}
     </span>
 </div>
