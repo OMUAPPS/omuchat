@@ -22,10 +22,6 @@ export class I18nExtension implements Extension {
         this.localesRegistry.listen((locale) => {
             this.locales = locale;
         });
-        client.network.listeners.connected.subscribe(async () => {
-            const locale = await this.localesRegistry.get();
-            this.locales = locale;
-        });
     }
 
     public translate(localizedText: LocalizedText): string {

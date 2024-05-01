@@ -17,6 +17,8 @@ export const TABLE_EXTENSION_TYPE: ExtensionType<TableExtension> = new Extension
     'table',
     (client) => new TableExtension(client),
 );
+const TABLE_PERMISSION_ID = TABLE_EXTENSION_TYPE.join('permission');
+
 const TABLE_SET_PERMISSION_PACKET = PacketType.createSerialized<SetPermissionPacket>(TABLE_EXTENSION_TYPE, {
     name: 'set_permission',
     serializer: SetPermissionPacket,
@@ -56,6 +58,7 @@ const TABLE_ITEM_GET_ENDPOINT = EndpointType.createSerialized<
     name: 'item_get',
     requestSerializer: TableKeysPacket,
     responseSerializer: TableItemsPacket,
+    permissionId: TABLE_PERMISSION_ID,
 });
 const TABLE_FETCH_ENDPOINT = EndpointType.createSerialized<
     TableFetchPacket,
@@ -64,6 +67,7 @@ const TABLE_FETCH_ENDPOINT = EndpointType.createSerialized<
     name: 'fetch',
     requestSerializer: TableFetchPacket,
     responseSerializer: TableItemsPacket,
+    permissionId: TABLE_PERMISSION_ID,
 });
 const TABLE_FETCH_ALL_ENDPOINT = EndpointType.createSerialized<
     TablePacket,
@@ -72,11 +76,13 @@ const TABLE_FETCH_ALL_ENDPOINT = EndpointType.createSerialized<
     name: 'fetch_all',
     requestSerializer: TablePacket,
     responseSerializer: TableItemsPacket,
+    permissionId: TABLE_PERMISSION_ID,
 });
 const TABLE_SIZE_ENDPOINT = EndpointType.createSerialized<TablePacket, number>(TABLE_EXTENSION_TYPE, {
     name: 'size',
     requestSerializer: TablePacket,
     responseSerializer: Serializer.json(),
+    permissionId: TABLE_PERMISSION_ID,
 });
 const TABLE_ITEM_CLEAR_PACKET = PacketType.createSerialized<TablePacket>(TABLE_EXTENSION_TYPE, {
     name: 'clear',
@@ -103,6 +109,7 @@ export class TableExtension implements Extension {
     public create<T>(
         tableType: TableType<T>,
     ): Table<T> {
+        this.client.permissions.require(TABLE_PERMISSION_ID);
         if (this.has(tableType.identifier)) {
             throw new Error('Table already exists');
         }

@@ -114,11 +114,12 @@ export class Network {
             }
         }
         this.connected = true;
+        const token = await this.tokenProvider.get(this.address, this.client.app);
         this.send({
             type: PACKET_TYPES.CONNECT,
             data: new ConnectPacket({
                 app: this.client.app,
-                token: await this.tokenProvider.get(this.address, this.client.app),
+                token,
             }),
         });
         const listenPromise = this.listen();

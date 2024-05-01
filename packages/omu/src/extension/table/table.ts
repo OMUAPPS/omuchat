@@ -10,14 +10,6 @@ export type TableConfig = {
     cache_size: number;
 };
 
-export type TablePermissions = {
-    all?: Identifier;
-    read?: Identifier;
-    write?: Identifier;
-    remove?: Identifier;
-    proxy?: Identifier;
-};
-
 export interface Table<T> {
     readonly cache: ReadonlyMap<string, T>;
     readonly listeners: TableListeners<T>;
@@ -57,27 +49,39 @@ export class TableListeners<T> {
     public readonly cacheUpdate = new EventEmitter<(items: Map<string, T>) => void>();
 }
 
+export type TablePermissions = {
+    all?: Identifier;
+    read?: Identifier;
+    write?: Identifier;
+    remove?: Identifier;
+    proxy?: Identifier;
+};
+
 export class TableType<T> {
     constructor(
         public identifier: Identifier,
         public serializer: Serializable<T, Uint8Array>,
         public keyFunction: (item: T) => string,
+        public permissions?: TablePermissions,
     ) { }
 
-    static model<T extends Keyable & Model<D>, D = unknown>(
+    public static model<T extends Keyable & Model<D>, D = unknown>(
         identifier: Identifier | ExtensionType,
         {
             name,
             model,
+            permissions,
         }: {
             name: string;
             model: { fromJson(data: D): T };
+            permissions?: TablePermissions;
         },
     ): TableType<T> {
         return new TableType<T>(
             identifier.join(name),
             Serializer.model(model).pipe(Serializer.json()),
             (item) => item.key(),
+            permissions,
         );
     }
 }
