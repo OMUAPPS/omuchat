@@ -1,3 +1,4 @@
+import { EventEmitter } from '../../event-emitter.js';
 import type { Identifier } from '../../identifier.js';
 import type { Keyable } from '../../interface.js';
 import type { Model } from '../../model.js';
@@ -11,6 +12,7 @@ export type TableConfig = {
 
 export interface Table<T> {
     readonly cache: ReadonlyMap<string, T>;
+    readonly listeners: TableListeners<T>;
     get(key: string): Promise<T | undefined>;
     getMany(...keys: string[]): Promise<Map<string, T>>;
     add(...item: T[]): Promise<void>;
@@ -34,42 +36,52 @@ export interface Table<T> {
     proxy(proxy: (item: T) => T | undefined): () => void;
     setCacheSize(size: number): void;
     setConfig(config: TableConfig): void;
+    setPermissions(permissions: TablePermissions): void;
 
-    addListener(listener: TableListener<T>): void;
-    removeListener(listener: TableListener<T>): void;
     listen(listener?: (items: Map<string, T>) => void): () => void;
-    unlisten(listener?: (items: Map<string, T>) => void): void;
 }
 
-export interface TableListener<T> {
-    onAdd?(items: Map<string, T>): void;
-    onUpdate?(items: Map<string, T>): void;
-    onRemove?(items: Map<string, T>): void;
-    onClear?(): void;
-    onCacheUpdate?(cache: Map<string, T>): void;
+export class TableListeners<T> {
+    public readonly add = new EventEmitter<(items: Map<string, T>) => void>();
+    public readonly update = new EventEmitter<(items: Map<string, T>) => void>();
+    public readonly remove = new EventEmitter<(items: Map<string, T>) => void>();
+    public readonly clear = new EventEmitter<() => void>();
+    public readonly cacheUpdate = new EventEmitter<(items: Map<string, T>) => void>();
 }
+
+export type TablePermissions = {
+    all?: Identifier;
+    read?: Identifier;
+    write?: Identifier;
+    remove?: Identifier;
+    proxy?: Identifier;
+};
 
 export class TableType<T> {
     constructor(
         public identifier: Identifier,
         public serializer: Serializable<T, Uint8Array>,
-        public keyFunc: (item: T) => string,
+        public keyFunction: (item: T) => string,
+        public permissions?: TablePermissions,
     ) { }
 
-    static model<T extends Keyable & Model<D>, D = unknown>(
+    public static model<T extends Keyable & Model<D>, D = unknown>(
         identifier: Identifier | ExtensionType,
         {
             name,
             model,
+            permissions,
         }: {
             name: string;
             model: { fromJson(data: D): T };
+            permissions?: TablePermissions;
         },
     ): TableType<T> {
         return new TableType<T>(
             identifier.join(name),
             Serializer.model(model).pipe(Serializer.json()),
             (item) => item.key(),
+            permissions,
         );
     }
 }

@@ -6,6 +6,7 @@ export class EndpointType<Req = unknown, Res = unknown> {
         public readonly identifier: Identifier,
         public readonly requestSerializer: Serializable<Req, Uint8Array>,
         public readonly responseSerializer: Serializable<Res, Uint8Array>,
+        public readonly permissionId?: Identifier,
     ) { }
 
     static createJson<Req, Res>(
@@ -14,10 +15,12 @@ export class EndpointType<Req = unknown, Res = unknown> {
             name,
             requestSerializer,
             responseSerializer,
+            permissionId,
         }: {
             name: string,
             requestSerializer?: Serializable<Req, any>,
             responseSerializer?: Serializable<Res, any>,
+            permissionId?: Identifier,
         },
     ): EndpointType<Req, Res> {
         return new EndpointType<Req, Res>(
@@ -26,6 +29,7 @@ export class EndpointType<Req = unknown, Res = unknown> {
                 .pipe(Serializer.json()),
             Serializer.of<Res, any>(responseSerializer ?? Serializer.noop())
                 .pipe(Serializer.json()),
+            permissionId,
         );
     }
 
@@ -35,16 +39,19 @@ export class EndpointType<Req = unknown, Res = unknown> {
             name,
             requestSerializer,
             responseSerializer,
+            permissionId,
         }: {
             name: string,
             requestSerializer: Serializable<Req, Uint8Array>,
             responseSerializer: Serializable<Res, Uint8Array>,
+            permissionId?: Identifier,
         },
     ): EndpointType<Req, Res> {
         return new EndpointType<Req, Res>(
             identifier.join(name),
             requestSerializer,
             responseSerializer,
+            permissionId,
         );
     }
 }

@@ -17,10 +17,11 @@ export const DASHBOARD_EXTENSION_TYPE = new ExtensionType(
 type DashboardSetResponse = {
     success: boolean;
 }
-
+const DASHBOARD_SET_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('set');
 const DASHBOARD_SET_ENDPOINT = EndpointType.createJson<Identifier, DashboardSetResponse>(DASHBOARD_EXTENSION_TYPE, {
     name: 'set',
     requestSerializer: Serializer.model(Identifier),
+    permissionId: DASHBOARD_SET_PERMISSION_ID,
 });
 const DASHBOARD_PERMISSION_REQUEST_PACKET = PacketType.createJson<PermissionRequest>(DASHBOARD_EXTENSION_TYPE, {
     name: 'permission_request',
@@ -32,9 +33,11 @@ const DASHBOARD_PERMISSION_ACCEPT_PACKET = PacketType.createJson<number>(DASHBOA
 const DASHBOARD_PERMISSION_DENY_PACKET = PacketType.createJson<number>(DASHBOARD_EXTENSION_TYPE, {
     name: 'permission_deny',
 });
+const DASHBOARD_OPEN_APP_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('open_app');
 const DASHBOARD_OPEN_APP_ENDPOINT = EndpointType.createJson<App, DashboardOpenAppResponse>(DASHBOARD_EXTENSION_TYPE, {
     name: 'open_app',
     requestSerializer: Serializer.model(App),
+    permissionId: DASHBOARD_OPEN_APP_PERMISSION_ID,
 });
 const DASHBOARD_OPEN_APP_PACKET = PacketType.createJson<App>(DASHBOARD_EXTENSION_TYPE, {
     name: 'open_app',
@@ -53,10 +56,10 @@ export class DashboardExtension {
         );
         client.network.addPacketHandler(DASHBOARD_PERMISSION_REQUEST_PACKET, (request) => this.handlePermissionRequest(request));
         client.network.addPacketHandler(DASHBOARD_OPEN_APP_PACKET, (app) => this.handleOpenApp(app));
-        client.network.listeners.connected.subscribe(() => this.handleConnected());
+        client.listeners.ready.subscribe(() => this.onReady());
     }
 
-    private async handleConnected(): Promise<void> {
+    private async onReady(): Promise<void> {
         if (this.dashboard === null) {
             return;
         }
@@ -91,6 +94,7 @@ export class DashboardExtension {
     }
 
     public set(dashboard: DashboardHandler): void {
+        this.client.permissions.require(DASHBOARD_SET_PERMISSION_ID);
         if (this.dashboard !== null) {
             throw new Error('Dashboard already set');
         }

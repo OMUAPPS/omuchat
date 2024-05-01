@@ -1,11 +1,11 @@
 import type { Client } from '../../client/index.js';
-import { Identifier, IdentifierMap } from '../../identifier.js';
-import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
+import type { Identifier } from '../../identifier.js';
+import { IdentifierMap } from '../../identifier.js';
 import { PacketType } from '../../network/packet/index.js';
-import { Serializer } from '../../serializer.js';
 import { ExtensionType } from '../extension.js';
 
 import { EndpointType } from './endpoint.js';
+import { EndpointDataPacket, EndpointErrorPacket, EndpointRegisterPacket } from './packets.js';
 
 export const ENDPOINT_EXTENSION_TYPE = new ExtensionType(
     'endpoint',
@@ -17,8 +17,13 @@ type CallPromise = {
     reject: (error: Error) => void;
 };
 
+type EndpointHandler = {
+    type: EndpointType;
+    handler: (arg: any) => Promise<any>;
+};
+
 export class EndpointExtension {
-    private readonly endpointMap = new IdentifierMap<[EndpointType, (arg: any) => Promise<any>]>();
+    private readonly endpointMap = new IdentifierMap<EndpointHandler>();
     private readonly promiseMap: Map<number, CallPromise> = new Map();
     private callId: number;
 
@@ -31,29 +36,34 @@ export class EndpointExtension {
             ENDPOINT_ERROR_PACKET,
         );
         client.network.addPacketHandler(ENDPOINT_RECEIVE_PACKET, (event) => {
-            const promise = this.promiseMap.get(event.id);
+            const promise = this.promiseMap.get(event.key);
             if (!promise) return;
-            this.promiseMap.delete(event.id);
+            this.promiseMap.delete(event.key);
             promise.resolve(event.data);
         });
         client.network.addPacketHandler(ENDPOINT_ERROR_PACKET, (event) => {
-            const promise = this.promiseMap.get(event.id);
+            const promise = this.promiseMap.get(event.key);
             if (!promise) return;
-            this.promiseMap.delete(event.id);
+            this.promiseMap.delete(event.key);
             promise.reject(new Error(event.error));
         });
         client.network.listeners.connected.subscribe(() => this.handleConnected());
     }
 
     public handleConnected(): void {
-        this.client.send(ENDPOINT_REGISTER_PACKET, Array.from(this.endpointMap.keys()));
+        const endpoints = new IdentifierMap<Identifier | undefined>();
+        for (const [key, endpoint] of this.endpointMap) {
+            endpoints.set(key, endpoint.type.permissionId);
+        }
+        const packet = new EndpointRegisterPacket(endpoints);
+        this.client.send(ENDPOINT_REGISTER_PACKET, packet);
     }
 
     public register<Req, Res>(type: EndpointType<Req, Res>, handler: (data: Req) => Promise<Res>): void {
         if (this.endpointMap.has(type.identifier)) {
             throw new Error(`Endpoint for key ${type.identifier} already registered`);
         }
-        this.endpointMap.set(type.identifier, [type, handler]);
+        this.endpointMap.set(type.identifier, { type, handler });
     }
 
     public listen<Req, Res>(handler: (data: Req) => Promise<Res>, name?: string): void {
@@ -64,13 +74,13 @@ export class EndpointExtension {
     }
 
     public async call<Req, Res>(endpoint: EndpointType<Req, Res>, data: Req): Promise<Res> {
-        const id = this.callId++;
+        const key = this.callId++;
         const promise = new Promise<Uint8Array>((resolve, reject) => {
-            this.promiseMap.set(id, { resolve, reject });
+            this.promiseMap.set(key, { resolve, reject });
         });
         this.client.send(ENDPOINT_CALL_PACKET, {
-            type: endpoint.identifier.key(),
-            id,
+            id: endpoint.identifier,
+            key,
             data: endpoint.requestSerializer.serialize(data),
         });
         const response = await promise;
@@ -78,46 +88,19 @@ export class EndpointExtension {
     }
 }
 
-type EndpointPacket = {
-    type: string;
-    id: number;
-};
-type EndpointDataPacket = EndpointPacket & {
-    data: Uint8Array;
-};
-type EndpointErrorPacket = EndpointPacket & {
-    error: string;
-};
-const ENDPOINT_DATA_SERIALIZER = new Serializer<EndpointDataPacket, Uint8Array>(
-    (data) => {
-        const writer = new ByteWriter();
-        writer.writeString(data.type);
-        writer.writeInt(data.id);
-        writer.writeByteArray(data.data);
-        return writer.finish();
-    },
-    (item) => {
-        const reader = new ByteReader(item);
-        const type = reader.readString();
-        const id = reader.readInt();
-        const data = reader.readByteArray();
-        reader.finish();
-        return { type, id, data };
-    },
-);
-
-const ENDPOINT_REGISTER_PACKET = PacketType.createJson<Identifier[]>(ENDPOINT_EXTENSION_TYPE, {
+const ENDPOINT_REGISTER_PACKET = PacketType.createSerialized<EndpointRegisterPacket>(ENDPOINT_EXTENSION_TYPE, {
     name: 'register',
-    serializer: Serializer.model(Identifier).toArray(),
+    serializer: EndpointRegisterPacket,
 });
 const ENDPOINT_CALL_PACKET = PacketType.createSerialized<EndpointDataPacket>(ENDPOINT_EXTENSION_TYPE, {
     name: 'call',
-    serializer: ENDPOINT_DATA_SERIALIZER,
+    serializer: EndpointDataPacket,
 });
 const ENDPOINT_RECEIVE_PACKET = PacketType.createSerialized<EndpointDataPacket>(ENDPOINT_EXTENSION_TYPE, {
     name: 'receive',
-    serializer: ENDPOINT_DATA_SERIALIZER,
+    serializer: EndpointDataPacket,
 });
-const ENDPOINT_ERROR_PACKET = PacketType.createJson<EndpointErrorPacket>(ENDPOINT_EXTENSION_TYPE, {
+const ENDPOINT_ERROR_PACKET = PacketType.createSerialized<EndpointErrorPacket>(ENDPOINT_EXTENSION_TYPE, {
     name: 'error',
+    serializer: EndpointErrorPacket,
 });

@@ -1,8 +1,12 @@
 import { App } from '../../app.js';
 import type { Client } from '../../client/index.js';
+import { Identifier, IdentifierSet } from '../../identifier.js';
+import { PacketType } from '../../network/packet/packet.js';
+import { Serializer } from '../../serializer.js';
 import { EndpointType } from '../endpoint/endpoint.js';
 import type { Extension } from '../extension.js';
 import { ExtensionType } from '../extension.js';
+import { RegistryType } from '../registry/registry.js';
 import type { Table } from '../table/index.js';
 import { TABLE_EXTENSION_TYPE } from '../table/table-extension.js';
 import { TableType } from '../table/table.js';
@@ -13,23 +17,45 @@ export const SERVER_EXTENSION_TYPE: ExtensionType<ServerExtension> = new Extensi
     () => [TABLE_EXTENSION_TYPE],
 );
 
-const APP_TABLE = TableType.model(SERVER_EXTENSION_TYPE, {
+const APP_TABLE_TYPE = TableType.model(SERVER_EXTENSION_TYPE, {
     name: 'apps',
     model: App,
 });
-const SHUTDOWN_ENDPOINT = EndpointType.createJson<boolean, boolean>(SERVER_EXTENSION_TYPE, {
+const SHUTDOWN_ENDPOINT_TYPE = EndpointType.createJson<boolean, boolean>(SERVER_EXTENSION_TYPE, {
     name: 'shutdown',
+});
+const REQUIRE_APPS_PACKET_TYPE = PacketType.createJson<Identifier[]>(SERVER_EXTENSION_TYPE, {
+    name: 'require_apps',
+    serializer: Serializer.model(Identifier).toArray(),
+});
+const VERSION_REGISTRY_TYPE = RegistryType.createJson<string | null>(SERVER_EXTENSION_TYPE, {
+    name: 'version',
+    defaultValue: null,
 });
 
 export class ServerExtension implements Extension {
-    apps: Table<App>;
+    public readonly apps: Table<App>;
+    private requiredApps = new IdentifierSet();
 
     constructor(private readonly client: Client) {
-        const listExtension = client.extensions.get(TABLE_EXTENSION_TYPE);
-        this.apps = listExtension.get(APP_TABLE);
+        client.network.registerPacket(
+            REQUIRE_APPS_PACKET_TYPE,
+        );
+        this.apps = client.tables.get(APP_TABLE_TYPE);
+        client.network.listeners.connected.subscribe(() => this.onConnected());
     }
 
-    shutdown(restart?: boolean): Promise<boolean> {
-        return this.client.endpoints.call(SHUTDOWN_ENDPOINT, restart ?? false);
+    private async onConnected(): Promise<void> {
+        this.client.send(REQUIRE_APPS_PACKET_TYPE, Array.from(this.requiredApps.values()));
+    }
+
+    public async shutdown(restart?: boolean): Promise<boolean> {
+        return await this.client.endpoints.call(SHUTDOWN_ENDPOINT_TYPE, restart ?? false);
+    }
+
+    public require(...appIds: Identifier[]): void {
+        for (const appId of appIds) {
+            this.requiredApps.add(appId);
+        }
     }
 }

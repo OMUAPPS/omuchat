@@ -1,8 +1,6 @@
 import type { Client } from '../../index.js';
 import { PacketType } from '../../network/packet/packet.js';
-import { EndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType } from '../extension.js';
-import { PermissionType } from '../permission/permission.js';
 
 export const PLUGIN_EXTENSION_TYPE = new ExtensionType(
     'plugin',
@@ -21,14 +19,6 @@ export class PluginExtension {
 
     private async handleConnected(): Promise<void> {
         this.client.send(PLUGIN_REQUIRE_PACKET, Object.fromEntries(this.plugins));
-        await this.waitForPlugins();
-    }
-
-    public async waitForPlugins(): Promise<void> {
-        const response = await this.client.endpoints.call(PLUGIN_WAIT_ENDPOINT, Array.from(this.plugins.keys()));
-        if (!response.success) {
-            throw new Error('Failed to wait for plugins');
-        }
     }
 
     public require(plugins: Record<string, string | null>): void {
@@ -39,15 +29,7 @@ export class PluginExtension {
     }
 }
 
-const PLUGIN_PERMISSION = PermissionType.create(PLUGIN_EXTENSION_TYPE, {
-    name: 'request',
-});
+const PLUGIN_PERMISSION = PLUGIN_EXTENSION_TYPE.join('request');
 const PLUGIN_REQUIRE_PACKET = PacketType.createJson<Record<string, string | null>>(PLUGIN_EXTENSION_TYPE, {
     name: 'require',
-});
-type WaitResponse = {
-    success: boolean;
-}
-const PLUGIN_WAIT_ENDPOINT = EndpointType.createJson<string[], WaitResponse>(PLUGIN_EXTENSION_TYPE, {
-    name: 'wait',
 });

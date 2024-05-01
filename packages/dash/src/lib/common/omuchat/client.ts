@@ -3,7 +3,7 @@ import { Dashboard } from './dashboard.js';
 
 import type { Address } from '@omuchatjs/omu/network/address.js';
 
-import { App, Client } from '@omuchatjs/chat';
+import { App, Client, permissions } from '@omuchatjs/chat';
 
 
 import { invoke, IS_TAURI } from '$lib/utils/tauri.js';
@@ -53,6 +53,9 @@ client.plugins.require({
     omuplugin_chat: null,
     omuchatprovider: null,
 });
+client.permissions.require(
+    permissions.CHAT_CHANNEL_TREE_PERMISSION_ID,
+);
 
 export {
     chat, client, dashboard

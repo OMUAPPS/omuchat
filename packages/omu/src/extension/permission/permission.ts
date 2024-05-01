@@ -1,38 +1,56 @@
 import { Identifier } from '../../identifier.js';
+import type { LocalizedText } from '../../localization/localization.js';
 import type { Model } from '../../model.js';
 
+type PermissionLevel = 'low' | 'medium' | 'high';
+
+export type PermissionMetadata = {
+    name: LocalizedText,
+    note: LocalizedText,
+    level: PermissionLevel,
+}
+
 export type PermissionTypeJson = {
-    identifier: string;
+    id: string;
+    metadata: PermissionMetadata;
 }
 
 export class PermissionType implements Model<PermissionTypeJson> {
-    public readonly identifier: Identifier;
+    public readonly id: Identifier;
+    public readonly metadata: PermissionMetadata;
 
     constructor(options: {
-        identifier: Identifier,
+        id: Identifier,
+        metadata: PermissionMetadata,
     }) {
-        this.identifier = options.identifier;
+        this.id = options.id;
+        this.metadata = options.metadata;
     }
 
     static create(identifier: Identifier, {
         name,
+        metadata,
     }: {
         name: string,
+        metadata: PermissionMetadata,
     }): PermissionType {
         return new PermissionType({
-            identifier: identifier.join(name),
+            id: identifier.join(name),
+            metadata: metadata,
         });
     }
 
     public toJson(): PermissionTypeJson {
         return {
-            identifier: this.identifier.key(),
+            id: this.id.key(),
+            metadata: this.metadata,
         };
     }
 
     static fromJson(json: PermissionTypeJson): PermissionType {
         return new PermissionType({
-            identifier: Identifier.fromKey(json.identifier),
+            id: Identifier.fromKey(json.id),
+            metadata: json.metadata,
         });
     }
 }

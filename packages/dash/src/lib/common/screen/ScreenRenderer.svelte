@@ -12,19 +12,24 @@
             current = null;
             return;
         }
+        const id = screen.id;
+        const handle = {
+            id: id,
+            pop() {
+                screenContext.pop(id);
+            },
+        };
+        const props = screen.props;
         current = {
             screen,
-            handle: {
-                id: screen.id,
-                pop() {
-                    screenContext.pop(screen.id);
-                },
-            },
-            props: screen.props,
+            handle,
+            props,
         };
     });
 </script>
 
 {#if current}
-    <svelte:component this={current.screen.component} screen={current} />
+    {#key current.handle.id}
+        <svelte:component this={current.screen.component} screen={current} />
+    {/key}
 {/if}

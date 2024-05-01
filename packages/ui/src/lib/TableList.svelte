@@ -75,49 +75,53 @@
 		}
 	}
 
+	function onRemove(items: Map<string, T>) {
+		const keys = items.keys();
+		let changed = false;
+		for (const key of keys) {
+			if (entries.delete(key)) {
+				changed = true;
+			}
+		}
+		if (changed) {
+			updated = true;
+		}
+	}
+
+	function onUpdate(items: Map<string, T>) {
+		let changed = false;
+		for (const [key, value] of items.entries()) {
+			if (filter && !filter(key, value)) {
+				if (entries.delete(key)) {
+					changed = true;
+				}
+				continue;
+			}
+			entries.set(key, value);
+			changed = true;
+		}
+		if (changed) {
+			updated = true;
+		}
+	}
+	function onAdd(items: Map<string, T>) {
+		addedItems = [...items.keys()];
+		if (animationTimeout) {
+			window.clearTimeout(animationTimeout);
+		}
+		animationTimeout = window.setTimeout(() => {
+			addedItems = [];
+		}, 200);
+	}
+
 	onMount(() => {
 		table.listen((items) => {
 			updateCache(items);
 		});
-		table.addListener({
-			onRemove(items) {
-				const keys = items.keys();
-				let changed = false;
-				for (const key of keys) {
-					if (entries.delete(key)) {
-						changed = true;
-					}
-				}
-				if (changed) {
-					updated = true;
-				}
-			},
-			onUpdate(items) {
-				let changed = false;
-				for (const [key, value] of items.entries()) {
-					if (filter && !filter(key, value)) {
-						if (entries.delete(key)) {
-							changed = true;
-						}
-						continue;
-					}
-					entries.set(key, value);
-					changed = true;
-				}
-				if (changed) {
-					updated = true;
-				}
-			},
-			onAdd(items) {
-				addedItems = [...items.keys()];
-				if (animationTimeout) {
-					window.clearTimeout(animationTimeout);
-				}
-				animationTimeout = window.setTimeout(() => {
-					addedItems = [];
-				}, 200);
-			}
-		});
+		table.listeners.remove.subscribe(onRemove);
+		table.listeners.update.subscribe(onUpdate);
+		table.listeners.add.subscribe(onAdd);
+
 		viewport.addEventListener('scroll', handleScroll);
 
 		return () => {

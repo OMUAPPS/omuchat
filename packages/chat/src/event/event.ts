@@ -18,12 +18,10 @@ function initTableEvent<T extends Keyable>(consumer: (client: Client) => Table<T
     return (client: Client, invoke: (...data: T[]) => void): void => {
         const table = consumer(client);
         table.listen();
-        table.addListener({
-            onAdd: (items) => {
-                for (const item of items.values()) {
-                    invoke(item);
-                }
-            },
+        table.listeners.add.subscribe((items) => {
+            for (const item of items.values()) {
+                invoke(item);
+            }
         });
     };
 }

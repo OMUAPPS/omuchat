@@ -1,5 +1,6 @@
 import type { TokenProvider } from '../client/token.js';
-import { AnotherConnection, InvalidOrigin, InvalidPacket, InvalidToken, InvalidVersion, OmuError, PermissionDenied } from '../errors.js';
+import type { OmuError } from '../errors.js';
+import { AnotherConnection, InvalidOrigin, InvalidPacket, InvalidToken, InvalidVersion, PermissionDenied } from '../errors.js';
 import { EventEmitter } from '../event-emitter.js';
 import { IdentifierMap } from '../identifier.js';
 import type { Client } from '../index.js';
@@ -67,6 +68,9 @@ export class Network {
                 throw new error(reason.message);
             }
         });
+        this.addPacketHandler(PACKET_TYPES.READY, () => {
+            this.client.listeners.ready.emit();
+        });
     }
 
     public setConnection(connection: Connection): void {
@@ -110,17 +114,22 @@ export class Network {
             }
         }
         this.connected = true;
+        const token = await this.tokenProvider.get(this.address, this.client.app);
         this.send({
             type: PACKET_TYPES.CONNECT,
             data: new ConnectPacket({
                 app: this.client.app,
-                token: await this.tokenProvider.get(this.address, this.client.app),
+                token,
             }),
         });
         const listenPromise = this.listen();
         await this.listeners.status.emit('connected');
         await this.listeners.connected.emit();
         this.dispatchTasks();
+        this.send({
+            type: PACKET_TYPES.READY,
+            data: null,
+        });
         await listenPromise;
 
         if (recconect) {
@@ -128,7 +137,7 @@ export class Network {
         }
     }
 
-    private async tryReconnect() {
+    private async tryReconnect(): Promise<void> {
         if (this.closed) {
             return;
         }

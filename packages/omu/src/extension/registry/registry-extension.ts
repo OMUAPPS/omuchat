@@ -18,6 +18,7 @@ export class RegistryExtension implements Extension {
     }
 
     private createRegistry<T>(registryType: RegistryType<T>): Registry<T> {
+        this.client.permissions.require(REGISTRY_PERMISSION_ID);
         return new RegistryImpl(
             this.client,
             registryType,
@@ -147,6 +148,7 @@ export const REGISTRY_EXTENSION_TYPE = new ExtensionType(
     'registry',
     (client: Client) => new RegistryExtension(client),
 );
+export const REGISTRY_PERMISSION_ID = REGISTRY_EXTENSION_TYPE.join('permission');
 const REGISTRY_UPDATE_PACKET = PacketType.createSerialized<RegistryPacket>(REGISTRY_EXTENSION_TYPE, {
     name: 'update',
     serializer: DATA_SERIALIZER,
@@ -159,4 +161,5 @@ const REGISTRY_GET_ENDPOINT = EndpointType.createSerialized<Identifier, Registry
     name: 'get',
     requestSerializer: Serializer.model(Identifier).toJson(),
     responseSerializer: DATA_SERIALIZER,
+    permissionId: REGISTRY_PERMISSION_ID,
 });

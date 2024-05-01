@@ -40,8 +40,8 @@ export class OmuClient implements Client {
 
     constructor(options: {
         app: App;
-        token: TokenProvider;
         address: Address;
+        token: TokenProvider;
         connection?: Connection;
     }) {
         this.running = false;
