@@ -14,25 +14,28 @@
         await loadLocale();
         await waitForTauri();
 
-        if (IS_TAURI) {
-            const state = await invoke('get_server_state');
-            if (state == 'Installed' || state == 'AlreadyRunning') {
-                client.start();
-                return;
-            }
-            listen('server-state', (state) => {
-                screenContext.push(ScreenInstalling, {});
-                console.log(state);
-                if (state.payload === 'Installed') {
-                    client.start();
-                }
-            });
-        } else {
+        if (!IS_TAURI) {
             client.start();
+        } else {
+            const serverState = await invoke('get_server_state');
+            if (serverState == 'Installed' || serverState == 'AlreadyRunning') {
+                client.start();
+            } else {
+                listen('server-state', (state) => {
+                    screenContext.push(ScreenInstalling, {});
+                    console.log(state);
+                    if (state.payload === 'Installed') {
+                        client.start();
+                    }
+                });
+            }
         }
 
-        await client.network.waitForConnection();
-        await client.plugins.waitForPlugins();
+        console.log('ready...');
+        await new Promise<void>((resolve) => {
+            client.listeners.ready.subscribe(() => resolve());
+        });
+        console.log('Client ready');
 
         language.subscribe(loadLocale);
     }
@@ -46,6 +49,7 @@
             i18n.set(lang);
         }
     }
+    let promise = init();
 </script>
 
 <svelte:head>
@@ -56,10 +60,12 @@
 
 <div class="app">
     <main>
-        {#await init()}
-            <div class="loading" data-tauri-drag-region></div>
+        {#await promise}
+            <div class="loading" data-tauri-drag-region>loading...</div>
         {:then}
             <slot />
+        {:catch error}
+            <div class="loading" data-tauri-drag-region>{error.message}</div>
         {/await}
     </main>
 </div>
