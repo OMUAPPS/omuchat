@@ -17,7 +17,7 @@ export const DASHBOARD_EXTENSION_TYPE = new ExtensionType(
 type DashboardSetResponse = {
     success: boolean;
 }
-const DASHBOARD_SET_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('set');
+export const DASHBOARD_SET_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('set');
 const DASHBOARD_SET_ENDPOINT = EndpointType.createJson<Identifier, DashboardSetResponse>(DASHBOARD_EXTENSION_TYPE, {
     name: 'set',
     requestSerializer: Serializer.model(Identifier),
@@ -33,7 +33,7 @@ const DASHBOARD_PERMISSION_ACCEPT_PACKET = PacketType.createJson<number>(DASHBOA
 const DASHBOARD_PERMISSION_DENY_PACKET = PacketType.createJson<number>(DASHBOARD_EXTENSION_TYPE, {
     name: 'permission_deny',
 });
-const DASHBOARD_OPEN_APP_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('open_app');
+export const DASHBOARD_OPEN_APP_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('open_app');
 const DASHBOARD_OPEN_APP_ENDPOINT = EndpointType.createJson<App, DashboardOpenAppResponse>(DASHBOARD_EXTENSION_TYPE, {
     name: 'open_app',
     requestSerializer: Serializer.model(App),

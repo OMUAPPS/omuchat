@@ -9,6 +9,7 @@ import { App, Client, permissions } from '@omuchatjs/chat';
 import { invoke, IS_TAURI } from '$lib/utils/tauri.js';
 import { BrowserTokenProvider } from '@omuchatjs/chat/client.js';
 
+import { DASHBOARD_OPEN_APP_PERMISSION_ID } from '@omuchatjs/omu/extension/dashboard/dashboard-extension.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import { setChat } from '../../../../../ui/dist/stores.js';
 
@@ -55,6 +56,7 @@ client.plugins.require({
 });
 client.permissions.require(
     permissions.CHAT_CHANNEL_TREE_PERMISSION_ID,
+    DASHBOARD_OPEN_APP_PERMISSION_ID,
 );
 
 export {
