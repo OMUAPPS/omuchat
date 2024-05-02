@@ -31,12 +31,6 @@
             }
         }
 
-        console.log('ready...');
-        await new Promise<void>((resolve) => {
-            client.listeners.ready.subscribe(() => resolve());
-        });
-        console.log('Client ready');
-
         language.subscribe(loadLocale);
     }
 
