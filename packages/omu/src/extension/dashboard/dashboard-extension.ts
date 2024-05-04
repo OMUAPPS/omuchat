@@ -5,6 +5,8 @@ import { PacketType } from '../../network/packet/packet.js';
 import { Serializer } from '../../serializer.js';
 import { EndpointType } from '../endpoint/endpoint.js';
 import { ExtensionType } from '../extension.js';
+import type { Table } from '../table/table.js';
+import { TableType } from '../table/table.js';
 
 import type { DashboardHandler, DashboardOpenAppResponse } from './dashboard.js';
 import { PermissionRequest } from './dashboard.js';
@@ -33,7 +35,7 @@ const DASHBOARD_PERMISSION_ACCEPT_PACKET = PacketType.createJson<number>(DASHBOA
 const DASHBOARD_PERMISSION_DENY_PACKET = PacketType.createJson<number>(DASHBOARD_EXTENSION_TYPE, {
     name: 'permission_deny',
 });
-export const DASHBOARD_OPEN_APP_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('open_app');
+export const DASHBOARD_OPEN_APP_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('app', 'open');
 const DASHBOARD_OPEN_APP_ENDPOINT = EndpointType.createJson<App, DashboardOpenAppResponse>(DASHBOARD_EXTENSION_TYPE, {
     name: 'open_app',
     requestSerializer: Serializer.model(App),
@@ -43,9 +45,24 @@ const DASHBOARD_OPEN_APP_PACKET = PacketType.createJson<App>(DASHBOARD_EXTENSION
     name: 'open_app',
     serializer: Serializer.model(App),
 });
+export const DASHOBARD_APP_READ_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('app', 'read');
+export const DASHOBARD_APP_EDIT_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('app', 'edit');
+const DASHBOARD_APP_TABLE_TYPE = TableType.createModel(
+    DASHBOARD_EXTENSION_TYPE,
+    {
+        name: 'apps',
+        model: App,
+        permissions: {
+            read: DASHOBARD_APP_READ_PERMISSION_ID,
+            write: DASHOBARD_APP_EDIT_PERMISSION_ID,
+            remove: DASHOBARD_APP_EDIT_PERMISSION_ID,
+        },
+    },
+);
 
 export class DashboardExtension {
     private dashboard: DashboardHandler | null = null;
+    public readonly apps: Table<App>;
 
     constructor(private readonly client: Client) {
         client.network.registerPacket(
@@ -57,6 +74,8 @@ export class DashboardExtension {
         client.network.addPacketHandler(DASHBOARD_PERMISSION_REQUEST_PACKET, (request) => this.handlePermissionRequest(request));
         client.network.addPacketHandler(DASHBOARD_OPEN_APP_PACKET, (app) => this.handleOpenApp(app));
         client.listeners.ready.subscribe(() => this.onReady());
+
+        this.apps = client.tables.get(DASHBOARD_APP_TABLE_TYPE);
     }
 
     private async onReady(): Promise<void> {

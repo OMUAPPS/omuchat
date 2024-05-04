@@ -17,12 +17,14 @@ export const SERVER_EXTENSION_TYPE: ExtensionType<ServerExtension> = new Extensi
     () => [TABLE_EXTENSION_TYPE],
 );
 
-const APP_TABLE_TYPE = TableType.model(SERVER_EXTENSION_TYPE, {
+const APP_TABLE_TYPE = TableType.createModel(SERVER_EXTENSION_TYPE, {
     name: 'apps',
     model: App,
 });
+export const SERVER_SHUTDOWN_PERMISSION_ID = SERVER_EXTENSION_TYPE.join('shutdown');
 const SHUTDOWN_ENDPOINT_TYPE = EndpointType.createJson<boolean, boolean>(SERVER_EXTENSION_TYPE, {
     name: 'shutdown',
+    permissionId: SERVER_SHUTDOWN_PERMISSION_ID,
 });
 const REQUIRE_APPS_PACKET_TYPE = PacketType.createJson<Identifier[]>(SERVER_EXTENSION_TYPE, {
     name: 'require_apps',

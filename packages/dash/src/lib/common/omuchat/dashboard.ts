@@ -13,15 +13,11 @@ import { client } from './client.js';
 
 export const IDENTIFIER = Identifier.fromKey('cc.omuchat:dashboard');
 
-export const AppsTableKey = TableType.model(IDENTIFIER, {
-    name: 'apps',
-    model: App,
-});
-export const AssetsTableKey = TableType.model(IDENTIFIER, {
+export const AssetsTableKey = TableType.createModel(IDENTIFIER, {
     name: 'assets',
     model: Asset,
 });
-export const BookmarksTableKey = TableType.model(IDENTIFIER, {
+export const BookmarksTableKey = TableType.createModel(IDENTIFIER, {
     name: 'bookmarks',
     model: BookmarkEntry,
 });
@@ -33,7 +29,7 @@ export class Dashboard implements DashboardHandler {
     readonly bookmarks: Table<BookmarkEntry>;
 
     constructor(client: Client) {
-        this.apps = client.tables.get(AppsTableKey);
+        this.apps = client.dashboard.apps;
         this.assets = client.tables.get(AssetsTableKey);
         this.bookmarks = client.tables.get(BookmarksTableKey);
         client.dashboard.set(this);

@@ -8,7 +8,7 @@ import { IDENTIFIER } from './const.js';
 import { Author, Channel, Message, Provider, Room } from './models/index.js';
 import { CHAT_CHANNEL_TREE_PERMISSION_ID, CHAT_PERMISSION_ID, CHAT_READ_PERMISSION_ID, CHAT_WRITE_PERMISSION_ID } from './permissions.js';
 
-const MESSAGE_TABLE_TYPE = TableType.model(IDENTIFIER, {
+const MESSAGE_TABLE_TYPE = TableType.createModel(IDENTIFIER, {
     name: 'messages',
     model: Message,
     permissions: {
@@ -17,7 +17,7 @@ const MESSAGE_TABLE_TYPE = TableType.model(IDENTIFIER, {
         write: CHAT_WRITE_PERMISSION_ID,
     },
 });
-const AUTHOR_TABLE_TYPE = TableType.model(IDENTIFIER, {
+const AUTHOR_TABLE_TYPE = TableType.createModel(IDENTIFIER, {
     name: 'authors',
     model: Author,
     permissions: {
@@ -26,7 +26,7 @@ const AUTHOR_TABLE_TYPE = TableType.model(IDENTIFIER, {
         write: CHAT_WRITE_PERMISSION_ID,
     },
 });
-const CHANNEL_TABLE_TYPE = TableType.model(IDENTIFIER, {
+const CHANNEL_TABLE_TYPE = TableType.createModel(IDENTIFIER, {
     name: 'channels',
     model: Channel,
     permissions: {
@@ -35,7 +35,7 @@ const CHANNEL_TABLE_TYPE = TableType.model(IDENTIFIER, {
         write: CHAT_WRITE_PERMISSION_ID,
     },
 });
-const PROVIDER_TABLE_TYPE = TableType.model(IDENTIFIER, {
+const PROVIDER_TABLE_TYPE = TableType.createModel(IDENTIFIER, {
     name: 'providers',
     model: Provider,
     permissions: {
@@ -44,7 +44,7 @@ const PROVIDER_TABLE_TYPE = TableType.model(IDENTIFIER, {
         write: CHAT_WRITE_PERMISSION_ID,
     },
 });
-const ROOM_TABLE_TYPE = TableType.model(IDENTIFIER, {
+const ROOM_TABLE_TYPE = TableType.createModel(IDENTIFIER, {
     name: 'rooms',
     model: Room,
     permissions: {

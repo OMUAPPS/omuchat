@@ -65,7 +65,7 @@ export class TableType<T> {
         public permissions?: TablePermissions,
     ) { }
 
-    public static model<T extends Keyable & Model<D>, D = unknown>(
+    public static createModel<T extends Keyable & Model<D>, D = unknown>(
         identifier: Identifier | ExtensionType,
         {
             name,

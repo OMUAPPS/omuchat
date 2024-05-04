@@ -1,6 +1,5 @@
+import { events } from '@omuchatjs/chat';
 import { App } from '@omuchatjs/omu';
-import { TableType } from '@omuchatjs/omu/extension/table/index.js';
-import { Identifier } from '@omuchatjs/omu/identifier.js';
 import { client } from '../client.js';
 import emoji from './emoji/app.js';
 import notifier from './notifier/app.js';
@@ -25,10 +24,7 @@ export function loadApps(origin: string) {
     ].map((app) => app(origin)));
 }
 
-const DASHBOARD = Identifier.fromKey('cc.omuchat:dashboard');
-export const appTable = client.tables.get(
-    TableType.model(DASHBOARD, {
-        name: 'apps',
-        model: App,
-    }),
-);
+export const appTable = client.dashboard.apps;
+client.on(events.Ready, async () => {
+    console.log(await appTable.fetchAll());
+})

@@ -135,7 +135,7 @@ export class TableExtension implements Extension {
             model: { fromJson(data: D): T };
         },
     ): Table<T> {
-        const tableType = TableType.model(identifier, { name, model });
+        const tableType = TableType.createModel(identifier, { name, model });
         if (this.has(tableType.identifier)) {
             throw new Error('Table already exists');
         }

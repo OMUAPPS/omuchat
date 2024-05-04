@@ -55,8 +55,8 @@ export class OmuClient implements Client {
         this.endpoints = this.extensions.register(ENDPOINT_EXTENSION_TYPE);
         this.permissions = this.extensions.register(PERMISSION_EXTENSION_TYPE);
         this.plugins = this.extensions.register(PLUGIN_EXTENSION_TYPE);
-        this.dashboard = this.extensions.register(DASHBOARD_EXTENSION_TYPE);
         this.tables = this.extensions.register(TABLE_EXTENSION_TYPE);
+        this.dashboard = this.extensions.register(DASHBOARD_EXTENSION_TYPE);
         this.registry = this.extensions.register(REGISTRY_EXTENSION_TYPE);
         this.signal = this.extensions.register(SIGNAL_EXTENSION_TYPE);
         this.assets = this.extensions.register(ASSET_EXTENSION_TYPE);
