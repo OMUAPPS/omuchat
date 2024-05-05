@@ -1,7 +1,7 @@
 import { RegistryType } from "@omuchatjs/omu/extension/registry/index.js";
 import { Identifier } from "@omuchatjs/omu/identifier.js";
 
-const PLUGIN_IDENTIFIER = new Identifier('cc.omuchat', 'plugin-translator');
+const PLUGIN_IDENTIFIER = new Identifier('cc.omuchat', 'translator', 'plugin');
 
 export type Language = "en" | "es" | "fr" | "de" | "it" | "pt" | "nl" | "pl" | "ru" | "ja" | "zh" | "ko" | "ar";
 type TranslatorConfig = {

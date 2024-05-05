@@ -30,7 +30,7 @@
                     <Localized text={entry.metadata?.name} />
                 </div>
                 <small>
-                    {entry.identifier.namespace.split('.').reverse().join('.')}
+                    {entry.id.namespace.split('.').reverse().join('.')}
                 </small>
             </FlexColWrapper>
         </FlexRowWrapper>

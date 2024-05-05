@@ -9,7 +9,7 @@
     <FlexColWrapper heightFull>
         <JustifyBaselineWrapper>
             <small>
-                {entry.identifier.namespace.split('.').reverse().join('.')}
+                {entry.id.namespace.split('.').reverse().join('.')}
                 <i class="ti ti-slash" />
             </small>
         </JustifyBaselineWrapper>
