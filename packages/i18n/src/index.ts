@@ -1,4 +1,4 @@
-import type { I18n, Translations, I18nKeys } from './types/i18n.d.ts';
+import type { I18n, I18nKeys, Translations } from './types/i18n.d.ts';
 
 const paramRegex = /\{([\w]+)\}/g;
 
