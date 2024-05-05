@@ -55,7 +55,7 @@ export class RegistryExtension implements Extension {
 }
 
 class RegistryImpl<T> implements Registry<T> {
-    private readonly eventHandlers: EventEmitter<(value: T) => void> = new EventEmitter();
+    private readonly eventEmitter: EventEmitter<(value: T) => void> = new EventEmitter();
     private listening = false;
     public value: T;
 
@@ -64,7 +64,8 @@ class RegistryImpl<T> implements Registry<T> {
         public readonly type: RegistryType<T>,
     ) {
         this.value = type.defaultValue;
-        client.network.addPacketHandler(REGISTRY_UPDATE_PACKET, (data) => this.handleUpdate(data));
+        client.network.addPacketHandler(REGISTRY_UPDATE_PACKET, (packet) => this.handleUpdate(packet));
+        client.network.addTask(() => this.onReadyTask());
         client.listeners.ready.subscribe(() => this.onReady());
     }
 
@@ -96,9 +97,9 @@ class RegistryImpl<T> implements Registry<T> {
         if (!this.listening) {
             this.listening = true;
         }
-        this.eventHandlers.subscribe(handler);
+        this.eventEmitter.subscribe(handler);
         return () => {
-            this.eventHandlers.unsubscribe(handler);
+            this.eventEmitter.unsubscribe(handler);
         };
     }
 
@@ -109,11 +110,23 @@ class RegistryImpl<T> implements Registry<T> {
         if (data.value !== null) {
             this.value = this.type.serializer.deserialize(data.value);
         }
-        this.eventHandlers.emit(this.value);
+        this.eventEmitter.emit(this.value);
+    }
+
+    private onReadyTask(): void {
+        if (!this.type.id.isSubpathOf(this.client.app.id)) {
+            return;
+        }
+        this.client.send(REGISTRY_REGISTER_PACKET, {
+            id: this.type.id,
+            permissions: this.type.permissions,
+        });
     }
 
     private onReady(): void {
-        this.client.send(REGISTRY_LISTEN_PACKET, this.type.id);
+        if (this.listening) {
+            this.client.send(REGISTRY_LISTEN_PACKET, this.type.id);
+        }
     }
 }
 
