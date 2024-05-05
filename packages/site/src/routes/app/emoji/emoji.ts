@@ -115,7 +115,7 @@ export function editEmoji(emoji: Emoji) {
 
 
 export const EMOJI_TEST_PROVIDER = new Provider({
-    id: client.app.identifier,
+    id: client.app.id,
     name: 'Emoji Test',
     description: 'Send emoji preview',
     regex: '',
