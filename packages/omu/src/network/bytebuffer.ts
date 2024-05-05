@@ -1,5 +1,40 @@
 import { textDecoder, textEncoder } from '../const.js';
 
+export class Flags {
+    constructor(
+        private value: number,
+        private length: number,
+    ) { }
+
+    public has(position: number): boolean {
+        return (this.value & (1 << position)) !== 0;
+    }
+
+    public set(position: number, value: boolean): void {
+        if (value) {
+            this.value |= 1 << position;
+        } else {
+            this.value &= ~(1 << position);
+        }
+    }
+
+    public write(writer: ByteWriter): void {
+        const bits = new Uint8Array((this.length + 7) / 8);
+        for (let i = 0; i < bits.length; i++) {
+            bits[i] = (this.value >> (i * 8)) & 0xff;
+        }
+        writer.write(bits);
+    }
+
+    public static read(reader: ByteReader, length: number): Flags {
+        let bits = 0;
+        for (let i = 0; i < (length + 7) / 8; i++) {
+            bits |= reader.readByte() << (i * 8);
+        }
+        return new Flags(bits, length);
+    }
+}
+
 export class ByteWriter {
     private dataArray: DataView;
     private buffer: ArrayBuffer;
@@ -21,7 +56,7 @@ export class ByteWriter {
         }
     }
 
-    write(data: Uint8Array): ByteWriter {
+    public write(data: Uint8Array): ByteWriter {
         if (this.finished) {
             throw new Error('Buffer already finished');
         }
@@ -31,42 +66,42 @@ export class ByteWriter {
         return this;
     }
 
-    writeBoolean(value: boolean): ByteWriter {
+    public writeBoolean(value: boolean): ByteWriter {
         this.allocate(1);
         this.dataArray.setInt8(this.offset, value ? 1 : 0);
         this.offset += 1;
         return this;
     }
 
-    writeBigInt(value: bigint): ByteWriter {
+    public writeBigInt(value: bigint): ByteWriter {
         this.allocate(8);
         this.dataArray.setBigInt64(this.offset, value);
         this.offset += 8;
         return this;
     }
 
-    writeInt(value: number): ByteWriter {
+    public writeInt(value: number): ByteWriter {
         this.allocate(4);
         this.dataArray.setInt32(this.offset, value);
         this.offset += 4;
         return this;
     }
 
-    writeShort(value: number): ByteWriter {
+    public writeShort(value: number): ByteWriter {
         this.allocate(2);
         this.dataArray.setInt16(this.offset, value);
         this.offset += 2;
         return this;
     }
 
-    writeByte(value: number): ByteWriter {
+    public writeByte(value: number): ByteWriter {
         this.allocate(1);
         this.dataArray.setInt8(this.offset, value);
         this.offset += 1;
         return this;
     }
 
-    writeByteArray(value: Uint8Array): ByteWriter {
+    public writeByteArray(value: Uint8Array): ByteWriter {
         if (value.byteLength > 0x7fffffff) {
             throw new Error('Byte array too long');
         }
@@ -75,12 +110,17 @@ export class ByteWriter {
         return this;
     }
 
-    writeString(value: string): ByteWriter {
+    public writeString(value: string): ByteWriter {
         this.writeByteArray(textEncoder.encode(value));
         return this;
     }
 
-    finish(): Uint8Array {
+    public writeFlags(flags: Flags): ByteWriter {
+        flags.write(this);
+        return this;
+    }
+
+    public finish(): Uint8Array {
         if (this.finished) {
             throw new Error('Buffer already finished');
         }
@@ -98,7 +138,7 @@ export class ByteReader {
         this.dataArray = new DataView(new Uint8Array(buffer).buffer);
     }
 
-    read(size: number): Uint8Array {
+    public read(size: number): Uint8Array {
         if (this.finished) {
             throw new Error('Buffer already finished');
         }
@@ -113,46 +153,50 @@ export class ByteReader {
         return value;
     }
 
-    readBoolean(): boolean {
+    public readBoolean(): boolean {
         const value = this.dataArray.getInt8(this.offset);
         this.offset += 1;
         return value !== 0;
     }
 
-    readBigInt(): bigint {
+    public readBigInt(): bigint {
         const value = this.dataArray.getBigInt64(this.offset);
         this.offset += 8;
         return value;
     }
 
-    readInt(): number {
+    public readInt(): number {
         const value = this.dataArray.getInt32(this.offset);
         this.offset += 4;
         return value;
     }
 
-    readShort(): number {
+    public readShort(): number {
         const value = this.dataArray.getInt16(this.offset);
         this.offset += 2;
         return value;
     }
 
-    readByte(): number {
+    public readByte(): number {
         const value = this.dataArray.getInt8(this.offset);
         this.offset += 1;
         return value;
     }
 
-    readByteArray(): Uint8Array {
+    public readByteArray(): Uint8Array {
         const length = this.readInt();
         return this.read(length);
     }
 
-    readString(): string {
+    public readString(): string {
         return textDecoder.decode(this.readByteArray());
     }
 
-    finish(): void {
+    public readFlags(length: number): Flags {
+        return Flags.read(this, length);
+    }
+
+    public finish(): void {
         if (this.finished) {
             throw new Error('Buffer already finished');
         }
