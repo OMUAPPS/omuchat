@@ -18,45 +18,45 @@ export type AppMetadata = {
 }
 
 export type AppJson = {
-    identifier: string;
+    id: string;
     version?: string;
     url?: string;
     metadata?: AppMetadata;
 }
 
 export class App implements Keyable, Model<AppJson> {
-    public readonly identifier: Identifier;
+    public readonly id: Identifier;
     public readonly version?: string;
     public readonly url?: string;
     public readonly metadata?: AppMetadata;
 
-    constructor(identifier: Identifier, options: {
+    constructor(id: Identifier, options: {
         version?: string;
         url?: string;
         metadata?: AppMetadata;
     }) {
-        this.identifier = identifier;
+        this.id = id;
         this.version = options.version;
         this.url = options.url;
         this.metadata = options.metadata;
     }
 
-    key(): string {
-        return this.identifier.key();
+    public key(): string {
+        return this.id.key();
     }
 
-    static fromJson(info: AppJson): App {
-        const identifier = Identifier.fromKey(info.identifier);
-        return new App(identifier, {
+    public static fromJson(info: AppJson): App {
+        const id = Identifier.fromKey(info.id);
+        return new App(id, {
             version: info.version,
             url: info.url,
             metadata: info.metadata,
         });
     }
 
-    toJson(): AppJson {
+    public toJson(): AppJson {
         return {
-            identifier: this.identifier.key(),
+            id: this.id.key(),
             version: this.version,
             url: this.url,
             metadata: this.metadata,

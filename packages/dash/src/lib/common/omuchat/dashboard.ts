@@ -46,8 +46,8 @@ export class Dashboard implements DashboardHandler {
     }
 
     async handleOpenApp(app: App): Promise<void> {
-        const windowLabel = app.identifier.namespace.replace(/\./g, '-') + '-' + btoa(app.identifier.key()).replace(/=/g, '');
-        const windowTitle = client.i18n.translate(app.metadata?.name ?? app.identifier.key());
+        const windowLabel = app.id.namespace.replace(/\./g, '-') + '-' + btoa(app.id.key()).replace(/=/g, '');
+        const windowTitle = client.i18n.translate(app.metadata?.name ?? app.id.key());
         const window = new tauriWindow.WebviewWindow(windowLabel, { url: app.url, title: windowTitle, fileDropEnabled: true, transparent: true });
         window.setFocus();
     }

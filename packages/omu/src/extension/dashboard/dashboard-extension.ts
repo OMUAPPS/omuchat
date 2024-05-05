@@ -82,7 +82,7 @@ export class DashboardExtension {
         if (this.dashboard === null) {
             return;
         }
-        const response = await this.client.endpoints.call(DASHBOARD_SET_ENDPOINT, this.client.app.identifier);
+        const response = await this.client.endpoints.call(DASHBOARD_SET_ENDPOINT, this.client.app.id);
         if (!response.success) {
             throw new Error('Failed to set dashboard');
         }

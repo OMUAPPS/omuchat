@@ -20,7 +20,7 @@
     }
 
     const TEST_PROVIDER = new Provider({
-        id: client.app.identifier,
+        id: client.app.id,
         description: 'test',
         name: 'test',
         regex: '(?!x)x',

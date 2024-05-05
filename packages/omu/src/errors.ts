@@ -1,4 +1,4 @@
-import { DisconnectType } from "./network/packet/packet-types.js";
+import { DisconnectType } from './network/packet/packet-types.js';
 export class OmuError extends Error {
     constructor(message: string | null) {
         super(message ?? undefined);
@@ -6,11 +6,12 @@ export class OmuError extends Error {
     }
 }
 
-export class DisconnectReason {
+export class DisconnectReason extends OmuError {
     constructor(
         public type: DisconnectType,
-        public message: string | null = null,
+        public message = '',
     ) {
+        super(message);
     }
 }
 

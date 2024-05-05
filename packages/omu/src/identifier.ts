@@ -83,6 +83,21 @@ export class Identifier implements Model<string>, Keyable {
         return this.key() === other.key();
     }
 
+    public isSubpathOf(other: Identifier): boolean {
+        if (this.namespace !== other.namespace) {
+            return false;
+        }
+        if (this.path.length < other.path.length) {
+            return false;
+        }
+        for (let i = 0; i < other.path.length; i++) {
+            if (this.path[i] !== other.path[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public join(...path: string[]): Identifier {
         return new Identifier(this.namespace, ...this.path, ...path);
     }

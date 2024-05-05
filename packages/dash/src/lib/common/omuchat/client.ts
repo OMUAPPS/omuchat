@@ -11,8 +11,11 @@ import { BrowserTokenProvider } from '@omuchatjs/chat/client.js';
 
 import { CHAT_CHANNEL_TREE_PERMISSION_ID } from '@omuchatjs/chat/permissions.js';
 import { DASHBOARD_OPEN_APP_PERMISSION_ID, DASHOBARD_APP_EDIT_PERMISSION_ID, DASHOBARD_APP_READ_PERMISSION_ID } from '@omuchatjs/omu/extension/dashboard/dashboard-extension.js';
+import { I18N_GET_LOCALES_PERMISSION_ID, I18N_SET_LOCALES_PERMISSION_ID } from '@omuchatjs/omu/extension/i18n/i18n-extension.js';
 import { SERVER_SHUTDOWN_PERMISSION_ID } from '@omuchatjs/omu/extension/server/server-extension.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
+import type { Locale } from '@omuchatjs/omu/localization/locale.js';
+import { BROWSER } from 'esm-env';
 import { setChat } from '../../../../../ui/dist/stores.js';
 
 const IDENTIFIER = new Identifier('cc.omuchat', 'dashboard');
@@ -62,7 +65,16 @@ client.permissions.require(
     SERVER_SHUTDOWN_PERMISSION_ID,
     DASHOBARD_APP_READ_PERMISSION_ID,
     DASHOBARD_APP_EDIT_PERMISSION_ID,
+    I18N_GET_LOCALES_PERMISSION_ID,
+    I18N_SET_LOCALES_PERMISSION_ID,
 );
+
+
+if (BROWSER) {
+    client.listeners.ready.subscribe(() => {
+        client.i18n.setLocale(window.navigator.languages as Locale[]);
+    })
+}
 
 export {
     chat, client, dashboard
