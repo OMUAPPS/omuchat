@@ -68,10 +68,10 @@
         if (!files) return;
         const file = files[0];
         const reader = new FileReader();
-        const identifier = client.app.identifier.join('asset', key);
+        const id = client.app.id.join('asset', key);
         reader.onload = async () => {
             const buffer = new Uint8Array(reader.result as ArrayBuffer);
-            const asset = await client.assets.upload(identifier, buffer);
+            const asset = await client.assets.upload(id, buffer);
             setReplace(key, asset.key());
         };
         reader.readAsArrayBuffer(file);

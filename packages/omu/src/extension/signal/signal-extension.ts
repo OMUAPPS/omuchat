@@ -45,7 +45,7 @@ export class SignalExtension implements Extension {
     }
 
     public create<T>(name: string): Signal<T> {
-        const identifier = this.client.app.identifier.join(name);
+        const identifier = this.client.app.id.join(name);
         if (this.signals.has(identifier)) {
             throw new Error(`Signal for key ${identifier} already created`);
         }

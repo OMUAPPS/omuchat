@@ -67,7 +67,7 @@ export class EndpointExtension {
     }
 
     public listen<Req, Res>(handler: (data: Req) => Promise<Res>, name?: string): void {
-        const type = EndpointType.createJson<Req, Res>(this.client.app.identifier, {
+        const type = EndpointType.createJson<Req, Res>(this.client.app.id, {
             name: name ?? handler.name,
         });
         this.register(type, handler);

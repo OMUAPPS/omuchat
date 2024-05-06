@@ -3,6 +3,7 @@ import { App } from '@omuchatjs/omu';
 import { client } from '../client.js';
 import emoji from './emoji/app.js';
 import notifier from './notifier/app.js';
+import onecomme from './onecomme/app.js';
 import playqueue from './playqueue/app.js';
 import quiz from './quiz/app.js';
 import reaction from './reaction/app.js';
@@ -16,6 +17,7 @@ export function loadApps(origin: string) {
     apps.push(...[
         quiz,
         notifier,
+        onecomme,
         playqueue,
         emoji,
         tester,

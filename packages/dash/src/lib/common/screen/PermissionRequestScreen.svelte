@@ -32,11 +32,11 @@
                 <FlexColWrapper>
                     <JustifyBaselineWrapper>
                         <small>
-                            {request.app.identifier.namespace.split('.').reverse().join('.')}
+                            {request.app.id.namespace.split('.').reverse().join('.')}
                             <i class="ti ti-slash" />
                         </small>
                         <b>
-                            {request.app.identifier.path.reverse().join('.')}
+                            {request.app.id.path.reverse().join('.')}
                         </b>
                         <small>
                             v{request.app.version}

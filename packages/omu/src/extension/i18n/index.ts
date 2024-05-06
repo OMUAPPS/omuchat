@@ -1,5 +1,2 @@
-export {
-    I18N_EXTENSION_TYPE,
-    I18nExtension,
-} from './i18n-extension.js';
+export { I18N_EXTENSION_TYPE, I18N_GET_LOCALES_PERMISSION_ID, I18N_SET_LOCALES_PERMISSION_ID, I18nExtension } from './i18n-extension.js';
 
