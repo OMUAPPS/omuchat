@@ -1,4 +1,19 @@
-import type { I18n, I18nKeys, Translations } from './types/i18n.d.ts';
+export type I18n = {
+    translate: TranslateFunction;
+    localeName: string;
+}
+
+export type Translations = {
+    [key: string]: string | Translations;
+}
+
+export type TranslateFunction = (key: string, params?: Record<string, string>) => string;
+
+type Unconstrained<T, U extends T = T> = U;
+
+export type I18nKeys<T extends Translations> = Unconstrained<
+    { [K in keyof T]: T[K] extends Translations ? I18nKeys<T[K]> : string }
+>;
 
 const paramRegex = /\{([\w]+)\}/g;
 
@@ -9,7 +24,7 @@ const paramRegex = /\{([\w]+)\}/g;
  * @param path - The current path within the translations object, used for building the keys.
  * @returns An object with i18n keys for the provided translations.
  */
-export const createI18nKeys = <T extends Translations>(obj: T, path = ''): I18nKeys<T> => {
+export function createI18nKeys<T extends Translations>(obj: T, path = ''): I18nKeys<T> {
     const result: any = {};
     for (const key in obj) {
         const newPath = path ? `${path}.${key}` : key;
@@ -20,7 +35,7 @@ export const createI18nKeys = <T extends Translations>(obj: T, path = ''): I18nK
         }
     }
     return result as I18nKeys<T>;
-};
+}
 
 /**
  * Creates an `I18n` instance that can translate using the provided translations object.
@@ -31,7 +46,7 @@ export const createI18nKeys = <T extends Translations>(obj: T, path = ''): I18nK
  * @param localeName - The name of the locale for the translations.
  * @returns An `I18n` instance that can translate using the provided translations.
  */
-export const createI18n = (translations: Translations, localeName: string): I18n => {
+export function createI18n(translations: Translations, localeName: string): I18n {
     const translationCache = new Map<string, string>();
 
     /**
@@ -42,7 +57,7 @@ export const createI18n = (translations: Translations, localeName: string): I18n
      * @param key - The key to look up the translation for.
      * @returns The translated string, or the original key if a translation is not found.
      */
-    const getTranslation = (key: string): string => {
+    function getTranslation(key: string): string {
         if (key === '') return key;
         const cachedTranslation = translationCache.get(key);
         if (cachedTranslation) return cachedTranslation;
@@ -67,7 +82,7 @@ export const createI18n = (translations: Translations, localeName: string): I18n
         const finalTranslation = translation || key;
         translationCache.set(key, finalTranslation);
         return finalTranslation;
-    };
+    }
 
     /**
      * Translates a string key to a localized string, optionally replacing placeholders with provided parameters.
@@ -76,18 +91,18 @@ export const createI18n = (translations: Translations, localeName: string): I18n
      * @param params - An optional object containing parameter values to replace placeholders in the translation.
      * @returns The translated string, or the original key if no translation is found.
      */
-    const translate = (key: string, params?: Record<string, string>): string => {
+    function translate(key: string, params?: Record<string, string>): string {
         const translation = getTranslation(key);
         if (!params) return translation;
 
         return translation.replace(paramRegex, (_, key) => params[key] || key);
-    };
+    }
 
     return {
         localeName,
         translate,
     };
-};
+}
 
 /**
  * Creates a union of multiple `I18n` instances, allowing translation to fall back to other locales if a translation is not found in the primary locale.
@@ -95,7 +110,7 @@ export const createI18n = (translations: Translations, localeName: string): I18n
  * @param i18Array - An array of `I18n` instances to be combined.
  * @returns An `I18n` instance that can translate using the combined translations from the input array.
  */
-export const createI18nUnion = (i18Array: I18n[]): I18n => {
+export function createI18nUnion(i18Array: I18n[]): I18n {
     const primaryI18n = i18Array[0];
     const fallbackI18ns = i18Array.slice(1);
 
@@ -106,7 +121,7 @@ export const createI18nUnion = (i18Array: I18n[]): I18n => {
     * @param params - Optional parameters to pass to the translation function.
     * @returns The translated string.
     */
-    const translate = (key: string, params?: Record<string, string>): string => {
+    function translate(key: string, params?: Record<string, string>): string {
         let translated = primaryI18n.translate(key, params);
         if (translated === key) {
             for (const i18n of fallbackI18ns) {
@@ -115,13 +130,13 @@ export const createI18nUnion = (i18Array: I18n[]): I18n => {
             }
         }
         return translated;
-    };
+    }
 
     return {
         translate,
         localeName: `union(${i18Array.map((i18n) => i18n.localeName).join(', ')})`,
     };
-};
+}
 
 /**
  * Asynchronously loads translations for the specified locale and creates an `I18n` instance to handle translation lookups.
@@ -130,7 +145,7 @@ export const createI18nUnion = (i18Array: I18n[]): I18n => {
  * @param locale - The locale to load translations for.
  * @returns An `I18n` instance that can be used to translate strings for the specified locale.
  */
-export const loadI18n = async (load: () => Promise<{ default: Translations }>, locale: string): Promise<I18n> => {
+export async function loadI18n(load: () => Promise<{ default: Translations }>, locale: string): Promise<I18n> {
     const { default: translations } = await load();
     return createI18n(translations, locale);
-};
+}
