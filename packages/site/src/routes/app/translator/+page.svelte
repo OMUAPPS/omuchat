@@ -1,8 +1,8 @@
 <script lang="ts">
     import { createRegistryStore } from '$lib/helper.js';
-    import { AppHeader, Combobox } from '@omuchatjs/ui';
+    import { AppHeader, ButtonMini, Combobox, FlexRowWrapper } from '@omuchatjs/ui';
     import { client } from './client.js';
-    import { CONFIG_REGISTRY_TYPE, LANGUAGE_OPTIONS, type Language } from './translator.js';
+    import { CONFIG_REGISTRY_TYPE, LANGUAGE_OPTIONS } from './translator.js';
 
     const config = createRegistryStore(client, CONFIG_REGISTRY_TYPE);
 
@@ -13,12 +13,7 @@
         };
     }
 
-    function setLanguage(language: Language) {
-        $config = {
-            ...$config,
-            language,
-        };
-    }
+    $: console.log($config.languages);
 </script>
 
 <AppHeader app={client.app} />
@@ -32,11 +27,38 @@
 
     <h3>言語</h3>
     <section>
-        <Combobox
-            options={LANGUAGE_OPTIONS}
-            defaultValue={$config.language}
-            handleChange={(key, language) => setLanguage(language)}
-        />
+        {#each $config.languages as language, i (i)}
+            <FlexRowWrapper>
+                <Combobox
+                    options={LANGUAGE_OPTIONS}
+                    defaultValue={language}
+                    handleChange={(key, language) => {
+                        $config = {
+                            ...$config,
+                            languages: $config.languages.map((l, j) => (i === j ? language : l)),
+                        };
+                    }}
+                />
+                <ButtonMini
+                    on:click={() => {
+                        $config = {
+                            ...$config,
+                            languages: $config.languages.filter((_, j) => i !== j),
+                        };
+                    }}
+                >
+                    <i class="ti ti-x" />
+                </ButtonMini>
+            </FlexRowWrapper>
+        {/each}
+        <ButtonMini
+            on:click={() => {
+                $config = { ...$config, languages: [...$config.languages, 'ja'] };
+            }}
+        >
+            言語を追加
+            <i class="ti ti-plus" />
+        </ButtonMini>
     </section>
 </main>
 

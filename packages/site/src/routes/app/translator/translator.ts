@@ -6,14 +6,14 @@ const PLUGIN_IDENTIFIER = new Identifier('cc.omuchat', 'translator', 'plugin');
 export type Language = "en" | "es" | "fr" | "de" | "it" | "pt" | "nl" | "pl" | "ru" | "ja" | "zh" | "ko" | "ar";
 type TranslatorConfig = {
     active: boolean;
-    language: Language;
+    languages: Language[];
 }
 
 export const CONFIG_REGISTRY_TYPE = RegistryType.createJson<TranslatorConfig>(PLUGIN_IDENTIFIER, {
     name: 'config',
     defaultValue: {
         active: false,
-        language: "ja",
+        languages: ["ja"],
     },
 });
 
