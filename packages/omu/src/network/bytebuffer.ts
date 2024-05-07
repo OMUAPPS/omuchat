@@ -10,6 +10,17 @@ export class Flags {
         return (this.value & (1 << position)) !== 0;
     }
 
+    public get(position: number): boolean {
+        return (this.value & (1 << position)) !== 0;
+    }
+
+    public ifSet<T>(position: number, callback: () => T): T | undefined {
+        if (this.has(position)) {
+            return callback();
+        }
+        return undefined;
+    }
+
     public set(position: number, value: boolean): void {
         if (value) {
             this.value |= 1 << position;

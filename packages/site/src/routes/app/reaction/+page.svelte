@@ -14,11 +14,11 @@
         return url;
     }
 
-    const reactionsMessage = client.signal.get(REACTION_SIGNAL_TYPE);
+    const reactionSignal = client.signal.get(REACTION_SIGNAL_TYPE);
     const replacesRegistry = client.registry.get(REACTION_REPLACE_REGISTRY_TYPE);
 
     function test() {
-        reactionsMessage.broadcast({
+        reactionSignal.send({
             room_id: 'test',
             reactions: {
                 '❤': 1,

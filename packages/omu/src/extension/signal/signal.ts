@@ -1,39 +1,84 @@
-import type { Identifier } from '../../identifier.js';
+import { Identifier } from '../../identifier.js';
+import type { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
+import { Flags } from '../../network/bytebuffer.js';
 import type { Serializable } from '../../serializer.js';
 import { Serializer } from '../../serializer.js';
 
+export class SignalPermissions {
+    constructor(
+        public readonly all?: Identifier,
+        public readonly listen?: Identifier,
+        public readonly send?: Identifier,
+    ) { }
+
+    public serialize(writer: ByteWriter): void {
+        const flags = new Flags(0, 3);
+        flags.set(0, this.all !== undefined);
+        flags.set(1, this.listen !== undefined);
+        flags.set(2, this.send !== undefined);
+        writer.writeFlags(flags);
+        if (this.all !== undefined) {
+            writer.writeString(this.all.key());
+        }
+        if (this.listen !== undefined) {
+            writer.writeString(this.listen.key());
+        }
+        if (this.send !== undefined) {
+            writer.writeString(this.send.key());
+        }
+    }
+
+    public static deserialize(reader: ByteReader): SignalPermissions {
+        const flags = reader.readFlags(3);
+        const all = flags.ifSet(0, () => Identifier.fromKey(reader.readString()));
+        const listen = flags.ifSet(1, () => Identifier.fromKey(reader.readString()));
+        const send = flags.ifSet(2, () => Identifier.fromKey(reader.readString()));
+        return new SignalPermissions(
+            all,
+            listen,
+            send,
+        );
+    }
+}
 export class SignalType<T> {
     constructor(
-        public readonly identifier: Identifier,
+        public readonly id: Identifier,
         public readonly serializer: Serializable<T, Uint8Array>,
+        public readonly permissions: SignalPermissions,
     ) { }
 
     static createJson<T>(identifier: Identifier, {
         name,
+        permissions,
     }: {
         name: string
+        permissions?: SignalPermissions
     }): SignalType<T> {
         return new SignalType(
             identifier.join(name),
             Serializer.json(),
+            permissions ?? new SignalPermissions(),
         );
     }
 
     static createSerialized<T>(identifier: Identifier, {
         name,
         serializer,
+        permissions,
     }: {
         name: string,
         serializer: Serializable<T, Uint8Array>
+        permissions?: SignalPermissions
     }): SignalType<T> {
         return new SignalType(
             identifier.join(name),
             serializer,
+            permissions ?? new SignalPermissions(),
         );
     }
 }
 
 export interface Signal<T> {
     listen(handler: (value: T) => void): () => void;
-    broadcast(body: T): void;
+    send(body: T): void;
 }

@@ -1,61 +1,60 @@
 import type { Client } from '../../client/index.js';
-import { IdentifierMap } from '../../identifier.js';
-import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
+import { Identifier, IdentifierMap } from '../../identifier.js';
 import { PacketType } from '../../network/packet/index.js';
+import { Serializer } from '../../serializer.js';
 import { ExtensionType, type Extension } from '../extension.js';
-import { Signal, SignalType } from './signal.js';
 
+import { SignalPacket, SignalRegisterPacket } from './packets.js';
+import type { Signal } from './signal.js';
+import { SignalType } from './signal.js';
 
 export const SIGNAL_EXTENSION_TYPE = new ExtensionType(
     'signal',
     (client: Client) => new SignalExtension(client),
 );
 
-type SignalPacket = {
-    key: string;
-    body: Uint8Array;
-};
-const SIGNAL_LISTEN_PACKET = PacketType.createJson<string>(SIGNAL_EXTENSION_TYPE, {
-    name: 'listen',
+const SIGNAL_REGISTER_PACKET = PacketType.createSerialized<SignalRegisterPacket>(SIGNAL_EXTENSION_TYPE, {
+    name: 'register',
+    serializer: SignalRegisterPacket,
 });
-const SIGNAL_BROADCAST_PACKET = PacketType.createSerialized<SignalPacket>(SIGNAL_EXTENSION_TYPE, {
-    name: 'broadcast',
-    serializer: {
-        serialize: (data) => {
-            const writer = new ByteWriter();
-            writer.writeString(data.key);
-            writer.writeByteArray(data.body);
-            return writer.finish();
-        },
-        deserialize: (data) => {
-            const reader = new ByteReader(data);
-            const key = reader.readString();
-            const body = reader.readByteArray();
-            reader.finish();
-            return { key, body };
-        },
-    },
+const SIGNAL_LISTEN_PACKET = PacketType.createJson<Identifier>(SIGNAL_EXTENSION_TYPE, {
+    name: 'listen',
+    serializer: Serializer.model(Identifier),
+});
+const SIGNAL_NOTIFY_PACKET = PacketType.createSerialized<SignalPacket>(SIGNAL_EXTENSION_TYPE, {
+    name: 'notify',
+    serializer: SignalPacket,
 });
 
 export class SignalExtension implements Extension {
     private readonly signals = new IdentifierMap<SignalType<unknown>>();
 
     constructor(private readonly client: Client) {
-        client.network.registerPacket(SIGNAL_LISTEN_PACKET, SIGNAL_BROADCAST_PACKET);
+        client.network.registerPacket(
+            SIGNAL_REGISTER_PACKET,
+            SIGNAL_LISTEN_PACKET,
+            SIGNAL_NOTIFY_PACKET,
+        );
+    }
+
+    private createSignal<T>(signalType: SignalType<T>): Signal<T> {
+        if (this.signals.has(signalType.id)) {
+            throw new Error(`Signal for key ${signalType.id} already created`);
+        }
+        return new SignalImpl(
+            this.client,
+            signalType,
+        );
     }
 
     public create<T>(name: string): Signal<T> {
-        const identifier = this.client.app.id.join(name);
-        if (this.signals.has(identifier)) {
-            throw new Error(`Signal for key ${identifier} already created`);
-        }
-        const type = SignalType.createJson<T>(identifier, { name });
-        this.signals.set(identifier, type);
-        return new SignalImpl<T>(this.client, type);
+        const id = this.client.app.id.join(name);
+        const type = SignalType.createJson<T>(id, { name });
+        return this.createSignal(type);
     }
 
     public get<T>(signalType: SignalType<T>): Signal<T> {
-        return new SignalImpl<T>(this.client, signalType);
+        return this.createSignal(signalType);
     }
 }
 
@@ -67,23 +66,22 @@ class SignalImpl<T> implements Signal<T> {
         private readonly client: Client,
         private readonly type: SignalType<T>,
     ) {
-        client.network.addPacketHandler(SIGNAL_BROADCAST_PACKET, (data) => this.handleBroadcast(data));
+        client.network.addPacketHandler(SIGNAL_NOTIFY_PACKET, (data) => this.handleBroadcast(data));
+        client.network.addTask(() => this.onTask());
+        client.listeners.ready.subscribe(() => this.onReady());
     }
 
-    broadcast(body: T): void {
+    public send(body: T): void {
         const data = this.type.serializer.serialize(body);
-        this.client.send(SIGNAL_BROADCAST_PACKET, {
-            key: this.type.identifier.key(),
+        this.client.send(SIGNAL_NOTIFY_PACKET, {
+            id: this.type.id,
             body: data,
         });
     }
 
-    listen(handler: (value: T) => void): () => void {
+    public listen(handler: (value: T) => void): () => void {
         this.listeners.push(handler);
         if (!this.listening) {
-            this.client.network.addTask(() => {
-                this.client.send(SIGNAL_LISTEN_PACKET, this.type.identifier.key());
-            });
             this.listening = true;
         }
         return () => {
@@ -92,12 +90,26 @@ class SignalImpl<T> implements Signal<T> {
     }
 
     private handleBroadcast(data: SignalPacket): void {
-        if (data.key !== this.type.identifier.key()) {
+        if (!data.id.isEqual(this.type.id)) {
             return;
         }
         const body = this.type.serializer.deserialize(data.body);
         for (const listener of this.listeners) {
             listener(body);
         }
+    }
+
+    private onTask(): void {
+        if (!this.type.id.isSubpathOf(this.client.app.id)) {
+            return;
+        }
+        this.client.send(SIGNAL_REGISTER_PACKET, {
+            id: this.type.id,
+            permissions: this.type.permissions,
+        });
+    }
+
+    private onReady(): void {
+        this.client.send(SIGNAL_LISTEN_PACKET, this.type.id);
     }
 }

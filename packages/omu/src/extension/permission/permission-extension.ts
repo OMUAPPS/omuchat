@@ -63,9 +63,13 @@ export class PermissionExtension {
         this.registeredPermissions.set(permission.id, permission);
     }
 
-    public require(...permissionIds: Identifier[]): void {
+    public require(...permissionIds: (Identifier | string)[]): void {
         for (const permissionId of permissionIds) {
-            this.requiredPermissions.add(permissionId);
+            if (typeof permissionId === 'string') {
+                this.requiredPermissions.add(Identifier.fromKey(permissionId));
+            } else {
+                this.requiredPermissions.add(permissionId);
+            }
         }
     }
 
