@@ -110,6 +110,8 @@ class SignalImpl<T> implements Signal<T> {
     }
 
     private onReady(): void {
-        this.client.send(SIGNAL_LISTEN_PACKET, this.type.id);
+        if (this.listening) {
+            this.client.send(SIGNAL_LISTEN_PACKET, this.type.id);
+        }
     }
 }
