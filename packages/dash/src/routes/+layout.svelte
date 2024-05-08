@@ -30,8 +30,12 @@
                 });
             }
         }
-
         language.subscribe(loadLocale);
+        await new Promise<void>((resolve) => {
+            client.listeners.ready.subscribe(() => {
+                resolve();
+            });
+        });
     }
 
     async function loadLocale() {
