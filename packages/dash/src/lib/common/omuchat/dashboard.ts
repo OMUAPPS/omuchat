@@ -1,3 +1,4 @@
+import { currentPage } from '$lib/main/settings.js';
 import { tauriWindow } from '$lib/utils/tauri.js';
 import { type Client } from '@omuchatjs/chat';
 import { App } from '@omuchatjs/omu';
@@ -36,9 +37,14 @@ export class Dashboard implements DashboardHandler {
         client.listeners.ready.subscribe(() => {
             client.i18n.setLocale(window.navigator.languages as Locale[]);
         });
+        this.apps.listeners.add.subscribe(() => {
+            tauriWindow.appWindow.setFocus();
+            currentPage.set('main');
+        });
     }
 
     async handlePermissionRequest(request: PermissionRequest): Promise<boolean> {
+        await tauriWindow.appWindow.setFocus();
         return new Promise<boolean>((resolve) => {
             screenContext.push(PermissionRequestScreen, {
                 request,
