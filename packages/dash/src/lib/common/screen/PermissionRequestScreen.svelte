@@ -46,11 +46,13 @@
             </FlexRowWrapper>
             は以下の権限を要求しています。
         </span>
-        <FlexRowWrapper widthFull justifyContent="center">
-            {#each request.permissions as permission}
-                <PermissionEntry {permission} />
-            {/each}
-        </FlexRowWrapper>
+        <div class="permissions">
+            <FlexColWrapper widthFull>
+                {#each request.permissions as permission}
+                    <PermissionEntry {permission} />
+                {/each}
+            </FlexColWrapper>
+        </div>
         <FlexRowWrapper widthFull between baseline>
             <button on:click={reject} class="reject">
                 拒否
@@ -86,6 +88,10 @@
         font-size: 14px;
         font-weight: 600;
         color: var(--color-1);
+    }
+
+    .permissions {
+        overflow-y: auto;
     }
 
     .accept {
