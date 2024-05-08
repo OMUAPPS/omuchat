@@ -1,31 +1,13 @@
 <script lang="ts">
-    import { createRegistryStore } from '$lib/helper.js';
-    import { AppHeader, ButtonMini, Combobox, FlexRowWrapper } from '@omuchatjs/ui';
-    import { client } from './client.js';
-    import { CONFIG_REGISTRY_TYPE, LANGUAGE_OPTIONS } from './translator.js';
-
-    const config = createRegistryStore(client, CONFIG_REGISTRY_TYPE);
-
-    function toggle() {
-        $config = {
-            ...$config,
-            active: !$config.active,
-        };
-    }
+    import { ButtonMini, Combobox, FlexRowWrapper } from '@omuchatjs/ui';
+    import { config } from './client.js';
+    import { LANGUAGE_OPTIONS } from './translator.js';
 
     $: console.log($config.languages);
 </script>
 
-<AppHeader app={client.app} />
 <main>
-    <h3>オン/オフ</h3>
-    <section>
-        <button on:click={toggle} class:active={$config.active}>
-            {$config.active ? 'オン' : 'オフ'}
-        </button>
-    </section>
-
-    <h3>言語</h3>
+    <h3>翻訳言語</h3>
     <section>
         {#each $config.languages as language, i (i)}
             <FlexRowWrapper>
@@ -85,8 +67,10 @@
         gap: 10px;
         align-items: start;
         justify-content: flex-start;
-        width: 100%;
-        padding: 0px;
+        width: min(100%, 300px);
+        padding: 20px;
         margin-bottom: 20px;
+        background: var(--color-bg-2);
+        color: var(--color-1);
     }
 </style>

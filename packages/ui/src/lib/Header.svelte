@@ -21,10 +21,12 @@
 		flex-direction: row;
 		gap: 40px;
 		align-items: center;
+		justify-content: space-between;
 		width: 100%;
 		min-height: 80px;
-		padding: 20px;
+		padding: 20px 40px;
 		background: var(--color-bg-2);
+		color: var(--color-1);
 		border-bottom: 1px solid var(--color-outline);
 	}
 
@@ -33,16 +35,13 @@
 		flex-direction: row;
 		gap: 10px;
 		align-items: baseline;
-		padding-left: 20px;
 		font-size: 18px;
 		font-weight: 600;
-		color: var(--color-1);
 	}
 
 	.subtitle {
-		margin-left: 30px;
+		margin-left: 10px;
 		font-size: 12px;
 		font-weight: 600;
-		color: var(--color-1);
 	}
 </style>

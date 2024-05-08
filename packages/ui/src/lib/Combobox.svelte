@@ -35,6 +35,7 @@
 		font-weight: 600;
 		color: var(--color-1);
 		background: var(--color-bg-2);
+		outline: 1px solid var(--color-outline);
 		border: none;
 		outline: none;
 		cursor: pointer;

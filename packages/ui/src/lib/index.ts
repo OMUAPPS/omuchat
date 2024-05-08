@@ -21,6 +21,7 @@ export { default as Role } from './Role.svelte';
 export { default as TableList } from './TableList.svelte';
 export { default as Textbox } from './Textbox.svelte';
 export { default as Theme } from './Theme.svelte';
+export { default as Toggle } from './Toggle.svelte';
 export { default as Tooltip } from './Tooltip.svelte';
 export { default as VirtualList } from './VirtualList.svelte';
 export { chat, client, setClient, theme, translate } from './stores.js';

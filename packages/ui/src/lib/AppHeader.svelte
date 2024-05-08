@@ -25,4 +25,6 @@
 	}
 </script>
 
-<Header {title} icon={`ti ti-${icon}`} subtitle={description} />
+<Header {title} icon={`ti ti-${icon}`} subtitle={description}>
+	<slot />
+</Header>
