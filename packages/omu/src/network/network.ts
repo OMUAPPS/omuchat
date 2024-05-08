@@ -5,7 +5,7 @@ import { EventEmitter } from '../event-emitter.js';
 import { IdentifierMap } from '../identifier.js';
 import type { Client } from '../index.js';
 
-import type { Address } from './address.js';
+import type { Address } from '../address.js';
 import type { Connection } from './connection.js';
 import { PacketMapper } from './connection.js';
 import { ConnectPacket, DisconnectType, PACKET_TYPES } from './packet/packet-types.js';

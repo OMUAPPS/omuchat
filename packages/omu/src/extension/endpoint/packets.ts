@@ -1,5 +1,5 @@
+import { ByteReader, ByteWriter } from '../../bytebuffer.js';
 import { Identifier, IdentifierMap } from '../../identifier.js';
-import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 
 export class EndpointRegisterPacket {
     constructor(

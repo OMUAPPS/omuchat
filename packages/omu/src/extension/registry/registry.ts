@@ -1,6 +1,6 @@
+import type { ByteReader, ByteWriter } from '../../bytebuffer.js';
+import { Flags } from '../../bytebuffer.js';
 import { Identifier } from '../../identifier.js';
-import type { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
-import { Flags } from '../../network/bytebuffer.js';
 import type { Serializable } from '../../serializer.js';
 import { Serializer } from '../../serializer.js';
 

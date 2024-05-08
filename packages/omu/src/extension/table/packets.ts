@@ -1,5 +1,5 @@
+import { ByteReader, ByteWriter } from '../../bytebuffer.js';
 import { Identifier } from '../../identifier.js';
-import { ByteReader, ByteWriter } from '../../network/bytebuffer.js';
 
 import type { TableConfig } from './table.js';
 
