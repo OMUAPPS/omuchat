@@ -59,7 +59,7 @@ export type TablePermissions = {
 
 export class TableType<T> {
     constructor(
-        public identifier: Identifier,
+        public id: Identifier,
         public serializer: Serializable<T, Uint8Array>,
         public keyFunction: (item: T) => string,
         public permissions?: TablePermissions,

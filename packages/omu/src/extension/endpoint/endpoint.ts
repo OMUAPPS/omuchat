@@ -3,7 +3,7 @@ import { Serializer, type Serializable } from '../../serializer.js';
 
 export class EndpointType<Req = unknown, Res = unknown> {
     constructor(
-        public readonly identifier: Identifier,
+        public readonly id: Identifier,
         public readonly requestSerializer: Serializable<Req, Uint8Array>,
         public readonly responseSerializer: Serializable<Res, Uint8Array>,
         public readonly permissionId?: Identifier,

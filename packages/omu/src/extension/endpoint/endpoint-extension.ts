@@ -60,10 +60,10 @@ export class EndpointExtension {
     }
 
     public register<Req, Res>(type: EndpointType<Req, Res>, handler: (data: Req) => Promise<Res>): void {
-        if (this.endpointMap.has(type.identifier)) {
-            throw new Error(`Endpoint for key ${type.identifier} already registered`);
+        if (this.endpointMap.has(type.id)) {
+            throw new Error(`Endpoint for key ${type.id} already registered`);
         }
-        this.endpointMap.set(type.identifier, { type, handler });
+        this.endpointMap.set(type.id, { type, handler });
     }
 
     public listen<Req, Res>(handler: (data: Req) => Promise<Res>, name?: string): void {
@@ -79,7 +79,7 @@ export class EndpointExtension {
             this.promiseMap.set(key, { resolve, reject });
         });
         this.client.send(ENDPOINT_CALL_PACKET, {
-            id: endpoint.identifier,
+            id: endpoint.id,
             key,
             data: endpoint.requestSerializer.serialize(data),
         });

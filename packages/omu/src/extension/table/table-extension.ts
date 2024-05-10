@@ -111,17 +111,17 @@ export class TableExtension implements Extension {
         tableType: TableType<T>,
     ): Table<T> {
         this.client.permissions.require(TABLE_PERMISSION_ID);
-        if (this.has(tableType.identifier)) {
+        if (this.has(tableType.id)) {
             throw new Error('Table already exists');
         }
         const table = new TableImpl<T>(this.client, tableType);
-        this.tableMap.set(tableType.identifier, table as Table<unknown>);
+        this.tableMap.set(tableType.id, table as Table<unknown>);
         return table;
     }
 
     public get<T extends Keyable>(type: TableType<T>): Table<T> {
-        if (this.has(type.identifier)) {
-            return this.tableMap.get(type.identifier) as Table<T>;
+        if (this.has(type.id)) {
+            return this.tableMap.get(type.id) as Table<T>;
         }
         return this.create(type);
     }
@@ -137,7 +137,7 @@ export class TableExtension implements Extension {
         },
     ): Table<T> {
         const tableType = TableType.createModel(identifier, { name, model });
-        if (this.has(tableType.identifier)) {
+        if (this.has(tableType.id)) {
             throw new Error('Table already exists');
         }
         return this.create(tableType);
@@ -165,7 +165,7 @@ class TableImpl<T> implements Table<T> {
         private readonly client: Client,
         tableType: TableType<T>,
     ) {
-        this.id = tableType.identifier;
+        this.id = tableType.id;
         this.serializer = tableType.serializer;
         this.keyFunction = tableType.keyFunction;
         this.cache = new Map();
