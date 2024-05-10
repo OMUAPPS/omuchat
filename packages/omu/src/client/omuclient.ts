@@ -20,6 +20,7 @@ import { ClientListeners } from './client.js';
 import type { TokenProvider } from './token.js';
 
 export class OmuClient implements Client {
+    public ready: boolean;
     public running: boolean;
     readonly listeners: ClientListeners;
     readonly app: App;
@@ -44,6 +45,7 @@ export class OmuClient implements Client {
         token: TokenProvider;
         connection?: Connection;
     }) {
+        this.ready = false;
         this.running = false;
         this.listeners = new ClientListeners();
         this.app = options.app;
@@ -63,16 +65,22 @@ export class OmuClient implements Client {
         this.i18n = this.extensions.register(I18N_EXTENSION_TYPE);
         this.server = this.extensions.register(SERVER_EXTENSION_TYPE);
         this.listeners.initialized.emit();
+        this.listeners.ready.subscribe(() => {
+            this.ready = true;
+        });
+        this.network.listeners.disconnected.subscribe(() => {
+            this.ready = false;
+        });
     }
 
-    send<T>(packetType: PacketType<T>, data: T): void {
+    public send<T>(packetType: PacketType<T>, data: T): void {
         this.network.send({
             type: packetType,
             data,
         });
     }
 
-    start(): void {
+    public start(): void {
         if (this.running) {
             throw new Error('Client already running');
         }
@@ -81,7 +89,7 @@ export class OmuClient implements Client {
         this.listeners.started.emit();
     }
 
-    stop(): void {
+    public stop(): void {
         this.running = false;
         this.listeners.stopped.emit();
     }

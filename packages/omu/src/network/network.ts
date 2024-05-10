@@ -1,3 +1,4 @@
+import type { Address } from '../address.js';
 import type { TokenProvider } from '../client/token.js';
 import type { OmuError } from '../errors.js';
 import { AnotherConnection, InvalidOrigin, InvalidPacket, InvalidToken, InvalidVersion, PermissionDenied } from '../errors.js';
@@ -5,7 +6,6 @@ import { EventEmitter } from '../event-emitter.js';
 import { IdentifierMap } from '../identifier.js';
 import type { Client } from '../index.js';
 
-import type { Address } from '../address.js';
 import type { Connection } from './connection.js';
 import { PacketMapper } from './connection.js';
 import { ConnectPacket, DisconnectType, PACKET_TYPES } from './packet/packet-types.js';
@@ -196,10 +196,10 @@ export class Network {
     }
 
     public addTask(task: () => Promise<void> | void): void {
-        this.tasks.push(task);
-        if (this.connected) {
-            task();
+        if (this.client.ready) {
+            throw new Error('Cannot add task after client is ready');
         }
+        this.tasks.push(task);
     }
 
     public removeTask(task: () => Promise<void> | void): void {

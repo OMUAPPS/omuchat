@@ -24,6 +24,7 @@ export class ClientListeners {
 }
 
 export interface Client {
+    readonly ready: boolean;
     readonly app: App;
     readonly token: TokenProvider;
     readonly network: Network;
