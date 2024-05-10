@@ -9,9 +9,9 @@
 	let icon = '';
 	let description = '';
 
-	const metadata = app.metadata;
-	if (metadata) {
-		$client.network.addTask(() => {
+	function updateMetadata() {
+		const metadata = app.metadata;
+		if (metadata) {
 			if (metadata.name) {
 				title = $client.i18n.translate(metadata.name);
 			}
@@ -21,6 +21,14 @@
 			if (metadata.description) {
 				description = $client.i18n.translate(metadata.description);
 			}
+		}
+	}
+
+	if ($client.ready) {
+		updateMetadata();
+	} else {
+		$client.event.ready.subscribe(() => {
+			updateMetadata();
 		});
 	}
 </script>
