@@ -125,7 +125,7 @@ export class Network {
         const listenPromise = this.listen();
         await this.event.status.emit('connected');
         await this.event.connected.emit();
-        this.dispatchTasks();
+        await this.dispatchTasks();
         this.send({
             type: PACKET_TYPES.READY,
             data: null,

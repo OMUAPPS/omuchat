@@ -1,7 +1,6 @@
 import { Client } from '@omuchatjs/chat';
 import { App } from '@omuchatjs/omu';
 import { setClient } from '@omuchatjs/ui';
-import { BROWSER } from 'esm-env';
 import { IDENTIFIER } from './app.js';
 
 const app = new App(IDENTIFIER, {
@@ -11,7 +10,3 @@ export const client = new Client({
     app,
 });
 setClient(client);
-
-if (BROWSER) {
-    client.start();
-}

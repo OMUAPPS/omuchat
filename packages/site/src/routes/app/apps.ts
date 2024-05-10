@@ -1,4 +1,3 @@
-import { events } from '@omuchatjs/chat';
 import { App } from '@omuchatjs/omu';
 import { client } from '../client.js';
 import emoji from './emoji/app.js';
@@ -27,6 +26,6 @@ export function loadApps(origin: string) {
 }
 
 export const appTable = client.dashboard.apps;
-client.on(events.Ready, async () => {
+client.whenReady(async () => {
     console.log(await appTable.fetchAll());
 })

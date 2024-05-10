@@ -9,7 +9,7 @@
 
 	import type { Table } from '@omuchatjs/omu/extension/table/table.js';
 	import type { Keyable } from '@omuchatjs/omu/interface.js';
-	import { onMount, tick, type ComponentType, type SvelteComponent } from 'svelte';
+	import { onMount, onDestroy, tick, type ComponentType, type SvelteComponent } from 'svelte';
 
 	export let table: Table<T>;
 	export let component: ComponentType<SvelteComponent<{ entry: T; selected?: boolean }>>;
@@ -116,18 +116,19 @@
 		}, 200);
 	}
 
+	const unlisten = batchCall(
+		table.listen((items) => {
+			updateCache(items);
+		}),
+		table.event.remove.listen(onRemove),
+		table.event.update.listen(onUpdate),
+		table.event.add.listen(onAdd)
+	);
+
+	onDestroy(unlisten);
 	onMount(() => {
 		viewport.addEventListener('scroll', handleScroll);
-		const unlisten = batchCall(
-			table.listen((items) => {
-				updateCache(items);
-			}),
-			table.event.remove.listen(onRemove),
-			table.event.update.listen(onUpdate),
-			table.event.add.listen(onAdd),
-			() => viewport.removeEventListener('scroll', handleScroll)
-		);
-		return unlisten;
+		return () => viewport.removeEventListener('scroll', handleScroll);
 	});
 
 	function scrollToTop() {

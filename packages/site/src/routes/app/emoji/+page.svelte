@@ -1,5 +1,6 @@
 <script lang="ts">
     import { Header, TableList } from '@omuchatjs/ui';
+    import { BROWSER } from 'esm-env';
     import EmojiEdit from './EmojiEdit.svelte';
     import EmojiEntry from './EmojiEntry.svelte';
     import { IDENTIFIER } from './app.js';
@@ -61,6 +62,10 @@
             }),
         );
         upload(selected);
+    }
+
+    if (BROWSER) {
+        client.start();
     }
 </script>
 
