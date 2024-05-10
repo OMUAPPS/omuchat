@@ -83,7 +83,7 @@ export class Network {
     public registerPacket(...packetTypes: PacketType<unknown>[]): void {
         this.packetMapper.register(...packetTypes);
         for (const type of packetTypes) {
-            this.packetHandlers.set(type.identifier, {
+            this.packetHandlers.set(type.id, {
                 type,
                 handler: null,
             });
@@ -91,9 +91,9 @@ export class Network {
     }
 
     public addPacketHandler<T>(type: PacketType<T>, handler: (packet: T) => void): void {
-        const listeners = this.packetHandlers.get(type.identifier) as PacketHandler<unknown> | undefined;
+        const listeners = this.packetHandlers.get(type.id) as PacketHandler<unknown> | undefined;
         if (!listeners) {
-            throw new Error(`Packet type ${type.identifier.key()} not registered`);
+            throw new Error(`Packet type ${type.id.key()} not registered`);
         }
         listeners.handler = handler as (packet: unknown) => void;
     }
@@ -174,12 +174,12 @@ export class Network {
 
     private async dispatchPacket(packet: Packet): Promise<void> {
         await this.listeners.packet.emit(packet);
-        const packetHandler = this.packetHandlers.get(packet.type.identifier);
+        const packetHandler = this.packetHandlers.get(packet.type.id);
         if (!packetHandler) {
             return;
         }
         if (!packetHandler.handler) {
-            throw new Error(`No handler for packet type ${packet.type.identifier.key()}`);
+            throw new Error(`No handler for packet type ${packet.type.id.key()}`);
         }
         await packetHandler.handler(packet.data);
     }

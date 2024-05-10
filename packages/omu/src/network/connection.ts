@@ -11,16 +11,16 @@ export class PacketMapper implements Serializable<Packet, PacketData> {
 
     public register(...packetTypes: PacketType<unknown>[]): void {
         for (const type of packetTypes) {
-            if (this.packetMap.has(type.identifier)) {
-                throw new Error(`Packet id ${type.identifier.key()} already registered`);
+            if (this.packetMap.has(type.id)) {
+                throw new Error(`Packet id ${type.id.key()} already registered`);
             }
-            this.packetMap.set(type.identifier, type);
+            this.packetMap.set(type.id, type);
         }
     }
 
     serialize(packet: Packet): PacketData {
         return {
-            type: packet.type.identifier.key(),
+            type: packet.type.id.key(),
             data: packet.type.serializer.serialize(packet.data),
         };
     }

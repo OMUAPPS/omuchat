@@ -13,7 +13,7 @@ export interface Packet<T = unknown> {
 
 export class PacketType<T> {
     constructor(
-        public readonly identifier: Identifier,
+        public readonly id: Identifier,
         public readonly serializer: Serializable<T, Uint8Array>,
     ) { }
 
