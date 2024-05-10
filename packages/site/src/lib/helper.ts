@@ -10,19 +10,19 @@ export function createRegistryStore<T>(
     const registry = client.registry.get(registryType);
 
     let lastValue: T = registryType.defaultValue;
-    registry.listen(value => {
-        if (value === lastValue) {
-            return;
-        }
-        lastValue = value;
-        store.set(value);
-    });
     store.subscribe(value => {
         if (value === lastValue) {
             return;
         }
         lastValue = value;
         registry.set(value);
+    });
+    registry.listen(value => {
+        if (value === lastValue) {
+            return;
+        }
+        lastValue = value;
+        store.set(value);
     });
 
     return store;

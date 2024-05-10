@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { Header, TableList } from '@omuchatjs/ui';
+    import { FlexRowWrapper, Header, TableList, Textbox, Toggle } from '@omuchatjs/ui';
     import { BROWSER } from 'esm-env';
     import EmojiEdit from './EmojiEdit.svelte';
     import EmojiEntry from './EmojiEntry.svelte';
     import { IDENTIFIER } from './app.js';
     import { client } from './client.js';
-    import { EMOJI_TABLE, Emoji, selectedEmoji } from './emoji.js';
+    import { EMOJI_TABLE, Emoji, config, selectedEmoji } from './emoji.js';
 
     const emojis = client.tables.get(EMOJI_TABLE);
 
@@ -27,7 +27,7 @@
         uploading++;
         const assets = await client.assets.uploadMany(
             ...files.map(({ key, buffer }) => ({
-                identifier: IDENTIFIER.join(key.split('.')[0]),
+                identifier: IDENTIFIER.join(key),
                 buffer,
             })),
         );
@@ -56,7 +56,10 @@
         if (!files) return;
         const selected = await Promise.all(
             Array.from(files).map(async (file) => {
-                const name = file.name;
+                let name = file.name.split('.')[0];
+                if (name.length === 0) {
+                    name = `emoji-${Date.now().toString().slice(-6)}`;
+                }
                 const buffer = await file.arrayBuffer();
                 return { key: name, buffer: new Uint8Array(buffer) };
             }),
@@ -67,13 +70,21 @@
     if (BROWSER) {
         client.start();
     }
+
+    function toggle() {
+        $config = {
+            ...$config,
+            active: !$config.active,
+        };
+    }
 </script>
 
 <main>
     <Header title="絵文字" icon="ti-icons">
-        <div class="search">
-            <input placeholder="検索" bind:value={search} on:input={updateFilter} />
-        </div>
+        <FlexRowWrapper gap alignItems="center">
+            <Textbox placeholder="検索" bind:value={search} on:input={updateFilter} />
+            <Toggle value={$config.active} handleToggle={toggle} />
+        </FlexRowWrapper>
     </Header>
     {#if $selectedEmoji}
         <div class="emoji-edit">
@@ -146,13 +157,14 @@
     }
 
     button {
-        align-self: flex-end;
+        outline: 1px solid var(--color-1);
+        align-self: flex-start;
         display: flex;
         flex-direction: row;
         gap: 5px;
         align-items: center;
         width: fit-content;
-        padding: 5px 10px;
+        padding: 0.5rem 1rem;
         font-size: 14px;
         font-weight: bold;
         color: var(--color-1);

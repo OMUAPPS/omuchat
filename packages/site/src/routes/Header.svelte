@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { page } from '$app/stores';
     import github from '$lib/images/github.svg';
     import title from '$lib/images/title.svg';

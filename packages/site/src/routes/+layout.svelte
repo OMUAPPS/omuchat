@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { page } from '$app/stores';
     import { Theme } from '@omuchatjs/ui';
     import Header from './Header.svelte';

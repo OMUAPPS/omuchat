@@ -1,5 +1,7 @@
+import { createRegistryStore } from "$lib/helper.js";
 import { models } from "@omuchatjs/chat";
 import { Provider } from "@omuchatjs/chat/models/provider.js";
+import { RegistryType } from "@omuchatjs/omu/extension/registry/registry.js";
 import { TableType } from "@omuchatjs/omu/extension/table/index.js";
 import { Identifier } from "@omuchatjs/omu/identifier.js";
 import type { Keyable } from "@omuchatjs/omu/interface.js";
@@ -8,6 +10,18 @@ import { writable } from "svelte/store";
 import { IDENTIFIER } from "./app.js";
 import { client } from "./client.js";
 
+const PLUGIN_IDENTIFIER = IDENTIFIER.join('plugin');
+
+export type EmojiConfig = {
+    active: boolean;
+}
+
+export const config = createRegistryStore(client, RegistryType.createJson<EmojiConfig>(PLUGIN_IDENTIFIER, {
+    name: 'config',
+    defaultValue: {
+        active: true,
+    },
+}));
 
 export type TextPattern = {
     type: "text";
@@ -85,7 +99,7 @@ export class Emoji implements Model<EmojiData>, Keyable {
     }
 }
 
-export const EMOJI_TABLE = TableType.createModel(IDENTIFIER.join("plugin"), {
+export const EMOJI_TABLE = TableType.createModel(PLUGIN_IDENTIFIER, {
     name: "emoji",
     model: Emoji
 })
