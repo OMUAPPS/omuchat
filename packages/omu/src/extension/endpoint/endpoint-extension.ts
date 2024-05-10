@@ -23,7 +23,7 @@ type EndpointHandler = {
 };
 
 export class EndpointExtension {
-    private readonly endpointMap = new IdentifierMap<EndpointHandler>();
+    private readonly registeredEndpoints = new IdentifierMap<EndpointHandler>();
     private readonly promiseMap: Map<number, CallPromise> = new Map();
     private callId: number;
 
@@ -47,12 +47,12 @@ export class EndpointExtension {
             this.promiseMap.delete(event.key);
             promise.reject(new Error(event.error));
         });
-        client.network.event.connected.subscribe(() => this.handleConnected());
+        client.network.addTask(() => this.onTask());
     }
 
-    public handleConnected(): void {
+    private onTask(): void {
         const endpoints = new IdentifierMap<Identifier | undefined>();
-        for (const [key, endpoint] of this.endpointMap) {
+        for (const [key, endpoint] of this.registeredEndpoints) {
             endpoints.set(key, endpoint.type.permissionId);
         }
         const packet = new EndpointRegisterPacket(endpoints);
@@ -60,10 +60,13 @@ export class EndpointExtension {
     }
 
     public register<Req, Res>(type: EndpointType<Req, Res>, handler: (data: Req) => Promise<Res>): void {
-        if (this.endpointMap.has(type.id)) {
+        if (this.client.running) {
+            throw new Error('Cannot register endpoints after the client has started');
+        }
+        if (this.registeredEndpoints.has(type.id)) {
             throw new Error(`Endpoint for key ${type.id} already registered`);
         }
-        this.endpointMap.set(type.id, { type, handler });
+        this.registeredEndpoints.set(type.id, { type, handler });
     }
 
     public listen<Req, Res>(handler: (data: Req) => Promise<Res>, name?: string): void {

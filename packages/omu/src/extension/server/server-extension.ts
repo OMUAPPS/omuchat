@@ -48,10 +48,10 @@ export class ServerExtension implements Extension {
             REQUIRE_APPS_PACKET_TYPE,
         );
         this.apps = client.tables.get(APP_TABLE_TYPE);
-        client.network.event.connected.subscribe(() => this.onConnected());
+        client.network.addTask(() => this.onTask());
     }
 
-    private async onConnected(): Promise<void> {
+    private async onTask(): Promise<void> {
         this.client.send(REQUIRE_APPS_PACKET_TYPE, Array.from(this.requiredApps.values()));
     }
 
@@ -60,6 +60,9 @@ export class ServerExtension implements Extension {
     }
 
     public require(...appIds: Identifier[]): void {
+        if (this.client.running) {
+            throw new Error('Cannot require apps after the client has started');
+        }
         for (const appId of appIds) {
             this.requiredApps.add(appId);
         }

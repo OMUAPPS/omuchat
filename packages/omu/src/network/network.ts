@@ -199,7 +199,7 @@ export class Network {
     }
 
     public addTask(task: () => Promise<void> | void): void {
-        if (this.client.ready) {
+        if (this.client.running) {
             throw new Error('Cannot add task after client is ready');
         }
         this.tasks.push(task);

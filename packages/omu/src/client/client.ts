@@ -24,6 +24,7 @@ export type ClientEvents = {
 
 export interface Client {
     readonly ready: boolean;
+    readonly running: boolean;
     readonly app: App;
     readonly token: TokenProvider;
     readonly network: Network;
@@ -38,7 +39,6 @@ export interface Client {
     readonly assets: AssetExtension;
     readonly i18n: I18nExtension;
     readonly server: ServerExtension;
-    readonly running: boolean;
 
     start(): void;
     stop(): void;

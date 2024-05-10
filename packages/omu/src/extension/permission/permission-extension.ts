@@ -41,25 +41,22 @@ export class PermissionExtension {
                 this.permissions.set(permission.id, permission);
             }
         });
-        client.network.event.connected.subscribe(() => this.onConnected());
         client.network.addTask(() => this.onTask());
     }
 
-    private onConnected(): void {
-        if (this.registeredPermissions.size === 0) {
-            return;
-        }
-        this.client.send(PERMISSION_REGISTER_PACKET, Array.from(this.registeredPermissions.values()));
-    }
-
     private onTask(): void {
-        if (this.requiredPermissions.size === 0) {
-            return;
+        if (this.registeredPermissions.size > 0) {
+            this.client.send(PERMISSION_REGISTER_PACKET, Array.from(this.registeredPermissions.values()));
         }
-        this.client.send(PERMISSION_REQUIRE_PACKET, Array.from(this.requiredPermissions.values()));
+        if (this.requiredPermissions.size > 0) {
+            this.client.send(PERMISSION_REQUIRE_PACKET, Array.from(this.requiredPermissions.values()));
+        }
     }
 
     public register(permission: PermissionType): void {
+        if (this.client.running) {
+            this.client.send(PERMISSION_REGISTER_PACKET, [permission]);
+        }
         this.registeredPermissions.set(permission.id, permission);
     }
 

@@ -462,8 +462,8 @@ class TableImpl<T> implements Table<T> {
     }
 
     public setConfig(config: TableConfig): void {
-        if (this.client.ready) {
-            throw new Error('Cannot set config after client is ready');
+        if (this.client.running) {
+            throw new Error('Cannot set config after client has started');
         }
         this.config = config;
     }
