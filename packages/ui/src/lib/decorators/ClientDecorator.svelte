@@ -11,9 +11,7 @@
 				})
 			})
 		);
-		return new Promise<void>((resolve) => {
-			$client.network.event.connected.subscribe(resolve);
-		});
+		return new Promise<void>((resolve) => $client.whenReady(resolve));
 	};
 </script>
 
