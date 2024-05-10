@@ -95,4 +95,14 @@ export class OmuClient implements Client {
         this.running = false;
         this.event.stopped.emit();
     }
+
+    public whenReady(callback: () => void): () => void {
+        if (this.ready) {
+            callback();
+        }
+        this.event.ready.subscribe(callback);
+        return () => {
+            this.event.ready.unsubscribe(callback);
+        };
+    }
 }

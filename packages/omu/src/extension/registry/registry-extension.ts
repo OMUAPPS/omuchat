@@ -65,8 +65,7 @@ class RegistryImpl<T> implements Registry<T> {
     ) {
         this.value = type.defaultValue;
         client.network.addPacketHandler(REGISTRY_UPDATE_PACKET, (packet) => this.handleUpdate(packet));
-        client.network.addTask(() => this.onReadyTask());
-        client.event.ready.subscribe(() => this.onReady());
+        client.network.addTask(() => this.onTask());
     }
 
     public async get(): Promise<T> {
@@ -95,6 +94,9 @@ class RegistryImpl<T> implements Registry<T> {
 
     public listen(handler: (value: T) => void): () => void {
         if (!this.listening) {
+            this.client.whenReady(() => {
+                this.client.send(REGISTRY_LISTEN_PACKET, this.type.id);
+            });
             this.listening = true;
         }
         this.eventEmitter.subscribe(handler);
@@ -113,7 +115,7 @@ class RegistryImpl<T> implements Registry<T> {
         this.eventEmitter.emit(this.value);
     }
 
-    private onReadyTask(): void {
+    private onTask(): void {
         if (!this.type.id.isSubpathOf(this.client.app.id)) {
             return;
         }
@@ -121,12 +123,6 @@ class RegistryImpl<T> implements Registry<T> {
             id: this.type.id,
             permissions: this.type.permissions,
         });
-    }
-
-    private onReady(): void {
-        if (this.listening) {
-            this.client.send(REGISTRY_LISTEN_PACKET, this.type.id);
-        }
     }
 }
 

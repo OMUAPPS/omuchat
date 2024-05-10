@@ -17,9 +17,13 @@ export const SERVER_EXTENSION_TYPE: ExtensionType<ServerExtension> = new Extensi
     () => [TABLE_EXTENSION_TYPE],
 );
 
+export const SERVER_APPS_READ_PERMISSION_ID = SERVER_EXTENSION_TYPE.join('apps', 'read');
 const APP_TABLE_TYPE = TableType.createModel(SERVER_EXTENSION_TYPE, {
     name: 'apps',
     model: App,
+    permissions: {
+        read: SERVER_APPS_READ_PERMISSION_ID,
+    },
 });
 export const SERVER_SHUTDOWN_PERMISSION_ID = SERVER_EXTENSION_TYPE.join('shutdown');
 const SHUTDOWN_ENDPOINT_TYPE = EndpointType.createJson<boolean, boolean>(SERVER_EXTENSION_TYPE, {

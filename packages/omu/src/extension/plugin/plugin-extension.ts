@@ -14,10 +14,10 @@ export class PluginExtension {
         client.network.registerPacket(
             PLUGIN_REQUIRE_PACKET,
         );
-        client.network.addTask(() => this.handleConnected());
+        client.network.addTask(() => this.onTask());
     }
 
-    private async handleConnected(): Promise<void> {
+    private async onTask(): Promise<void> {
         this.client.send(PLUGIN_REQUIRE_PACKET, Object.fromEntries(this.requiredPlugins));
     }
 

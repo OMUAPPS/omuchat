@@ -85,18 +85,7 @@ export class DashboardExtension {
         client.network.addPacketHandler(DASHBOARD_PERMISSION_REQUEST_PACKET, (request) => this.handlePermissionRequest(request));
         client.network.addPacketHandler(DASHBOARD_PLUGIN_REQUEST_PACKET, (request) => this.handlePluginRequest(request));
         client.network.addPacketHandler(DASHBOARD_OPEN_APP_PACKET, (app) => this.handleOpenApp(app));
-        client.event.ready.subscribe(() => this.onReady());
         this.apps = client.tables.get(DASHBOARD_APP_TABLE_TYPE);
-    }
-
-    private async onReady(): Promise<void> {
-        if (this.dashboard === null) {
-            return;
-        }
-        const response = await this.client.endpoints.call(DASHBOARD_SET_ENDPOINT, this.client.app.id);
-        if (!response.success) {
-            throw new Error('Failed to set dashboard');
-        }
     }
 
     private async handlePermissionRequest(request: PermissionRequestPacket): Promise<void> {
@@ -140,6 +129,12 @@ export class DashboardExtension {
             throw new Error('Dashboard already set');
         }
         this.dashboard = dashboard;
+        this.client.whenReady(async () => {
+            const response = await this.client.endpoints.call(DASHBOARD_SET_ENDPOINT, this.client.app.id);
+            if (!response.success) {
+                throw new Error('Failed to set dashboard');
+            }
+        });
     }
 
     public async openApp(app: App): Promise<void> {

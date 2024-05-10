@@ -45,4 +45,5 @@ export interface Client {
     send<T>(type: PacketType<T>, data: T): void;
 
     event: ClientEvents;
+    whenReady(callback: () => void): () => void;
 }

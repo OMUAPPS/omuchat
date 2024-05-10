@@ -53,7 +53,7 @@
 		return await fetchLock;
 	}
 
-	$client.event.ready.subscribe(() => {
+	$client.whenReady(() => {
 		entries.clear();
 		fetch();
 	});

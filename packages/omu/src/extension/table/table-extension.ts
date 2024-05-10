@@ -258,7 +258,12 @@ class TableImpl<T> implements Table<T> {
     }
 
     public listen(listener?: (items: Map<string, T>) => void): () => void {
-        this.listening = true;
+        if (!this.listening) {
+            this.client.whenReady(() => {
+                this.client.send(TABLE_LISTEN_PACKET, this.id);
+            });
+            this.listening = true;
+        }
         if (listener) {
             this.event.cacheUpdate.subscribe(listener);
             return () => {
@@ -269,6 +274,16 @@ class TableImpl<T> implements Table<T> {
     }
 
     public proxy(callback: (item: T) => T | undefined): () => void {
+        if (this.proxies.length === 0) {
+            let cancel = (): void => { };
+            cancel = this.client.whenReady(() => {
+                if (this.proxies.length === 0) {
+                    cancel();
+                    return;
+                }
+                this.client.send(TABLE_PROXY_LISTEN_PACKET, this.id);
+            });
+        }
         this.proxies.push(callback);
         return () => {
             this.proxies.splice(this.proxies.indexOf(callback), 1);
@@ -281,12 +296,6 @@ class TableImpl<T> implements Table<T> {
                 id: this.id,
                 config: this.config,
             });
-        }
-        if (this.proxies.length > 0) {
-            this.client.send(TABLE_PROXY_LISTEN_PACKET, this.id);
-        }
-        if (this.listening) {
-            this.client.send(TABLE_LISTEN_PACKET, this.id);
         }
     }
 
@@ -453,6 +462,9 @@ class TableImpl<T> implements Table<T> {
     }
 
     public setConfig(config: TableConfig): void {
+        if (this.client.ready) {
+            throw new Error('Cannot set config after client is ready');
+        }
         this.config = config;
     }
 

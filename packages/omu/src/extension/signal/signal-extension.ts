@@ -68,7 +68,6 @@ class SignalImpl<T> implements Signal<T> {
     ) {
         client.network.addPacketHandler(SIGNAL_NOTIFY_PACKET, (data) => this.handleBroadcast(data));
         client.network.addTask(() => this.onTask());
-        client.event.ready.subscribe(() => this.onReady());
     }
 
     public send(body: T): void {
@@ -80,10 +79,13 @@ class SignalImpl<T> implements Signal<T> {
     }
 
     public listen(handler: (value: T) => void): () => void {
-        this.listeners.push(handler);
         if (!this.listening) {
+            this.client.whenReady(() => {
+                this.client.send(SIGNAL_LISTEN_PACKET, this.type.id);
+            });
             this.listening = true;
         }
+        this.listeners.push(handler);
         return () => {
             this.listeners.splice(this.listeners.indexOf(handler), 1);
         };
@@ -107,11 +109,5 @@ class SignalImpl<T> implements Signal<T> {
             id: this.type.id,
             permissions: this.type.permissions,
         });
-    }
-
-    private onReady(): void {
-        if (this.listening) {
-            this.client.send(SIGNAL_LISTEN_PACKET, this.type.id);
-        }
     }
 }
