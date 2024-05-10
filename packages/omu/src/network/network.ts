@@ -13,7 +13,7 @@ import type { Packet, PacketType } from './packet/packet.js';
 
 type PacketHandler<T> = {
     readonly type: PacketType<T>,
-    handler: ((packet: T) => Promise<void> | void) | null,
+    event: EventEmitter<(packet: T) => void>,
 };
 
 export type NetworkStatus = 'connecting' | 'connected' | 'disconnected';
@@ -85,7 +85,7 @@ export class Network {
         for (const type of packetTypes) {
             this.packetHandlers.set(type.id, {
                 type,
-                handler: null,
+                event: new EventEmitter(),
             });
         }
     }
@@ -95,7 +95,7 @@ export class Network {
         if (!listeners) {
             throw new Error(`Packet type ${type.id.key()} not registered`);
         }
-        listeners.handler = handler as (packet: unknown) => void;
+        listeners.event.listen(handler as (packet: unknown) => void);
     }
 
     public async connect(recconect = true): Promise<void> {
@@ -178,10 +178,7 @@ export class Network {
         if (!packetHandler) {
             return;
         }
-        if (!packetHandler.handler) {
-            throw new Error(`No handler for packet type ${packet.type.id.key()}`);
-        }
-        await packetHandler.handler(packet.data);
+        await packetHandler.event.emit(packet.data);
     }
 
     public addTask(task: () => Promise<void> | void): void {
