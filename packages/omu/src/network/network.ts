@@ -69,7 +69,7 @@ export class Network {
             }
         });
         this.addPacketHandler(PACKET_TYPES.READY, () => {
-            this.client.listeners.ready.emit();
+            this.client.event.ready.emit();
         });
     }
 

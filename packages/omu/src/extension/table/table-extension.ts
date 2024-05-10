@@ -238,7 +238,7 @@ class TableImpl<T> implements Table<T> {
             this.listeners.clear.emit();
             this.listeners.cacheUpdate.emit(this.cache);
         });
-        client.listeners.ready.subscribe(() => this.onReady());
+        client.event.ready.subscribe(() => this.onReady());
     }
     private updateCache(items: Map<string, T>): void {
         if (!this.cacheSize) {

@@ -68,7 +68,7 @@ class SignalImpl<T> implements Signal<T> {
     ) {
         client.network.addPacketHandler(SIGNAL_NOTIFY_PACKET, (data) => this.handleBroadcast(data));
         client.network.addTask(() => this.onTask());
-        client.listeners.ready.subscribe(() => this.onReady());
+        client.event.ready.subscribe(() => this.onReady());
     }
 
     public send(body: T): void {

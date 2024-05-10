@@ -1,5 +1,5 @@
 import type { App } from '../app.js';
-import { EventEmitter } from '../event-emitter.js';
+import type { EventEmitter } from '../event-emitter.js';
 import type { AssetExtension } from '../extension/asset/index.js';
 import type { DashboardExtension } from '../extension/dashboard/index.js';
 import type { EndpointExtension } from '../extension/endpoint/index.js';
@@ -16,10 +16,10 @@ import type { PacketType } from '../network/packet/packet.js';
 
 import type { TokenProvider } from './token.js';
 
-export class ClientListeners {
-    public readonly started = new EventEmitter<() => void>();
-    public readonly stopped = new EventEmitter<() => void>();
-    public readonly ready = new EventEmitter<() => void>();
+export type ClientEvents = {
+    started: EventEmitter<() => void>;
+    stopped: EventEmitter<() => void>;
+    ready: EventEmitter<() => void>;
 }
 
 export interface Client {
@@ -44,5 +44,5 @@ export interface Client {
     stop(): void;
     send<T>(type: PacketType<T>, data: T): void;
 
-    listeners: ClientListeners;
+    event: ClientEvents;
 }

@@ -71,7 +71,7 @@ client.permissions.require(
 
 
 if (BROWSER) {
-    client.listeners.ready.subscribe(() => {
+    client.event.ready.subscribe(() => {
         client.i18n.setLocale(window.navigator.languages as Locale[]);
     })
 }

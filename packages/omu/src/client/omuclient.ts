@@ -1,4 +1,5 @@
 import type { App } from '../app.js';
+import { EventEmitter } from '../event-emitter.js';
 import { ASSET_EXTENSION_TYPE, type AssetExtension } from '../extension/asset/index.js';
 import { DASHBOARD_EXTENSION_TYPE, type DashboardExtension } from '../extension/dashboard/index.js';
 import { ENDPOINT_EXTENSION_TYPE, type EndpointExtension } from '../extension/endpoint/index.js';
@@ -15,14 +16,17 @@ import { Network } from '../network/index.js';
 import type { PacketType } from '../network/packet/packet.js';
 import { WebsocketConnection } from '../network/websocket-connection.js';
 
-import type { Client } from './client.js';
-import { ClientListeners } from './client.js';
+import type { Client, ClientEvents } from './client.js';
 import type { TokenProvider } from './token.js';
 
 export class OmuClient implements Client {
     public ready: boolean;
     public running: boolean;
-    readonly listeners: ClientListeners;
+    readonly event: ClientEvents = {
+        started: new EventEmitter(),
+        stopped: new EventEmitter(),
+        ready: new EventEmitter(),
+    };
     readonly app: App;
     readonly token: TokenProvider;
     readonly address: Address;
@@ -47,7 +51,6 @@ export class OmuClient implements Client {
     }) {
         this.ready = false;
         this.running = false;
-        this.listeners = new ClientListeners();
         this.app = options.app;
         this.token = options.token;
         this.address = options.address;
@@ -64,7 +67,7 @@ export class OmuClient implements Client {
         this.assets = this.extensions.register(ASSET_EXTENSION_TYPE);
         this.i18n = this.extensions.register(I18N_EXTENSION_TYPE);
         this.server = this.extensions.register(SERVER_EXTENSION_TYPE);
-        this.listeners.ready.subscribe(() => {
+        this.event.ready.subscribe(() => {
             this.ready = true;
         });
         this.network.listeners.disconnected.subscribe(() => {
@@ -85,11 +88,11 @@ export class OmuClient implements Client {
         }
         this.running = true;
         this.network.connect();
-        this.listeners.started.emit();
+        this.event.started.emit();
     }
 
     public stop(): void {
         this.running = false;
-        this.listeners.stopped.emit();
+        this.event.stopped.emit();
     }
 }

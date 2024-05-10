@@ -3,7 +3,7 @@
     import { client, config } from './client.js';
 
     const promise = new Promise<void>((resolve) => {
-        client.listeners.ready.subscribe(() => {
+        client.event.ready.subscribe(() => {
             resolve();
         });
     });

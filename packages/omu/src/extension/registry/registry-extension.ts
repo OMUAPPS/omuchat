@@ -66,7 +66,7 @@ class RegistryImpl<T> implements Registry<T> {
         this.value = type.defaultValue;
         client.network.addPacketHandler(REGISTRY_UPDATE_PACKET, (packet) => this.handleUpdate(packet));
         client.network.addTask(() => this.onReadyTask());
-        client.listeners.ready.subscribe(() => this.onReady());
+        client.event.ready.subscribe(() => this.onReady());
     }
 
     public async get(): Promise<T> {

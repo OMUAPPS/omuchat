@@ -85,7 +85,7 @@ export class DashboardExtension {
         client.network.addPacketHandler(DASHBOARD_PERMISSION_REQUEST_PACKET, (request) => this.handlePermissionRequest(request));
         client.network.addPacketHandler(DASHBOARD_PLUGIN_REQUEST_PACKET, (request) => this.handlePluginRequest(request));
         client.network.addPacketHandler(DASHBOARD_OPEN_APP_PACKET, (app) => this.handleOpenApp(app));
-        client.listeners.ready.subscribe(() => this.onReady());
+        client.event.ready.subscribe(() => this.onReady());
         this.apps = client.tables.get(DASHBOARD_APP_TABLE_TYPE);
     }
 

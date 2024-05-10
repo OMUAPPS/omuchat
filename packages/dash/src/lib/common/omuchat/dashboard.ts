@@ -36,7 +36,7 @@ export class Dashboard implements DashboardHandler {
         this.assets = client.tables.get(AssetsTableKey);
         this.bookmarks = client.tables.get(BookmarksTableKey);
         client.dashboard.set(this);
-        client.listeners.ready.subscribe(() => {
+        client.event.ready.subscribe(() => {
             client.i18n.setLocale(window.navigator.languages as Locale[]);
         });
         this.apps.listeners.add.subscribe(() => {
