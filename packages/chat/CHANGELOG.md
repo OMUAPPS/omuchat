@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.1.15 (2024-05-10)
+
+
+### Bug Fixes
+
+* **dash:** requirementsを最新に更新 ([bd2a84d](https://github.com/OMUCHAT/omuchat/commit/bd2a84d62320606f8304e94f2e6e045e9b4a2014))
+
+
+
+
+
 ## 0.1.14 (2024-04-04)
 
 **Note:** Version bump only for package @omuchatjs/chat
