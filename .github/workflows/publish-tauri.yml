@@ -2,15 +2,6 @@ name: Publish Tauri
 
 on:
     workflow_dispatch:
-        inputs:
-            releaseType:
-                type: choice
-                description: Release type
-                required: true
-                options:
-                    - release
-                    - prerelease
-                    - graduate
 
 permissions:
     contents: write # for checkout and tag
