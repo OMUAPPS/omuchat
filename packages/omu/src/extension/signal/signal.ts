@@ -1,5 +1,6 @@
 import type { ByteReader, ByteWriter } from '../../bytebuffer.js';
 import { Flags } from '../../bytebuffer.js';
+import type { Unlisten } from '../../event-emitter.js';
 import { Identifier } from '../../identifier.js';
 import type { Serializable } from '../../serializer.js';
 import { Serializer } from '../../serializer.js';
@@ -79,6 +80,6 @@ export class SignalType<T> {
 }
 
 export interface Signal<T> {
-    listen(handler: (value: T) => void): () => void;
+    listen(handler: (value: T) => void): Unlisten;
     send(body: T): void;
 }

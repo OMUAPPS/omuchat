@@ -61,6 +61,9 @@ export class PermissionExtension {
     }
 
     public require(...permissionIds: (Identifier | string)[]): void {
+        if (this.client.running) {
+            throw new Error('Permissions must be required before the client starts');
+        }
         for (const permissionId of permissionIds) {
             if (typeof permissionId === 'string') {
                 this.requiredPermissions.add(Identifier.fromKey(permissionId));

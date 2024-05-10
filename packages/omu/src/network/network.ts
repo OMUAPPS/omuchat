@@ -184,20 +184,6 @@ export class Network {
         await packetHandler.handler(packet.data);
     }
 
-    public waitForConnection(): Promise<void> {
-        return new Promise((resolve) => {
-            if (this.connected) {
-                resolve();
-                return;
-            }
-            const onConnected = (): void => {
-                this.event.connected.unsubscribe(onConnected);
-                resolve();
-            };
-            this.event.connected.subscribe(onConnected);
-        });
-    }
-
     public addTask(task: () => Promise<void> | void): void {
         if (this.client.running) {
             throw new Error('Cannot add task after client is ready');

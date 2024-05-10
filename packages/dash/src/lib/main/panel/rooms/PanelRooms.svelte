@@ -23,7 +23,7 @@
         rooms = newRooms;
     });
 
-    client.event.ready.subscribe(() => {
+    client.whenReady(() => {
         chat.rooms.fetchItems({
             after: 100,
         });

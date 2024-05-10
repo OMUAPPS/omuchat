@@ -36,10 +36,10 @@ export class Dashboard implements DashboardHandler {
         this.assets = client.tables.get(AssetsTableKey);
         this.bookmarks = client.tables.get(BookmarksTableKey);
         client.dashboard.set(this);
-        client.event.ready.subscribe(() => {
+        client.whenReady(() => {
             client.i18n.setLocale(window.navigator.languages as Locale[]);
         });
-        this.apps.event.add.subscribe(() => {
+        this.apps.event.add.listen(() => {
             tauriWindow.appWindow.setFocus();
             currentPage.set('main');
         });

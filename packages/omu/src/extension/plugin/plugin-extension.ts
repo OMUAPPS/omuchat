@@ -22,6 +22,9 @@ export class PluginExtension {
     }
 
     public require(plugins: Record<string, string | null>): void {
+        if (this.client.running) {
+            throw new Error('Plugins must be required before the client starts');
+        }
         for (const [key, value] of Object.entries(plugins)) {
             this.requiredPlugins.set(key, value);
         }

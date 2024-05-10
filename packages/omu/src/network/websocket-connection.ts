@@ -1,8 +1,8 @@
 
-import type { Serializable } from '../serializer.js';
-
 import type { Address } from '../address.js';
 import { ByteReader, ByteWriter } from '../bytebuffer.js';
+import type { Serializable } from '../serializer.js';
+
 import type { Connection } from './connection.js';
 import type { Packet, PacketData } from './packet/packet.js';
 

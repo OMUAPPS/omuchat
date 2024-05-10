@@ -1,5 +1,6 @@
 import type { ByteReader, ByteWriter } from '../../bytebuffer.js';
 import { Flags } from '../../bytebuffer.js';
+import type { Unlisten } from '../../event-emitter.js';
 import { Identifier } from '../../identifier.js';
 import type { Serializable } from '../../serializer.js';
 import { Serializer } from '../../serializer.js';
@@ -92,5 +93,5 @@ export interface Registry<T> {
     get(): Promise<T>;
     set(value: T): Promise<void>;
     update(fn: (value: T) => T): Promise<void>;
-    listen(fn: (value: T) => void): () => void;
+    listen(fn: (value: T) => void): Unlisten;
 }

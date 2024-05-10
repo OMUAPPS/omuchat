@@ -1,4 +1,5 @@
 import type { App } from '../app.js';
+import type { Unlisten } from '../event-emitter.js';
 import { EventEmitter } from '../event-emitter.js';
 import { ASSET_EXTENSION_TYPE, type AssetExtension } from '../extension/asset/index.js';
 import { DASHBOARD_EXTENSION_TYPE, type DashboardExtension } from '../extension/dashboard/index.js';
@@ -67,10 +68,10 @@ export class OmuClient implements Client {
         this.assets = this.extensions.register(ASSET_EXTENSION_TYPE);
         this.i18n = this.extensions.register(I18N_EXTENSION_TYPE);
         this.server = this.extensions.register(SERVER_EXTENSION_TYPE);
-        this.event.ready.subscribe(() => {
+        this.event.ready.listen(() => {
             this.ready = true;
         });
-        this.network.event.disconnected.subscribe(() => {
+        this.network.event.disconnected.listen(() => {
             this.ready = false;
         });
     }
@@ -96,13 +97,10 @@ export class OmuClient implements Client {
         this.event.stopped.emit();
     }
 
-    public whenReady(callback: () => void): () => void {
+    public whenReady(callback: () => void): Unlisten {
         if (this.ready) {
             callback();
         }
-        this.event.ready.subscribe(callback);
-        return () => {
-            this.event.ready.unsubscribe(callback);
-        };
+        return this.event.ready.listen(callback);
     }
 }

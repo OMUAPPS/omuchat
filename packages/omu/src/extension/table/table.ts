@@ -1,4 +1,4 @@
-import type { EventEmitter } from '../../event-emitter.js';
+import type { EventEmitter, Unlisten } from '../../event-emitter.js';
 import type { Identifier } from '../../identifier.js';
 import type { Keyable } from '../../interface.js';
 import type { Model } from '../../model.js';
@@ -33,12 +33,12 @@ export interface Table<T> {
     iterate({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T>;
     size(): Promise<number>;
 
-    proxy(proxy: (item: T) => T | undefined): () => void;
+    proxy(proxy: (item: T) => T | undefined): Unlisten;
     setCacheSize(size: number): void;
     setConfig(config: TableConfig): void;
     setPermissions(permissions: TablePermissions): void;
 
-    listen(listener?: (items: Map<string, T>) => void): () => void;
+    listen(listener?: (items: Map<string, T>) => void): Unlisten;
 }
 
 export type TableEvents<T> = {

@@ -1,4 +1,5 @@
 import type { Client } from '../../client/index.js';
+import type { Unlisten } from '../../event-emitter.js';
 import { EventEmitter } from '../../event-emitter.js';
 import { Identifier, IdentifierMap } from '../../identifier.js';
 import { PacketType } from '../../network/packet/index.js';
@@ -69,7 +70,6 @@ class RegistryImpl<T> implements Registry<T> {
     }
 
     public async get(): Promise<T> {
-        await this.client.network.waitForConnection();
         const result = await this.client.endpoints.call(REGISTRY_GET_ENDPOINT, this.type.id);
         if (result.value === null) {
             return this.type.defaultValue;
@@ -78,7 +78,6 @@ class RegistryImpl<T> implements Registry<T> {
     }
 
     public async set(value: T): Promise<void> {
-        await this.client.network.waitForConnection();
         this.client.send(REGISTRY_UPDATE_PACKET, {
             id: this.type.id,
             value: this.type.serializer.serialize(value),
@@ -86,23 +85,19 @@ class RegistryImpl<T> implements Registry<T> {
     }
 
     public async update(fn: (value: T) => T): Promise<void> {
-        await this.client.network.waitForConnection();
         const value = await this.get();
         const newValue = await fn(value);
         await this.set(newValue);
     }
 
-    public listen(handler: (value: T) => void): () => void {
+    public listen(handler: (value: T) => void): Unlisten {
         if (!this.listening) {
             this.client.whenReady(() => {
                 this.client.send(REGISTRY_LISTEN_PACKET, this.type.id);
             });
             this.listening = true;
         }
-        this.eventEmitter.subscribe(handler);
-        return () => {
-            this.eventEmitter.unsubscribe(handler);
-        };
+        return this.eventEmitter.listen(handler);
     }
 
     private handleUpdate(data: RegistryPacket): void {

@@ -1,4 +1,5 @@
 import type { Client } from '../../client/index.js';
+import type { Unlisten } from '../../event-emitter.js';
 import { Identifier, IdentifierMap } from '../../identifier.js';
 import { PacketType } from '../../network/packet/index.js';
 import { Serializer } from '../../serializer.js';
@@ -78,7 +79,7 @@ class SignalImpl<T> implements Signal<T> {
         });
     }
 
-    public listen(handler: (value: T) => void): () => void {
+    public listen(handler: (value: T) => void): Unlisten {
         if (!this.listening) {
             this.client.whenReady(() => {
                 this.client.send(SIGNAL_LISTEN_PACKET, this.type.id);

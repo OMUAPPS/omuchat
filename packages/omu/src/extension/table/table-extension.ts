@@ -1,4 +1,5 @@
 import type { Client } from '../../client/index.js';
+import type { Unlisten } from '../../event-emitter.js';
 import { EventEmitter } from '../../event-emitter.js';
 import { Identifier, IdentifierMap } from '../../identifier.js';
 import type { Keyable } from '../../interface.js';
@@ -245,7 +246,7 @@ class TableImpl<T> implements Table<T> {
             this.event.clear.emit();
             this.event.cacheUpdate.emit(this.cache);
         });
-        client.event.ready.subscribe(() => this.onReady());
+        client.event.ready.listen(() => this.onReady());
     }
     private updateCache(items: Map<string, T>): void {
         if (!this.cacheSize) {
@@ -257,7 +258,7 @@ class TableImpl<T> implements Table<T> {
         this.event.cacheUpdate.emit(this.cache);
     }
 
-    public listen(listener?: (items: Map<string, T>) => void): () => void {
+    public listen(listener?: (items: Map<string, T>) => void): Unlisten {
         if (!this.listening) {
             this.client.whenReady(() => {
                 this.client.send(TABLE_LISTEN_PACKET, this.id);
@@ -265,15 +266,12 @@ class TableImpl<T> implements Table<T> {
             this.listening = true;
         }
         if (listener) {
-            this.event.cacheUpdate.subscribe(listener);
-            return () => {
-                this.event.cacheUpdate.unsubscribe(listener);
-            };
+            return this.event.cacheUpdate.listen(listener);
         }
         return () => { };
     }
 
-    public proxy(callback: (item: T) => T | undefined): () => void {
+    public proxy(callback: (item: T) => T | undefined): Unlisten {
         if (this.proxies.length === 0) {
             let cancel = (): void => { };
             cancel = this.client.whenReady(() => {

@@ -1,5 +1,5 @@
 import type { App } from '../app.js';
-import type { EventEmitter } from '../event-emitter.js';
+import type { EventEmitter, Unlisten } from '../event-emitter.js';
 import type { AssetExtension } from '../extension/asset/index.js';
 import type { DashboardExtension } from '../extension/dashboard/index.js';
 import type { EndpointExtension } from '../extension/endpoint/index.js';
@@ -45,5 +45,5 @@ export interface Client {
     send<T>(type: PacketType<T>, data: T): void;
 
     event: ClientEvents;
-    whenReady(callback: () => void): () => void;
+    whenReady(callback: () => void): Unlisten;
 }
