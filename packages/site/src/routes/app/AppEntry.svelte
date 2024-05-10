@@ -25,7 +25,7 @@
         }
     }
 
-    client.network.addTask(async () => {
+    client.whenReady(async () => {
         alreadyAdded = !!(await appTable.get(app.key()));
     });
 

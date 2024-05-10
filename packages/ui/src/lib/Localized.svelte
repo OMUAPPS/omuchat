@@ -12,7 +12,7 @@
 		} else {
 			const locales = window.navigator.languages as Locale[];
 			displayText = $client.i18n.selectBestTranslation(locales, text);
-			$client.network.addTask(() => {
+			$client.whenReady(() => {
 				displayText = $client.i18n.translate(text!);
 			});
 		}
