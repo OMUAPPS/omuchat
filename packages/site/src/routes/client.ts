@@ -1,5 +1,5 @@
 import { App, Client } from '@omuchatjs/chat';
-import { DASHOBARD_APP_EDIT_PERMISSION_ID, DASHOBARD_APP_READ_PERMISSION_ID } from '@omuchatjs/omu/extension/dashboard/dashboard-extension.js';
+import { DASHBOARD_OPEN_APP_PERMISSION_ID, DASHOBARD_APP_EDIT_PERMISSION_ID, DASHOBARD_APP_READ_PERMISSION_ID } from '@omuchatjs/omu/extension/dashboard/dashboard-extension.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import { setClient } from '@omuchatjs/ui';
 import { BROWSER } from 'esm-env';
@@ -12,6 +12,7 @@ export const client = setClient(new Client({ app }));
 client.permissions.require(
     DASHOBARD_APP_READ_PERMISSION_ID,
     DASHOBARD_APP_EDIT_PERMISSION_ID,
+    DASHBOARD_OPEN_APP_PERMISSION_ID,
 )
 
 if (BROWSER) {
