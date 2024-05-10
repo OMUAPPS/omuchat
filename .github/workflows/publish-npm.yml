@@ -1,0 +1,73 @@
+name: Publish
+
+on:
+    workflow_dispatch:
+        inputs:
+            releaseType:
+                type: choice
+                description: Release type
+                required: true
+                options:
+                    - release
+                    - prerelease
+                    - graduate
+
+permissions:
+    contents: write # for checkout and tag
+    pull-requests: write # for comments
+    packages: write # for publish
+
+jobs:
+    publish-npm:
+        runs-on: ubuntu-latest
+        env:
+            NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+            NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+            GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - uses: pnpm/action-setup@v3
+              name: Install pnpm
+              with:
+                  version: latest
+                  run_install: false
+
+            - name: Get pnpm store directory
+              shell: bash
+              run: |
+                  echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+            - uses: actions/cache@v4
+              name: Setup pnpm cache
+              with:
+                  path: ${{ env.STORE_PATH }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-store-
+
+            - name: Install dependencies
+              run: pnpm i --frozen-lockfile
+
+            - name: Git Identity
+              run: |
+                  git config --global user.name 'github-actions[bot]'
+                  git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+                  git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Build
+              run: npx lerna run build
+
+            - if: ${{ inputs.releaseType == 'release' }}
+              run: npx lerna publish --yes --no-private
+            - if: ${{ inputs.releaseType == 'prerelease' }}
+              run: npx lerna publish --yes --no-private --conventional-prerelease --dist-tag alpha
+            - if: ${{ inputs.releaseType == 'graduate' }}
+              run: npx lerna publish --yes --no-private --conventional-graduate
