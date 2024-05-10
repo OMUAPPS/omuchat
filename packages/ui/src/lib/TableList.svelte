@@ -1,4 +1,6 @@
 <script lang="ts" generics="T extends Keyable">
+	import { batchCall } from './utils/batch.js';
+
 	import { client } from './stores.js';
 
 	import { VirtualList } from '@omuchatjs/ui';
@@ -115,18 +117,17 @@
 	}
 
 	onMount(() => {
-		table.listen((items) => {
-			updateCache(items);
-		});
-		table.event.remove.subscribe(onRemove);
-		table.event.update.subscribe(onUpdate);
-		table.event.add.subscribe(onAdd);
-
 		viewport.addEventListener('scroll', handleScroll);
-
-		return () => {
-			viewport.removeEventListener('scroll', handleScroll);
-		};
+		const unlisten = batchCall(
+			table.listen((items) => {
+				updateCache(items);
+			}),
+			table.event.remove.listen(onRemove),
+			table.event.update.listen(onUpdate),
+			table.event.add.listen(onAdd),
+			() => viewport.removeEventListener('scroll', handleScroll)
+		);
+		return unlisten;
 	});
 
 	function scrollToTop() {

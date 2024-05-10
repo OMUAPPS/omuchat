@@ -1,4 +1,4 @@
-export function callbackUnion(...callbacks: (() => void)[]): void {
+export function batchCall(...callbacks: (() => void)[]): void {
     for (const callback of callbacks) {
         callback();
     }
