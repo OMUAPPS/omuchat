@@ -1,4 +1,4 @@
-name: Publish
+name: Publish Tauri
 
 on:
     workflow_dispatch:
