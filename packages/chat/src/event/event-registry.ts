@@ -1,3 +1,5 @@
+import type { Unlisten } from '@omuchatjs/omu/event-emitter.js';
+
 import type { Client } from '../client.js';
 
 import type { EventKey } from './event.js';
@@ -7,9 +9,9 @@ export type EventHandler<T extends unknown[]> = (...event: T) => void;
 export class EventRegistry {
     private readonly handlers: Map<string, EventHandler<any>[]> = new Map();
 
-    constructor(private readonly client: Client) {}
+    constructor(private readonly client: Client) { }
 
-    on<T extends unknown[]>(event: EventKey<T>, handler: EventHandler<T>): void {
+    on<T extends unknown[]>(event: EventKey<T>, handler: EventHandler<T>): Unlisten {
         if (!this.handlers.has(event.name)) {
             event.create(this.client, (...data) => {
                 this.emit(event, ...data);
@@ -18,16 +20,15 @@ export class EventRegistry {
         const handlers = this.handlers.get(event.name) || new Array<EventHandler<T>>();
         handlers.push(handler);
         this.handlers.set(event.name, handlers);
-    }
-
-    off<T extends unknown[]>(event: EventKey<T>, handler: EventHandler<T>): void {
-        const handlers = this.handlers.get(event.name);
-        if (handlers) {
-            const index = handlers.indexOf(handler);
-            if (index >= 0) {
-                handlers.splice(index, 1);
+        return () => {
+            const handlers = this.handlers.get(event.name);
+            if (handlers) {
+                const index = handlers.indexOf(handler);
+                if (index !== -1) {
+                    handlers.splice(index, 1);
+                }
             }
-        }
+        };
     }
 
     emit<T extends unknown[]>(event: EventKey<T>, ...data: T): void {

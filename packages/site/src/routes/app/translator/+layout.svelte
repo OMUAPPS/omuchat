@@ -2,11 +2,7 @@
     import { AppHeader, FlexRowWrapper, Toggle } from '@omuchatjs/ui';
     import { client, config } from './client.js';
 
-    const promise = new Promise<void>((resolve) => {
-        client.event.ready.subscribe(() => {
-            resolve();
-        });
-    });
+    const promise = new Promise<void>((resolve) => client.whenReady(resolve));
     function toggle() {
         $config = {
             ...$config,

@@ -1,10 +1,12 @@
 <script lang="ts">
     import title from '$lib/images/title.svg';
+    import { onDestroy } from 'svelte';
     import { client } from './client.js';
 
-    client.network.event.disconnected.subscribe(() => {
+    const unlisten = client.network.event.disconnected.listen(() => {
         window.location.href = '/download';
     });
+    onDestroy(unlisten);
 </script>
 
 <svelte:head>
