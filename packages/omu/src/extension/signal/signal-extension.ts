@@ -71,7 +71,7 @@ class SignalImpl<T> implements Signal<T> {
         client.network.addTask(() => this.onTask());
     }
 
-    public send(body: T): void {
+    public notify(body: T): void {
         const data = this.type.serializer.serialize(body);
         this.client.send(SIGNAL_NOTIFY_PACKET, {
             id: this.type.id,

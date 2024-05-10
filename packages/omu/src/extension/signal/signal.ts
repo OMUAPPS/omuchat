@@ -81,5 +81,5 @@ export class SignalType<T> {
 
 export interface Signal<T> {
     listen(handler: (value: T) => void): Unlisten;
-    send(body: T): void;
+    notify(body: T): void;
 }
