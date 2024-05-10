@@ -11,6 +11,9 @@ export const client = setClient(new Client({
     app,
 }));
 
+client.plugins.require({
+    omuplugin_emoji: null,
+})
 client.permissions.require(
     ASSET_UPLOAD_MANY_PERMISSION_ID,
 );
