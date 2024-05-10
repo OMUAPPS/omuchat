@@ -31,6 +31,7 @@
             }
         }
         language.subscribe(loadLocale);
+        await new Promise<void>((resolve) => client.whenReady(resolve));
     }
 
     async function loadLocale() {
