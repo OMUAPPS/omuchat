@@ -2,9 +2,9 @@
     "type": "module",
     "name": "@omuchatjs/omu",
     "version": "0.1.17",
-    "repository": "https://github.com/OMUCHAT/omuchat/",
-    "publishConfig": {
-        "access": "public"
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/OMUCHAT/omuchat"
     },
     "exports": {
         ".": {
