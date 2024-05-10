@@ -2,7 +2,7 @@
     import title from '$lib/images/title.svg';
     import { client } from './client.js';
 
-    client.network.listeners.disconnected.subscribe(() => {
+    client.network.event.disconnected.subscribe(() => {
         window.location.href = '/download';
     });
 </script>

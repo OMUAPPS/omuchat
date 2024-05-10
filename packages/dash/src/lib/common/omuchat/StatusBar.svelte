@@ -8,7 +8,7 @@
 
     const status = writable<ConnectionStatus>('disconnected');
 
-    onMount(() => client.network.listeners.status.subscribe((newStatus) => status.set(newStatus)));
+    onMount(() => client.network.event.status.subscribe((newStatus) => status.set(newStatus)));
 </script>
 
 <p class={$status}>

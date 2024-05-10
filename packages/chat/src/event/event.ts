@@ -18,7 +18,7 @@ function initTableEvent<T extends Keyable>(consumer: (client: Client) => Table<T
     return (client: Client, invoke: (...data: T[]) => void): void => {
         const table = consumer(client);
         table.listen();
-        table.listeners.add.subscribe((items) => {
+        table.event.add.subscribe((items) => {
             for (const item of items.values()) {
                 invoke(item);
             }
@@ -28,7 +28,7 @@ function initTableEvent<T extends Keyable>(consumer: (client: Client) => Table<T
 
 export const events = {
     Ready: new EventKey<[]>('ready', (client, invoke) => {
-        client.network.listeners.connected.subscribe(() => invoke());
+        client.network.event.connected.subscribe(() => invoke());
     }),
     MessageCreate: new EventKey<[Message]>(
         'on_message',

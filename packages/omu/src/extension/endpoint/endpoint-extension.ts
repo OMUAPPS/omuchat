@@ -47,7 +47,7 @@ export class EndpointExtension {
             this.promiseMap.delete(event.key);
             promise.reject(new Error(event.error));
         });
-        client.network.listeners.connected.subscribe(() => this.handleConnected());
+        client.network.event.connected.subscribe(() => this.handleConnected());
     }
 
     public handleConnected(): void {

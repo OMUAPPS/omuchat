@@ -41,7 +41,7 @@ export class PermissionExtension {
                 this.permissions.set(permission.id, permission);
             }
         });
-        client.network.listeners.connected.subscribe(() => this.onConnected());
+        client.network.event.connected.subscribe(() => this.onConnected());
         client.network.addTask(() => this.onTask());
     }
 

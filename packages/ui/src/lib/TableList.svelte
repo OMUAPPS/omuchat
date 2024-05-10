@@ -118,9 +118,9 @@
 		table.listen((items) => {
 			updateCache(items);
 		});
-		table.listeners.remove.subscribe(onRemove);
-		table.listeners.update.subscribe(onUpdate);
-		table.listeners.add.subscribe(onAdd);
+		table.event.remove.subscribe(onRemove);
+		table.event.update.subscribe(onUpdate);
+		table.event.add.subscribe(onAdd);
 
 		viewport.addEventListener('scroll', handleScroll);
 

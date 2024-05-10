@@ -1,4 +1,4 @@
-import { EventEmitter } from '../../event-emitter.js';
+import type { EventEmitter } from '../../event-emitter.js';
 import type { Identifier } from '../../identifier.js';
 import type { Keyable } from '../../interface.js';
 import type { Model } from '../../model.js';
@@ -12,7 +12,7 @@ export type TableConfig = {
 
 export interface Table<T> {
     readonly cache: ReadonlyMap<string, T>;
-    readonly listeners: TableListeners<T>;
+    readonly event: TableEvents<T>;
     get(key: string): Promise<T | undefined>;
     getMany(...keys: string[]): Promise<Map<string, T>>;
     add(...item: T[]): Promise<void>;
@@ -41,12 +41,12 @@ export interface Table<T> {
     listen(listener?: (items: Map<string, T>) => void): () => void;
 }
 
-export class TableListeners<T> {
-    public readonly add = new EventEmitter<(items: Map<string, T>) => void>();
-    public readonly update = new EventEmitter<(items: Map<string, T>) => void>();
-    public readonly remove = new EventEmitter<(items: Map<string, T>) => void>();
-    public readonly clear = new EventEmitter<() => void>();
-    public readonly cacheUpdate = new EventEmitter<(items: Map<string, T>) => void>();
+export type TableEvents<T> = {
+    add: EventEmitter<(items: Map<string, T>) => void>;
+    update: EventEmitter<(items: Map<string, T>) => void>;
+    remove: EventEmitter<(items: Map<string, T>) => void>;
+    clear: EventEmitter<() => void>;
+    cacheUpdate: EventEmitter<(items: Map<string, T>) => void>;
 }
 
 export type TablePermissions = {

@@ -1,4 +1,5 @@
 import type { Client } from '../../client/index.js';
+import { EventEmitter } from '../../event-emitter.js';
 import { Identifier, IdentifierMap } from '../../identifier.js';
 import type { Keyable } from '../../interface.js';
 import type { Model } from '../../model.js';
@@ -10,8 +11,8 @@ import type { Extension } from '../extension.js';
 import { ExtensionType } from '../extension.js';
 
 import { SetConfigPacket, SetPermissionPacket, TableFetchPacket, TableItemsPacket, TableKeysPacket, TablePacket, TableProxyPacket } from './packets.js';
-import type { Table, TableConfig, TablePermissions } from './table.js';
-import { TableListeners, TableType } from './table.js';
+import type { Table, TableConfig, TableEvents, TablePermissions } from './table.js';
+import { TableType } from './table.js';
 
 export const TABLE_EXTENSION_TYPE: ExtensionType<TableExtension> = new ExtensionType(
     'table',
@@ -149,7 +150,7 @@ export class TableExtension implements Extension {
 
 class TableImpl<T> implements Table<T> {
     public cache: Map<string, T>;
-    public readonly listeners: TableListeners<T>;
+    public readonly event: TableEvents<T>;
     private readonly promiseMap: Map<string, Promise<T | undefined>>;
     private readonly proxies: Array<(item: T) => T | undefined>;
     private id: Identifier;
@@ -168,7 +169,13 @@ class TableImpl<T> implements Table<T> {
         this.serializer = tableType.serializer;
         this.keyFunction = tableType.keyFunction;
         this.cache = new Map();
-        this.listeners = new TableListeners();
+        this.event = {
+            add: new EventEmitter<(items: Map<string, T>) => void>,
+            update: new EventEmitter<(items: Map<string, T>) => void>,
+            remove: new EventEmitter<(items: Map<string, T>) => void>,
+            clear: new EventEmitter<() => void>,
+            cacheUpdate: new EventEmitter<(items: Map<string, T>) => void>,
+        };
         this.promiseMap = new Map();
         this.proxies = [];
         this.listening = false;
@@ -209,7 +216,7 @@ class TableImpl<T> implements Table<T> {
             }
             const items = this.deserializeItems(packet.items);
             this.updateCache(items);
-            this.listeners.add.emit(items);
+            this.event.add.emit(items);
         });
         client.network.addPacketHandler(TABLE_ITEM_UPDATE_PACKET, (packet) => {
             if (!packet.id.isEqual(this.id)) {
@@ -217,7 +224,7 @@ class TableImpl<T> implements Table<T> {
             }
             const items = this.deserializeItems(packet.items);
             this.updateCache(items);
-            this.listeners.update.emit(items);
+            this.event.update.emit(items);
         });
         client.network.addPacketHandler(TABLE_ITEM_REMOVE_PACKET, (packet) => {
             if (!packet.id.isEqual(this.id)) {
@@ -227,16 +234,16 @@ class TableImpl<T> implements Table<T> {
             items.forEach((_, key) => {
                 this.cache.delete(key);
             });
-            this.listeners.remove.emit(items);
-            this.listeners.cacheUpdate.emit(this.cache);
+            this.event.remove.emit(items);
+            this.event.cacheUpdate.emit(this.cache);
         });
         client.network.addPacketHandler(TABLE_ITEM_CLEAR_PACKET, (packet) => {
             if (!packet.id.isEqual(this.id)) {
                 return;
             }
             this.cache = new Map();
-            this.listeners.clear.emit();
-            this.listeners.cacheUpdate.emit(this.cache);
+            this.event.clear.emit();
+            this.event.cacheUpdate.emit(this.cache);
         });
         client.event.ready.subscribe(() => this.onReady());
     }
@@ -247,15 +254,15 @@ class TableImpl<T> implements Table<T> {
             const cache = new Map([...this.cache, ...items].slice(-this.cacheSize));
             this.cache = cache;
         }
-        this.listeners.cacheUpdate.emit(this.cache);
+        this.event.cacheUpdate.emit(this.cache);
     }
 
     public listen(listener?: (items: Map<string, T>) => void): () => void {
         this.listening = true;
         if (listener) {
-            this.listeners.cacheUpdate.subscribe(listener);
+            this.event.cacheUpdate.subscribe(listener);
             return () => {
-                this.listeners.cacheUpdate.unsubscribe(listener);
+                this.event.cacheUpdate.unsubscribe(listener);
             };
         }
         return () => { };

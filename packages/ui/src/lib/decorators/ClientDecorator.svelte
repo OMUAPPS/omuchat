@@ -12,7 +12,7 @@
 			})
 		);
 		return new Promise<void>((resolve) => {
-			$client.network.listeners.connected.subscribe(resolve);
+			$client.network.event.connected.subscribe(resolve);
 		});
 	};
 </script>

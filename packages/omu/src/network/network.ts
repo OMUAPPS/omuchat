@@ -21,7 +21,7 @@ export type NetworkStatus = 'connecting' | 'connected' | 'disconnected';
 export class Network {
     public connected = false;
     public closed = false;
-    public readonly listeners = {
+    public readonly event = {
         connected: new EventEmitter<() => void>,
         disconnected: new EventEmitter<() => void>,
         packet: new EventEmitter<(packet: Packet) => void>,
@@ -123,8 +123,8 @@ export class Network {
             }),
         });
         const listenPromise = this.listen();
-        await this.listeners.status.emit('connected');
-        await this.listeners.connected.emit();
+        await this.event.status.emit('connected');
+        await this.event.connected.emit();
         this.dispatchTasks();
         this.send({
             type: PACKET_TYPES.READY,
@@ -151,8 +151,8 @@ export class Network {
         }
         this.connected = false;
         this.connection.close();
-        this.listeners.status.emit('disconnected');
-        this.listeners.disconnected.emit();
+        this.event.status.emit('disconnected');
+        this.event.disconnected.emit();
     }
 
     public send(packet: Packet): void {
@@ -173,7 +173,7 @@ export class Network {
     }
 
     private async dispatchPacket(packet: Packet): Promise<void> {
-        await this.listeners.packet.emit(packet);
+        await this.event.packet.emit(packet);
         const packetHandler = this.packetHandlers.get(packet.type.id);
         if (!packetHandler) {
             return;
@@ -191,10 +191,10 @@ export class Network {
                 return;
             }
             const onConnected = (): void => {
-                this.listeners.connected.unsubscribe(onConnected);
+                this.event.connected.unsubscribe(onConnected);
                 resolve();
             };
-            this.listeners.connected.subscribe(onConnected);
+            this.event.connected.subscribe(onConnected);
         });
     }
 

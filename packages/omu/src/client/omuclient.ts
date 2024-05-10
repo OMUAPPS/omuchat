@@ -70,7 +70,7 @@ export class OmuClient implements Client {
         this.event.ready.subscribe(() => {
             this.ready = true;
         });
-        this.network.listeners.disconnected.subscribe(() => {
+        this.network.event.disconnected.subscribe(() => {
             this.ready = false;
         });
     }

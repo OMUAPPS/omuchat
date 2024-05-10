@@ -39,7 +39,7 @@ export class Dashboard implements DashboardHandler {
         client.event.ready.subscribe(() => {
             client.i18n.setLocale(window.navigator.languages as Locale[]);
         });
-        this.apps.listeners.add.subscribe(() => {
+        this.apps.event.add.subscribe(() => {
             tauriWindow.appWindow.setFocus();
             currentPage.set('main');
         });
