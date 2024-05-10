@@ -10,8 +10,8 @@ use crate::{app::ServerStatus, python::Python, uv::Uv};
 
 const LATEST_PIP: &str = "pip==23.3.2";
 const REQUIREMENTS: &str = r#"
-omuserver==0.3.0
-omuchatprovider==0.3.0
+omuserver==0.3.1
+omuchatprovider==0.3.1
 "#;
 
 pub struct ServerOption {
