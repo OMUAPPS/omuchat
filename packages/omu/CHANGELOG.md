@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.1.17 (2024-05-10)
+
+**Note:** Version bump only for package @omuchatjs/omu
+
+
+
+
+
 ## 0.1.16 (2024-05-10)
 
 **Note:** Version bump only for package @omuchatjs/omu
