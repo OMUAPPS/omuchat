@@ -1,5 +1,4 @@
 use std::{
-    os::windows::process::CommandExt,
     path::PathBuf,
     sync::{Arc, Mutex},
 };
@@ -90,7 +89,10 @@ impl Server {
 
         // 0x08000000: CREATE_NO_WINDOW https://learn.microsoft.com/ja-jp/windows/win32/procthread/process-creation-flags?redirectedfrom=MSDN#create_no_window
         #[cfg(target_os = "windows")]
-        cmd.creation_flags(0x08000000);
+        {
+            use std::os::windows::process::CommandExt;
+            cmd.creation_flags(0x08000000);
+        }
 
         let child = cmd.spawn()?;
         *self.child.lock().unwrap() = Some(child);
