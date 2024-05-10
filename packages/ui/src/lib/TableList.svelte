@@ -53,7 +53,7 @@
 		return await fetchLock;
 	}
 
-	$client.network.addTask(async () => {
+	$client.listeners.ready.subscribe(() => {
 		entries.clear();
 		fetch();
 	});

@@ -23,13 +23,12 @@
         rooms = newRooms;
     });
 
-    onMount(() => {
-        client.network.addTask(() => {
-            chat.rooms.fetchItems({
-                after: 100,
-            });
-            console.log('fetchItems');
+    client.listeners.ready.subscribe(() => {
+        chat.rooms.fetchItems({
+            after: 100,
         });
+    });
+    onMount(() => {
         return () => {
             unlistenRooms();
         };
