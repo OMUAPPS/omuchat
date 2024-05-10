@@ -70,6 +70,9 @@ impl Server {
             self.change_state(ServerStatus::AlreadyRunning);
             return Ok(());
         }
+        if !self.option.data_dir.exists() {
+            std::fs::create_dir_all(&self.option.data_dir)?;
+        }
         self.token
             .lock()
             .unwrap()
