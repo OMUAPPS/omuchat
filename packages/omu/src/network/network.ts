@@ -11,9 +11,9 @@ import { PacketMapper } from './connection.js';
 import { ConnectPacket, DisconnectType, PACKET_TYPES } from './packet/packet-types.js';
 import type { Packet, PacketType } from './packet/packet.js';
 
-type PacketListeners<T> = {
+type PacketHandler<T> = {
     readonly type: PacketType<T>,
-    readonly listeners: EventEmitter<(packet: T) => void>,
+    handler: ((packet: T) => Promise<void> | void) | null,
 };
 
 export type NetworkStatus = 'connecting' | 'connected' | 'disconnected';
@@ -29,7 +29,7 @@ export class Network {
     };
     private readonly tasks: Array<() => Promise<void> | void> = [];
     private readonly packetMapper = new PacketMapper();
-    private readonly packetHandlers = new IdentifierMap<PacketListeners<unknown>>();
+    private readonly packetHandlers = new IdentifierMap<PacketHandler<unknown>>();
 
     constructor(
         private readonly client: Client,
@@ -85,17 +85,17 @@ export class Network {
         for (const type of packetTypes) {
             this.packetHandlers.set(type.identifier, {
                 type,
-                listeners: new EventEmitter(),
+                handler: null,
             });
         }
     }
 
     public addPacketHandler<T>(type: PacketType<T>, handler: (packet: T) => void): void {
-        const listeners = this.packetHandlers.get(type.identifier) as PacketListeners<unknown> | undefined;
+        const listeners = this.packetHandlers.get(type.identifier) as PacketHandler<unknown> | undefined;
         if (!listeners) {
             throw new Error(`Packet type ${type.identifier.key()} not registered`);
         }
-        listeners.listeners.subscribe(handler as (packet: unknown) => void);
+        listeners.handler = handler as (packet: unknown) => void;
     }
 
     public async connect(recconect = true): Promise<void> {
@@ -174,11 +174,14 @@ export class Network {
 
     private async dispatchPacket(packet: Packet): Promise<void> {
         await this.listeners.packet.emit(packet);
-        const packetHandlers = this.packetHandlers.get(packet.type.identifier);
-        if (!packetHandlers) {
+        const packetHandler = this.packetHandlers.get(packet.type.identifier);
+        if (!packetHandler) {
             return;
         }
-        await packetHandlers.listeners.emit(packet.data);
+        if (!packetHandler.handler) {
+            throw new Error(`No handler for packet type ${packet.type.identifier.key()}`);
+        }
+        await packetHandler.handler(packet.data);
     }
 
     public waitForConnection(): Promise<void> {
