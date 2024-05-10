@@ -2,11 +2,13 @@ import { currentPage } from '$lib/main/settings.js';
 import { tauriWindow } from '$lib/utils/tauri.js';
 import { type Client } from '@omuchatjs/chat';
 import { App } from '@omuchatjs/omu';
-import type { DashboardHandler, PermissionRequest } from '@omuchatjs/omu/extension/dashboard/dashboard.js';
+import type { DashboardHandler } from '@omuchatjs/omu/extension/dashboard/dashboard.js';
+import type { PermissionRequestPacket, PluginRequestPacket } from '@omuchatjs/omu/extension/dashboard/packets.js';
 import { TableType, type Table } from '@omuchatjs/omu/extension/table/index.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import type { Locale } from '@omuchatjs/omu/localization/locale.js';
 import PermissionRequestScreen from '../screen/PermissionRequestScreen.svelte';
+import PluginRequestScreen from '../screen/PluginRequestScreen.svelte';
 import { screenContext } from '../screen/screen.js';
 import { Asset } from './asset.js';
 import { BookmarkEntry } from './bookmark.js';
@@ -43,10 +45,20 @@ export class Dashboard implements DashboardHandler {
         });
     }
 
-    async handlePermissionRequest(request: PermissionRequest): Promise<boolean> {
+    async handlePermissionRequest(request: PermissionRequestPacket): Promise<boolean> {
         await tauriWindow.appWindow.setFocus();
         return new Promise<boolean>((resolve) => {
             screenContext.push(PermissionRequestScreen, {
+                request,
+                resolve: (accept: boolean) => resolve(accept),
+            });
+        });
+    }
+
+    async handlePluginRequest(request: PluginRequestPacket): Promise<boolean> {
+        await tauriWindow.appWindow.setFocus();
+        return new Promise<boolean>((resolve) => {
+            screenContext.push(PluginRequestScreen, {
                 request,
                 resolve: (accept: boolean) => resolve(accept),
             });

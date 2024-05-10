@@ -1,46 +1,9 @@
-import type { AppJson } from '../../app.js';
-import { App } from '../../app.js';
-import type { Model } from '../../model.js';
-import type { PermissionTypeJson } from '../permission/permission.js';
-import { PermissionType } from '../permission/permission.js';
+import type { App } from '../../app.js';
 
-type PermissionRequestJson = {
-    request_id: number;
-    app: AppJson;
-    permissions: PermissionTypeJson[];
-}
-
-export class PermissionRequest implements Model<PermissionRequestJson> {
-    constructor(
-        public readonly requestId: number,
-        public readonly app: App,
-        public readonly permissions: PermissionType[],
-    ) { }
-
-    toJson(): PermissionRequestJson {
-        return {
-            request_id: this.requestId,
-            app: this.app.toJson(),
-            permissions: this.permissions.map(permission => permission.toJson()),
-        };
-    }
-
-    static fromJson(json: PermissionRequestJson): PermissionRequest {
-        return new PermissionRequest(
-            json.request_id,
-            App.fromJson(json.app),
-            json.permissions.map(PermissionType.fromJson),
-        );
-    }
-}
-
-export type DashboardOpenAppResponse = {
-    success: boolean;
-    already_open: boolean;
-    dashboard_not_connected: boolean;
-}
+import type { PermissionRequestPacket, PluginRequestPacket } from './packets.js';
 
 export interface DashboardHandler {
-    handlePermissionRequest(request: PermissionRequest): Promise<boolean>;
+    handlePermissionRequest(request: PermissionRequestPacket): Promise<boolean>;
+    handlePluginRequest(request: PluginRequestPacket): Promise<boolean>;
     handleOpenApp(app: App): Promise<void>;
 }

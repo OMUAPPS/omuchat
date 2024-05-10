@@ -1,14 +1,14 @@
 <script lang="ts">
-    import type { PermissionRequestPacket } from '@omuchatjs/omu/extension/dashboard/packets.js';
+    import type { PluginRequestPacket } from '@omuchatjs/omu/extension/dashboard/packets.js';
     import { FlexColWrapper, FlexRowWrapper, JustifyBaselineWrapper } from '@omuchatjs/ui';
-    import PermissionEntry from './PermissionEntry.svelte';
+    import PackageEntry from './PackageEntry.svelte';
     import Screen from './Screen.svelte';
     import type { ScreenHandle } from './screen.js';
 
     export let screen: {
         handle: ScreenHandle;
         props: {
-            request: PermissionRequestPacket;
+            request: PluginRequestPacket;
             resolve: (accept: boolean) => void;
         };
     };
@@ -25,7 +25,7 @@
     }
 </script>
 
-<Screen {screen} title="permission_request" disableClose>
+<Screen {screen} title="plugin_request" disableClose>
     <FlexColWrapper heightFull between widthFull>
         <span class="text">
             <FlexRowWrapper>
@@ -44,14 +44,12 @@
                     </JustifyBaselineWrapper>
                 </FlexColWrapper>
             </FlexRowWrapper>
-            は以下の権限を要求しています。
+            は以下のパッケージのインストールを要求しています。
         </span>
         <div class="permissions">
-            <FlexColWrapper widthFull>
-                {#each request.permissions as permission}
-                    <PermissionEntry {permission} />
-                {/each}
-            </FlexColWrapper>
+            {#each request.packages as entry}
+                <PackageEntry {entry} />
+            {/each}
         </div>
         <FlexRowWrapper widthFull between baseline>
             <button on:click={reject} class="reject">

@@ -1,25 +1,30 @@
 <script lang="ts">
-    import type { PermissionType } from '@omuchatjs/omu/extension/permission/permission.js';
-    import { FlexColWrapper, FlexRowWrapper } from '@omuchatjs/ui';
-    import { client } from '../omuchat/client.js';
+    import type { PackageInfo } from '@omuchatjs/omu/extension/plugin/package-info.js';
+    import { FlexColWrapper, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
 
-    export let permission: PermissionType;
+    export let entry: PackageInfo;
 </script>
 
 <div>
+    <Tooltip>
+        {entry.info.summary}
+    </Tooltip>
     <FlexColWrapper widthFull>
         <FlexRowWrapper widthFull between>
             <span>
-                <i class="ti ti-eye" />
-                {client.i18n.translate(permission.metadata.name)}
+                <i class="ti ti-package" />
+                {entry.info.name}
             </span>
             <small>
-                {permission.id.key()}
+                {entry.info.name}
             </small>
         </FlexRowWrapper>
         <FlexRowWrapper widthFull between>
             <small>
-                {client.i18n.translate(permission.metadata.note)}
+                <a href={entry.info.package_url}>
+                    {entry.info.package_url}
+                    <i class="ti ti-external-link" />
+                </a>
             </small>
         </FlexRowWrapper>
     </FlexColWrapper>

@@ -27,7 +27,7 @@ export class PermissionType implements Model<PermissionTypeJson> {
         this.metadata = options.metadata;
     }
 
-    static create(identifier: Identifier, {
+    public static create(identifier: Identifier, {
         name,
         metadata,
     }: {
@@ -47,7 +47,7 @@ export class PermissionType implements Model<PermissionTypeJson> {
         };
     }
 
-    static fromJson(json: PermissionTypeJson): PermissionType {
+    public static fromJson(json: PermissionTypeJson): PermissionType {
         return new PermissionType({
             id: Identifier.fromKey(json.id),
             metadata: json.metadata,

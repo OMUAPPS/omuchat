@@ -157,6 +157,11 @@
             "name": "権限を要求",
             "icon": "ti ti-lock",
             "description": "権限を要求します。"
+        },
+        "plugin_request": {
+            "name": "プラグインを要求",
+            "icon": "ti ti-plug",
+            "description": "プラグインを要求します。"
         }
     },
     "settings": {
