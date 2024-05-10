@@ -64,7 +64,6 @@ export class OmuClient implements Client {
         this.assets = this.extensions.register(ASSET_EXTENSION_TYPE);
         this.i18n = this.extensions.register(I18N_EXTENSION_TYPE);
         this.server = this.extensions.register(SERVER_EXTENSION_TYPE);
-        this.listeners.initialized.emit();
         this.listeners.ready.subscribe(() => {
             this.ready = true;
         });

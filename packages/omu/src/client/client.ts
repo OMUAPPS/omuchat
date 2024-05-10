@@ -17,7 +17,6 @@ import type { PacketType } from '../network/packet/packet.js';
 import type { TokenProvider } from './token.js';
 
 export class ClientListeners {
-    public readonly initialized = new EventEmitter<() => void>();
     public readonly started = new EventEmitter<() => void>();
     public readonly stopped = new EventEmitter<() => void>();
     public readonly ready = new EventEmitter<() => void>();
