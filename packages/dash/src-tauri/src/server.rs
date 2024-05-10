@@ -11,8 +11,8 @@ use crate::{app::ServerStatus, python::Python, uv::Uv};
 
 const LATEST_PIP: &str = "pip==23.3.2";
 const REQUIREMENTS: &str = r#"
-omuserver==0.2.5
-omuchatprovider==0.2.5
+omuserver==0.3.0
+omuchatprovider==0.3.0
 "#;
 
 pub struct ServerOption {
@@ -81,8 +81,8 @@ impl Server {
         let mut cmd = self.python.cmd();
         cmd.arg("-m");
         cmd.arg("omuserver");
-        cmd.arg("--port");
-        cmd.arg(self.option.port.to_string());
+        cmd.arg("--token");
+        cmd.arg(self.token.lock().unwrap().as_ref().unwrap());
         cmd.current_dir(&self.option.data_dir);
 
         // 0x08000000: CREATE_NO_WINDOW https://learn.microsoft.com/ja-jp/windows/win32/procthread/process-creation-flags?redirectedfrom=MSDN#create_no_window
