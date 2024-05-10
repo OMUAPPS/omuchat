@@ -23,9 +23,9 @@
         "lint": "pnpm run lint:stylelint && pnpm run lint:eslint && pnpm run lint:prettier",
         "fix": "pnpm run fix:stylelint && pnpm run fix:eslint && pnpm run format:prettier"
     },
-    "packageManager": "pnpm@9.0.5",
+    "packageManager": "pnpm@8.15.8",
     "engines": {
-        "pnpm": ">=9.0.5"
+        "pnpm": ">=8.15.8"
     },
     "workspaces": [
         "packages/*"
