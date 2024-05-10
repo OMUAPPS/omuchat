@@ -11,7 +11,7 @@ export class EventRegistry {
 
     constructor(private readonly client: Client) { }
 
-    on<T extends unknown[]>(event: EventKey<T>, handler: EventHandler<T>): Unlisten {
+    public on<T extends unknown[]>(event: EventKey<T>, handler: EventHandler<T>): Unlisten {
         if (!this.handlers.has(event.name)) {
             event.create(this.client, (...data) => {
                 this.emit(event, ...data);
@@ -31,7 +31,7 @@ export class EventRegistry {
         };
     }
 
-    emit<T extends unknown[]>(event: EventKey<T>, ...data: T): void {
+    public emit<T extends unknown[]>(event: EventKey<T>, ...data: T): void {
         const handlers = this.handlers.get(event.name);
         if (handlers) {
             for (const handler of handlers) {
