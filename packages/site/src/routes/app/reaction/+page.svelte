@@ -5,7 +5,7 @@
     import { BROWSER } from 'esm-env';
     import { client } from './client.js';
     import ReactionRenderer from './components/ReactionRenderer.svelte';
-    import { REACTION_REPLACE_REGISTRY_TYPE, REACTION_SIGNAL_TYPE } from './reaction.js';
+    import { ReactionApp } from './reaction.js';
 
     function createAssetUrl() {
         const url = new URL($page.url);
@@ -14,41 +14,16 @@
         return url;
     }
 
-    const reactionSignal = client.signal.get(REACTION_SIGNAL_TYPE);
-    const replacesRegistry = client.registry.get(REACTION_REPLACE_REGISTRY_TYPE);
+    const reactionApp = new ReactionApp(client);
+    const replaces = reactionApp.replaces;
 
     function test() {
-        reactionSignal.send({
-            room_id: 'test',
-            reactions: {
-                '❤': 1,
-                '😄': 1,
-                '🎉': 1,
-                '😳': 1,
-                '💯': 1,
-            },
-        });
-    }
-
-    let replaces: Record<string, string | null> = {};
-
-    replacesRegistry.listen((registry) => {
-        replaces = {
-            ...registry,
-        };
-    });
-
-    function setReplace(key: string, assetId: string) {
-        replacesRegistry.update((registry) => {
-            registry[key] = assetId;
-            return registry;
-        });
-    }
-
-    function removeReplace(key: string) {
-        replacesRegistry.update((registry) => {
-            registry[key] = null;
-            return registry;
+        reactionApp.send('test', {
+            '❤': 1,
+            '😄': 1,
+            '🎉': 1,
+            '😳': 1,
+            '💯': 1,
         });
     }
 
@@ -72,16 +47,20 @@
         reader.onload = async () => {
             const buffer = new Uint8Array(reader.result as ArrayBuffer);
             const asset = await client.assets.upload(id, buffer);
-            setReplace(key, asset.key());
+            $replaces = { ...$replaces, [key]: asset.key() };
         };
         reader.readAsArrayBuffer(file);
+    }
+
+    if (BROWSER) {
+        client.start();
     }
 </script>
 
 <AppHeader app={client.app} />
 <main>
     <div class="preview">
-        <ReactionRenderer {client} />
+        <ReactionRenderer {client} {reactionApp} />
     </div>
     <h3>リアクションをテストする</h3>
     <section>
@@ -119,7 +98,7 @@
             multiple
             hidden
         />
-        {#each Object.entries(replaces) as [key, assetId]}
+        {#each Object.entries($replaces) as [key, assetId]}
             <div class="replace-entry">
                 <FlexRowWrapper alignItems="center" gap>
                     <h1>
@@ -140,7 +119,7 @@
                         置き換える
                     </button>
                     {#if assetId}
-                        <ButtonMini on:click={() => removeReplace(key)}>
+                        <ButtonMini on:click={() => ($replaces = { ...$replaces, [key]: null })}>
                             <Tooltip>置き換えを削除</Tooltip>
                             <i class="ti ti-trash" />
                         </ButtonMini>

@@ -10,7 +10,3 @@ setClient(client);
 client.permissions.require(
     'cc.omuchat:chatprovider/youtube/reaction',
 );
-
-if (BROWSER) {
-    client.start();
-}

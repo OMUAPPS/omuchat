@@ -2,9 +2,11 @@
     import { Client } from '@omuchatjs/chat';
     import { Identifier } from '@omuchatjs/omu/identifier.js';
     import { onMount } from 'svelte';
-    import { REACTION_REPLACE_REGISTRY_TYPE, REACTION_SIGNAL_TYPE } from '../reaction.js';
+    import type { ReactionApp } from '../reaction.js';
 
+    export let reactionApp: ReactionApp;
     export let client: Client;
+    let { replaces, reactionSignal } = reactionApp;
 
     type Reaction = {
         text: string;
@@ -20,8 +22,7 @@
     const MAX_REACTION_LIMIT = 100;
     let replaceRegistry: Record<string, HTMLImageElement | null> = {};
 
-    const reactionMessage = client.signal.get(REACTION_SIGNAL_TYPE);
-    reactionMessage.listen((message) => {
+    reactionSignal.listen((message) => {
         Object.entries(message.reactions).forEach(([text, count]) => {
             for (let i = 0; i < count; i++) {
                 spawnQueue.push(text);
@@ -32,10 +33,9 @@
         });
     });
 
-    const reactionReplaceRegistry = client.registry.get(REACTION_REPLACE_REGISTRY_TYPE);
-    reactionReplaceRegistry.listen((registry) => {
+    replaces.subscribe((replaces) => {
         replaceRegistry = Object.fromEntries(
-            Object.entries(registry).map(([key, assetId]) => {
+            Object.entries(replaces).map(([key, assetId]) => {
                 if (!assetId) {
                     return [key, null];
                 }
