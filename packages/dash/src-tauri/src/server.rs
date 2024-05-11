@@ -44,11 +44,7 @@ impl Server {
     }
 
     pub fn is_port_in_use(&self) -> bool {
-        use std::net::TcpListener;
-        match TcpListener::bind(format!("{}:{}", self.option.address, self.option.port)) {
-            Ok(_) => false,
-            Err(_) => true,
-        }
+        !portpicker::is_free(self.option.port)
     }
 
     fn change_state(&self, state: ServerStatus) {
@@ -87,10 +83,10 @@ impl Server {
         cmd.arg(self.token.lock().unwrap().as_ref().unwrap());
         cmd.current_dir(&self.option.data_dir);
 
-        // 0x08000000: CREATE_NO_WINDOW https://learn.microsoft.com/ja-jp/windows/win32/procthread/process-creation-flags?redirectedfrom=MSDN#create_no_window
         #[cfg(target_os = "windows")]
         {
             use std::os::windows::process::CommandExt;
+            // 0x08000000: CREATE_NO_WINDOW https://learn.microsoft.com/ja-jp/windows/win32/procthread/process-creation-flags?redirectedfrom=MSDN#create_no_window
             cmd.creation_flags(0x08000000);
         }
 
