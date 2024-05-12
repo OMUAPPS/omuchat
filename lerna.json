@@ -4,10 +4,9 @@
     "private": false,
     "version": "0.1.21",
     "ignoreChanges": [
-      "**/*.test.ts",
-      "**/*.md"
+        "**/*.test.ts",
+        "**/*.md"
     ],
     "message": "ci(release): %v [skip ci]",
     "conventionalCommits": true
-  }
-  
+}
