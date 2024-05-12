@@ -16,7 +16,7 @@
             props: {},
         },
         {
-            icon: 'ti ti-message',
+            icon: 'ti ti-message-circle',
             name: $t('panels.messages.title'),
             width: 300,
             fit: true,
@@ -24,7 +24,7 @@
             props: {},
         },
         {
-            icon: 'ti ti-player-play',
+            icon: 'ti ti-package',
             name: $t('panels.apps.title'),
             component: PanelApps,
             props: {},

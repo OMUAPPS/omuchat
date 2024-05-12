@@ -17,7 +17,7 @@
             props: {},
         },
         {
-            icon: 'ti ti-message',
+            icon: 'ti ti-message-circle',
             name: $t('panels.messages.title'),
             width: 300,
             fit: true,
@@ -25,7 +25,7 @@
             props: {},
         },
         {
-            icon: 'ti ti-message',
+            icon: 'ti ti-message-circle-bolt',
             name: $t('panels.gifts.title'),
             width: 400,
             component: PanelMessages,
