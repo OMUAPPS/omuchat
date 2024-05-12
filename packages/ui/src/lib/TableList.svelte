@@ -34,7 +34,6 @@
 	let fetchLock: Promise<boolean> | undefined;
 
 	async function fetch(): Promise<boolean> {
-		if (!$client.network.connected) return false;
 		if (fetchLock) {
 			await fetchLock;
 		}
@@ -54,11 +53,6 @@
 		});
 		return await fetchLock;
 	}
-
-	$client.whenReady(() => {
-		entries.clear();
-		fetch();
-	});
 
 	function updateCache(cache: Map<string, T>) {
 		if (cache.size === 0) return;
@@ -117,6 +111,10 @@
 	}
 
 	const unlisten = batchCall(
+		$client.whenReady(() => {
+			entries.clear();
+			fetch();
+		}),
 		table.listen((items) => {
 			updateCache(items);
 		}),
