@@ -1,7 +1,6 @@
 <script lang="ts">
     import { writable } from 'svelte/store';
 
-    import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
     import ButtonOpenSettings from './ButtonOpenSettings.svelte';
     import PageDev from './page/dev/PageDev.svelte';
     import PageHome from './page/home/PageHome.svelte';
@@ -82,7 +81,6 @@
             {/each}
         </FlexColWrapper>
         <FlexColWrapper>
-            <ButtonOpenRemoteConnect />
             <ButtonOpenSettings />
         </FlexColWrapper>
     </div>
