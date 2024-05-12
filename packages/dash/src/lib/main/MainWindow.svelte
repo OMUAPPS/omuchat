@@ -3,7 +3,6 @@
 
     import ButtonOpenRemoteConnect from './ButtonOpenRemoteConnect.svelte';
     import ButtonOpenSettings from './ButtonOpenSettings.svelte';
-    import PageAssets from './page/assets/PageAssets.svelte';
     import PageDev from './page/dev/PageDev.svelte';
     import PageHome from './page/home/PageHome.svelte';
     import { pages } from './page/page.js';
@@ -29,11 +28,6 @@
     $pages.set('channel', {
         name: 'channel',
         component: PageChannels,
-        props: {},
-    });
-    $pages.set('asset', {
-        name: 'asset',
-        component: PageAssets,
         props: {},
     });
 
