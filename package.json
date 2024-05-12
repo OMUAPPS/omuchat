@@ -12,7 +12,10 @@
         "fix": "pnpm -r fix",
         "clean": "node ./scripts/clean.mjs"
     },
-    "packageManager": "pnpm@9.0.6",
+    "packageManager": "pnpm@9.1.0",
+    "engines": {
+      "pnpm": "^9.0.0"
+    },
     "workspaces": [
         "packages/*"
     ],
