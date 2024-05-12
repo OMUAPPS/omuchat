@@ -1,7 +1,7 @@
 import { setClient } from '@omuchatjs/ui';
 import { Dashboard } from './dashboard.js';
 
-import type { Address } from '@omuchatjs/omu/network/address.js';
+import type { Address } from '@omuchatjs/omu/address.js';
 
 import { App, Client } from '@omuchatjs/chat';
 
