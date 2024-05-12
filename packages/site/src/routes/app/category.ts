@@ -1,10 +1,10 @@
-import type { LocalizedText } from "@omuchatjs/omu/localization/localization.js";
+import type { LocalizedText } from '@omuchatjs/omu/localization/localization.js';
 
 export type Tag = {
     name: LocalizedText;
     description: LocalizedText;
     icon: string;
-}
+};
 
 export const TAG_REGISTRY = {
     youtube: {

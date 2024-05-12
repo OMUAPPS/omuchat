@@ -1,19 +1,32 @@
-import { RegistryType } from "@omuchatjs/omu/extension/registry/index.js";
-import { Identifier } from "@omuchatjs/omu/identifier.js";
+import { RegistryType } from '@omuchatjs/omu/extension/registry/index.js';
+import { Identifier } from '@omuchatjs/omu/identifier.js';
 
 const PLUGIN_IDENTIFIER = new Identifier('cc.omuchat', 'translator', 'plugin');
 
-export type Language = "en" | "es" | "fr" | "de" | "it" | "pt" | "nl" | "pl" | "ru" | "ja" | "zh" | "ko" | "ar";
+export type Language =
+    | 'en'
+    | 'es'
+    | 'fr'
+    | 'de'
+    | 'it'
+    | 'pt'
+    | 'nl'
+    | 'pl'
+    | 'ru'
+    | 'ja'
+    | 'zh'
+    | 'ko'
+    | 'ar';
 type TranslatorConfig = {
     active: boolean;
     languages: Language[];
-}
+};
 
 export const CONFIG_REGISTRY_TYPE = RegistryType.createJson<TranslatorConfig>(PLUGIN_IDENTIFIER, {
     name: 'config',
     defaultValue: {
         active: false,
-        languages: ["ja", "en"],
+        languages: ['ja', 'en'],
     },
 });
 

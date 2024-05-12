@@ -7,14 +7,13 @@ import { IDENTIFIER } from './app.js';
 const app = new App(IDENTIFIER, {
     version: '0.1.0',
 });
-export const client = setClient(new Client({
-    app,
-}));
+export const client = setClient(
+    new Client({
+        app,
+    }),
+);
 
 client.plugins.require({
     omuplugin_emoji: null,
-})
-client.permissions.require(
-    ASSET_UPLOAD_MANY_PERMISSION_ID,
-);
-
+});
+client.permissions.require(ASSET_UPLOAD_MANY_PERMISSION_ID);

@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/svelte";
-import Header from "./Header.svelte";
+import type { Meta, StoryObj } from '@storybook/svelte';
+import Header from './Header.svelte';
 
 const meta = {
-    title: "Components/Header",
+    title: 'Components/Header',
     component: Header,
-    tags: ["autodocs"],
+    tags: ['autodocs'],
     argTypes: {
-        title: { control: "text" },
-        icon: { control: "text" },
+        title: { control: 'text' },
+        icon: { control: 'text' },
     },
 } satisfies Meta<Header>;
 
@@ -16,15 +16,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        title: "Title",
-        icon: "ti ti-home",
+        title: 'Title',
+        icon: 'ti ti-home',
     },
 };
 
 export const WithSubtitle: Story = {
     args: {
-        title: "Title",
-        subtitle: "Subtitle",
-        icon: "ti ti-home",
+        title: 'Title',
+        subtitle: 'Subtitle',
+        icon: 'ti ti-home',
     },
 };

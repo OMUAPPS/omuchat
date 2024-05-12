@@ -12,10 +12,6 @@
         "module": "NodeNext",
         "moduleResolution": "NodeNext"
     },
-    "include": [
-        "src/**/*",
-    ],
-    "exclude": [
-        "dist",
-    ]
+    "include": ["src/**/*"],
+    "exclude": ["dist"]
 }

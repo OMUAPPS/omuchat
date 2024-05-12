@@ -1,24 +1,26 @@
 <script lang="ts">
-	import type { Locale, LocalizedText } from '@omuchatjs/omu/localization/index.js';
-	import { BROWSER } from 'esm-env';
-	import { client } from './stores.js';
+    import type { Locale, LocalizedText } from '@omuchatjs/omu/localization/index.js';
+    import { BROWSER } from 'esm-env';
+    import { client } from './stores.js';
+    import { onDestroy } from 'svelte';
 
-	export let text: LocalizedText | undefined;
+    export let text: LocalizedText | undefined;
 
-	let displayText: string | undefined = undefined;
-	if (BROWSER && text) {
-		if ($client.network.connected) {
-			displayText = $client.i18n.translate(text);
-		} else {
-			const locales = window.navigator.languages as Locale[];
-			displayText = $client.i18n.selectBestTranslation(locales, text);
-			$client.whenReady(() => {
-				displayText = $client.i18n.translate(text!);
-			});
-		}
-	}
+    let displayText: string | undefined = undefined;
+    if (BROWSER && text) {
+        if ($client.ready) {
+            displayText = $client.i18n.translate(text);
+        } else {
+            const locales = window.navigator.languages as Locale[];
+            displayText = $client.i18n.selectBestTranslation(locales, text);
+            const unlisten = $client.whenReady(() => {
+                displayText = $client.i18n.translate(text!);
+            });
+            onDestroy(unlisten);
+        }
+    }
 </script>
 
 {#if displayText}
-	{displayText}
+    {displayText}
 {/if}

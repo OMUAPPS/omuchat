@@ -24,7 +24,7 @@
         "dev": "pnpm run watch",
         "build": "pnpm run ts",
         "lint": "eslint . --ext .js,.ts",
-        "fix": "eslint . --ext .js,.ts --fix"
+        "format": "eslint . --ext .js,.ts --fix"
     },
     "devDependencies": {
         "@types/node": "^20.12.11",

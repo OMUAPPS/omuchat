@@ -1,5 +1,5 @@
-import type { Keyable } from "@omuchatjs/omu/interface.js";
-import type { Model } from "@omuchatjs/omu/model.js";
+import type { Keyable } from '@omuchatjs/omu/interface.js';
+import type { Model } from '@omuchatjs/omu/model.js';
 
 type NotifyJson = {
     text: string;
@@ -11,7 +11,7 @@ export class NotifyEntry implements Model<NotifyJson>, Keyable {
         public text: string,
         public regex: string,
         public soundUrl: string,
-    ) { }
+    ) {}
 
     static fromJson(json: NotifyJson) {
         return new NotifyEntry(json.text, json.regex, json.soundUrl);

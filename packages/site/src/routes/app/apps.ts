@@ -13,19 +13,14 @@ export const apps = [] as App[];
 
 export function loadApps(origin: string) {
     if (apps.length) return;
-    apps.push(...[
-        quiz,
-        notifier,
-        onecomme,
-        playqueue,
-        emoji,
-        tester,
-        reaction,
-        translator,
-    ].map((app) => app(origin)));
+    apps.push(
+        ...[quiz, notifier, onecomme, playqueue, emoji, tester, reaction, translator].map((app) =>
+            app(origin),
+        ),
+    );
 }
 
 export const appTable = client.dashboard.apps;
 client.whenReady(async () => {
     console.log(await appTable.fetchAll());
-})
+});

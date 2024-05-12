@@ -67,8 +67,8 @@
         gap: 5px;
         align-items: baseline;
         justify-content: center;
-        padding-right: 20px;
         padding-top: 20px;
+        padding-right: 20px;
         text-wrap: nowrap;
         visibility: hidden;
         background: linear-gradient(

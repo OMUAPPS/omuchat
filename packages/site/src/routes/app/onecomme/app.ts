@@ -19,6 +19,6 @@ export default function getApp(origin: string) {
             },
             icon: 'dog',
             tags: ['tool'] as TagKey[],
-        }
+        },
     });
 }

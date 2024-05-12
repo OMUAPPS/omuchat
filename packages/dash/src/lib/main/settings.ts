@@ -47,7 +47,6 @@ export const currentPage = createSetting('currentPage', 'main');
 export const currentSettingsCategory = createSetting('currentPageSettings', 'general');
 export const installed = createSetting('installed', false);
 
-
 function calcLanguageScore(lang: string): number {
     let score = 0;
     score +=
@@ -67,10 +66,15 @@ function calcLanguageScore(lang: string): number {
 type Setting<T extends Record<string, unknown> = Record<string, unknown>> = {
     component: TypedComponent<T>;
     props: T;
-}
+};
 export const SETTING_REGISTRY: Map<string, Record<string, Setting>> = new Map();
 
-export function registerSetting<T extends Record<string, unknown>>(category: string, key: string, setting: TypedComponent<T>, props: T) {
+export function registerSetting<T extends Record<string, unknown>>(
+    category: string,
+    key: string,
+    setting: TypedComponent<T>,
+    props: T,
+) {
     if (!SETTING_REGISTRY.has(category)) {
         SETTING_REGISTRY.set(category, {});
     }

@@ -21,6 +21,6 @@ export default function getApp(origin: string) {
             icon: 'language-hiragana',
             image: thumbnail,
             tags: ['tool'] as TagKey[],
-        }
+        },
     });
 }

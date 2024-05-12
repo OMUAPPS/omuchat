@@ -31,10 +31,10 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 10px;
-        margin: 10px;
         width: 300px;
         height: 100px;
+        padding: 10px;
+        margin: 10px;
         border: 1px solid #ccc;
     }
 </style>

@@ -12,6 +12,6 @@ export default function getApp(origin: string) {
             name: 'Play Queue',
             icon: 'player-track-next',
             tags: ['tool'] as TagKey[],
-        }
+        },
     });
 }

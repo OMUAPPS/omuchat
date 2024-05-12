@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/svelte";
-import RelativeDate from "./RelativeDate.svelte";
+import type { Meta, StoryObj } from '@storybook/svelte';
+import RelativeDate from './RelativeDate.svelte';
 
 const meta = {
-    title: "Components/Date",
+    title: 'Components/Date',
     component: RelativeDate,
-    tags: ["autodocs"],
+    tags: ['autodocs'],
     argTypes: {
-        date: { control: "date" },
+        date: { control: 'date' },
     },
 } satisfies Meta<RelativeDate>;
 

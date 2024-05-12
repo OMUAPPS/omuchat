@@ -12,6 +12,6 @@ export default function getApp(origin: string) {
             name: 'Notifier',
             icon: 'bell',
             tags: ['tool'] as TagKey[],
-        }
+        },
     });
 }

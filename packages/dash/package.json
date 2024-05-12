@@ -14,14 +14,8 @@
         "ui:preview": "vite preview",
         "ui:check": "svelte-check --tsconfig ./tsconfig.json",
         "ui:check-watch": "pnpm run ui:check --watch",
-        "lint:stylelint": "stylelint --ignore-path .gitignore ./**/*.{css,svelte}",
-        "fix:stylelint": "stylelint --fix --ignore-path .gitignore ./**/*.{css,svelte}",
-        "lint:eslint": "eslint . --ext .ts,.svelte --ignore-path .gitignore --ignore-pattern '**/*.d.ts'",
-        "fix:eslint": "eslint . --ext .ts,.svelte --fix --ignore-path .gitignore",
-        "lint:prettier": "prettier --check .",
-        "fix:prettier": "prettier --write .",
-        "lint": "pnpm run lint:stylelint && pnpm run lint:eslint && pnpm run lint:prettier",
-        "fix": "pnpm run fix:stylelint && pnpm run fix:eslint && pnpm run format:prettier"
+        "lint": "prettier --check . && eslint .",
+        "format": "prettier --write ."
     },
     "workspaces": [
         "packages/*"

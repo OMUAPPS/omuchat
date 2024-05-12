@@ -1,40 +1,43 @@
-import { createRegistryStore } from "$lib/helper.js";
-import { models } from "@omuchatjs/chat";
-import { Provider } from "@omuchatjs/chat/models/provider.js";
-import { RegistryType } from "@omuchatjs/omu/extension/registry/registry.js";
-import { TableType } from "@omuchatjs/omu/extension/table/index.js";
-import { Identifier } from "@omuchatjs/omu/identifier.js";
-import type { Keyable } from "@omuchatjs/omu/interface.js";
-import type { Model } from "@omuchatjs/omu/model.js";
-import { writable } from "svelte/store";
-import { IDENTIFIER } from "./app.js";
-import { client } from "./client.js";
+import { createRegistryStore } from '$lib/helper.js';
+import { models } from '@omuchatjs/chat';
+import { Provider } from '@omuchatjs/chat/models/provider.js';
+import { RegistryType } from '@omuchatjs/omu/extension/registry/registry.js';
+import { TableType } from '@omuchatjs/omu/extension/table/index.js';
+import { Identifier } from '@omuchatjs/omu/identifier.js';
+import type { Keyable } from '@omuchatjs/omu/interface.js';
+import type { Model } from '@omuchatjs/omu/model.js';
+import { writable } from 'svelte/store';
+import { IDENTIFIER } from './app.js';
+import { client } from './client.js';
 
 const PLUGIN_IDENTIFIER = IDENTIFIER.join('plugin');
 
 export type EmojiConfig = {
     active: boolean;
-}
+};
 
-export const config = createRegistryStore(client, RegistryType.createJson<EmojiConfig>(PLUGIN_IDENTIFIER, {
-    name: 'config',
-    defaultValue: {
-        active: true,
-    },
-}));
+export const config = createRegistryStore(
+    client,
+    RegistryType.createJson<EmojiConfig>(PLUGIN_IDENTIFIER, {
+        name: 'config',
+        defaultValue: {
+            active: true,
+        },
+    }),
+);
 
 export type TextPattern = {
-    type: "text";
+    type: 'text';
     text: string;
 };
 
 export type ImagePattern = {
-    type: "image";
+    type: 'image';
     id: string;
 };
 
 export type RegexPattern = {
-    type: "regex";
+    type: 'regex';
     regex: string;
 };
 
@@ -51,11 +54,7 @@ export class Emoji implements Model<EmojiData>, Keyable {
     asset: Identifier;
     patterns: Pattern[];
 
-    constructor(options: {
-        id: string;
-        asset: Identifier;
-        patterns: Pattern[];
-    }) {
+    constructor(options: { id: string; asset: Identifier; patterns: Pattern[] }) {
         this.id = options.id;
         this.asset = options.asset;
         this.patterns = options.patterns;
@@ -64,18 +63,18 @@ export class Emoji implements Model<EmojiData>, Keyable {
     public getPatternText() {
         return this.patterns
             .map((pattern) => {
-                if (pattern.type === "text") {
+                if (pattern.type === 'text') {
                     return pattern.text;
                 }
-                if (pattern.type === "image") {
+                if (pattern.type === 'image') {
                     return `:${pattern.id}:`;
                 }
-                if (pattern.type === "regex") {
+                if (pattern.type === 'regex') {
                     return pattern.regex;
                 }
-                return "";
+                return '';
             })
-            .join(" ");
+            .join(' ');
     }
 
     key() {
@@ -86,7 +85,7 @@ export class Emoji implements Model<EmojiData>, Keyable {
         return new Emoji({
             id: data.id,
             asset: Identifier.fromKey(data.asset),
-            patterns: data.patterns
+            patterns: data.patterns,
         });
     }
 
@@ -94,19 +93,18 @@ export class Emoji implements Model<EmojiData>, Keyable {
         return {
             id: this.id,
             asset: this.asset.key(),
-            patterns: this.patterns
+            patterns: this.patterns,
         };
     }
 }
 
 export const EMOJI_TABLE = TableType.createModel(PLUGIN_IDENTIFIER, {
-    name: "emoji",
-    model: Emoji
-})
+    name: 'emoji',
+    model: Emoji,
+});
 
 export const emojis = client.tables.get(EMOJI_TABLE);
 export const selectedEmoji = writable<Emoji | null>(null);
-
 
 export function deleteEmoji(emoji: Emoji) {
     emojis.remove(emoji);
@@ -126,7 +124,6 @@ export function saveEmoji(emoji: Emoji) {
 export function editEmoji(emoji: Emoji) {
     selectedEmoji.set(emoji);
 }
-
 
 export const EMOJI_TEST_PROVIDER = new Provider({
     id: client.app.id,

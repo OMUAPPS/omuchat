@@ -15,6 +15,6 @@ export default function getApp(origin: string) {
             },
             icon: 'text-size',
             tags: ['tool'] as TagKey[],
-        }
+        },
     });
 }

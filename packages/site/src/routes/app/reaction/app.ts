@@ -21,6 +21,6 @@ export default function getApp(origin: string) {
             icon: 'sparkles',
             image: thumbnail,
             tags: ['youtube', 'asset'] as TagKey[],
-        }
+        },
     });
 }

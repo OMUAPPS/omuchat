@@ -9,7 +9,4 @@ export const client = new Client({
 });
 setClient(client);
 
-client.permissions.require(
-    ASSET_UPLOAD_PERMISSION_ID,
-    'cc.omuchat:chatprovider/youtube/reaction',
-);
+client.permissions.require(ASSET_UPLOAD_PERMISSION_ID, 'cc.omuchat:chatprovider/youtube/reaction');

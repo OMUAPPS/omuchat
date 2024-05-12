@@ -67,6 +67,7 @@
 <style lang="scss">
     button {
         padding: 8px 14px;
+        margin-right: 1px;
         font-size: 16px;
         font-weight: 600;
         color: var(--color-1);
@@ -75,27 +76,26 @@
         border: none;
         outline: none;
         outline-offset: -1px;
-        margin-right: 1px;
     }
 
     .text {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding: 20px 20px;
+        padding: 20px;
         font-size: 14px;
         font-weight: 600;
         color: var(--color-1);
     }
 
     .permissions {
-        overflow-y: auto;
         width: 100%;
+        overflow-y: auto;
     }
 
     .accept {
-        background: var(--color-1);
         color: var(--color-bg-2);
+        background: var(--color-1);
 
         &:hover {
             outline: 1px solid var(--color-bg-2);

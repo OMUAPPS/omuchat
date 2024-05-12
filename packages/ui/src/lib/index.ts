@@ -29,4 +29,3 @@ export type { TypedComponent } from './typed-component.js';
 export { applyOpacity, classes, style } from './utils/class-helper.js';
 
 import '@tabler/icons-webfont/dist/tabler-icons.scss'; // Import the Tabler Icons CSS
-

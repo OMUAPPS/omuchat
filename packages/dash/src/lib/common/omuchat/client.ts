@@ -5,14 +5,23 @@ import type { Address } from '@omuchatjs/omu/address.js';
 
 import { App, Client } from '@omuchatjs/chat';
 
-
 import { invoke, IS_TAURI } from '$lib/utils/tauri.js';
 import { BrowserTokenProvider } from '@omuchatjs/chat/client.js';
 
 import { CHAT_CHANNEL_TREE_PERMISSION_ID } from '@omuchatjs/chat/permissions.js';
-import { DASHBOARD_OPEN_APP_PERMISSION_ID, DASHOBARD_APP_EDIT_PERMISSION_ID, DASHOBARD_APP_READ_PERMISSION_ID } from '@omuchatjs/omu/extension/dashboard/index.js';
-import { I18N_GET_LOCALES_PERMISSION_ID, I18N_SET_LOCALES_PERMISSION_ID } from '@omuchatjs/omu/extension/i18n/index.js';
-import { SERVER_APPS_READ_PERMISSION_ID, SERVER_SHUTDOWN_PERMISSION_ID } from '@omuchatjs/omu/extension/server/index.js';
+import {
+    DASHBOARD_OPEN_APP_PERMISSION_ID,
+    DASHOBARD_APP_EDIT_PERMISSION_ID,
+    DASHOBARD_APP_READ_PERMISSION_ID,
+} from '@omuchatjs/omu/extension/dashboard/index.js';
+import {
+    I18N_GET_LOCALES_PERMISSION_ID,
+    I18N_SET_LOCALES_PERMISSION_ID,
+} from '@omuchatjs/omu/extension/i18n/index.js';
+import {
+    SERVER_APPS_READ_PERMISSION_ID,
+    SERVER_SHUTDOWN_PERMISSION_ID,
+} from '@omuchatjs/omu/extension/server/index.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import { setChat } from '../../../../../ui/dist/stores.js';
 
@@ -48,7 +57,7 @@ const client = new Client({
     address,
     token: new TokenProvider('omu-token'),
 });
-setClient(client)
+setClient(client);
 setChat(client.chat);
 const dashboard = new Dashboard(client);
 const chat = client.chat;
@@ -68,7 +77,4 @@ client.permissions.require(
     I18N_SET_LOCALES_PERMISSION_ID,
 );
 
-export {
-    chat, client, dashboard
-};
-
+export { chat, client, dashboard };

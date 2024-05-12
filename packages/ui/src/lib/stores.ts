@@ -1,14 +1,16 @@
-import type { Chat } from "@omuchatjs/chat";
-import type { Client } from "@omuchatjs/omu";
-import type { Locale } from "@omuchatjs/omu/localization/index.js";
-import { BROWSER } from "esm-env";
-import { writable, type Writable } from "svelte/store";
+import type { Chat } from '@omuchatjs/chat';
+import type { Client } from '@omuchatjs/omu';
+import type { Locale } from '@omuchatjs/omu/localization/index.js';
+import { BROWSER } from 'esm-env';
+import { writable, type Writable } from 'svelte/store';
 
 type TranslateFunction = (key: string, options?: Record<string, string>) => string;
 
-export const translate: Writable<TranslateFunction> = writable((key: string, options?: Record<string, unknown>) => {
-    return `(translation for ${key} not found. options: ${JSON.stringify(options)})`;
-});
+export const translate: Writable<TranslateFunction> = writable(
+    (key: string, options?: Record<string, unknown>) => {
+        return `(translation for ${key} not found. options: ${JSON.stringify(options)})`;
+    },
+);
 
 export const client: Writable<Client> = writable();
 export const chat: Writable<Chat> = writable();
@@ -27,7 +29,7 @@ export function setChat<T extends Chat>(newChat: T): T {
 
 type Theme = {
     [key: string]: string;
-}
+};
 
 export const theme: Writable<Theme> = writable({
     '--color-bg-1': '#f6f3eb',
@@ -40,9 +42,9 @@ export const theme: Writable<Theme> = writable({
 });
 
 export const dateTimeFormats = writable<{
-    full: Intl.DateTimeFormat,
-    short: Intl.DateTimeFormat,
-    time: Intl.DateTimeFormat,
+    full: Intl.DateTimeFormat;
+    short: Intl.DateTimeFormat;
+    time: Intl.DateTimeFormat;
 }>();
 
 if (BROWSER) {

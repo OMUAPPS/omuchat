@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/svelte";
-import ButtonMiniView from "./ButtonMiniView.svelte";
+import type { Meta, StoryObj } from '@storybook/svelte';
+import ButtonMiniView from './ButtonMiniView.svelte';
 
 const meta = {
-    title: "Components/ButtonMini",
+    title: 'Components/ButtonMini',
     component: ButtonMiniView,
-    tags: ["autodocs"],
+    tags: ['autodocs'],
     argTypes: {
-        text: { control: "text" },
-        icon: { control: "text" },
+        text: { control: 'text' },
+        icon: { control: 'text' },
     },
 } satisfies Meta<ButtonMiniView>;
 
@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        text: "This is a button icon",
-        icon: "close",
+        text: 'This is a button icon',
+        icon: 'close',
     },
 };

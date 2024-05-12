@@ -5,16 +5,17 @@ import { BROWSER } from 'esm-env';
 import getApp from './app.js';
 import { CONFIG_REGISTRY_TYPE } from './translator.js';
 
-export const client = setClient(new Client({
-    app: getApp(BROWSER ? window.location.origin : ''),
-}));
+export const client = setClient(
+    new Client({
+        app: getApp(BROWSER ? window.location.origin : ''),
+    }),
+);
 
 export const config = createRegistryStore(client, CONFIG_REGISTRY_TYPE);
-
 
 if (BROWSER) {
     client.plugins.require({
         omuplugin_translator: null,
-    })
+    });
     client.start();
 }

@@ -73,7 +73,7 @@ export function listenSync<T extends keyof Events>(
     callback: (event: TauriEvent<Events[T]>) => void,
 ): () => void {
     assertTauri();
-    let destroyCallback = () => { };
+    let destroyCallback = () => {};
     let isDestroyed = false;
     _listen(command, (event: TauriEvent<Events[T]>) => {
         callback(event);

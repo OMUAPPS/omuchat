@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { Tooltip } from '@omuchatjs/ui';
+    import { Tooltip } from '@omuchatjs/ui';
 
-	export let href: string = '';
-	export let title: string | undefined = undefined;
+    export let href: string = '';
+    export let title: string | undefined = undefined;
 
-	if (href?.length && !href.startsWith('http')) {
-		href = `https://${href}`;
-	}
+    if (href?.length && !href.startsWith('http')) {
+        href = `https://${href}`;
+    }
 </script>
 
 <a target="_blank" {href} {title}>
-	<Tooltip>
-		{href}
-	</Tooltip>
-	<slot />
+    <Tooltip>
+        {href}
+    </Tooltip>
+    <slot />
 </a>

@@ -30,9 +30,9 @@
         width: 90%;
         padding: 5px 10px;
         margin: 4px 10px;
-        color: var(--color-1);
         font-weight: 600;
-        border: 1px solid var(--color-outline);
+        color: var(--color-1);
         background: var(--color-bg-1);
+        border: 1px solid var(--color-outline);
     }
 </style>

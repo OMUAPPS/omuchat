@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/svelte";
-import VirtualListView from "./VirtualListView.svelte";
+import type { Meta, StoryObj } from '@storybook/svelte';
+import VirtualListView from './VirtualListView.svelte';
 
 // More on how to set up stories at: https://storybook.js.org/docs/svelte/writing-stories/introduction
 const meta = {
-    title: "Components/VirtualList",
+    title: 'Components/VirtualList',
     component: VirtualListView,
-    tags: ["autodocs"],
+    tags: ['autodocs'],
     argTypes: {
-        length: { control: "number" },
+        length: { control: 'number' },
     },
 } satisfies Meta<VirtualListView>;
 

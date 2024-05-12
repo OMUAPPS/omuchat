@@ -15,6 +15,6 @@ export default function getApp(origin: string) {
             },
             icon: 'icons',
             tags: [] as TagKey[],
-        }
+        },
     });
 }

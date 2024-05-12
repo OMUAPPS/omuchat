@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Tooltip from './Tooltip.svelte';
+    import Tooltip from './Tooltip.svelte';
 
-	export let text: string;
-	export let image: string;
+    export let text: string;
+    export let image: string;
 </script>
 
 <button>
