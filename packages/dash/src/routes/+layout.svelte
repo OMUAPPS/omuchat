@@ -9,29 +9,22 @@
     import { createI18nUnion } from '@omuchatjs/i18n';
     import { Theme } from '@omuchatjs/ui';
     import './styles.scss';
+    import { NetworkStatus } from '@omuchatjs/omu/network/network.js';
 
     async function init() {
         await loadLocale();
         await waitForTauri();
 
-        if (!IS_TAURI) {
-            client.start();
-        } else {
-            const serverState = await invoke('get_server_state');
-            if (serverState == 'Installed' || serverState == 'AlreadyRunning') {
-                client.start();
-            } else {
-                listen('server-state', (state) => {
-                    screenContext.push(ScreenInstalling, {});
-                    console.log(state);
-                    if (state.payload === 'Installed') {
-                        client.start();
-                    }
-                });
-            }
-        }
+        client.start();
         language.subscribe(loadLocale);
-        await new Promise<void>((resolve) => client.whenReady(resolve));
+        await new Promise<void>((resolve, reject) => {
+            client.whenReady(resolve);
+            client.network.event.status.listen((status) => {
+                if (status === NetworkStatus.ERROR) {
+                    reject(status);
+                }
+            });
+        });
     }
 
     async function loadLocale() {

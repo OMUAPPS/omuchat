@@ -46,7 +46,7 @@
     <div class="section">
         <h3>Server</h3>
         <span>
-            {client.network.connected ? 'connected' : 'disconnected'}
+            {client.network.status}
             <small>
                 {client.network.address.host}:{client.network.address.port}
             </small>

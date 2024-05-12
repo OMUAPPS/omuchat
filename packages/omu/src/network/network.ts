@@ -1,7 +1,14 @@
 import type { Address } from '../address.js';
 import type { TokenProvider } from '../client/token.js';
 import type { OmuError } from '../errors.js';
-import { AnotherConnection, InvalidOrigin, InvalidPacket, InvalidToken, InvalidVersion, PermissionDenied } from '../errors.js';
+import {
+    AnotherConnection,
+    InvalidOrigin,
+    InvalidPacket,
+    InvalidToken,
+    InvalidVersion,
+    PermissionDenied,
+} from '../errors.js';
 import { EventEmitter } from '../event-emitter.js';
 import { IdentifierMap } from '../identifier.js';
 import type { Client } from '../index.js';
@@ -12,20 +19,26 @@ import { ConnectPacket, DisconnectType, PACKET_TYPES } from './packet/packet-typ
 import type { Packet, PacketType } from './packet/packet.js';
 
 type PacketHandler<T> = {
-    readonly type: PacketType<T>,
-    event: EventEmitter<(packet: T) => void>,
+    readonly type: PacketType<T>;
+    event: EventEmitter<(packet: T) => void>;
 };
 
-export type NetworkStatus = 'connecting' | 'connected' | 'disconnected';
+export enum NetworkStatus {
+    DISCONNECTED = 'disconnected',
+    CONNECTING = 'connecting',
+    CONNECTED = 'connected',
+    READY = 'ready',
+    ERROR = 'error',
+    CLOSED = 'closed',
+}
 
 export class Network {
-    public connected = false;
-    public closed = false;
+    public status: NetworkStatus = NetworkStatus.DISCONNECTED;
     public readonly event = {
-        connected: new EventEmitter<() => void>,
-        disconnected: new EventEmitter<() => void>,
-        packet: new EventEmitter<(packet: Packet) => void>,
-        status: new EventEmitter<(status: NetworkStatus) => void>,
+        connected: new EventEmitter<() => void>(),
+        disconnected: new EventEmitter<() => void>(),
+        packet: new EventEmitter<(packet: Packet) => void>(),
+        status: new EventEmitter<(status: NetworkStatus) => void>(),
     };
     private readonly tasks: Array<() => Promise<void> | void> = [];
     private readonly packetMapper = new PacketMapper();
@@ -50,7 +63,7 @@ export class Network {
             if (reason.type === DisconnectType.SHUTDOWN || reason.type === DisconnectType.CLOSE) {
                 return;
             }
-            this.closed = true;
+            this.setStatus(NetworkStatus.ERROR);
             const ERROR_MAP: Record<DisconnectType, typeof OmuError | undefined> = {
                 [DisconnectType.ANOTHER_CONNECTION]: AnotherConnection,
                 [DisconnectType.PERMISSION_DENIED]: PermissionDenied,
@@ -69,12 +82,17 @@ export class Network {
             }
         });
         this.addPacketHandler(PACKET_TYPES.READY, () => {
+            if (this.status === NetworkStatus.READY) {
+                throw new Error('Received READY packet when already ready');
+            }
+            this.setStatus(NetworkStatus.READY);
+            this.event.status.emit(NetworkStatus.READY);
             this.client.event.ready.emit();
         });
     }
 
     public setConnection(connection: Connection): void {
-        if (this.connected) {
+        if (this.status !== NetworkStatus.DISCONNECTED) {
             throw new Error('Cannot change connection while connected');
         }
         this.connection = connection;
@@ -99,11 +117,10 @@ export class Network {
     }
 
     public async connect(recconect = true): Promise<void> {
-        if (this.connected) {
-            throw new Error('Already connected');
+        if (this.status !== NetworkStatus.DISCONNECTED) {
+            throw new Error(`Cannot connect while ${this.status}`);
         }
 
-        this.disconnect();
         try {
             await this.connection.connect();
         } catch (error) {
@@ -113,7 +130,7 @@ export class Network {
                 throw error;
             }
         }
-        this.connected = true;
+        this.setStatus(NetworkStatus.CONNECTING);
         const token = await this.tokenProvider.get(this.address, this.client.app);
         this.send({
             type: PACKET_TYPES.CONNECT,
@@ -123,7 +140,7 @@ export class Network {
             }),
         });
         const listenPromise = this.listen();
-        await this.event.status.emit('connected');
+        await this.event.status.emit(NetworkStatus.CONNECTED);
         await this.event.connected.emit();
         await this.dispatchTasks();
         this.send({
@@ -138,7 +155,7 @@ export class Network {
     }
 
     private async tryReconnect(): Promise<void> {
-        if (this.closed) {
+        if (this.status === NetworkStatus.CLOSED) {
             return;
         }
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -146,18 +163,18 @@ export class Network {
     }
 
     public disconnect(): void {
-        if (!this.connected) {
+        if (this.status === NetworkStatus.CLOSED) {
             return;
         }
-        this.connected = false;
+        this.setStatus(NetworkStatus.DISCONNECTED);
+        this.event.status.emit(NetworkStatus.DISCONNECTED);
         this.connection.close();
-        this.event.status.emit('disconnected');
         this.event.disconnected.emit();
     }
 
     public send(packet: Packet): void {
-        if (!this.connected) {
-            throw new Error('Not connected');
+        if (this.connection.closed) {
+            throw new Error('Cannot send packet while connection is closed');
         }
         this.connection.send(packet, this.packetMapper);
     }
@@ -196,5 +213,13 @@ export class Network {
         for (const task of this.tasks) {
             await task();
         }
+    }
+
+    private setStatus(status: NetworkStatus): void {
+        if (this.status === status) {
+            throw new Error(`Cannot set status to ${status} when already ${status}`);
+        }
+        this.status = status;
+        this.event.status.emit(status);
     }
 }

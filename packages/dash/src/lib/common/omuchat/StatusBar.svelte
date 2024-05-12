@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { ConnectionStatus } from '@omuchatjs/omu/network/index.js';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
     import { FlexColWrapper, Tooltip } from '@omuchatjs/ui';
     import { client } from './client.js';
+    import { NetworkStatus } from '@omuchatjs/omu/network/network.js';
 
-    const status = writable<ConnectionStatus>('disconnected');
+    const status = writable<NetworkStatus>(client.network.status);
 
     onMount(() => {
         return client.network.event.status.listen((newStatus) => status.set(newStatus));
@@ -14,17 +14,20 @@
 </script>
 
 <p class={$status}>
-    {#if $status === 'connected'}
+    {#if $status === NetworkStatus.CONNECTED}
+        <i class="ti ti-bolt" />
+    {/if}
+    {#if $status === NetworkStatus.READY}
         <i class="ti ti-check" />
     {/if}
-    {#if $status === 'connecting'}
+    {#if $status === NetworkStatus.CONNECTING}
         <i class="ti ti-reload" />
     {/if}
-    {#if $status === 'disconnected'}
+    {#if $status === NetworkStatus.DISCONNECTED}
         <i class="ti ti-x" />
     {/if}
     <Tooltip>
-        {#if $status === 'connected'}
+        {#if $status === NetworkStatus.CONNECTED}
             <FlexColWrapper>
                 接続済み
                 <span>
