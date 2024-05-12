@@ -13,7 +13,7 @@ export const CONFIG_REGISTRY_TYPE = RegistryType.createJson<TranslatorConfig>(PL
     name: 'config',
     defaultValue: {
         active: false,
-        languages: ["ja"],
+        languages: ["ja", "en"],
     },
 });
 
