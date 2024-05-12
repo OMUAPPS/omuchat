@@ -7,28 +7,21 @@ import type {
     PermissionRequestPacket,
     PluginRequestPacket,
 } from '@omuchatjs/omu/extension/dashboard/packets.js';
-import { TableType, type Table } from '@omuchatjs/omu/extension/table/index.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import type { Locale } from '@omuchatjs/omu/localization/locale.js';
 import { screenContext } from '../screen/screen.js';
-import { BookmarkEntry } from './bookmark.js';
 import { client } from './client.js';
 import PermissionRequestScreen from '$lib/common/screen/PermissionRequestScreen.svelte';
 import PluginRequestScreen from '$lib/common/screen/PluginRequestScreen.svelte';
+import type { Table } from '@omuchatjs/omu/extension/table/table.js';
 
 export const IDENTIFIER = Identifier.fromKey('cc.omuchat:dashboard');
-export const BookmarksTableKey = TableType.createModel(IDENTIFIER, {
-    name: 'bookmarks',
-    model: BookmarkEntry,
-});
 
 export class Dashboard implements DashboardHandler {
     readonly apps: Table<App>;
-    readonly bookmarks: Table<BookmarkEntry>;
 
     constructor(client: Client) {
         this.apps = client.dashboard.apps;
-        this.bookmarks = client.tables.get(BookmarksTableKey);
         client.dashboard.set(this);
         client.whenReady(() => {
             client.i18n.setLocale(window.navigator.languages as Locale[]);
