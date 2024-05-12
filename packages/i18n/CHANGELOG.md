@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.1.20-alpha.0 (2024-05-12)
+
+
+### Bug Fixes
+
+* **dash:** updaterのendpointを更新 ([d3e148c](https://github.com/OMUCHAT/omuchat/commit/d3e148cf0a9f65c7388f8834d6502c50f53bac57))
+
+
+
+
+
 ## 0.1.19 (2024-05-10)
 
 **Note:** Version bump only for package @omuchatjs/i18n
