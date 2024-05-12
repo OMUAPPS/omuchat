@@ -14,6 +14,8 @@ const paths = [
     'packages/ui/.svelte-kit',
     'packages/dash/node_modules',
     'packages/dash/.svelte-kit',
+    'packages/site/node_modules',
+    'packages/site/.svelte-kit',
 ];
 
 async function clean() {
