@@ -88,13 +88,15 @@
         letter-spacing: 0.1em;
 
         &:hover {
+            background: var(--color-bg-1);
             color: var(--color-1);
+            outline: 1px solid var(--color-1);
+            outline-offset: -3px;
         }
 
         &[aria-current='page'] {
             color: var(--color-bg-2);
             background: var(--color-1);
-            outline: 1px solid var(--color-bg-1);
         }
     }
 
@@ -115,6 +117,7 @@
         align-items: center;
         justify-content: center;
         height: 3em;
+        gap: 0.5rem;
         padding: 0;
         margin: 0;
         list-style: none;
