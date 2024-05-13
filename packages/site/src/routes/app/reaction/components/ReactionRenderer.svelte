@@ -110,7 +110,6 @@
     function updatePosition() {
         const currentTime = Date.now();
         const deltaTime = (currentTime - previousTime) / 20;
-        previousTime = currentTime;
 
         const expandedScreenBound = {
             left: -100,
@@ -190,9 +189,14 @@
     }
 
     let animationTimer: number;
-
     onMount(() => {
-        animationTimer = requestAnimationFrame(function drawLoop() {
+        animationTimer = requestAnimationFrame(async function drawLoop() {
+            await new Promise((resolve) => {
+                const currentTime = Date.now();
+                const delay = previousTime + 1000 / 30 - currentTime;
+                setTimeout(resolve, delay);
+                previousTime = currentTime;
+            });
             updateSpawn();
             updatePosition();
             draw();
