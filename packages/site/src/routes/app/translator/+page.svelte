@@ -1,25 +1,27 @@
 <script lang="ts">
     import { ButtonMini, Combobox, FlexRowWrapper } from '@omuchatjs/ui';
     import { config } from './client.js';
-    import { LANGUAGE_OPTIONS } from './translator.js';
+    import { LANGUAGE_OPTIONS, type Language } from './translator.js';
 
     $: console.log($config.languages);
+
+    function changeLanguage(language: Language, i: number) {
+        $config = {
+            ...$config,
+            languages: $config.languages.map((l, j) => (i === j ? language : l)),
+        };
+    }
 </script>
 
 <main>
     <h3>翻訳言語</h3>
     <section>
-        {#each $config.languages as language, i (i)}
+        {#each $config.languages as language, i}
             <FlexRowWrapper>
                 <Combobox
                     options={LANGUAGE_OPTIONS}
                     defaultValue={language}
-                    handleChange={(key, language) => {
-                        $config = {
-                            ...$config,
-                            languages: $config.languages.map((l, j) => (i === j ? language : l)),
-                        };
-                    }}
+                    handleChange={(_, language) => changeLanguage(language, i)}
                 />
                 <ButtonMini
                     on:click={() => {
