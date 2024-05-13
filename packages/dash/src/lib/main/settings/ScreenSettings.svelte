@@ -4,9 +4,8 @@
     import { currentSettingsCategory, SETTING_REGISTRY } from '../settings.js';
 
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
-    import ScreenHeader from '$lib/common/screen/ScreenHeader.svelte';
     import { t } from '$lib/i18n/i18n-context.js';
-    import { Button, JustifyBaselineWrapper } from '@omuchatjs/ui';
+    import { Button, Header, JustifyBaselineWrapper } from '@omuchatjs/ui';
 
     export let screen: {
         handle: ScreenHandle;
@@ -35,10 +34,11 @@
 </script>
 
 <div class="container">
-    <div class="header">
-        <ScreenHeader title="settings" />
-        <div class="description">{$t('screen.settings.description')}</div>
-    </div>
+    <Header
+        icon="ti ti-settings"
+        title={$t('screen.settings.name')}
+        subtitle={$t('screen.settings.description')}
+    />
     <div class="close-button">
         <Button on:click={screen.handle.pop} outline rounded filled>
             <JustifyBaselineWrapper>
@@ -184,26 +184,6 @@
         .description {
             margin-left: 10px;
             font-size: 10px;
-            color: #999;
-        }
-    }
-
-    .header {
-        position: relative;
-        top: 0;
-        right: 0;
-        left: 0;
-        display: flex;
-        flex-direction: row;
-        align-items: baseline;
-        width: 100%;
-        height: 80px;
-        padding: 40px 20px;
-        outline: 1px solid var(--color-1);
-
-        .description {
-            margin-left: 190px;
-            font-size: 12px;
             color: #999;
         }
     }
