@@ -11,5 +11,5 @@ export const client = new Client({
 });
 setClient(client);
 client.plugins.require({
-    omuplugin_onecomme: '0.3.2',
+    omuplugin_onecomme: '==0.3.2',
 });
