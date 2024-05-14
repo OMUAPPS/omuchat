@@ -64,8 +64,8 @@ const dashboard = new Dashboard(client);
 const chat = client.chat;
 
 client.plugins.require({
-    omuplugin_chat: null,
-    omuchatprovider: null,
+    omuplugin_chat: '0.3.2',
+    omuchatprovider: '0.3.2',
 });
 client.permissions.require(
     CHAT_CHANNEL_TREE_PERMISSION_ID,

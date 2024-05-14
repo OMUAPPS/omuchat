@@ -15,7 +15,7 @@ export const config = createRegistryStore(client, CONFIG_REGISTRY_TYPE);
 
 if (BROWSER) {
     client.plugins.require({
-        omuplugin_translator: null,
+        omuplugin_translator: '0.3.2',
     });
     client.start();
 }
