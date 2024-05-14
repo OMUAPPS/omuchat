@@ -76,7 +76,7 @@
 <style lang="scss">
     .container {
         position: relative;
-        top: 40px;
+        top: 0;
         z-index: 100;
         display: flex;
         flex-direction: column;
