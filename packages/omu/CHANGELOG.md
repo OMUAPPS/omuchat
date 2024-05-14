@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.1.22 (2024-05-14)
+
+
+### Bug Fixes
+
+* **dash:** RoomEntryのdescriptionがいい感じに改行されるように ([54e46f3](https://github.com/OMUCHAT/omuchat/commit/54e46f3ba5c4841f5ec8dc4726628754e5e67d56))
+
+
+
+
+
 ## 0.1.20-alpha.1 (2024-05-12)
 
 **Note:** Version bump only for package @omuchatjs/omu
