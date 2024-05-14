@@ -100,7 +100,7 @@
 
     .left {
         display: flex;
-        gap: 5px;
+        gap: 8px;
         align-items: center;
         width: 100%;
         padding-left: 1px;
