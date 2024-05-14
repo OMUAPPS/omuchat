@@ -1,27 +1,34 @@
 <script lang="ts">
-    import { FlexRowWrapper } from '@omuchatjs/ui';
+    import { onDestroy } from 'svelte';
     import StatusBar from './common/omuchat/StatusBar.svelte';
     import ScreenRenderer from './common/screen/ScreenRenderer.svelte';
     import ButtonClose from './common/titlebar/ButtonClose.svelte';
     import ButtonMaximize from './common/titlebar/ButtonMaximize.svelte';
     import ButtonMinimize from './common/titlebar/ButtonMinimize.svelte';
-    import TitleBar from './common/titlebar/TitleBar.svelte';
     import Title from './images/title.svg';
+    import { listen, tauriEvent, tauriWindow } from './utils/tauri.js';
+    import { TauriEvent } from '@tauri-apps/api/event';
+
+    let maximized = false;
+
+    const destroy = listen(TauriEvent.WINDOW_RESIZED, async () => {
+        maximized = await tauriWindow.appWindow.isMaximized();
+    });
+    onDestroy(async () => (await destroy)());
 </script>
 
 <div class="window">
-    <div class="drag-area" data-tauri-drag-region>
+    <div class="titlebar">
+        <div data-tauri-drag-region class:margin={!maximized} />
         <div class="title">
             <img src={Title} alt="title" width="64" height="10" />
             <StatusBar />
         </div>
-        <TitleBar>
-            <FlexRowWrapper>
-                <ButtonMinimize />
-                <ButtonMaximize />
-                <ButtonClose />
-            </FlexRowWrapper>
-        </TitleBar>
+        <div class="buttons">
+            <ButtonMinimize />
+            <ButtonMaximize />
+            <ButtonClose />
+        </div>
     </div>
     <div class="content">
         <slot />
@@ -30,15 +37,40 @@
 </div>
 
 <style lang="scss">
-    .drag-area {
-        position: fixed;
+    div[data-tauri-drag-region] {
+        -webkit-app-region: drag;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+
+        &.margin {
+            $drag-margin: 5px;
+            position: absolute;
+            top: $drag-margin;
+            left: $drag-margin;
+            width: calc(100% - $drag-margin * 2);
+            height: 40px - $drag-margin;
+        }
+    }
+
+    .buttons {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .titlebar {
+        position: relative;
         top: 0;
         left: 0;
         z-index: 1000;
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
         width: 100vw;
         height: 40px;
         user-select: none;
@@ -48,6 +80,7 @@
     }
 
     .title {
+        position: absolute;
         display: flex;
         flex-direction: row;
         gap: 10px;
