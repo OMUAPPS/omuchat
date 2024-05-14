@@ -71,7 +71,9 @@
             </div>
             <div class="description">
                 <Tooltip>
-                    {entry.metadata.description}
+                    <p>
+                        {entry.metadata.description}
+                    </p>
                 </Tooltip>
                 {entry.metadata.description}
             </div>
@@ -152,5 +154,10 @@
         color: color-mix(in srgb, var(--color-1) 100%, transparent 50%);
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    p {
+        white-space: pre-wrap;
+        font-size: 0.5rem;
     }
 </style>
