@@ -7,14 +7,15 @@ import playqueue from './playqueue/app.js';
 import reaction from './reaction/app.js';
 import tester from './tester/app.js';
 import translator from './translator/app.js';
+import caption from './caption/app.js';
 
 export const apps = [] as App[];
 
 export function loadApps(origin: string) {
     if (apps.length) return;
     apps.push(
-        ...[notifier, onecomme, playqueue, emoji, tester, reaction, translator].map((app) =>
-            app(origin),
+        ...[notifier, onecomme, playqueue, emoji, tester, reaction, translator, caption].map(
+            (app) => app(origin),
         ),
     );
 }
