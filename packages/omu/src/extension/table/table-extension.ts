@@ -1,4 +1,4 @@
-import type { Client } from '../../client/index.js';
+import type { Client } from '../../client.js';
 import type { Unlisten } from '../../event-emitter.js';
 import { EventEmitter } from '../../event-emitter.js';
 import { Identifier, IdentifierMap } from '../../identifier.js';
@@ -11,7 +11,15 @@ import { EndpointType } from '../endpoint/endpoint.js';
 import type { Extension } from '../extension.js';
 import { ExtensionType } from '../extension.js';
 
-import { SetConfigPacket, SetPermissionPacket, TableFetchPacket, TableItemsPacket, TableKeysPacket, TablePacket, TableProxyPacket } from './packets.js';
+import {
+    SetConfigPacket,
+    SetPermissionPacket,
+    TableFetchPacket,
+    TableItemsPacket,
+    TableKeysPacket,
+    TablePacket,
+    TableProxyPacket,
+} from './packets.js';
 import type { Table, TableConfig, TableEvents, TablePermissions } from './table.js';
 import { TableType } from './table.js';
 
@@ -21,10 +29,13 @@ export const TABLE_EXTENSION_TYPE: ExtensionType<TableExtension> = new Extension
 );
 const TABLE_PERMISSION_ID = TABLE_EXTENSION_TYPE.join('permission');
 
-const TABLE_SET_PERMISSION_PACKET = PacketType.createSerialized<SetPermissionPacket>(TABLE_EXTENSION_TYPE, {
-    name: 'set_permission',
-    serializer: SetPermissionPacket,
-});
+const TABLE_SET_PERMISSION_PACKET = PacketType.createSerialized<SetPermissionPacket>(
+    TABLE_EXTENSION_TYPE,
+    {
+        name: 'set_permission',
+        serializer: SetPermissionPacket,
+    },
+);
 const TABLE_SET_CONFIG_PACKET = PacketType.createSerialized<SetConfigPacket>(TABLE_EXTENSION_TYPE, {
     name: 'set_config',
     serializer: SetConfigPacket,
@@ -45,47 +56,56 @@ const TABLE_ITEM_ADD_PACKET = PacketType.createSerialized<TableItemsPacket>(TABL
     name: 'item_add',
     serializer: TableItemsPacket,
 });
-const TABLE_ITEM_UPDATE_PACKET = PacketType.createSerialized<TableItemsPacket>(TABLE_EXTENSION_TYPE, {
-    name: 'item_update',
-    serializer: TableItemsPacket,
-});
-const TABLE_ITEM_REMOVE_PACKET = PacketType.createSerialized<TableItemsPacket>(TABLE_EXTENSION_TYPE, {
-    name: 'item_remove',
-    serializer: TableItemsPacket,
-});
-const TABLE_ITEM_GET_ENDPOINT = EndpointType.createSerialized<
-    TableKeysPacket,
-    TableItemsPacket
->(TABLE_EXTENSION_TYPE, {
-    name: 'item_get',
-    requestSerializer: TableKeysPacket,
-    responseSerializer: TableItemsPacket,
-    permissionId: TABLE_PERMISSION_ID,
-});
-const TABLE_FETCH_ENDPOINT = EndpointType.createSerialized<
-    TableFetchPacket,
-    TableItemsPacket
->(TABLE_EXTENSION_TYPE, {
-    name: 'fetch',
-    requestSerializer: TableFetchPacket,
-    responseSerializer: TableItemsPacket,
-    permissionId: TABLE_PERMISSION_ID,
-});
-const TABLE_FETCH_ALL_ENDPOINT = EndpointType.createSerialized<
-    TablePacket,
-    TableItemsPacket
->(TABLE_EXTENSION_TYPE, {
-    name: 'fetch_all',
-    requestSerializer: TablePacket,
-    responseSerializer: TableItemsPacket,
-    permissionId: TABLE_PERMISSION_ID,
-});
-const TABLE_SIZE_ENDPOINT = EndpointType.createSerialized<TablePacket, number>(TABLE_EXTENSION_TYPE, {
-    name: 'size',
-    requestSerializer: TablePacket,
-    responseSerializer: Serializer.json(),
-    permissionId: TABLE_PERMISSION_ID,
-});
+const TABLE_ITEM_UPDATE_PACKET = PacketType.createSerialized<TableItemsPacket>(
+    TABLE_EXTENSION_TYPE,
+    {
+        name: 'item_update',
+        serializer: TableItemsPacket,
+    },
+);
+const TABLE_ITEM_REMOVE_PACKET = PacketType.createSerialized<TableItemsPacket>(
+    TABLE_EXTENSION_TYPE,
+    {
+        name: 'item_remove',
+        serializer: TableItemsPacket,
+    },
+);
+const TABLE_ITEM_GET_ENDPOINT = EndpointType.createSerialized<TableKeysPacket, TableItemsPacket>(
+    TABLE_EXTENSION_TYPE,
+    {
+        name: 'item_get',
+        requestSerializer: TableKeysPacket,
+        responseSerializer: TableItemsPacket,
+        permissionId: TABLE_PERMISSION_ID,
+    },
+);
+const TABLE_FETCH_ENDPOINT = EndpointType.createSerialized<TableFetchPacket, TableItemsPacket>(
+    TABLE_EXTENSION_TYPE,
+    {
+        name: 'fetch',
+        requestSerializer: TableFetchPacket,
+        responseSerializer: TableItemsPacket,
+        permissionId: TABLE_PERMISSION_ID,
+    },
+);
+const TABLE_FETCH_ALL_ENDPOINT = EndpointType.createSerialized<TablePacket, TableItemsPacket>(
+    TABLE_EXTENSION_TYPE,
+    {
+        name: 'fetch_all',
+        requestSerializer: TablePacket,
+        responseSerializer: TableItemsPacket,
+        permissionId: TABLE_PERMISSION_ID,
+    },
+);
+const TABLE_SIZE_ENDPOINT = EndpointType.createSerialized<TablePacket, number>(
+    TABLE_EXTENSION_TYPE,
+    {
+        name: 'size',
+        requestSerializer: TablePacket,
+        responseSerializer: Serializer.json(),
+        permissionId: TABLE_PERMISSION_ID,
+    },
+);
 const TABLE_ITEM_CLEAR_PACKET = PacketType.createSerialized<TablePacket>(TABLE_EXTENSION_TYPE, {
     name: 'clear',
     serializer: TablePacket,
@@ -108,9 +128,7 @@ export class TableExtension implements Extension {
         );
     }
 
-    public create<T>(
-        tableType: TableType<T>,
-    ): Table<T> {
+    public create<T>(tableType: TableType<T>): Table<T> {
         this.client.permissions.require(TABLE_PERMISSION_ID);
         if (this.has(tableType.id)) {
             throw new Error('Table already exists');
@@ -171,11 +189,11 @@ class TableImpl<T> implements Table<T> {
         this.keyFunction = tableType.keyFunction;
         this.cache = new Map();
         this.event = {
-            add: new EventEmitter<(items: Map<string, T>) => void>,
-            update: new EventEmitter<(items: Map<string, T>) => void>,
-            remove: new EventEmitter<(items: Map<string, T>) => void>,
-            clear: new EventEmitter<() => void>,
-            cacheUpdate: new EventEmitter<(items: Map<string, T>) => void>,
+            add: new EventEmitter<(items: Map<string, T>) => void>(),
+            update: new EventEmitter<(items: Map<string, T>) => void>(),
+            remove: new EventEmitter<(items: Map<string, T>) => void>(),
+            clear: new EventEmitter<() => void>(),
+            cacheUpdate: new EventEmitter<(items: Map<string, T>) => void>(),
         };
         this.promiseMap = new Map();
         this.proxies = [];
@@ -268,12 +286,12 @@ class TableImpl<T> implements Table<T> {
         if (listener) {
             return this.event.cacheUpdate.listen(listener);
         }
-        return () => { };
+        return () => {};
     }
 
     public proxy(callback: (item: T) => T | undefined): Unlisten {
         if (this.proxies.length === 0) {
-            let cancel = (): void => { };
+            let cancel = (): void => {};
             cancel = this.client.whenReady(() => {
                 if (this.proxies.length === 0) {
                     cancel();
@@ -304,14 +322,16 @@ class TableImpl<T> implements Table<T> {
         if (this.promiseMap.has(key)) {
             return await this.promiseMap.get(key);
         }
-        const promise = this.client.endpoints.call(TABLE_ITEM_GET_ENDPOINT, {
-            id: this.id,
-            keys: [key],
-        }).then((res) => {
-            const items = this.deserializeItems(res.items);
-            this.updateCache(items);
-            return this.cache.get(key);
-        });
+        const promise = this.client.endpoints
+            .call(TABLE_ITEM_GET_ENDPOINT, {
+                id: this.id,
+                keys: [key],
+            })
+            .then((res) => {
+                const items = this.deserializeItems(res.items);
+                this.updateCache(items);
+                return this.cache.get(key);
+            });
         this.promiseMap.set(key, promise);
         return await promise.then((item) => {
             this.promiseMap.delete(key);
@@ -320,20 +340,27 @@ class TableImpl<T> implements Table<T> {
     }
 
     public async getMany(...keys: string[]): Promise<Map<string, T>> {
-        const filteredKeys = keys.filter((key) => !this.cache.has(key)).filter((key) => !this.promiseMap.has(key));
+        const filteredKeys = keys
+            .filter((key) => !this.cache.has(key))
+            .filter((key) => !this.promiseMap.has(key));
         if (filteredKeys.length === 0) {
             return new Map([...this.cache].filter(([key]) => keys.includes(key)));
         }
-        const promise = this.client.endpoints.call(TABLE_ITEM_GET_ENDPOINT, {
-            id: this.id,
-            keys: filteredKeys,
-        }).then((res) => {
-            const items = this.deserializeItems(res.items);
-            this.updateCache(items);
-            return items;
-        });
+        const promise = this.client.endpoints
+            .call(TABLE_ITEM_GET_ENDPOINT, {
+                id: this.id,
+                keys: filteredKeys,
+            })
+            .then((res) => {
+                const items = this.deserializeItems(res.items);
+                this.updateCache(items);
+                return items;
+            });
         for (const key of filteredKeys) {
-            this.promiseMap.set(key, promise.then((items) => items.get(key)));
+            this.promiseMap.set(
+                key,
+                promise.then((items) => items.get(key)),
+            );
         }
         const items = await promise;
         for (const key of filteredKeys) {
@@ -383,12 +410,10 @@ class TableImpl<T> implements Table<T> {
         after: number;
         cursor?: string;
     }): Promise<Map<string, T>> {
-        const res = await this.client.endpoints.call(TABLE_FETCH_ENDPOINT, new TableFetchPacket(
-            this.id,
-            before,
-            after,
-            cursor ?? null,
-        ));
+        const res = await this.client.endpoints.call(
+            TABLE_FETCH_ENDPOINT,
+            new TableFetchPacket(this.id, before, after, cursor ?? null),
+        );
         const items = this.deserializeItems(res.items);
         this.updateCache(items);
         return items;
@@ -403,7 +428,13 @@ class TableImpl<T> implements Table<T> {
         return items;
     }
 
-    public async *iterate({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T> {
+    public async *iterate({
+        backward,
+        cursor,
+    }: {
+        backward?: boolean;
+        cursor?: string;
+    }): AsyncIterable<T> {
         let items: Map<string, T> = await this.fetchItems(
             backward
                 ? {

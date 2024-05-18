@@ -6,7 +6,12 @@ import { Serializer } from '@omuchatjs/omu/serializer.js';
 
 import { IDENTIFIER } from './const.js';
 import { Author, Channel, Message, Provider, Room } from './models/index.js';
-import { CHAT_CHANNEL_TREE_PERMISSION_ID, CHAT_PERMISSION_ID, CHAT_READ_PERMISSION_ID, CHAT_WRITE_PERMISSION_ID } from './permissions.js';
+import {
+    CHAT_CHANNEL_TREE_PERMISSION_ID,
+    CHAT_PERMISSION_ID,
+    CHAT_READ_PERMISSION_ID,
+    CHAT_WRITE_PERMISSION_ID,
+} from './permissions.js';
 
 const MESSAGE_TABLE_TYPE = TableType.createModel(IDENTIFIER, {
     name: 'messages',

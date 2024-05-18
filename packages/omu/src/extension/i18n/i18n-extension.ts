@@ -1,4 +1,4 @@
-import type { Client } from '../../client/client.js';
+import type { Client } from '../../client.js';
 import type { Locale } from '../../localization/locale.js';
 import type { LocalizedText } from '../../localization/localization.js';
 import type { Extension } from '../extension.js';
@@ -13,7 +13,6 @@ export const I18N_GET_LOCALES_PERMISSION_ID = I18N_EXTENSION_TYPE.join('locales'
 const I18N_LOCALES_REGISTRY_TYPE = RegistryType.createJson<Locale[]>(I18N_EXTENSION_TYPE, {
     name: 'locales',
     defaultValue: [],
-
 });
 
 export class I18nExtension implements Extension {
@@ -37,12 +36,17 @@ export class I18nExtension implements Extension {
         }
         const translation = this.selectBestTranslation(this.locales, localizedText);
         if (!translation) {
-            throw new Error(`Missing translation for ${this.locales} in ${JSON.stringify(localizedText)}`);
+            throw new Error(
+                `Missing translation for ${this.locales} in ${JSON.stringify(localizedText)}`,
+            );
         }
         return translation;
     }
 
-    public selectBestTranslation(locales: Locale[], localizedText: LocalizedText): string | undefined {
+    public selectBestTranslation(
+        locales: Locale[],
+        localizedText: LocalizedText,
+    ): string | undefined {
         if (typeof localizedText === 'string') {
             return localizedText;
         }

@@ -1,4 +1,4 @@
-import type { Client } from '../../client/index.js';
+import type { Client } from '../../client.js';
 import type { Unlisten } from '../../event-emitter.js';
 import { Identifier, IdentifierMap } from '../../identifier.js';
 import { PacketType } from '../../network/packet/index.js';
@@ -14,10 +14,13 @@ export const SIGNAL_EXTENSION_TYPE = new ExtensionType(
     (client: Client) => new SignalExtension(client),
 );
 
-const SIGNAL_REGISTER_PACKET = PacketType.createSerialized<SignalRegisterPacket>(SIGNAL_EXTENSION_TYPE, {
-    name: 'register',
-    serializer: SignalRegisterPacket,
-});
+const SIGNAL_REGISTER_PACKET = PacketType.createSerialized<SignalRegisterPacket>(
+    SIGNAL_EXTENSION_TYPE,
+    {
+        name: 'register',
+        serializer: SignalRegisterPacket,
+    },
+);
 const SIGNAL_LISTEN_PACKET = PacketType.createJson<Identifier>(SIGNAL_EXTENSION_TYPE, {
     name: 'listen',
     serializer: Serializer.model(Identifier),
@@ -42,10 +45,7 @@ export class SignalExtension implements Extension {
         if (this.signals.has(signalType.id)) {
             throw new Error(`Signal for key ${signalType.id} already created`);
         }
-        return new SignalImpl(
-            this.client,
-            signalType,
-        );
+        return new SignalImpl(this.client, signalType);
     }
 
     public create<T>(name: string): Signal<T> {

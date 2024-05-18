@@ -1,30 +1,37 @@
-import type { App } from '../app.js';
-import type { Unlisten } from '../event-emitter.js';
-import { EventEmitter } from '../event-emitter.js';
-import { ASSET_EXTENSION_TYPE, type AssetExtension } from '../extension/asset/index.js';
-import { DASHBOARD_EXTENSION_TYPE, type DashboardExtension } from '../extension/dashboard/index.js';
-import { ENDPOINT_EXTENSION_TYPE, type EndpointExtension } from '../extension/endpoint/index.js';
-import { I18N_EXTENSION_TYPE, type I18nExtension } from '../extension/i18n/index.js';
-import { ExtensionRegistry } from '../extension/index.js';
-import { LOGGER_EXTENSION_TYPE, type LoggerExtension } from '../extension/logger/index.js';
+import type { App } from './app.js';
+import type { Unlisten } from './event-emitter.js';
+import { EventEmitter } from './event-emitter.js';
+import { ASSET_EXTENSION_TYPE, type AssetExtension } from './extension/asset/index.js';
+import { DASHBOARD_EXTENSION_TYPE, type DashboardExtension } from './extension/dashboard/index.js';
+import { ENDPOINT_EXTENSION_TYPE, type EndpointExtension } from './extension/endpoint/index.js';
+import { I18N_EXTENSION_TYPE, type I18nExtension } from './extension/i18n/index.js';
+import { ExtensionRegistry } from './extension/index.js';
+import {
+    LOGGER_EXTENSION_TYPE,
+    type LoggerExtension,
+} from './extension/logger/logger-extension.js';
 import {
     PERMISSION_EXTENSION_TYPE,
     type PermissionExtension,
-} from '../extension/permission/index.js';
-import { PLUGIN_EXTENSION_TYPE, type PluginExtension } from '../extension/plugin/index.js';
-import { REGISTRY_EXTENSION_TYPE, type RegistryExtension } from '../extension/registry/index.js';
-import { SERVER_EXTENSION_TYPE, type ServerExtension } from '../extension/server/index.js';
-import { SIGNAL_EXTENSION_TYPE, type SignalExtension } from '../extension/signal/index.js';
-import { TABLE_EXTENSION_TYPE, type TableExtension } from '../extension/table/index.js';
-import type { Address, Connection } from '../network/index.js';
-import { Network } from '../network/index.js';
-import type { PacketType } from '../network/packet/packet.js';
-import { WebsocketConnection } from '../network/websocket-connection.js';
+} from './extension/permission/index.js';
+import { PLUGIN_EXTENSION_TYPE, type PluginExtension } from './extension/plugin/index.js';
+import { REGISTRY_EXTENSION_TYPE, type RegistryExtension } from './extension/registry/index.js';
+import { SERVER_EXTENSION_TYPE, type ServerExtension } from './extension/server/index.js';
+import { SIGNAL_EXTENSION_TYPE, type SignalExtension } from './extension/signal/index.js';
+import { TABLE_EXTENSION_TYPE, type TableExtension } from './extension/table/index.js';
+import type { Connection, Address } from './network/index.js';
+import { Network } from './network/index.js';
+import type { PacketType } from './network/packet/packet.js';
+import { WebsocketConnection } from './network/websocket-connection.js';
+import { BrowserTokenProvider, type TokenProvider } from './token.js';
 
-import type { Client, ClientEvents } from './client.js';
-import type { TokenProvider } from './token.js';
+export type ClientEvents = {
+    started: EventEmitter<() => void>;
+    stopped: EventEmitter<() => void>;
+    ready: EventEmitter<() => void>;
+};
 
-export class OmuClient implements Client {
+export class Client {
     public ready: boolean;
     public running: boolean;
     readonly event: ClientEvents = {
@@ -32,7 +39,6 @@ export class OmuClient implements Client {
         stopped: new EventEmitter(),
         ready: new EventEmitter(),
     };
-    readonly app: App;
     readonly token: TokenProvider;
     readonly address: Address;
     readonly network: Network;
@@ -49,22 +55,27 @@ export class OmuClient implements Client {
     readonly server: ServerExtension;
     readonly logger: LoggerExtension;
 
-    constructor(options: {
-        app: App;
-        address: Address;
-        token: TokenProvider;
-        connection?: Connection;
-    }) {
+    constructor(
+        public readonly app: App,
+        options?: {
+            address?: Address;
+            token?: TokenProvider;
+            connection?: Connection;
+        },
+    ) {
         this.ready = false;
         this.running = false;
-        this.app = options.app;
-        this.token = options.token;
-        this.address = options.address;
+        this.token = options?.token ?? new BrowserTokenProvider('omu-token');
+        this.address = options?.address ?? {
+            host: '127.0.0.1',
+            port: 26423,
+            secure: false,
+        };
         this.network = new Network(
             this,
-            options.address,
+            this.address,
             this.token,
-            options.connection ?? new WebsocketConnection(options.address),
+            options?.connection ?? new WebsocketConnection(this.address),
         );
         this.extensions = new ExtensionRegistry(this);
 

@@ -1,10 +1,10 @@
-import type { Client } from '../client/index.js';
+import type { Client } from '../client.js';
 
 import type { Extension, ExtensionType } from './extension.js';
 
 export class ExtensionRegistry {
     private readonly extensionMap: Map<string, Extension> = new Map();
-    constructor(private readonly client: Client) { }
+    constructor(private readonly client: Client) {}
     register<T extends Extension>(type: ExtensionType<T>): T {
         if (this.has(type)) {
             throw new Error(`Extension type ${type.name} already registered`);
@@ -37,4 +37,3 @@ export class ExtensionRegistry {
         return this.extensionMap.has(extensionType.name);
     }
 }
-

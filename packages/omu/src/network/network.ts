@@ -1,5 +1,5 @@
 import type { Address } from '../address.js';
-import type { TokenProvider } from '../client/token.js';
+import type { TokenProvider } from '../token.js';
 import type { OmuError } from '../errors.js';
 import {
     AnotherConnection,

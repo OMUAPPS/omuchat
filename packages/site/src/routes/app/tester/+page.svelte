@@ -2,10 +2,8 @@
     import { type Component } from '@omuchatjs/chat/models/content.js';
     import { Author, Message, Provider, Room, content } from '@omuchatjs/chat/models/index.js';
     import { FlexColWrapper, FlexRowWrapper, Header, MessageRenderer } from '@omuchatjs/ui';
-    import { client } from './client.js';
+    import { chat, client } from './client.js';
     import ComponentEditor from './components/ComponentEditor.svelte';
-
-    const chat = client.chat;
 
     let component: Component = new content.Root([
         new content.Text('Hello, World!'),

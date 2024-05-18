@@ -8,7 +8,7 @@ import type { Keyable } from '@omuchatjs/omu/interface.js';
 import type { Model } from '@omuchatjs/omu/model.js';
 import { writable } from 'svelte/store';
 import { IDENTIFIER } from './app.js';
-import { client } from './client.js';
+import { chat, client } from './client.js';
 
 const PLUGIN_IDENTIFIER = IDENTIFIER.join('plugin');
 
@@ -143,8 +143,8 @@ export function testEmoji(emoji: Emoji) {
         status: 'offline',
         createdAt: new Date(),
     });
-    client.chat.rooms.update(room);
-    client.chat.messages.add(
+    chat.rooms.update(room);
+    chat.messages.add(
         new models.Message({
             id: EMOJI_TEST_PROVIDER.id.join('test', 'message', new Date().getTime().toString()),
             roomId: room.id,

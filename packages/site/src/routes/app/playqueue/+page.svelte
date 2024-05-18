@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Client, events, models } from '@omuchatjs/chat';
-    import { App } from '@omuchatjs/omu';
+    import { Chat, models } from '@omuchatjs/chat';
+    import { App, Client } from '@omuchatjs/omu';
 
     import { Header } from '@omuchatjs/ui';
     import { BROWSER } from 'esm-env';
@@ -11,19 +11,19 @@
     const app = new App(IDENTIFIER, {
         version: '0.1.0',
     });
-    const client = new Client({
-        app,
-    });
-
-    client.chat.authors.listen();
-    client.on(events.MessageCreate, async (message) => {
+    const client = new Client(app);
+    const chat = new Chat(client);
+    chat.authors.listen();
+    chat.messages.event.add.listen(async (messages) => {
         if (!active) return;
-        if (!message.authorId) return;
-        processJoinLeave(message);
+        messages.forEach((message) => {
+            if (!message.authorId) return;
+            processJoinLeave(message);
+        });
     });
 
     async function processJoinLeave(message: models.Message) {
-        const author = message.authorId && (await client.chat.authors.get(message.authorId.key()));
+        const author = message.authorId && (await chat.authors.get(message.authorId.key()));
         if (!author) return;
         const regex = new RegExp(joinWord);
         if (regex.test(message.text)) {

@@ -1,7 +1,7 @@
-import { type Client } from '../client/index.js';
+import { type Client } from '../client.js';
 import { Identifier } from '../identifier.js';
 
-export interface Extension { }
+export interface Extension {}
 
 export class ExtensionType<T extends Extension = Extension> extends Identifier {
     constructor(

@@ -1,4 +1,4 @@
-import type { Client } from '../../client/client.js';
+import type { Client } from '../../client.js';
 import type { Unlisten } from '../../event-emitter.js';
 import { Identifier, IdentifierMap } from '../../identifier.js';
 import { PacketType } from '../../network/packet/packet.js';

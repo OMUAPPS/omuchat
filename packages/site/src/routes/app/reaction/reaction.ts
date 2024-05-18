@@ -1,10 +1,10 @@
 import { createRegistryStore } from '$lib/helper.js';
-import type { Client } from '@omuchatjs/chat';
 import { RegistryType } from '@omuchatjs/omu/extension/registry/index.js';
 import { SignalType, type Signal } from '@omuchatjs/omu/extension/signal/signal.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import type { Writable } from 'svelte/store';
 import { IDENTIFIER } from './app.js';
+import type { Client } from '@omuchatjs/omu';
 
 const PROVIDER_IDENTIFIER = new Identifier('cc.omuchat', 'chatprovider');
 const YOUTUBE_IDENTIFIER = PROVIDER_IDENTIFIER.join('youtube');

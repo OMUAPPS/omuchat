@@ -1,5 +1,5 @@
 import { App } from '../../app.js';
-import type { Client } from '../../client/index.js';
+import type { Client } from '../../client.js';
 import { Identifier, IdentifierSet } from '../../identifier.js';
 import { PacketType } from '../../network/packet/packet.js';
 import { Serializer } from '../../serializer.js';

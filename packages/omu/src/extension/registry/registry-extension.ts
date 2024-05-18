@@ -1,4 +1,4 @@
-import type { Client } from '../../client/index.js';
+import type { Client } from '../../client.js';
 import type { Unlisten } from '../../event-emitter.js';
 import { EventEmitter } from '../../event-emitter.js';
 import { Identifier, IdentifierMap } from '../../identifier.js';
@@ -26,10 +26,7 @@ export class RegistryExtension implements Extension {
         if (this.registries.has(registryType.id)) {
             throw new Error(`Registry with identifier '${registryType.id}' already exists`);
         }
-        return new RegistryImpl(
-            this.client,
-            registryType,
-        );
+        return new RegistryImpl(this.client, registryType);
     }
 
     public get<T>(registryType: RegistryType<T>): Registry<T> {
@@ -65,7 +62,9 @@ class RegistryImpl<T> implements Registry<T> {
         public readonly type: RegistryType<T>,
     ) {
         this.value = type.defaultValue;
-        client.network.addPacketHandler(REGISTRY_UPDATE_PACKET, (packet) => this.handleUpdate(packet));
+        client.network.addPacketHandler(REGISTRY_UPDATE_PACKET, (packet) =>
+            this.handleUpdate(packet),
+        );
         client.network.addTask(() => this.onTask());
     }
 
@@ -126,21 +125,30 @@ export const REGISTRY_EXTENSION_TYPE = new ExtensionType(
     (client: Client) => new RegistryExtension(client),
 );
 export const REGISTRY_PERMISSION_ID = REGISTRY_EXTENSION_TYPE.join('permission');
-const REGISTRY_REGISTER_PACKET = PacketType.createSerialized<RegistryRegisterPacket>(REGISTRY_EXTENSION_TYPE, {
-    name: 'register',
-    serializer: RegistryRegisterPacket,
-});
-const REGISTRY_UPDATE_PACKET = PacketType.createSerialized<RegistryPacket>(REGISTRY_EXTENSION_TYPE, {
-    name: 'update',
-    serializer: RegistryPacket,
-});
+const REGISTRY_REGISTER_PACKET = PacketType.createSerialized<RegistryRegisterPacket>(
+    REGISTRY_EXTENSION_TYPE,
+    {
+        name: 'register',
+        serializer: RegistryRegisterPacket,
+    },
+);
+const REGISTRY_UPDATE_PACKET = PacketType.createSerialized<RegistryPacket>(
+    REGISTRY_EXTENSION_TYPE,
+    {
+        name: 'update',
+        serializer: RegistryPacket,
+    },
+);
 const REGISTRY_LISTEN_PACKET = PacketType.createJson<Identifier>(REGISTRY_EXTENSION_TYPE, {
     name: 'listen',
     serializer: Serializer.model(Identifier),
 });
-const REGISTRY_GET_ENDPOINT = EndpointType.createSerialized<Identifier, RegistryPacket>(REGISTRY_EXTENSION_TYPE, {
-    name: 'get',
-    requestSerializer: Serializer.model(Identifier).toJson(),
-    responseSerializer: RegistryPacket,
-    permissionId: REGISTRY_PERMISSION_ID,
-});
+const REGISTRY_GET_ENDPOINT = EndpointType.createSerialized<Identifier, RegistryPacket>(
+    REGISTRY_EXTENSION_TYPE,
+    {
+        name: 'get',
+        requestSerializer: Serializer.model(Identifier).toJson(),
+        responseSerializer: RegistryPacket,
+        permissionId: REGISTRY_PERMISSION_ID,
+    },
+);

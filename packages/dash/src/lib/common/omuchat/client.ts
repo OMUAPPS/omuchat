@@ -3,10 +3,7 @@ import { Dashboard } from './dashboard.js';
 
 import type { Address } from '@omuchatjs/omu/address.js';
 
-import { App, Client } from '@omuchatjs/chat';
-
 import { invoke, IS_TAURI } from '$lib/utils/tauri.js';
-import { BrowserTokenProvider } from '@omuchatjs/chat/client.js';
 
 import { CHAT_CHANNEL_TREE_PERMISSION_ID } from '@omuchatjs/chat/permissions.js';
 import {
@@ -24,6 +21,9 @@ import {
 } from '@omuchatjs/omu/extension/server/index.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import { setChat } from '../../../../../ui/dist/stores.js';
+import { App, Client } from '@omuchatjs/omu';
+import { Chat } from '@omuchatjs/chat';
+import { BrowserTokenProvider } from '@omuchatjs/omu/token.js';
 
 const IDENTIFIER = new Identifier('cc.omuchat', 'dashboard');
 const app = new App(IDENTIFIER, {
@@ -52,15 +52,14 @@ class TokenProvider extends BrowserTokenProvider {
     }
 }
 
-const client = new Client({
-    app,
+const client = new Client(app, {
     address,
     token: new TokenProvider('omu-token'),
 });
-setClient(client);
-setChat(client.chat);
+const chat = new Chat(client);
 const dashboard = new Dashboard(client);
-const chat = client.chat;
+setClient(client);
+setChat(chat);
 
 client.plugins.require({
     omuplugin_chat: '==0.3.2',

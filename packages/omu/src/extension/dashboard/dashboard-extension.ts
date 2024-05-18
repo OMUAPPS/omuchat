@@ -1,5 +1,5 @@
 import { App } from '../../app.js';
-import type { Client } from '../../client/index.js';
+import type { Client } from '../../client.js';
 import { Identifier } from '../../identifier.js';
 import { PacketType } from '../../network/packet/packet.js';
 import { Serializer } from '../../serializer.js';
@@ -18,27 +18,36 @@ export const DASHBOARD_EXTENSION_TYPE = new ExtensionType(
 
 type DashboardSetResponse = {
     success: boolean;
-}
+};
 export const DASHBOARD_SET_PERMISSION_ID = DASHBOARD_EXTENSION_TYPE.join('set');
-const DASHBOARD_SET_ENDPOINT = EndpointType.createJson<Identifier, DashboardSetResponse>(DASHBOARD_EXTENSION_TYPE, {
-    name: 'set',
-    requestSerializer: Serializer.model(Identifier),
-    permissionId: DASHBOARD_SET_PERMISSION_ID,
-});
-const DASHBOARD_PERMISSION_REQUEST_PACKET = PacketType.createSerialized<PermissionRequestPacket>(DASHBOARD_EXTENSION_TYPE, {
-    name: 'permission_request',
-    serializer: PermissionRequestPacket,
-});
+const DASHBOARD_SET_ENDPOINT = EndpointType.createJson<Identifier, DashboardSetResponse>(
+    DASHBOARD_EXTENSION_TYPE,
+    {
+        name: 'set',
+        requestSerializer: Serializer.model(Identifier),
+        permissionId: DASHBOARD_SET_PERMISSION_ID,
+    },
+);
+const DASHBOARD_PERMISSION_REQUEST_PACKET = PacketType.createSerialized<PermissionRequestPacket>(
+    DASHBOARD_EXTENSION_TYPE,
+    {
+        name: 'permission_request',
+        serializer: PermissionRequestPacket,
+    },
+);
 const DASHBOARD_PERMISSION_ACCEPT_PACKET = PacketType.createJson<string>(DASHBOARD_EXTENSION_TYPE, {
     name: 'permission_accept',
 });
 const DASHBOARD_PERMISSION_DENY_PACKET = PacketType.createJson<string>(DASHBOARD_EXTENSION_TYPE, {
     name: 'permission_deny',
 });
-const DASHBOARD_PLUGIN_REQUEST_PACKET = PacketType.createSerialized<PluginRequestPacket>(DASHBOARD_EXTENSION_TYPE, {
-    name: 'plugin_request',
-    serializer: PluginRequestPacket,
-});
+const DASHBOARD_PLUGIN_REQUEST_PACKET = PacketType.createSerialized<PluginRequestPacket>(
+    DASHBOARD_EXTENSION_TYPE,
+    {
+        name: 'plugin_request',
+        serializer: PluginRequestPacket,
+    },
+);
 const DASHBOARD_PLUGIN_ACCEPT_PACKET = PacketType.createJson<string>(DASHBOARD_EXTENSION_TYPE, {
     name: 'plugin_accept',
 });
@@ -65,8 +74,7 @@ const DASHBOARD_APP_TABLE_TYPE = TableType.createModel(DASHBOARD_EXTENSION_TYPE,
         write: DASHOBARD_APP_EDIT_PERMISSION_ID,
         remove: DASHOBARD_APP_EDIT_PERMISSION_ID,
     },
-},
-);
+});
 
 export class DashboardExtension {
     private dashboard: DashboardHandler | null = null;
@@ -82,9 +90,15 @@ export class DashboardExtension {
             DASHBOARD_PLUGIN_DENY_PACKET,
             DASHBOARD_OPEN_APP_PACKET,
         );
-        client.network.addPacketHandler(DASHBOARD_PERMISSION_REQUEST_PACKET, (request) => this.handlePermissionRequest(request));
-        client.network.addPacketHandler(DASHBOARD_PLUGIN_REQUEST_PACKET, (request) => this.handlePluginRequest(request));
-        client.network.addPacketHandler(DASHBOARD_OPEN_APP_PACKET, (app) => this.handleOpenApp(app));
+        client.network.addPacketHandler(DASHBOARD_PERMISSION_REQUEST_PACKET, (request) =>
+            this.handlePermissionRequest(request),
+        );
+        client.network.addPacketHandler(DASHBOARD_PLUGIN_REQUEST_PACKET, (request) =>
+            this.handlePluginRequest(request),
+        );
+        client.network.addPacketHandler(DASHBOARD_OPEN_APP_PACKET, (app) =>
+            this.handleOpenApp(app),
+        );
         this.apps = client.tables.get(DASHBOARD_APP_TABLE_TYPE);
     }
 
@@ -116,7 +130,9 @@ export class DashboardExtension {
         });
     }
 
-    private async handleDashboard(callback: (dashboard: DashboardHandler) => Promise<void>): Promise<void> {
+    private async handleDashboard(
+        callback: (dashboard: DashboardHandler) => Promise<void>,
+    ): Promise<void> {
         if (this.dashboard === null) {
             throw new Error('Dashboard not set');
         }
@@ -130,7 +146,10 @@ export class DashboardExtension {
         }
         this.dashboard = dashboard;
         this.client.whenReady(async () => {
-            const response = await this.client.endpoints.call(DASHBOARD_SET_ENDPOINT, this.client.app.id);
+            const response = await this.client.endpoints.call(
+                DASHBOARD_SET_ENDPOINT,
+                this.client.app.id,
+            );
             if (!response.success) {
                 throw new Error('Failed to set dashboard');
             }

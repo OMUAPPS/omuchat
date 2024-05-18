@@ -1,4 +1,4 @@
-import { App, Client } from '@omuchatjs/chat';
+import { App, Client } from '@omuchatjs/omu';
 import {
     DASHBOARD_OPEN_APP_PERMISSION_ID,
     DASHOBARD_APP_EDIT_PERMISSION_ID,
@@ -12,7 +12,8 @@ const identifier = new Identifier('cc.omuchat', 'page');
 const app = new App(identifier, {
     version: '1.0.0',
 });
-export const client = setClient(new Client({ app }));
+export const client = new Client(app);
+setClient(client);
 client.permissions.require(
     DASHOBARD_APP_READ_PERMISSION_ID,
     DASHOBARD_APP_EDIT_PERMISSION_ID,

@@ -1,4 +1,4 @@
-import type { Client } from '../../client/index.js';
+import type { Client } from '../../client.js';
 import { Identifier, IdentifierMap, IdentifierSet } from '../../identifier.js';
 import { PacketType } from '../../network/packet/packet.js';
 import { Serializer } from '../../serializer.js';
@@ -7,19 +7,28 @@ import { ExtensionType } from '../extension.js';
 
 import { PermissionType } from './permission.js';
 
-export const PERMISSION_EXTENSION_TYPE = new ExtensionType('permission', (client) => new PermissionExtension(client));
-const PERMISSION_REGISTER_PACKET = PacketType.createJson<PermissionType[]>(PERMISSION_EXTENSION_TYPE, {
-    name: 'register',
-    serializer: Serializer.model(PermissionType).toArray(),
-});
+export const PERMISSION_EXTENSION_TYPE = new ExtensionType(
+    'permission',
+    (client) => new PermissionExtension(client),
+);
+const PERMISSION_REGISTER_PACKET = PacketType.createJson<PermissionType[]>(
+    PERMISSION_EXTENSION_TYPE,
+    {
+        name: 'register',
+        serializer: Serializer.model(PermissionType).toArray(),
+    },
+);
 const PERMISSION_REQUIRE_PACKET = PacketType.createJson<Identifier[]>(PERMISSION_EXTENSION_TYPE, {
     name: 'require',
     serializer: Serializer.model(Identifier).toArray(),
 });
-const PERMISSION_REQUEST_ENDPOINT = EndpointType.createJson<Identifier[], void>(PERMISSION_EXTENSION_TYPE, {
-    name: 'request',
-    requestSerializer: Serializer.model(Identifier).toArray(),
-});
+const PERMISSION_REQUEST_ENDPOINT = EndpointType.createJson<Identifier[], void>(
+    PERMISSION_EXTENSION_TYPE,
+    {
+        name: 'request',
+        requestSerializer: Serializer.model(Identifier).toArray(),
+    },
+);
 const PERMISSION_GRANT_PACKET = PacketType.createJson<PermissionType[]>(PERMISSION_EXTENSION_TYPE, {
     name: 'grant',
     serializer: Serializer.model(PermissionType).toArray(),
@@ -46,10 +55,16 @@ export class PermissionExtension {
 
     private onTask(): void {
         if (this.registeredPermissions.size > 0) {
-            this.client.send(PERMISSION_REGISTER_PACKET, Array.from(this.registeredPermissions.values()));
+            this.client.send(
+                PERMISSION_REGISTER_PACKET,
+                Array.from(this.registeredPermissions.values()),
+            );
         }
         if (this.requiredPermissions.size > 0) {
-            this.client.send(PERMISSION_REQUIRE_PACKET, Array.from(this.requiredPermissions.values()));
+            this.client.send(
+                PERMISSION_REQUIRE_PACKET,
+                Array.from(this.requiredPermissions.values()),
+            );
         }
     }
 

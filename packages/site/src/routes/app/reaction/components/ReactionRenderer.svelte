@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { Client } from '@omuchatjs/chat';
     import { Identifier } from '@omuchatjs/omu/identifier.js';
     import { onMount } from 'svelte';
     import type { ReactionApp } from '../reaction.js';
+    import type { Client } from '@omuchatjs/omu';
 
-    export let reactionApp: ReactionApp;
     export let client: Client;
+    export let reactionApp: ReactionApp;
     let { replaces, reactionSignal } = reactionApp;
 
     type Reaction = {

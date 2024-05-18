@@ -1,5 +1,5 @@
 import { ByteReader, ByteWriter } from '../../bytebuffer.js';
-import type { Client } from '../../client/index.js';
+import type { Client } from '../../client.js';
 import { Identifier } from '../../identifier.js';
 import { Serializer } from '../../serializer.js';
 import { EndpointType } from '../endpoint/endpoint.js';
@@ -96,10 +96,13 @@ const ASSET_DOWNLOAD_MANY_ENDPOINT = EndpointType.createSerialized<Identifier[],
 );
 
 export class AssetExtension {
-    constructor(private readonly client: Client) { }
+    constructor(private readonly client: Client) {}
 
     public async upload(identifier: Identifier, buffer: Uint8Array): Promise<Identifier> {
-        const assetIdentifier = await this.client.endpoints.call(ASSET_UPLOAD_ENDPOINT, { identifier, buffer });
+        const assetIdentifier = await this.client.endpoints.call(ASSET_UPLOAD_ENDPOINT, {
+            identifier,
+            buffer,
+        });
         return assetIdentifier;
     }
 
@@ -114,15 +117,21 @@ export class AssetExtension {
     }
 
     public async downloadMany(...identifiers: Identifier[]): Promise<File[]> {
-        const downloaded = await this.client.endpoints.call(ASSET_DOWNLOAD_MANY_ENDPOINT, identifiers);
+        const downloaded = await this.client.endpoints.call(
+            ASSET_DOWNLOAD_MANY_ENDPOINT,
+            identifiers,
+        );
         return downloaded;
     }
 
-    public url(identifier: Identifier, {
-        noCache,
-    }: {
-        noCache?: boolean;
-    } = {}): string {
+    public url(
+        identifier: Identifier,
+        {
+            noCache,
+        }: {
+            noCache?: boolean;
+        } = {},
+    ): string {
         const address = this.client.network.address;
         const protocol = address.secure ? 'https' : 'http';
         if (noCache) {

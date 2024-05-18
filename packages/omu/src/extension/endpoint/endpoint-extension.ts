@@ -1,4 +1,4 @@
-import type { Client } from '../../client/index.js';
+import type { Client } from '../../client.js';
 import type { Identifier } from '../../identifier.js';
 import { IdentifierMap } from '../../identifier.js';
 import { PacketType } from '../../network/packet/index.js';
@@ -59,7 +59,10 @@ export class EndpointExtension {
         this.client.send(ENDPOINT_REGISTER_PACKET, packet);
     }
 
-    public register<Req, Res>(type: EndpointType<Req, Res>, handler: (data: Req) => Promise<Res>): void {
+    public register<Req, Res>(
+        type: EndpointType<Req, Res>,
+        handler: (data: Req) => Promise<Res>,
+    ): void {
         if (this.client.running) {
             throw new Error('Cannot register endpoints after the client has started');
         }
@@ -91,19 +94,31 @@ export class EndpointExtension {
     }
 }
 
-const ENDPOINT_REGISTER_PACKET = PacketType.createSerialized<EndpointRegisterPacket>(ENDPOINT_EXTENSION_TYPE, {
-    name: 'register',
-    serializer: EndpointRegisterPacket,
-});
-const ENDPOINT_CALL_PACKET = PacketType.createSerialized<EndpointDataPacket>(ENDPOINT_EXTENSION_TYPE, {
-    name: 'call',
-    serializer: EndpointDataPacket,
-});
-const ENDPOINT_RECEIVE_PACKET = PacketType.createSerialized<EndpointDataPacket>(ENDPOINT_EXTENSION_TYPE, {
-    name: 'receive',
-    serializer: EndpointDataPacket,
-});
-const ENDPOINT_ERROR_PACKET = PacketType.createSerialized<EndpointErrorPacket>(ENDPOINT_EXTENSION_TYPE, {
-    name: 'error',
-    serializer: EndpointErrorPacket,
-});
+const ENDPOINT_REGISTER_PACKET = PacketType.createSerialized<EndpointRegisterPacket>(
+    ENDPOINT_EXTENSION_TYPE,
+    {
+        name: 'register',
+        serializer: EndpointRegisterPacket,
+    },
+);
+const ENDPOINT_CALL_PACKET = PacketType.createSerialized<EndpointDataPacket>(
+    ENDPOINT_EXTENSION_TYPE,
+    {
+        name: 'call',
+        serializer: EndpointDataPacket,
+    },
+);
+const ENDPOINT_RECEIVE_PACKET = PacketType.createSerialized<EndpointDataPacket>(
+    ENDPOINT_EXTENSION_TYPE,
+    {
+        name: 'receive',
+        serializer: EndpointDataPacket,
+    },
+);
+const ENDPOINT_ERROR_PACKET = PacketType.createSerialized<EndpointErrorPacket>(
+    ENDPOINT_EXTENSION_TYPE,
+    {
+        name: 'error',
+        serializer: EndpointErrorPacket,
+    },
+);

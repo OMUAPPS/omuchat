@@ -1,7 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { Client } from '@omuchatjs/chat';
-    import { App } from '@omuchatjs/omu';
+    import { App, Client } from '@omuchatjs/omu';
     import { setClient } from '@omuchatjs/ui';
     import { BROWSER } from 'esm-env';
     import { IDENTIFIER } from '../app.js';
@@ -13,11 +12,8 @@
     const app = new App(IDENTIFIER.join('asset', id), {
         version: '0.1.0',
     });
-    const client = setClient(
-        new Client({
-            app,
-        }),
-    );
+    const client = new Client(app);
+    setClient(client);
     client.permissions.require('cc.omuchat:chatprovider/youtube/reaction');
     let reactionApp = new ReactionApp(client);
 
