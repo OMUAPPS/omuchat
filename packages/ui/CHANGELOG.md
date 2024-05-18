@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/OMUAPPS/omuapps/compare/v0.1.22...v0.2.0) (2024-05-18)
+
+
+### Bug Fixes
+
+* **ui:** fix type imports ([bab8854](https://github.com/OMUAPPS/omuapps/commit/bab885433d56300991cc7a9fa655bc1dd27cfef3))
+
+
+
+
+
 ## 0.1.22 (2024-05-14)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/OMUAPPS/omuapps/compare/v0.1.22...v0.2.0) (2024-05-18)
+
+
+### Bug Fixes
+
+* **chat:** fix type imports ([2b558a3](https://github.com/OMUAPPS/omuapps/commit/2b558a370489cc9c5d332e6d034792d3843fea43))
+
+
+
+
+
 ## 0.1.22 (2024-05-14)
 
 

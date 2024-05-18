@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/OMUAPPS/omuapps/compare/v0.1.22...v0.2.0) (2024-05-18)
+
+
+### Bug Fixes
+
+* **chat:** fix type imports ([2b558a3](https://github.com/OMUAPPS/omuapps/commit/2b558a370489cc9c5d332e6d034792d3843fea43))
+* **dash:** ウィンドウの左と上側でリサイズができない問題を修正 ([#50](https://github.com/OMUAPPS/omuapps/issues/50)) ([d4a8505](https://github.com/OMUAPPS/omuapps/commit/d4a8505fbc209023071918d4a335194f2d568b29))
+* **omu:** fix type imports ([b9b7c04](https://github.com/OMUAPPS/omuapps/commit/b9b7c0461df68a6836cc35bf990b4e95dc0ca37f))
+* **ui:** fix type imports ([bab8854](https://github.com/OMUAPPS/omuapps/commit/bab885433d56300991cc7a9fa655bc1dd27cfef3))
+* プラグインのバージョン指定方法を修正 ([267d7a9](https://github.com/OMUAPPS/omuapps/commit/267d7a99883dde1aff30871ca28f3f7b5249b37d))
+
+
+### Features
+
+* **app-caption:** リアルタイム字幕アプリ ([1d0d154](https://github.com/OMUAPPS/omuapps/commit/1d0d1549d067b924e56f8f5051540912a551529f))
+* **omu:** logger機能 ([7044533](https://github.com/OMUAPPS/omuapps/commit/7044533b7dd729d21cf6a5ec4626ad4de25fccd6))
+
+
+
+
+
 ## 0.1.22 (2024-05-14)
 
 
