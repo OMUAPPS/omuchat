@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { FlexColWrapper, FlexRowWrapper, Localized } from '@omuchatjs/ui';
+    import { FlexColWrapper, FlexRowWrapper, Localized } from '@omujs/ui';
 
-    import { omu } from '$lib/common/omuchat/client.js';
+    import { omu } from '$lib/client.js';
     import { t } from '$lib/i18n/i18n-context.js';
-    import type { App } from '@omuchatjs/omu';
+    import type { App } from '@omujs/omu';
 
     export let entry: App;
     export let selected: boolean = false;

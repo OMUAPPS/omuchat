@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { App } from '@omuchatjs/omu';
-    import { FlexColWrapper, JustifyBaselineWrapper, Localized } from '@omuchatjs/ui';
+    import type { App } from '@omujs/omu';
+    import { FlexColWrapper, JustifyBaselineWrapper, Localized } from '@omujs/ui';
 
     export let entry: App;
 </script>

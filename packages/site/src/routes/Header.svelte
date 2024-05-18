@@ -2,7 +2,7 @@
     import { page } from '$app/stores';
     import github from '$lib/images/github.svg';
     import title from '$lib/images/title.svg';
-    import { Tooltip } from '@omuchatjs/ui';
+    import { Tooltip } from '@omujs/ui';
 </script>
 
 <header>
@@ -32,14 +32,6 @@
                 </li>
             </a>
         </ul>
-        <div class="corner">
-            <a href="https://github.com/OMUCHAT/omuchat-hub">
-                <Tooltip>
-                    <span> OMUCHAT/omuchat-hub </span>
-                </Tooltip>
-                <img src={github} alt="GitHub" />
-            </a>
-        </div>
     </nav>
 </header>
 
@@ -121,12 +113,6 @@
         padding: 0;
         margin: 0;
         list-style: none;
-    }
-
-    .corner {
-        width: 2.5em;
-        height: 2.5em;
-        margin-left: auto;
     }
 
     i {

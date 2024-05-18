@@ -1,6 +1,6 @@
 {
     "type": "module",
-    "name": "@omuchatjs/shared",
+    "name": "@omujs/shared",
     "private": true,
     "version": "1.0.0",
     "files": [

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { Identifier } from '@omuchatjs/omu/identifier.js';
-    import { AppHeader, ButtonMini, DragLink, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
+    import { Identifier } from '@omujs/omu/identifier.js';
+    import { AppHeader, ButtonMini, DragLink, FlexRowWrapper, Tooltip } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { omu } from './client.js';
     import ReactionRenderer from './components/ReactionRenderer.svelte';

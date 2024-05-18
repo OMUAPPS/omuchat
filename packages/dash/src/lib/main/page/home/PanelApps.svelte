@@ -2,17 +2,17 @@
     import { DEV } from 'esm-env';
     import AppEntry from './AppEntry.svelte';
 
-    import { dashboard } from '$lib/common/omuchat/client.js';
+    import { dashboard } from '$lib/client.js';
     import { t } from '$lib/i18n/i18n-context.js';
-    import type { App } from '@omuchatjs/omu';
-    import { TableList } from '@omuchatjs/ui';
+    import type { App } from '@omujs/omu';
+    import { TableList } from '@omujs/ui';
 
     export let filter: (key: string, app: App) => boolean = () => true;
 </script>
 
 <div class="container">
     <TableList table={dashboard.apps} component={AppEntry} fitHeight={true} {filter} />
-    <a href={DEV ? 'http://localhost:5173' : 'https://omuchat.cc/'} target="_blank">
+    <a href={DEV ? 'http://localhost:5173' : 'https://omuapps.com/'} target="_blank">
         {$t('panels.apps.found_apps')}
         <i class="ti ti-external-link" />
     </a>

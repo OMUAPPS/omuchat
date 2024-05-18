@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { content } from '@omuchatjs/chat/models/index.js';
+    import { content } from '@omujs/chat/models/index.js';
 
     export let component: content.Parent;
 

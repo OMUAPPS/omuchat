@@ -1,20 +1,20 @@
 import { currentPage } from '$lib/main/settings.js';
 import { tauriWindow } from '$lib/utils/tauri.js';
-import { App, Omu } from '@omuchatjs/omu';
-import type { DashboardHandler } from '@omuchatjs/omu/extension/dashboard/dashboard.js';
+import { App, Omu } from '@omujs/omu';
+import type { DashboardHandler } from '@omujs/omu/extension/dashboard/dashboard.js';
 import type {
     PermissionRequestPacket,
     PluginRequestPacket,
-} from '@omuchatjs/omu/extension/dashboard/packets.js';
-import { Identifier } from '@omuchatjs/omu/identifier.js';
-import type { Locale } from '@omuchatjs/omu/localization/locale.js';
-import { screenContext } from '../screen/screen.js';
+} from '@omujs/omu/extension/dashboard/packets.js';
+import { Identifier } from '@omujs/omu/identifier.js';
+import type { Locale } from '@omujs/omu/localization/locale.js';
+import { screenContext } from './common/screen/screen.js';
 import { omu } from './client.js';
 import PermissionRequestScreen from '$lib/common/screen/PermissionRequestScreen.svelte';
 import PluginRequestScreen from '$lib/common/screen/PluginRequestScreen.svelte';
-import type { Table } from '@omuchatjs/omu/extension/table/table.js';
+import type { Table } from '@omujs/omu/extension/table/table.js';
 
-export const IDENTIFIER = Identifier.fromKey('cc.omuchat:dashboard');
+export const IDENTIFIER = Identifier.fromKey('com.omuapps:dashboard');
 
 export class Dashboard implements DashboardHandler {
     readonly apps: Table<App>;

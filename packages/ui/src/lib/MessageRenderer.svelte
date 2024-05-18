@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { models } from '@omuchatjs/chat';
-    import { Paid } from '@omuchatjs/chat/models/paid.js';
+    import type { models } from '@omujs/chat';
+    import { Paid } from '@omujs/chat/models/paid.js';
     import ComponentRenderer from './ComponentRenderer.svelte';
     import FlexColWrapper from './FlexColWrapper.svelte';
     import FlexRowWrapper from './FlexRowWrapper.svelte';

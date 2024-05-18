@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { PackageInfo } from '@omuchatjs/omu/extension/plugin/package-info.js';
-    import { FlexColWrapper, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
+    import type { PackageInfo } from '@omujs/omu/extension/plugin/package-info.js';
+    import { FlexColWrapper, FlexRowWrapper, Tooltip } from '@omujs/ui';
 
     export let entry: PackageInfo;
 </script>

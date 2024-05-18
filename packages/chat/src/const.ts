@@ -1,3 +1,3 @@
-import { Identifier } from '@omuchatjs/omu/identifier.js';
+import { Identifier } from '@omujs/omu/identifier.js';
 
-export const IDENTIFIER = new Identifier('cc.omuchat', 'chat');
+export const IDENTIFIER = new Identifier('com.omuapps', 'chat');

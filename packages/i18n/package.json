@@ -1,10 +1,10 @@
 {
     "type": "module",
-    "name": "@omuchatjs/i18n",
+    "name": "@omujs/i18n",
     "version": "0.1.22",
     "repository": {
         "type": "git",
-        "url": "https://github.com/OMUCHAT/omuchat"
+        "url": "https://github.com/OMUAPPS/omuapps"
     },
     "exports": {
         ".": {

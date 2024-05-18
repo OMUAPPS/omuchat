@@ -1,10 +1,10 @@
-import type { Client } from '@omuchatjs/omu';
-import type { RegistryType } from '@omuchatjs/omu/extension/registry/index.js';
+import type { Omu } from '@omujs/omu';
+import type { RegistryType } from '@omujs/omu/extension/registry/index.js';
 import { writable, type Writable } from 'svelte/store';
 
-export function createRegistryStore<T>(client: Client, registryType: RegistryType<T>): Writable<T> {
+export function createRegistryStore<T>(omu: Omu, registryType: RegistryType<T>): Writable<T> {
     const store = writable(registryType.defaultValue);
-    const registry = client.registry.get(registryType);
+    const registry = omu.registry.get(registryType);
 
     let lastValue: T = registryType.defaultValue;
     store.subscribe((value) => {

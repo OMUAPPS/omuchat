@@ -1,15 +1,15 @@
 <script lang="ts">
-    import type { models } from '@omuchatjs/chat';
+    import type { models } from '@omujs/chat';
     import { onMount } from 'svelte';
 
     import { t } from '$lib/i18n/i18n-context.js';
 
     import ChannelEntry from './ChannelEntry.svelte';
 
-    import { chat } from '$lib/common/omuchat/client.js';
+    import { chat } from '$lib/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
-    import { ButtonMini, TableList, Tooltip } from '@omuchatjs/ui';
+    import { ButtonMini, TableList, Tooltip } from '@omujs/ui';
 
     export let filter: (key: string, message: models.Channel) => boolean = () => true;
 

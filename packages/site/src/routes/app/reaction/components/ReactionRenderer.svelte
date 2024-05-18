@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { Omu } from '@omuchatjs/omu';
-    import { Identifier } from '@omuchatjs/omu/identifier.js';
+    import type { Omu } from '@omujs/omu';
+    import { Identifier } from '@omujs/omu/identifier.js';
     import { onMount } from 'svelte';
     import type { ReactionApp } from '../reaction.js';
 

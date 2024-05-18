@@ -1,6 +1,6 @@
-import { Identifier } from '@omuchatjs/omu/identifier.js';
-import type { Keyable } from '@omuchatjs/omu/interface.js';
-import type { Model } from '@omuchatjs/omu/model.js';
+import { Identifier } from '@omujs/omu/identifier.js';
+import type { Keyable } from '@omujs/omu/interface.js';
+import type { Model } from '@omujs/omu/model.js';
 
 export type ChannelJson = {
     provider_id: string;

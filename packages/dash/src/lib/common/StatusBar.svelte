@@ -2,9 +2,9 @@
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
-    import { FlexColWrapper, Tooltip } from '@omuchatjs/ui';
-    import { omu } from './client.js';
-    import { NetworkStatus } from '@omuchatjs/omu/network/network.js';
+    import { FlexColWrapper, Tooltip } from '@omujs/ui';
+    import { omu } from '../client.js';
+    import { NetworkStatus } from '@omujs/omu/network/network.js';
 
     const status = writable<NetworkStatus>(omu.network.status);
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Header } from '@omuchatjs/ui';
+    import { Header } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { omu } from './client.js';
 

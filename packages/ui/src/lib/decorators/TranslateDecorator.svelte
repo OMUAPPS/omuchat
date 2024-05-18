@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { loadI18n } from '@omuchatjs/i18n';
+    import { loadI18n } from '@omujs/i18n';
     import { translate } from '../stores.js';
 
     const load = async () => {

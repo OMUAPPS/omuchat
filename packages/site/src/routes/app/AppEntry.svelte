@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { App } from '@omuchatjs/omu';
-    import { FlexColWrapper, FlexRowWrapper, Localized, Tooltip } from '@omuchatjs/ui';
+    import type { App } from '@omujs/omu';
+    import { FlexColWrapper, FlexRowWrapper, Localized, Tooltip } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { omu } from '../client.js';
     import { appTable } from './apps.js';

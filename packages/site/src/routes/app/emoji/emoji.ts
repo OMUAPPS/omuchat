@@ -1,11 +1,11 @@
 import { createRegistryStore } from '$lib/helper.js';
-import { models } from '@omuchatjs/chat';
-import { Provider } from '@omuchatjs/chat/models/provider.js';
-import { RegistryType } from '@omuchatjs/omu/extension/registry/registry.js';
-import { TableType } from '@omuchatjs/omu/extension/table/index.js';
-import { Identifier } from '@omuchatjs/omu/identifier.js';
-import type { Keyable } from '@omuchatjs/omu/interface.js';
-import type { Model } from '@omuchatjs/omu/model.js';
+import { models } from '@omujs/chat';
+import { Provider } from '@omujs/chat/models/provider.js';
+import { RegistryType } from '@omujs/omu/extension/registry/registry.js';
+import { TableType } from '@omujs/omu/extension/table/index.js';
+import { Identifier } from '@omujs/omu/identifier.js';
+import type { Keyable } from '@omujs/omu/interface.js';
+import type { Model } from '@omujs/omu/model.js';
 import { writable } from 'svelte/store';
 import { IDENTIFIER } from './app.js';
 import { chat, omu } from './client.js';
@@ -130,7 +130,7 @@ export const EMOJI_TEST_PROVIDER = new Provider({
     name: 'Emoji Test',
     description: 'Send emoji preview',
     regex: '',
-    repository_url: 'https://github.com/omuchat/omuchat',
+    repository_url: 'https://github.com/OMUAPPS/omuapps',
     url: 'https://example.com',
     version: '0.0.1',
 });

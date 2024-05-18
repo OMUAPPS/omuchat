@@ -1,10 +1,10 @@
 <script lang="ts">
     import AppEntry from './AppEntry.svelte';
 
-    import { omu } from '$lib/common/omuchat/client.js';
+    import { omu } from '$lib/client.js';
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { invoke } from '$lib/utils/tauri.js';
-    import { TableList, theme } from '@omuchatjs/ui';
+    import { TableList, theme } from '@omujs/ui';
 
     let starting = false;
     function start() {

@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { PluginRequestPacket } from '@omuchatjs/omu/extension/dashboard/packets.js';
-    import { FlexColWrapper, FlexRowWrapper, JustifyBaselineWrapper } from '@omuchatjs/ui';
+    import type { PluginRequestPacket } from '@omujs/omu/extension/dashboard/packets.js';
+    import { FlexColWrapper, FlexRowWrapper, JustifyBaselineWrapper } from '@omujs/ui';
     import PackageEntry from './PackageEntry.svelte';
     import Screen from './Screen.svelte';
     import type { ScreenHandle } from './screen.js';

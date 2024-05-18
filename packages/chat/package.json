@@ -1,10 +1,10 @@
 {
     "type": "module",
-    "name": "@omuchatjs/chat",
+    "name": "@omujs/chat",
     "version": "0.1.22",
     "repository": {
         "type": "git",
-        "url": "https://github.com/OMUCHAT/omuchat"
+        "url": "https://github.com/OMUAPPS/omuapps"
     },
     "exports": {
         ".": {
@@ -27,7 +27,7 @@
         "format": "eslint . --ext .js,.ts --fix"
     },
     "devDependencies": {
-        "@omuchatjs/omu": "workspace:*",
+        "@omujs/omu": "workspace:*",
         "@types/node": "^20.12.12",
         "@types/websocket": "1.0.10",
         "@types/ws": "8.5.10",
@@ -47,7 +47,7 @@
         "ws": "8.16.0"
     },
     "dependencies": {
-        "@omuchatjs/omu": "workspace:*"
+        "@omujs/omu": "workspace:*"
     },
     "gitHead": "04559d5aec52117d707e0d554ee429b858da522a"
 }

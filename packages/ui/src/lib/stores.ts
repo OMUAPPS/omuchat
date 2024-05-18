@@ -1,6 +1,6 @@
-import type { Chat } from '@omuchatjs/chat';
-import type { Client } from '@omuchatjs/omu/client.js';
-import type { Locale } from '@omuchatjs/omu/localization/index.js';
+import type { Chat } from '@omujs/chat';
+import type { Client } from '@omujs/omu/client.js';
+import type { Locale } from '@omujs/omu/localization/index.js';
 import { BROWSER } from 'esm-env';
 import { writable, type Writable } from 'svelte/store';
 

@@ -1,9 +1,9 @@
 {
-    "name": "@omuchatjs/ui",
+    "name": "@omujs/ui",
     "version": "0.1.22",
     "repository": {
         "type": "git",
-        "url": "https://github.com/OMUCHAT/omuchat"
+        "url": "https://github.com/OMUAPPS/omuapps"
     },
     "scripts": {
         "prepare": "svelte-kit sync",
@@ -34,9 +34,9 @@
         "!dist/**/*.spec.*"
     ],
     "peerDependencies": {
-        "@omuchatjs/chat": "workspace:*",
-        "@omuchatjs/i18n": "workspace:*",
-        "@omuchatjs/omu": "workspace:*",
+        "@omujs/chat": "workspace:*",
+        "@omujs/i18n": "workspace:*",
+        "@omujs/omu": "workspace:*",
         "@sveltejs/kit": "^2.5.4",
         "svelte": "^4.0.0"
     },

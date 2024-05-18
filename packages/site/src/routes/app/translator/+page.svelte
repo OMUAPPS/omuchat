@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ButtonMini, Combobox, FlexRowWrapper } from '@omuchatjs/ui';
+    import { ButtonMini, Combobox, FlexRowWrapper } from '@omujs/ui';
     import { config } from './client.js';
     import { LANGUAGE_OPTIONS, type Language } from './translator.js';
 

@@ -1,14 +1,14 @@
-import { App, Omu } from '@omuchatjs/omu';
+import { App, Omu } from '@omujs/omu';
 import {
     DASHBOARD_OPEN_APP_PERMISSION_ID,
     DASHOBARD_APP_EDIT_PERMISSION_ID,
     DASHOBARD_APP_READ_PERMISSION_ID,
-} from '@omuchatjs/omu/extension/dashboard/dashboard-extension.js';
-import { Identifier } from '@omuchatjs/omu/identifier.js';
-import { setClient } from '@omuchatjs/ui';
+} from '@omujs/omu/extension/dashboard/dashboard-extension.js';
+import { Identifier } from '@omujs/omu/identifier.js';
+import { setClient } from '@omujs/ui';
 import { BROWSER } from 'esm-env';
 
-const identifier = new Identifier('cc.omuchat', 'page');
+const identifier = new Identifier('com.omuapps', 'page');
 const app = new App(identifier, {
     version: '1.0.0',
 });

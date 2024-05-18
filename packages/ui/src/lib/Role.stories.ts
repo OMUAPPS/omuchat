@@ -1,4 +1,4 @@
-import { models } from '@omuchatjs/chat';
+import { models } from '@omujs/chat';
 import type { Meta, StoryObj } from '@storybook/svelte';
 import Role from './Role.svelte';
 

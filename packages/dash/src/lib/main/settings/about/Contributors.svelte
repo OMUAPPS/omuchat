@@ -1,6 +1,6 @@
 <script lang="ts">
     import { t } from '$lib/i18n/i18n-context.js';
-    import { ExternalLink, FlexColWrapper } from '@omuchatjs/ui';
+    import { ExternalLink, FlexColWrapper } from '@omujs/ui';
     import { onMount } from 'svelte';
 
     interface Contributor {
@@ -25,7 +25,7 @@
         contributions: number;
     }
 
-    const contributorsUrl = 'https://api.github.com/repos/OMUCHAT/dashboard/contributors';
+    const contributorsUrl = 'https://api.github.com/repos/OMUAPPS/dashboard/contributors';
     let contributors: Contributor[] = [];
 
     onMount(async () => {

@@ -7,7 +7,7 @@
         "distDir": "../build"
     },
     "package": {
-        "productName": "omuchat",
+        "productName": "omuapps",
         "version": "0.0.0"
     },
     "tauri": {
@@ -65,7 +65,7 @@
                 "icons/icon.icns",
                 "icons/icon.ico"
             ],
-            "identifier": "cc.omuchat.app",
+            "identifier": "com.omuapps.app",
             "longDescription": "",
             "macOS": {
                 "entitlements": null,
@@ -89,7 +89,7 @@
         "updater": {
             "active": true,
             "endpoints": [
-                "https://github.com/OMUCHAT/omuchat/releases/latest/download/latest.json"
+                "https://github.com/OMUAPPS/omuapps/releases/latest/download/latest.json"
             ],
             "dialog": true,
             "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEI1NTg0NTQyNkYyRTE3OTUKUldTVkZ5NXZRa1ZZdGRKVEJ2YnFiZ3V1NWx3S0J4QlAvYXFoOHpiMkYvL3IySjdwNVJqL2EyTVgK"
@@ -104,7 +104,7 @@
                 "minHeight": 600,
                 "resizable": true,
                 "decorations": false,
-                "title": "OMUCHAT"
+                "title": "OMUAPPS"
             }
         ],
         "systemTray": {

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onDestroy } from 'svelte';
-    import StatusBar from './common/omuchat/StatusBar.svelte';
+    import StatusBar from './common/StatusBar.svelte';
     import ScreenRenderer from './common/screen/ScreenRenderer.svelte';
     import ButtonClose from './common/titlebar/ButtonClose.svelte';
     import ButtonMaximize from './common/titlebar/ButtonMaximize.svelte';

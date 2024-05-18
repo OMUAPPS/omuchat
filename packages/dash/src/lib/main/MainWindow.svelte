@@ -11,7 +11,7 @@
 
     import { t } from '$lib/i18n/i18n-context.js';
     import { style } from '$lib/utils/class-helper.js';
-    import { FlexColWrapper, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
+    import { FlexColWrapper, FlexRowWrapper, Tooltip } from '@omujs/ui';
 
     pages.set(new Map());
     $pages.set('main', {

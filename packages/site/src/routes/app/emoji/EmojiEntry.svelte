@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ButtonMini, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
+    import { ButtonMini, FlexRowWrapper, Tooltip } from '@omujs/ui';
     import { omu } from './client.js';
     import { EMOJI_TABLE, deleteEmoji, editEmoji, testEmoji, type Emoji } from './emoji.js';
 

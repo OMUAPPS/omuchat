@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { PermissionType } from '@omuchatjs/omu/extension/permission/permission.js';
-    import { FlexColWrapper, FlexRowWrapper } from '@omuchatjs/ui';
-    import { omu } from '../omuchat/client.js';
+    import type { PermissionType } from '@omujs/omu/extension/permission/permission.js';
+    import { FlexColWrapper, FlexRowWrapper } from '@omujs/ui';
+    import { omu } from '../../client.js';
 
     export let permission: PermissionType;
 </script>

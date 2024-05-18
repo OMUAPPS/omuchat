@@ -1,8 +1,8 @@
-import type { Client } from '@omuchatjs/omu/client.js';
-import { EndpointType } from '@omuchatjs/omu/extension/endpoint/endpoint.js';
-import type { Table } from '@omuchatjs/omu/extension/table/index.js';
-import { TableType } from '@omuchatjs/omu/extension/table/index.js';
-import { Serializer } from '@omuchatjs/omu/serializer.js';
+import type { Client } from '@omujs/omu/client.js';
+import { EndpointType } from '@omujs/omu/extension/endpoint/endpoint.js';
+import type { Table } from '@omujs/omu/extension/table/index.js';
+import { TableType } from '@omujs/omu/extension/table/index.js';
+import { Serializer } from '@omujs/omu/serializer.js';
 
 import { IDENTIFIER } from './const.js';
 import { Author, Channel, Message, Provider, Room } from './models/index.js';

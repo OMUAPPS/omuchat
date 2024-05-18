@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { content } from '@omuchatjs/chat/models/index.js';
-    import { LinkableText, Tooltip } from '@omuchatjs/ui';
+    import { content } from '@omujs/chat/models/index.js';
+    import { LinkableText, Tooltip } from '@omujs/ui';
     import FlexColWrapper from './FlexColWrapper.svelte';
     import FlexRowWrapper from './FlexRowWrapper.svelte';
 

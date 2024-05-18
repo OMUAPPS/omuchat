@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { FlexRowWrapper, Header, TableList, Textbox, Toggle } from '@omuchatjs/ui';
+    import { FlexRowWrapper, Header, TableList, Textbox, Toggle } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import EmojiEdit from './EmojiEdit.svelte';
     import EmojiEntry from './EmojiEntry.svelte';

@@ -1,8 +1,8 @@
-import { App } from '@omuchatjs/omu';
-import { Identifier } from '@omuchatjs/omu/identifier.js';
+import { App } from '@omujs/omu';
+import { Identifier } from '@omujs/omu/identifier.js';
 import type { TagKey } from '../category.js';
 
-export const IDENTIFIER = new Identifier('cc.omuchat', 'notifier');
+export const IDENTIFIER = new Identifier('com.omuapps', 'notifier');
 
 export default function getApp(origin: string) {
     return new App(IDENTIFIER, {

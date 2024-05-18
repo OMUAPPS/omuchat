@@ -3,12 +3,12 @@
 
     import { client } from './stores.js';
 
-    import { VirtualList } from '@omuchatjs/ui';
+    import { VirtualList } from '@omujs/ui';
 
     import TableListEntry from './TableListEntry.svelte';
 
-    import type { Table } from '@omuchatjs/omu/extension/table/table.js';
-    import type { Keyable } from '@omuchatjs/omu/interface.js';
+    import type { Table } from '@omujs/omu/extension/table/table.js';
+    import type { Keyable } from '@omujs/omu/interface.js';
     import { onMount, onDestroy, tick, type ComponentType, type SvelteComponent } from 'svelte';
 
     export let table: Table<T>;

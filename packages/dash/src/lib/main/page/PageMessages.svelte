@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { models } from '@omuchatjs/chat';
+    import type { models } from '@omujs/chat';
     import { writable } from 'svelte/store';
 
     import { t } from '$lib/i18n/i18n-context.js';

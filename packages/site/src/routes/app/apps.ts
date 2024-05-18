@@ -1,4 +1,4 @@
-import { App } from '@omuchatjs/omu';
+import { App } from '@omujs/omu';
 import { omu } from '../client.js';
 import emoji from './emoji/app.js';
 import notifier from './notifier/app.js';

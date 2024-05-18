@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { FlexColWrapper, FlexRowWrapper, Localized } from '@omuchatjs/ui';
+    import { FlexColWrapper, FlexRowWrapper, Localized } from '@omujs/ui';
     import AppEntry from './AppEntry.svelte';
     import { apps, loadApps } from './apps.js';
     import { TAG_REGISTRY } from './category.js';

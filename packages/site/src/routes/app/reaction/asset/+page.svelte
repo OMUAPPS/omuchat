@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { App, Omu } from '@omuchatjs/omu';
-    import { setClient } from '@omuchatjs/ui';
+    import { App, Omu } from '@omujs/omu';
+    import { setClient } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { IDENTIFIER } from '../app.js';
     import ReactionOverlay from '../components/ReactionRenderer.svelte';
@@ -14,7 +14,7 @@
     });
     const omu = new Omu(app);
     setClient(omu);
-    omu.permissions.require('cc.omuchat:chatprovider/youtube/reaction');
+    omu.permissions.require('com.omuapps:chatprovider/youtube/reaction');
     let reactionApp = new ReactionApp(omu);
 
     if (BROWSER) {

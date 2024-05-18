@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { models } from '@omuchatjs/chat';
+    import type { models } from '@omujs/chat';
     import { onDestroy } from 'svelte';
 
-    import { chat } from '$lib/common/omuchat/client.js';
+    import { chat } from '$lib/client.js';
     import { batchCall } from '$lib/utils/batch.js';
-    import type { Identifier } from '@omuchatjs/omu/identifier.js';
-    import { MessageEntry, TableList } from '@omuchatjs/ui';
+    import type { Identifier } from '@omujs/omu/identifier.js';
+    import { MessageEntry, TableList } from '@omujs/ui';
 
     export let filter: (key: string, message: models.Message) => boolean = () => true;
     export let sort: (a: models.Message, b: models.Message) => number = (a, b) => {

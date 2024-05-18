@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { App } from '@omuchatjs/omu';
+    import type { App } from '@omujs/omu';
     import { onMount } from 'svelte';
     import Header from './Header.svelte';
     import { client } from './stores.js';

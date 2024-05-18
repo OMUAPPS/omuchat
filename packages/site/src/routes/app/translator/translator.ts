@@ -1,7 +1,7 @@
-import { RegistryType } from '@omuchatjs/omu/extension/registry/index.js';
-import { Identifier } from '@omuchatjs/omu/identifier.js';
+import { RegistryType } from '@omujs/omu/extension/registry/index.js';
+import { Identifier } from '@omujs/omu/identifier.js';
 
-const PLUGIN_IDENTIFIER = new Identifier('cc.omuchat', 'translator', 'plugin');
+const PLUGIN_IDENTIFIER = new Identifier('com.omuapps', 'translator', 'plugin');
 
 export type Language =
     | 'en'

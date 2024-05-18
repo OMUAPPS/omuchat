@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { AppHeader, FlexRowWrapper, Toggle } from '@omuchatjs/ui';
+    import { AppHeader, FlexRowWrapper, Toggle } from '@omujs/ui';
     import { omu, config } from './client.js';
 
     const promise = new Promise<void>((resolve) => omu.whenReady(resolve));

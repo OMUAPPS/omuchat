@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { Theme } from '@omuchatjs/ui';
+    import { Theme } from '@omujs/ui';
     import Header from './Header.svelte';
     import './styles.css';
 

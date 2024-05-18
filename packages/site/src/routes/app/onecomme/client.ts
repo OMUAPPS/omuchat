@@ -1,5 +1,5 @@
-import { App, Omu } from '@omuchatjs/omu';
-import { setClient } from '@omuchatjs/ui';
+import { App, Omu } from '@omujs/omu';
+import { setClient } from '@omujs/ui';
 import { IDENTIFIER } from './app.js';
 
 const app = new App(IDENTIFIER, {

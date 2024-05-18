@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { content } from '@omuchatjs/chat/models/index.js';
-    import { FlexRowWrapper } from '@omuchatjs/ui';
+    import type { content } from '@omujs/chat/models/index.js';
+    import { FlexRowWrapper } from '@omujs/ui';
 
     export let component: content.Image;
 </script>

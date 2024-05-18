@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { models } from '@omuchatjs/chat';
+    import type { models } from '@omujs/chat';
 
     import { ClipboardHelper } from '$lib/utils/clipboard-helper.js';
     import MessageRenderer from './MessageRenderer.svelte';

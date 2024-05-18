@@ -1,4 +1,4 @@
-import type { LocalizedText } from '@omuchatjs/omu/localization/localization.js';
+import type { LocalizedText } from '@omujs/omu/localization/localization.js';
 
 export type Tag = {
     name: LocalizedText;

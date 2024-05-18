@@ -1,7 +1,7 @@
 import { createRegistryStore } from '$lib/helper.js';
-import type { Client } from '@omuchatjs/omu';
-import { RegistryType } from '@omuchatjs/omu/extension/registry/registry.js';
-import { SignalType, type Signal } from '@omuchatjs/omu/extension/signal/signal.js';
+import type { Omu } from '@omujs/omu';
+import { RegistryType } from '@omujs/omu/extension/registry/registry.js';
+import { SignalType, type Signal } from '@omujs/omu/extension/signal/signal.js';
 import type { Writable } from 'svelte/store';
 import { IDENTIFIER } from './app.js';
 import { BROWSER } from 'esm-env';
@@ -31,14 +31,14 @@ export class CaptionApp {
     private readonly captionSignal: Signal<Caption>;
     public readonly config: Writable<Config>;
 
-    constructor(private readonly client: Client) {
-        this.captionSignal = client.signal.get(CAPTION_SIGNAL);
+    constructor(private readonly omu: Omu) {
+        this.captionSignal = omu.signal.get(CAPTION_SIGNAL);
         this.captionSignal.listen((caption) => {
             for (const listener of this.listeners) {
                 listener(caption);
             }
         });
-        this.config = createRegistryStore(client, CONFIG_REGISTRY);
+        this.config = createRegistryStore(omu, CONFIG_REGISTRY);
     }
 
     public setCaption(caption: Caption) {

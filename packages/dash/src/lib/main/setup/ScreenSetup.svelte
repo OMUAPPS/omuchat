@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { models } from '@omuchatjs/chat';
+    import type { models } from '@omujs/chat';
     import { onMount } from 'svelte';
 
     import { installed } from '../settings.js';
@@ -7,12 +7,12 @@
     import { t } from '$lib/i18n/i18n-context.js';
 
     import Background from '$lib/common/Background.svelte';
-    import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
-    import { chat, omu } from '$lib/common/omuchat/client.js';
+    import ProviderIcon from '$lib/common/ProviderIcon.svelte';
+    import { chat, omu } from '$lib/client.js';
     import Screen from '$lib/common/screen/Screen.svelte';
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
-    import { IdentifierMap } from '@omuchatjs/omu/identifier.js';
-    import { Button, Textbox, Tooltip } from '@omuchatjs/ui';
+    import { IdentifierMap } from '@omujs/omu/identifier.js';
+    import { Button, Textbox, Tooltip } from '@omujs/ui';
 
     export let screen: {
         handle: ScreenHandle;

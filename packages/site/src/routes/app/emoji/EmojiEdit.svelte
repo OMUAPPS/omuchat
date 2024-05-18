@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Author } from '@omuchatjs/chat/models/author.js';
-    import { content } from '@omuchatjs/chat/models/index.js';
+    import { Author } from '@omujs/chat/models/author.js';
+    import { content } from '@omujs/chat/models/index.js';
     import {
         ButtonMini,
         Combobox,
@@ -8,7 +8,7 @@
         FlexRowWrapper,
         MessageRenderer,
         Tooltip,
-    } from '@omuchatjs/ui';
+    } from '@omujs/ui';
     import { omu } from './client.js';
     import dummy_icon from './dummy_icon.svg';
     import {

@@ -11,7 +11,7 @@
     <h1>
         <span class="welcome">
             <img src={title} alt="title" />
-            <p class="info">おむちゃっとは、配信者と視聴者をつなぐAPIです。</p>
+            <p class="info">OMUAPPSは、配信者と視聴者をつなぐAPIです。</p>
         </span>
     </h1>
 </section>

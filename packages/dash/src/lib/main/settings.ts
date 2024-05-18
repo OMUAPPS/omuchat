@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 import { LOCALES } from '$lib/i18n/i18n.js';
-import type { TypedComponent } from '@omuchatjs/ui';
+import type { TypedComponent } from '@omujs/ui';
 import Checkbox from './settings/CheckboxField.svelte';
 import Combobox from './settings/ComboboxField.svelte';
 import About from './settings/about/About.svelte';

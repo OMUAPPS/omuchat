@@ -1,8 +1,8 @@
-import { App, Omu } from '@omuchatjs/omu';
+import { App, Omu } from '@omujs/omu';
 import { BROWSER } from 'esm-env';
 import { IDENTIFIER } from './app.js';
 import { NotifyEntry } from './model.js';
-import { Chat } from '@omuchatjs/chat';
+import { Chat } from '@omujs/chat';
 
 const app = new App(IDENTIFIER, {
     version: '1.0.0',

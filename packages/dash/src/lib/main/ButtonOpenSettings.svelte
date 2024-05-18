@@ -3,7 +3,7 @@
 
     import { screenContext } from '$lib/common/screen/screen.js';
     import { t } from '$lib/i18n/i18n-context.js';
-    import { Button, Tooltip } from '@omuchatjs/ui';
+    import { Button, Tooltip } from '@omujs/ui';
 
     function openConnectScreen() {
         screenContext.push(ScreenSettings, {});

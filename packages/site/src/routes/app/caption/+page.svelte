@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { App, Omu } from '@omuchatjs/omu';
+    import { App, Omu } from '@omujs/omu';
     import { IDENTIFIER } from './app.js';
     import { CaptionApp, LANGUAGES, LANGUAGES_OPTIONS } from './caption-app.js';
     import { BROWSER } from 'esm-env';
     import CaptionRenderer from './CaptionRenderer.svelte';
-    import { Combobox } from '@omuchatjs/ui';
+    import { Combobox } from '@omujs/ui';
 
     export const omu = new Omu(
         new App(IDENTIFIER, {

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { models } from '@omuchatjs/chat';
+    import type { models } from '@omujs/chat';
 
     import { applyOpacity, style } from '$lib/utils/class-helper.js';
     import FlexColWrapper from './FlexColWrapper.svelte';

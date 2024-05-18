@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { Chat, models } from '@omuchatjs/chat';
-    import { App, Omu } from '@omuchatjs/omu';
+    import { Chat, models } from '@omujs/chat';
+    import { App, Omu } from '@omujs/omu';
 
-    import { Header } from '@omuchatjs/ui';
+    import { Header } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import PlayQueueEntry from './PlayQueueEntry.svelte';
     import { IDENTIFIER } from './app.js';

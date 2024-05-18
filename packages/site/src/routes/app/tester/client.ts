@@ -1,6 +1,6 @@
-import { Chat } from '@omuchatjs/chat';
-import { App, Omu } from '@omuchatjs/omu';
-import { setClient } from '@omuchatjs/ui';
+import { Chat } from '@omujs/chat';
+import { App, Omu } from '@omujs/omu';
+import { setClient } from '@omujs/ui';
 import { BROWSER } from 'esm-env';
 import { IDENTIFIER } from './app.js';
 

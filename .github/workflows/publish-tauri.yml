@@ -80,23 +80,23 @@ jobs:
             - uses: actions/upload-artifact@v3
               if: matrix.platform == 'ubuntu-latest'
               with:
-                  name: omuchat-appimage-linux
-                  path: ./packages/dash/src-tauri/target/release/bundle/appimage/omuchat_**.AppImage.*
+                  name: omuapps-appimage-linux
+                  path: ./packages/dash/src-tauri/target/release/bundle/appimage/omuapps_**.AppImage.*
 
             - uses: actions/upload-artifact@v3
               if: matrix.platform == 'ubuntu-latest'
               with:
-                  name: omuchat-deb-linux
-                  path: ./packages/dash/src-tauri/target/release/bundle/deb/omuchat_**.deb
+                  name: omuapps-deb-linux
+                  path: ./packages/dash/src-tauri/target/release/bundle/deb/omuapps_**.deb
 
             - uses: actions/upload-artifact@v3
               if: matrix.platform == 'windows-latest'
               with:
-                  name: omuchat-windows
-                  path: ./packages/dash/src-tauri/target/release/bundle/msi/omuchat_**.msi.*
+                  name: omuapps-windows
+                  path: ./packages/dash/src-tauri/target/release/bundle/msi/omuapps_**.msi.*
 
             - uses: actions/upload-artifact@v3
               if: matrix.platform == 'macos-latest'
               with:
-                  name: omuchat-macos
-                  path: ./packages/dash/src-tauri/target/release/bundle/macos/omuchat.app.tar.*
+                  name: omuapps-macos
+                  path: ./packages/dash/src-tauri/target/release/bundle/macos/omuapps.app.tar.*

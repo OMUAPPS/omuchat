@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Tooltip } from '@omuchatjs/ui';
+    import { Tooltip } from '@omujs/ui';
 
     export let href: string = '';
     export let title: string | undefined = undefined;

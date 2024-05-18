@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { Provider } from '@omuchatjs/chat/models/index.js';
+    import type { Provider } from '@omujs/chat/models/index.js';
 
     import { classes } from '$lib/utils/class-helper.js';
-    import type { Identifier } from '@omuchatjs/omu/identifier.js';
-    import { chat, omu } from './client.js';
+    import type { Identifier } from '@omujs/omu/identifier.js';
+    import { chat, omu } from '../client.js';
 
     export let providerId: Identifier;
 

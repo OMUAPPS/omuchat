@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { PermissionRequestPacket } from '@omuchatjs/omu/extension/dashboard/packets.js';
-    import { FlexColWrapper, FlexRowWrapper, JustifyBaselineWrapper } from '@omuchatjs/ui';
+    import type { PermissionRequestPacket } from '@omujs/omu/extension/dashboard/packets.js';
+    import { FlexColWrapper, FlexRowWrapper, JustifyBaselineWrapper } from '@omujs/ui';
     import PermissionEntry from './PermissionEntry.svelte';
     import Screen from './Screen.svelte';
     import type { ScreenHandle } from './screen.js';

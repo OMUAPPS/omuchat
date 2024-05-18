@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
 
-    import { Tooltip } from '@omuchatjs/ui';
+    import { Tooltip } from '@omujs/ui';
     import type { Entry } from './playqueue.js';
 
     export let entry: Entry;

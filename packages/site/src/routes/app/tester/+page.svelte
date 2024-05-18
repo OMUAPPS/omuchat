@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { type Component } from '@omuchatjs/chat/models/content.js';
-    import { Author, Message, Provider, Room, content } from '@omuchatjs/chat/models/index.js';
-    import { FlexColWrapper, FlexRowWrapper, Header, MessageRenderer } from '@omuchatjs/ui';
+    import { type Component } from '@omujs/chat/models/content.js';
+    import { Author, Message, Provider, Room, content } from '@omujs/chat/models/index.js';
+    import { FlexColWrapper, FlexRowWrapper, Header, MessageRenderer } from '@omujs/ui';
     import { chat, omu } from './client.js';
     import ComponentEditor from './components/ComponentEditor.svelte';
 
@@ -22,7 +22,7 @@
         description: 'test',
         name: 'test',
         regex: '(?!x)x',
-        repository_url: 'https://github.com/omuchat/omuchat',
+        repository_url: 'https://github.com/OMUAPPS/omuapps',
         url: 'https://example.com',
         version: '0.0.1',
     });

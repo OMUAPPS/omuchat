@@ -1,4 +1,4 @@
-import type { Model } from '@omuchatjs/omu/model.js';
+import type { Model } from '@omujs/omu/model.js';
 
 export type PaidJson = {
     amount: number;

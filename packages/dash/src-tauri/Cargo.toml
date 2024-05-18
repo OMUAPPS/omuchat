@@ -1,11 +1,11 @@
 [package]
-name = "omuchat"
+name = "omuapps"
 version = "0.1.0"
-description = "A OMUCHAT client built with Tauri."
+description = "A OMUAPPS client built with Tauri."
 authors = ["2ji_han"]
 license = ""
 repository = ""
-default-run = "omuchat"
+default-run = "omuapps"
 edition = "2021"
 rust-version = "1.60"
 

@@ -20,7 +20,7 @@ importers:
 
   packages/chat:
     dependencies:
-      '@omuchatjs/omu':
+      '@omujs/omu':
         specifier: workspace:*
         version: link:../omu
     devDependencies:
@@ -85,16 +85,16 @@ importers:
       '@fontsource/noto-sans-jp':
         specifier: ^5.0.19
         version: 5.0.19
-      '@omuchatjs/chat':
+      '@omujs/chat':
         specifier: workspace:*
         version: link:../chat
-      '@omuchatjs/i18n':
+      '@omujs/i18n':
         specifier: workspace:*
         version: link:../i18n
-      '@omuchatjs/omu':
+      '@omujs/omu':
         specifier: workspace:*
         version: link:../omu
-      '@omuchatjs/ui':
+      '@omujs/ui':
         specifier: workspace:*
         version: link:../ui
       '@sveltejs/adapter-static':
@@ -321,16 +321,16 @@ importers:
       '@neoconfetti/svelte':
         specifier: ^2.2.1
         version: 2.2.1
-      '@omuchatjs/chat':
+      '@omujs/chat':
         specifier: workspace:*
         version: link:../chat
-      '@omuchatjs/i18n':
+      '@omujs/i18n':
         specifier: workspace:*
         version: link:../i18n
-      '@omuchatjs/omu':
+      '@omujs/omu':
         specifier: workspace:*
         version: link:../omu
-      '@omuchatjs/ui':
+      '@omujs/ui':
         specifier: workspace:*
         version: link:../ui
       '@sveltejs/adapter-cloudflare':
@@ -414,13 +414,13 @@ importers:
 
   packages/ui:
     dependencies:
-      '@omuchatjs/chat':
+      '@omujs/chat':
         specifier: workspace:*
         version: link:../chat
-      '@omuchatjs/i18n':
+      '@omujs/i18n':
         specifier: workspace:*
         version: link:../i18n
-      '@omuchatjs/omu':
+      '@omujs/omu':
         specifier: workspace:*
         version: link:../omu
       '@sveltejs/kit':

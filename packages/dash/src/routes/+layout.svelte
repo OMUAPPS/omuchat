@@ -1,15 +1,13 @@
 <script lang="ts">
-    import { omu } from '$lib/common/omuchat/client.js';
-    import { screenContext } from '$lib/common/screen/screen.js';
+    import { omu } from '$lib/client.js';
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { DEFAULT_LOCALE, LOCALES } from '$lib/i18n/i18n.js';
     import { language } from '$lib/main/settings.js';
-    import ScreenInstalling from '$lib/main/setup/ScreenInstalling.svelte';
-    import { IS_TAURI, invoke, listen, waitForTauri } from '$lib/utils/tauri.js';
-    import { createI18nUnion } from '@omuchatjs/i18n';
-    import { Theme } from '@omuchatjs/ui';
+    import { waitForTauri } from '$lib/utils/tauri.js';
+    import { createI18nUnion } from '@omujs/i18n';
+    import { NetworkStatus } from '@omujs/omu/network/network.js';
+    import { Theme } from '@omujs/ui';
     import './styles.scss';
-    import { NetworkStatus } from '@omuchatjs/omu/network/network.js';
 
     async function init() {
         await loadLocale();
