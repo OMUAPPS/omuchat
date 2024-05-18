@@ -7,11 +7,9 @@
 
 <header>
     <nav>
-        <div class="title">
-            <a href="/">
-                <img src={title} alt="title" />
-            </a>
-        </div>
+        <a href="/" class="title">
+            <img src={title} alt="title" />
+        </a>
         <ul>
             <a href="/download">
                 <li aria-current={$page.url.pathname.startsWith('/download') ? 'page' : undefined}>
@@ -27,7 +25,7 @@
             </a>
             <a href="/create">
                 <li aria-current={$page.url.pathname.startsWith('/create') ? 'page' : undefined}>
-                    <i class="ti ti-user" />
+                    <i class="ti ti-pencil" />
                     アプリを作る
                 </li>
             </a>
@@ -59,7 +57,6 @@
         display: flex;
         flex: 1;
         align-items: center;
-        justify-content: space-between;
         width: 100%;
         max-width: 64rem;
         height: 3em;
@@ -97,6 +94,8 @@
         align-items: center;
         height: 3em;
         margin: 0 1rem;
+        height: 1.2rem;
+        margin: 0 2rem;
 
         img {
             height: 1.1rem;
