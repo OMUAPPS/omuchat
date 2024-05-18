@@ -1,4 +1,4 @@
-import type { Client } from '../../index.js';
+import type { Client } from '../../client.js';
 import { PacketType } from '../../network/packet/packet.js';
 import { ExtensionType } from '../extension.js';
 
@@ -11,9 +11,7 @@ export class PluginExtension {
     private readonly requiredPlugins: Map<string, string | null> = new Map();
 
     constructor(private readonly client: Client) {
-        client.network.registerPacket(
-            PLUGIN_REQUIRE_PACKET,
-        );
+        client.network.registerPacket(PLUGIN_REQUIRE_PACKET);
         client.network.addTask(() => this.onTask());
     }
 
@@ -31,6 +29,9 @@ export class PluginExtension {
     }
 }
 
-const PLUGIN_REQUIRE_PACKET = PacketType.createJson<Record<string, string | null>>(PLUGIN_EXTENSION_TYPE, {
-    name: 'require',
-});
+const PLUGIN_REQUIRE_PACKET = PacketType.createJson<Record<string, string | null>>(
+    PLUGIN_EXTENSION_TYPE,
+    {
+        name: 'require',
+    },
+);

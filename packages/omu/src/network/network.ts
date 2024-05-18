@@ -1,5 +1,5 @@
 import type { Address } from '../address.js';
-import type { TokenProvider } from '../token.js';
+import type { Client } from '../client.js';
 import type { OmuError } from '../errors.js';
 import {
     AnotherConnection,
@@ -11,7 +11,7 @@ import {
 } from '../errors.js';
 import { EventEmitter } from '../event-emitter.js';
 import { IdentifierMap } from '../identifier.js';
-import type { Client } from '../index.js';
+import type { TokenProvider } from '../token.js';
 
 import type { Connection } from './connection.js';
 import { PacketMapper } from './connection.js';
