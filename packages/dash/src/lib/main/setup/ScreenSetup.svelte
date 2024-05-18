@@ -8,7 +8,7 @@
 
     import Background from '$lib/common/Background.svelte';
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
-    import { chat, client } from '$lib/common/omuchat/client.js';
+    import { chat, omu } from '$lib/common/omuchat/client.js';
     import Screen from '$lib/common/screen/Screen.svelte';
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import { IdentifierMap } from '@omuchatjs/omu/identifier.js';
@@ -93,10 +93,10 @@
                             <i class="ti ti-{active ? 'check' : 'plus'}" />
                             <div class="channel-icon">
                                 {#if channel.iconUrl}
-                                    <img src={client.assets.proxy(channel.iconUrl)} alt="icon" />
+                                    <img src={omu.assets.proxy(channel.iconUrl)} alt="icon" />
                                     <Tooltip>
                                         <img
-                                            src={client.assets.proxy(channel.iconUrl)}
+                                            src={omu.assets.proxy(channel.iconUrl)}
                                             alt="icon"
                                             class="tooltip-image"
                                         />

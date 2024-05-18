@@ -2,13 +2,13 @@
     import type { App } from '@omuchatjs/omu';
     import { FlexColWrapper, FlexRowWrapper, Localized, Tooltip } from '@omuchatjs/ui';
     import { BROWSER } from 'esm-env';
-    import { client } from '../client.js';
+    import { omu } from '../client.js';
     import { appTable } from './apps.js';
     import { REGISTRIES, type Tag } from './category.js';
     export let app: App;
 
     function launch() {
-        client.dashboard.openApp(app);
+        omu.dashboard.openApp(app);
     }
 
     let alreadyAdded = false;
@@ -25,7 +25,7 @@
         }
     }
 
-    client.whenReady(async () => {
+    omu.whenReady(async () => {
         alreadyAdded = !!(await appTable.get(app.key()));
     });
 
@@ -45,7 +45,7 @@
 
 <article class:added={alreadyAdded}>
     {#if BROWSER && app.metadata?.image}
-        <img src={client.i18n.translate(app.metadata.image)} alt="" />
+        <img src={omu.i18n.translate(app.metadata.image)} alt="" />
     {/if}
     <div class="overlay">
         <FlexRowWrapper baseline widthFull heightFull between>
@@ -54,7 +54,7 @@
                     <FlexRowWrapper alignItems="center" gap>
                         <span class="icon">
                             {#if BROWSER && app.metadata.icon}
-                                <i class="ti ti-{client.i18n.translate(app.metadata.icon)}" />
+                                <i class="ti ti-{omu.i18n.translate(app.metadata.icon)}" />
                             {:else}
                                 <i class="ti ti-app" />
                             {/if}

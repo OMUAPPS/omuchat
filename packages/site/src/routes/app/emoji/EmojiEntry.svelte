@@ -1,9 +1,9 @@
 <script lang="ts">
     import { ButtonMini, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
-    import { client } from './client.js';
+    import { omu } from './client.js';
     import { EMOJI_TABLE, deleteEmoji, editEmoji, testEmoji, type Emoji } from './emoji.js';
 
-    const emojis = client.tables.get(EMOJI_TABLE);
+    const emojis = omu.tables.get(EMOJI_TABLE);
 
     export let entry: Emoji;
     export let selected: boolean = false;
@@ -16,9 +16,9 @@
 <div class="emoji-entry" class:selected>
     <FlexRowWrapper>
         <Tooltip>
-            <img src={client.assets.url(entry.asset)} alt={entry.asset.key()} class="preview" />
+            <img src={omu.assets.url(entry.asset)} alt={entry.asset.key()} class="preview" />
         </Tooltip>
-        <img src={client.assets.url(entry.asset)} alt={entry.asset.key()} />
+        <img src={omu.assets.url(entry.asset)} alt={entry.asset.key()} />
     </FlexRowWrapper>
     <div class="info">
         <button class="name" on:click={copyName}>

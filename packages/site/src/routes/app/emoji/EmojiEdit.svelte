@@ -9,7 +9,7 @@
         MessageRenderer,
         Tooltip,
     } from '@omuchatjs/ui';
-    import { client } from './client.js';
+    import { omu } from './client.js';
     import dummy_icon from './dummy_icon.svg';
     import {
         EMOJI_TEST_PROVIDER,
@@ -51,7 +51,7 @@
                 avatarUrl: new URL(dummy_icon, window.location.origin).toString(),
             })}
             content={new content.Root([
-                new content.Image(client.assets.url(emoji.asset), emoji.asset.key()),
+                new content.Image(omu.assets.url(emoji.asset), emoji.asset.key()),
             ])}
         />
         <MessageRenderer
@@ -63,7 +63,7 @@
             })}
             content={new content.Root([
                 new content.Text(emoji.id),
-                new content.Image(client.assets.url(emoji.asset), emoji.asset.key()),
+                new content.Image(omu.assets.url(emoji.asset), emoji.asset.key()),
             ])}
         />
         <MessageRenderer
@@ -74,15 +74,15 @@
                 avatarUrl: new URL(dummy_icon, window.location.origin).toString(),
             })}
             content={new content.Root([
-                new content.Image(client.assets.url(emoji.asset), emoji.asset.key()),
-                new content.Image(client.assets.url(emoji.asset), emoji.asset.key()),
-                new content.Image(client.assets.url(emoji.asset), emoji.asset.key()),
+                new content.Image(omu.assets.url(emoji.asset), emoji.asset.key()),
+                new content.Image(omu.assets.url(emoji.asset), emoji.asset.key()),
+                new content.Image(omu.assets.url(emoji.asset), emoji.asset.key()),
             ])}
         />
     </div>
     <div class="emoji-edit">
         <div class="left">
-            <img src={client.assets.url(emoji.asset)} alt={emoji.asset.key()} />
+            <img src={omu.assets.url(emoji.asset)} alt={emoji.asset.key()} />
         </div>
         <FlexColWrapper widthFull gap>
             <FlexRowWrapper widthFull between>

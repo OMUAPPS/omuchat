@@ -3,13 +3,13 @@
     import { writable } from 'svelte/store';
 
     import { FlexColWrapper, Tooltip } from '@omuchatjs/ui';
-    import { client } from './client.js';
+    import { omu } from './client.js';
     import { NetworkStatus } from '@omuchatjs/omu/network/network.js';
 
-    const status = writable<NetworkStatus>(client.network.status);
+    const status = writable<NetworkStatus>(omu.network.status);
 
     onMount(() => {
-        return client.network.event.status.listen((newStatus) => status.set(newStatus));
+        return omu.network.event.status.listen((newStatus) => status.set(newStatus));
     });
 </script>
 
@@ -31,7 +31,7 @@
             <FlexColWrapper>
                 接続済み
                 <span>
-                    {client.network.address.host}:{client.network.address.port}
+                    {omu.network.address.host}:{omu.network.address.port}
                     <small> に接続済み </small>
                 </span>
             </FlexColWrapper>
@@ -40,7 +40,7 @@
             <FlexColWrapper>
                 接続中
                 <span>
-                    {client.network.address.host}:{client.network.address.port}
+                    {omu.network.address.host}:{omu.network.address.port}
                     <small> に接続中… </small>
                 </span>
             </FlexColWrapper>
@@ -49,7 +49,7 @@
             <FlexColWrapper>
                 接続されていません
                 <span>
-                    {client.network.address.host}:{client.network.address.port}
+                    {omu.network.address.host}:{omu.network.address.port}
                     <small> に接続できませんでした </small>
                 </span>
             </FlexColWrapper>

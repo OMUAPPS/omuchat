@@ -21,7 +21,7 @@ import {
 } from '@omuchatjs/omu/extension/server/index.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
 import { setChat } from '../../../../../ui/dist/stores.js';
-import { App, Client } from '@omuchatjs/omu';
+import { App, Omu } from '@omuchatjs/omu';
 import { Chat } from '@omuchatjs/chat';
 import { BrowserTokenProvider } from '@omuchatjs/omu/token.js';
 
@@ -52,20 +52,20 @@ class TokenProvider extends BrowserTokenProvider {
     }
 }
 
-const client = new Client(app, {
+const omu = new Omu(app, {
     address,
     token: new TokenProvider('omu-token'),
 });
-const chat = new Chat(client);
-const dashboard = new Dashboard(client);
-setClient(client);
+const chat = new Chat(omu);
+const dashboard = new Dashboard(omu);
+setClient(omu);
 setChat(chat);
 
-client.plugins.require({
+omu.plugins.require({
     omuplugin_chat: '==0.3.2',
     omuchatprovider: '==0.3.2',
 });
-client.permissions.require(
+omu.permissions.require(
     CHAT_CHANNEL_TREE_PERMISSION_ID,
     DASHBOARD_OPEN_APP_PERMISSION_ID,
     SERVER_SHUTDOWN_PERMISSION_ID,
@@ -76,4 +76,4 @@ client.permissions.require(
     I18N_SET_LOCALES_PERMISSION_ID,
 );
 
-export { chat, client, dashboard };
+export { chat, omu, dashboard };

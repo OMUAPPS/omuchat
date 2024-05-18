@@ -1,10 +1,10 @@
 <script lang="ts">
+    import type { Omu } from '@omuchatjs/omu';
     import { Identifier } from '@omuchatjs/omu/identifier.js';
     import { onMount } from 'svelte';
     import type { ReactionApp } from '../reaction.js';
-    import type { Client } from '@omuchatjs/omu';
 
-    export let client: Client;
+    export let omu: Omu;
     export let reactionApp: ReactionApp;
     let { replaces, reactionSignal } = reactionApp;
 
@@ -40,7 +40,7 @@
                     return [key, null];
                 }
                 const assetIdentifier = Identifier.fromKey(assetId);
-                const assetUrl = client.assets.url(assetIdentifier, { noCache: true });
+                const assetUrl = omu.assets.url(assetIdentifier, { noCache: true });
                 const img = new Image();
                 img.src = assetUrl;
                 return [key, img];

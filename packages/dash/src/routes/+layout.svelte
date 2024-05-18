@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { client } from '$lib/common/omuchat/client.js';
+    import { omu } from '$lib/common/omuchat/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { DEFAULT_LOCALE, LOCALES } from '$lib/i18n/i18n.js';
@@ -15,11 +15,11 @@
         await loadLocale();
         await waitForTauri();
 
-        client.start();
+        omu.start();
         language.subscribe(loadLocale);
         await new Promise<void>((resolve, reject) => {
-            client.whenReady(resolve);
-            client.network.event.status.listen((status) => {
+            omu.whenReady(resolve);
+            omu.network.event.status.listen((status) => {
                 if (status === NetworkStatus.ERROR) {
                     reject(status);
                 }

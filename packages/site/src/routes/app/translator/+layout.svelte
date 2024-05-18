@@ -1,8 +1,8 @@
 <script lang="ts">
     import { AppHeader, FlexRowWrapper, Toggle } from '@omuchatjs/ui';
-    import { client, config } from './client.js';
+    import { omu, config } from './client.js';
 
-    const promise = new Promise<void>((resolve) => client.whenReady(resolve));
+    const promise = new Promise<void>((resolve) => omu.whenReady(resolve));
     function toggle() {
         $config = {
             ...$config,
@@ -12,9 +12,9 @@
 </script>
 
 {#await promise}
-    <AppHeader app={client.app} />
+    <AppHeader app={omu.app} />
 {:then}
-    <AppHeader app={client.app}>
+    <AppHeader app={omu.app}>
         <FlexRowWrapper alignItems="center" gap>
             <small>オン/オフ</small>
             <Toggle value={$config.active} handleToggle={toggle} />

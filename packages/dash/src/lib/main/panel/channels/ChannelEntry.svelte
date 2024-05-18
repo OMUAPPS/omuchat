@@ -5,7 +5,7 @@
     import { t } from '$lib/i18n/i18n-context.js';
 
     import ProviderIcon from '$lib/common/omuchat/ProviderIcon.svelte';
-    import { chat, client } from '$lib/common/omuchat/client.js';
+    import { chat, omu } from '$lib/common/omuchat/client.js';
     import { ButtonMini, Checkbox, Tooltip } from '@omuchatjs/ui';
 
     export let entry: models.Channel;
@@ -27,13 +27,9 @@
     <div class="left">
         <div class="channel-icon">
             {#if entry.iconUrl}
-                <img src={client.assets.proxy(entry.iconUrl)} alt="icon" />
+                <img src={omu.assets.proxy(entry.iconUrl)} alt="icon" />
                 <Tooltip>
-                    <img
-                        src={client.assets.proxy(entry.iconUrl)}
-                        alt="icon"
-                        class="tooltip-image"
-                    />
+                    <img src={omu.assets.proxy(entry.iconUrl)} alt="icon" class="tooltip-image" />
                 </Tooltip>
             {:else}
                 <ProviderIcon providerId={entry.providerId} />

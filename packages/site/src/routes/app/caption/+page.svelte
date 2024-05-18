@@ -1,17 +1,17 @@
 <script lang="ts">
-    import { App, Client } from '@omuchatjs/omu';
+    import { App, Omu } from '@omuchatjs/omu';
     import { IDENTIFIER } from './app.js';
     import { CaptionApp, LANGUAGES, LANGUAGES_OPTIONS } from './caption-app.js';
     import { BROWSER } from 'esm-env';
     import CaptionRenderer from './CaptionRenderer.svelte';
     import { Combobox } from '@omuchatjs/ui';
 
-    export const client = new Client(
+    export const omu = new Omu(
         new App(IDENTIFIER, {
             version: '1.0.0',
         }),
     );
-    const captionApp = new CaptionApp(client);
+    const captionApp = new CaptionApp(omu);
     const config = captionApp.config;
 
     if (BROWSER) {
@@ -38,7 +38,7 @@
 
         recognition.start();
 
-        client.start();
+        omu.start();
     }
 </script>
 

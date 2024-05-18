@@ -6,7 +6,7 @@
 
     import RoomEntry from './RoomEntry.svelte';
 
-    import { chat, client } from '$lib/common/omuchat/client.js';
+    import { chat, omu } from '$lib/common/omuchat/client.js';
     import { screenContext } from '$lib/common/screen/screen.js';
     import ScreenSetup from '$lib/main/setup/ScreenSetup.svelte';
     import { batchCall } from '$lib/utils/batch.js';
@@ -24,7 +24,7 @@
         chat.rooms.listen((newRooms: Map<string, models.Room>) => {
             rooms = newRooms;
         }),
-        client.whenReady(() => {
+        omu.whenReady(() => {
             chat.rooms.fetchItems({
                 after: 100,
             });

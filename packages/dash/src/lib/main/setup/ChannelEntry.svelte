@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { client } from '$lib/common/omuchat/client.js';
+    import { omu } from '$lib/common/omuchat/client.js';
     import type { models } from '@omuchatjs/chat';
 
     export let channel: models.Channel;
@@ -8,7 +8,7 @@
 
 <button class="channel-entry" class:active on:click>
     <div class="icon">
-        <img src={client.assets.proxy(channel.iconUrl)} alt="icon" />
+        <img src={omu.assets.proxy(channel.iconUrl)} alt="icon" />
     </div>
     <div class="info">
         <div class="name">{channel.name}</div>

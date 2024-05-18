@@ -1,13 +1,13 @@
 <script lang="ts">
+    import { App, Omu } from '@omuchatjs/omu';
     import { Identifier } from '@omuchatjs/omu/identifier.js';
     import { client } from '../stores.js';
-    import { App, Client } from '@omuchatjs/omu';
 
     const load = () => {
         const app = new App(new Identifier('cc.omuchat', 'test'), {
             version: '1.0.0',
         });
-        client.set(new Client(app));
+        client.set(new Omu(app));
         return new Promise<void>((resolve) => $client.whenReady(resolve));
     };
 </script>

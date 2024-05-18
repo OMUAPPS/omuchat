@@ -1,7 +1,7 @@
 <script lang="ts">
     import AppEntry from './AppEntry.svelte';
 
-    import { client } from '$lib/common/omuchat/client.js';
+    import { omu } from '$lib/common/omuchat/client.js';
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { invoke } from '$lib/utils/tauri.js';
     import { TableList, theme } from '@omuchatjs/ui';
@@ -46,16 +46,16 @@
     <div class="section">
         <h3>Server</h3>
         <span>
-            {client.network.status}
+            {omu.network.status}
             <small>
-                {client.network.address.host}:{client.network.address.port}
+                {omu.network.address.host}:{omu.network.address.port}
             </small>
             <div>
                 {starting ? 'starting' : 'stopped'}
                 <button on:click={start}> start </button>
                 <button
                     on:click={() => {
-                        client.server.shutdown();
+                        omu.server.shutdown();
                     }}
                 >
                     stop
@@ -76,7 +76,7 @@
     <div class="section">
         <h3>Apps</h3>
         <div class="apps">
-            <TableList table={client.server.apps} component={AppEntry} />
+            <TableList table={omu.server.apps} component={AppEntry} />
         </div>
     </div>
     <div class="section">

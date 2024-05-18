@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { App, Client } from '@omuchatjs/omu';
+    import { App, Omu } from '@omuchatjs/omu';
     import { setClient } from '@omuchatjs/ui';
     import { BROWSER } from 'esm-env';
     import { IDENTIFIER } from '../app.js';
@@ -9,16 +9,16 @@
 
     let assetId = BROWSER && $page.url.searchParams.get('assetId');
     const id = assetId || Date.now().toString();
-    const client = new Client(
+    const omu = new Omu(
         new App(IDENTIFIER.join('asset', id), {
             version: '0.1.0',
         }),
     );
-    const captionApp = new CaptionApp(client);
-    setClient(client);
+    const captionApp = new CaptionApp(omu);
+    setClient(omu);
 
     if (BROWSER) {
-        client.start();
+        omu.start();
     }
 </script>
 

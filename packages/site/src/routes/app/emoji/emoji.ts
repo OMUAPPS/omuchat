@@ -8,7 +8,7 @@ import type { Keyable } from '@omuchatjs/omu/interface.js';
 import type { Model } from '@omuchatjs/omu/model.js';
 import { writable } from 'svelte/store';
 import { IDENTIFIER } from './app.js';
-import { chat, client } from './client.js';
+import { chat, omu } from './client.js';
 
 const PLUGIN_IDENTIFIER = IDENTIFIER.join('plugin');
 
@@ -17,7 +17,7 @@ export type EmojiConfig = {
 };
 
 export const config = createRegistryStore(
-    client,
+    omu,
     RegistryType.createJson<EmojiConfig>(PLUGIN_IDENTIFIER, {
         name: 'config',
         defaultValue: {
@@ -103,7 +103,7 @@ export const EMOJI_TABLE = TableType.createModel(PLUGIN_IDENTIFIER, {
     model: Emoji,
 });
 
-export const emojis = client.tables.get(EMOJI_TABLE);
+export const emojis = omu.tables.get(EMOJI_TABLE);
 export const selectedEmoji = writable<Emoji | null>(null);
 
 export function deleteEmoji(emoji: Emoji) {
@@ -126,7 +126,7 @@ export function editEmoji(emoji: Emoji) {
 }
 
 export const EMOJI_TEST_PROVIDER = new Provider({
-    id: client.app.id,
+    id: omu.app.id,
     name: 'Emoji Test',
     description: 'Send emoji preview',
     regex: '',
@@ -150,7 +150,7 @@ export function testEmoji(emoji: Emoji) {
             roomId: room.id,
             content: new models.content.System([
                 models.content.Image.of({
-                    url: client.assets.url(emoji.asset),
+                    url: omu.assets.url(emoji.asset),
                     id: emoji.id,
                     name: emoji.id,
                 }),

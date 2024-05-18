@@ -4,10 +4,10 @@
     import EmojiEdit from './EmojiEdit.svelte';
     import EmojiEntry from './EmojiEntry.svelte';
     import { IDENTIFIER } from './app.js';
-    import { client } from './client.js';
+    import { omu } from './client.js';
     import { EMOJI_TABLE, Emoji, config, selectedEmoji } from './emoji.js';
 
-    const emojis = client.tables.get(EMOJI_TABLE);
+    const emojis = omu.tables.get(EMOJI_TABLE);
 
     let search: string = '';
 
@@ -25,7 +25,7 @@
 
     async function upload(files: Array<{ key: string; buffer: Uint8Array }>) {
         uploading++;
-        const assets = await client.assets.uploadMany(
+        const assets = await omu.assets.uploadMany(
             ...files.map(({ key, buffer }) => ({
                 identifier: IDENTIFIER.join(key),
                 buffer,
@@ -68,7 +68,7 @@
     }
 
     if (BROWSER) {
-        client.start();
+        omu.start();
     }
 
     function toggle() {

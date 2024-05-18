@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Chat, models } from '@omuchatjs/chat';
-    import { App, Client } from '@omuchatjs/omu';
+    import { App, Omu } from '@omuchatjs/omu';
 
     import { Header } from '@omuchatjs/ui';
     import { BROWSER } from 'esm-env';
@@ -11,8 +11,8 @@
     const app = new App(IDENTIFIER, {
         version: '0.1.0',
     });
-    const client = new Client(app);
-    const chat = new Chat(client);
+    const omu = new Omu(app);
+    const chat = new Chat(omu);
     chat.authors.listen();
     chat.messages.event.add.listen(async (messages) => {
         if (!active) return;
@@ -52,7 +52,7 @@
     let entries: Entry[] = [];
 
     if (BROWSER) {
-        client.start();
+        omu.start();
     }
 </script>
 

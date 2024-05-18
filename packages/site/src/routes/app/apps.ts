@@ -1,5 +1,5 @@
 import { App } from '@omuchatjs/omu';
-import { client } from '../client.js';
+import { omu } from '../client.js';
 import emoji from './emoji/app.js';
 import notifier from './notifier/app.js';
 import onecomme from './onecomme/app.js';
@@ -20,7 +20,7 @@ export function loadApps(origin: string) {
     );
 }
 
-export const appTable = client.dashboard.apps;
-client.whenReady(async () => {
+export const appTable = omu.dashboard.apps;
+omu.whenReady(async () => {
     console.log(await appTable.fetchAll());
 });

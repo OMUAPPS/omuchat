@@ -1,4 +1,4 @@
-import { App, Client } from '@omuchatjs/omu';
+import { App, Omu } from '@omuchatjs/omu';
 import { BROWSER } from 'esm-env';
 import { IDENTIFIER } from './app.js';
 import { NotifyEntry } from './model.js';
@@ -7,9 +7,9 @@ import { Chat } from '@omuchatjs/chat';
 const app = new App(IDENTIFIER, {
     version: '1.0.0',
 });
-export const client = new Client(app);
-const chat = new Chat(client);
-export const notifyTable = client.tables.model(IDENTIFIER, {
+export const omu = new Omu(app);
+const chat = new Chat(omu);
+export const notifyTable = omu.tables.model(IDENTIFIER, {
     name: 'notify',
     model: NotifyEntry,
 });
@@ -24,5 +24,5 @@ chat.messages.event.add.listen((messages) => {
 });
 
 if (BROWSER) {
-    client.start();
+    omu.start();
 }

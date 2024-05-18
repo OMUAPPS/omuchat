@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PermissionType } from '@omuchatjs/omu/extension/permission/permission.js';
     import { FlexColWrapper, FlexRowWrapper } from '@omuchatjs/ui';
-    import { client } from '../omuchat/client.js';
+    import { omu } from '../omuchat/client.js';
 
     export let permission: PermissionType;
 </script>
@@ -11,7 +11,7 @@
         <FlexRowWrapper widthFull between>
             <span>
                 <i class="ti ti-eye" />
-                {client.i18n.translate(permission.metadata.name)}
+                {omu.i18n.translate(permission.metadata.name)}
             </span>
             <small>
                 {permission.id.key()}
@@ -19,7 +19,7 @@
         </FlexRowWrapper>
         <FlexRowWrapper widthFull between>
             <small>
-                {client.i18n.translate(permission.metadata.note)}
+                {omu.i18n.translate(permission.metadata.note)}
             </small>
         </FlexRowWrapper>
     </FlexColWrapper>

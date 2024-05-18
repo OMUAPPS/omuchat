@@ -3,7 +3,7 @@
     import { Identifier } from '@omuchatjs/omu/identifier.js';
     import { AppHeader, ButtonMini, DragLink, FlexRowWrapper, Tooltip } from '@omuchatjs/ui';
     import { BROWSER } from 'esm-env';
-    import { client } from './client.js';
+    import { omu } from './client.js';
     import ReactionRenderer from './components/ReactionRenderer.svelte';
     import { ReactionApp } from './reaction.js';
 
@@ -14,7 +14,7 @@
         return url;
     }
 
-    const reactionApp = new ReactionApp(client);
+    const reactionApp = new ReactionApp(omu);
     const replaces = reactionApp.replaces;
 
     function test() {
@@ -43,24 +43,24 @@
         if (!files) return;
         const file = files[0];
         const reader = new FileReader();
-        const id = client.app.id.join('asset', key);
+        const id = omu.app.id.join('asset', key);
         reader.onload = async () => {
             const buffer = new Uint8Array(reader.result as ArrayBuffer);
-            const asset = await client.assets.upload(id, buffer);
+            const asset = await omu.assets.upload(id, buffer);
             $replaces = { ...$replaces, [key]: asset.key() };
         };
         reader.readAsArrayBuffer(file);
     }
 
     if (BROWSER) {
-        client.start();
+        omu.start();
     }
 </script>
 
-<AppHeader app={client.app} />
+<AppHeader app={omu.app} />
 <main>
     <div class="preview">
-        <ReactionRenderer {client} {reactionApp} />
+        <ReactionRenderer {omu} {reactionApp} />
     </div>
     <h3>リアクションをテストする</h3>
     <section>
@@ -107,7 +107,7 @@
                     {#if assetId}
                         <i class="ti ti-chevron-right" />
                         <img
-                            src={client.assets.url(Identifier.fromKey(assetId), { noCache: true })}
+                            src={omu.assets.url(Identifier.fromKey(assetId), { noCache: true })}
                             alt={key}
                             class="replace-image"
                         />

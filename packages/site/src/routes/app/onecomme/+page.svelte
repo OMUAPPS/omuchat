@@ -1,10 +1,10 @@
 <script lang="ts">
     import { Header } from '@omuchatjs/ui';
     import { BROWSER } from 'esm-env';
-    import { client } from './client.js';
+    import { omu } from './client.js';
 
     if (BROWSER) {
-        client.start();
+        omu.start();
     }
 </script>
 

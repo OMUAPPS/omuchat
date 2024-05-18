@@ -2,7 +2,7 @@
     import { type Component } from '@omuchatjs/chat/models/content.js';
     import { Author, Message, Provider, Room, content } from '@omuchatjs/chat/models/index.js';
     import { FlexColWrapper, FlexRowWrapper, Header, MessageRenderer } from '@omuchatjs/ui';
-    import { chat, client } from './client.js';
+    import { chat, omu } from './client.js';
     import ComponentEditor from './components/ComponentEditor.svelte';
 
     let component: Component = new content.Root([
@@ -18,7 +18,7 @@
     }
 
     const TEST_PROVIDER = new Provider({
-        id: client.app.id,
+        id: omu.app.id,
         description: 'test',
         name: 'test',
         regex: '(?!x)x',

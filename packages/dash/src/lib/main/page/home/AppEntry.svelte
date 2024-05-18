@@ -1,17 +1,17 @@
 <script lang="ts">
     import { FlexColWrapper, FlexRowWrapper, Localized } from '@omuchatjs/ui';
 
-    import { client } from '$lib/common/omuchat/client.js';
+    import { omu } from '$lib/common/omuchat/client.js';
     import { t } from '$lib/i18n/i18n-context.js';
     import type { App } from '@omuchatjs/omu';
 
     export let entry: App;
     export let selected: boolean = false;
 
-    const icon = entry.metadata?.icon && client.i18n.translate(entry.metadata.icon);
+    const icon = entry.metadata?.icon && omu.i18n.translate(entry.metadata.icon);
 
     function openApp() {
-        client.dashboard.openApp(entry);
+        omu.dashboard.openApp(entry);
     }
 </script>
 

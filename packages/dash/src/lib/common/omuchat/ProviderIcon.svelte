@@ -3,7 +3,7 @@
 
     import { classes } from '$lib/utils/class-helper.js';
     import type { Identifier } from '@omuchatjs/omu/identifier.js';
-    import { chat, client } from './client.js';
+    import { chat, omu } from './client.js';
 
     export let providerId: Identifier;
 
@@ -17,9 +17,7 @@
     {#await getProvider() then provider}
         {#if provider}
             <img
-                src={client.assets.proxy(
-                    provider.imageUrl || `https://${provider.url}/favicon.ico`,
-                )}
+                src={omu.assets.proxy(provider.imageUrl || `https://${provider.url}/favicon.ico`)}
                 alt="icon"
                 class={classes('provider-icon', provider.imageUrl && 'custom')}
                 width="16"
