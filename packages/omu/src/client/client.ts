@@ -5,6 +5,7 @@ import type { DashboardExtension } from '../extension/dashboard/index.js';
 import type { EndpointExtension } from '../extension/endpoint/index.js';
 import type { I18nExtension } from '../extension/i18n/index.js';
 import type { ExtensionRegistry } from '../extension/index.js';
+import type { LoggerExtension } from '../extension/logger/logger-extension.js';
 import type { PermissionExtension } from '../extension/permission/index.js';
 import type { PluginExtension } from '../extension/plugin/index.js';
 import type { RegistryExtension } from '../extension/registry/index.js';
@@ -20,7 +21,7 @@ export type ClientEvents = {
     started: EventEmitter<() => void>;
     stopped: EventEmitter<() => void>;
     ready: EventEmitter<() => void>;
-}
+};
 
 export interface Client {
     readonly ready: boolean;
@@ -39,6 +40,7 @@ export interface Client {
     readonly assets: AssetExtension;
     readonly i18n: I18nExtension;
     readonly server: ServerExtension;
+    readonly logger: LoggerExtension;
 
     start(): void;
     stop(): void;

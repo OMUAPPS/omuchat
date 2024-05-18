@@ -6,12 +6,9 @@ import { Serializer } from '../../serializer.js';
 import { EndpointType } from '../endpoint/endpoint.js';
 import type { Extension } from '../extension.js';
 import { ExtensionType } from '../extension.js';
-import { RegistryType } from '../registry/registry.js';
 import type { Table } from '../table/index.js';
 import { TABLE_EXTENSION_TYPE } from '../table/table-extension.js';
 import { TableType } from '../table/table.js';
-
-import { ConsolePacket } from './packets.js';
 
 export const SERVER_EXTENSION_TYPE: ExtensionType<ServerExtension> = new ExtensionType(
     'server',
@@ -36,38 +33,13 @@ const REQUIRE_APPS_PACKET_TYPE = PacketType.createJson<Identifier[]>(SERVER_EXTE
     name: 'require_apps',
     serializer: Serializer.model(Identifier).toArray(),
 });
-const VERSION_REGISTRY_TYPE = RegistryType.createJson<string | null>(SERVER_EXTENSION_TYPE, {
-    name: 'version',
-    defaultValue: null,
-});
-export const SERVER_CONSOLE_PERMISSION_ID = SERVER_EXTENSION_TYPE.join('console');
-const CONSOLE_GET_ENDPOINT_TYPE = EndpointType.createJson<number | null, string[]>(
-    SERVER_EXTENSION_TYPE,
-    {
-        name: 'console',
-        permissionId: SERVER_CONSOLE_PERMISSION_ID,
-    },
-);
-const CONSOLE_LISTEN_PACKET_TYPE = PacketType.createJson<null>(SERVER_EXTENSION_TYPE, {
-    name: 'console_listen',
-});
-const CONSOLE_PACKET_TYPE = PacketType.createSerialized<ConsolePacket>(SERVER_EXTENSION_TYPE, {
-    name: 'console',
-    serializer: ConsolePacket,
-});
 
 export class ServerExtension implements Extension {
     public readonly apps: Table<App>;
     private requiredApps = new IdentifierSet();
-    private consoleListeners: ((lines: string[]) => void)[] = [];
 
     constructor(private readonly client: Client) {
-        client.network.registerPacket(REQUIRE_APPS_PACKET_TYPE, CONSOLE_PACKET_TYPE);
-        client.network.addPacketHandler(CONSOLE_PACKET_TYPE, (packet) => {
-            for (const listener of this.consoleListeners) {
-                listener(packet.lines);
-            }
-        });
+        client.network.registerPacket(REQUIRE_APPS_PACKET_TYPE);
         this.apps = client.tables.get(APP_TABLE_TYPE);
         client.network.addTask(() => this.onTask());
     }
@@ -87,18 +59,5 @@ export class ServerExtension implements Extension {
         for (const appId of appIds) {
             this.requiredApps.add(appId);
         }
-    }
-
-    public getConsole(lineCount: number | null): Promise<string[]> {
-        return this.client.endpoints.call(CONSOLE_GET_ENDPOINT_TYPE, lineCount);
-    }
-
-    public listenConsole(listener: (lines: string[]) => void): void {
-        if (this.consoleListeners.length === 0) {
-            this.client.whenReady(() => {
-                this.client.send(CONSOLE_LISTEN_PACKET_TYPE, null);
-            });
-        }
-        this.consoleListeners.push(listener);
     }
 }

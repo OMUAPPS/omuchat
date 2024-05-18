@@ -6,7 +6,11 @@ import { DASHBOARD_EXTENSION_TYPE, type DashboardExtension } from '../extension/
 import { ENDPOINT_EXTENSION_TYPE, type EndpointExtension } from '../extension/endpoint/index.js';
 import { I18N_EXTENSION_TYPE, type I18nExtension } from '../extension/i18n/index.js';
 import { ExtensionRegistry } from '../extension/index.js';
-import { PERMISSION_EXTENSION_TYPE, type PermissionExtension } from '../extension/permission/index.js';
+import { LOGGER_EXTENSION_TYPE, type LoggerExtension } from '../extension/logger/index.js';
+import {
+    PERMISSION_EXTENSION_TYPE,
+    type PermissionExtension,
+} from '../extension/permission/index.js';
 import { PLUGIN_EXTENSION_TYPE, type PluginExtension } from '../extension/plugin/index.js';
 import { REGISTRY_EXTENSION_TYPE, type RegistryExtension } from '../extension/registry/index.js';
 import { SERVER_EXTENSION_TYPE, type ServerExtension } from '../extension/server/index.js';
@@ -43,6 +47,7 @@ export class OmuClient implements Client {
     readonly assets: AssetExtension;
     readonly i18n: I18nExtension;
     readonly server: ServerExtension;
+    readonly logger: LoggerExtension;
 
     constructor(options: {
         app: App;
@@ -55,7 +60,12 @@ export class OmuClient implements Client {
         this.app = options.app;
         this.token = options.token;
         this.address = options.address;
-        this.network = new Network(this, options.address, this.token, options.connection ?? new WebsocketConnection(options.address));
+        this.network = new Network(
+            this,
+            options.address,
+            this.token,
+            options.connection ?? new WebsocketConnection(options.address),
+        );
         this.extensions = new ExtensionRegistry(this);
 
         this.endpoints = this.extensions.register(ENDPOINT_EXTENSION_TYPE);
@@ -68,6 +78,7 @@ export class OmuClient implements Client {
         this.assets = this.extensions.register(ASSET_EXTENSION_TYPE);
         this.i18n = this.extensions.register(I18N_EXTENSION_TYPE);
         this.server = this.extensions.register(SERVER_EXTENSION_TYPE);
+        this.logger = this.extensions.register(LOGGER_EXTENSION_TYPE);
         this.event.ready.listen(() => {
             this.ready = true;
         });

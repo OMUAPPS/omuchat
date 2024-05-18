@@ -20,7 +20,6 @@ import {
 } from '@omuchatjs/omu/extension/i18n/index.js';
 import {
     SERVER_APPS_READ_PERMISSION_ID,
-    SERVER_CONSOLE_PERMISSION_ID,
     SERVER_SHUTDOWN_PERMISSION_ID,
 } from '@omuchatjs/omu/extension/server/index.js';
 import { Identifier } from '@omuchatjs/omu/identifier.js';
@@ -72,7 +71,6 @@ client.permissions.require(
     DASHBOARD_OPEN_APP_PERMISSION_ID,
     SERVER_SHUTDOWN_PERMISSION_ID,
     SERVER_APPS_READ_PERMISSION_ID,
-    SERVER_CONSOLE_PERMISSION_ID,
     DASHOBARD_APP_READ_PERMISSION_ID,
     DASHOBARD_APP_EDIT_PERMISSION_ID,
     I18N_GET_LOCALES_PERMISSION_ID,

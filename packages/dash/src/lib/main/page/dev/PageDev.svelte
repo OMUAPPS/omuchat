@@ -40,14 +40,6 @@
     function clearSettings() {
         window.localStorage.clear();
     }
-
-    let conosle: string[] = [];
-    client.whenReady(async () => {
-        conosle = await client.server.getConsole(null);
-    });
-    client.server.listenConsole((lines) => {
-        conosle = [...conosle, ...lines];
-    });
 </script>
 
 <div class="container">
@@ -80,14 +72,6 @@
         <div>
             {$i18n?.localeName}
         </div>
-    </div>
-    <div class="section">
-        <h3>Console</h3>
-        <code>
-            {#each conosle as line}
-                <div>{line}</div>
-            {/each}
-        </code>
     </div>
     <div class="section">
         <h3>Apps</h3>
@@ -145,16 +129,5 @@
         .apps {
             height: fit-content;
         }
-    }
-
-    code {
-        white-space: pre-wrap;
-        font-size: 12px;
-        height: 200px;
-        overflow: auto;
-        user-select: text;
-        background: #222;
-        color: #aaa;
-        padding: 1rem 0;
     }
 </style>
