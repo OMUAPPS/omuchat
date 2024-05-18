@@ -12,7 +12,7 @@ export const config = createRegistryStore(omu, CONFIG_REGISTRY_TYPE);
 
 if (BROWSER) {
     omu.plugins.require({
-        omuplugin_translator: '==0.3.2',
+        omuplugin_translator: '==0.4.2',
     });
     omu.start();
 }

@@ -8,5 +8,5 @@ const app = new App(IDENTIFIER, {
 export const omu = new Omu(app);
 setClient(omu);
 omu.plugins.require({
-    omuplugin_onecomme: '==0.3.2',
+    omuplugin_onecomme: '==0.4.2',
 });
