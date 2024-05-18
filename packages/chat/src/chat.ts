@@ -1,4 +1,4 @@
-import type { Client } from '@omuchatjs/omu';
+import type { Client } from '@omuchatjs/omu/client.js';
 import { EndpointType } from '@omuchatjs/omu/extension/endpoint/endpoint.js';
 import type { Table } from '@omuchatjs/omu/extension/table/index.js';
 import { TableType } from '@omuchatjs/omu/extension/table/index.js';
