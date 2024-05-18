@@ -25,7 +25,7 @@
         contributions: number;
     }
 
-    const contributorsUrl = 'https://api.github.com/repos/OMUAPPS/dashboard/contributors';
+    const contributorsUrl = 'https://api.github.com/repos/OMUAPPS/omuapps/contributors';
     let contributors: Contributor[] = [];
 
     onMount(async () => {
