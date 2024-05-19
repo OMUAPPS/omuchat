@@ -1,9 +1,12 @@
+import { DEV } from 'esm-env';
+
+const API_HOST = DEV ? 'http://localhost:5173' : 'https://omuapps.com';
+
 export class Api {
-    static VERSION_MANIFEST =
-        'https://github.com/OMUAPPS/omuapps/releases/latest/download/latest.json';
+    static VERSION_MANIFEST_ENDPOINT = `${API_HOST}/api/version`;
 
     public static async getVersions(): Promise<VersionManifest> {
-        return await fetch(Api.VERSION_MANIFEST, {
+        return await fetch(Api.VERSION_MANIFEST_ENDPOINT, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
