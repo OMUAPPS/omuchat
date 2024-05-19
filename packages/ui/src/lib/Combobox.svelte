@@ -39,5 +39,9 @@
         border: none;
         outline: none;
         cursor: pointer;
+
+        &:focus {
+            outline: 2px solid var(--color-1);
+        }
     }
 </style>

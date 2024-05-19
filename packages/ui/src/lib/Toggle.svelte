@@ -24,6 +24,10 @@
         color: var(--color-1);
         outline: 1px solid var(--color-outline);
         border-radius: 0.1rem;
+
+        &:focus {
+            outline: 2px solid var(--color-1);
+        }
     }
 
     button.active {

@@ -31,6 +31,10 @@
             outline: 2px solid #fff;
         }
 
+        &:focus {
+            outline: 2px solid var(--color-1);
+        }
+
         &:disabled {
             cursor: not-allowed;
             opacity: 0.5;

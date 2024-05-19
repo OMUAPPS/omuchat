@@ -9,10 +9,6 @@
     let element: HTMLElement;
 
     onMount(() => {
-        if (selected) {
-            element.focus();
-        }
-
         const timeout = transition
             ? window.setTimeout(() => {
                   transition = false;
@@ -22,6 +18,10 @@
             window.clearTimeout(timeout);
         };
     });
+
+    $: if (selected && element) {
+        element.focus();
+    }
 </script>
 
 {#if transition}
