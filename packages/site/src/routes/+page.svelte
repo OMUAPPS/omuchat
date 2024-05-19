@@ -1,13 +1,15 @@
 <script lang="ts">
     import title from '$lib/images/title.svg';
+    import background from '$lib/images/background.png';
 </script>
 
 <svelte:head>
-    <title>Home</title>
+    <title>OMUAPPS API</title>
     <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
 <section>
+    <img src={background} alt="background" class="background" />
     <h1>
         <span class="welcome">
             <img src={title} alt="title" />
@@ -25,6 +27,14 @@
         align-items: start;
         justify-content: center;
         padding: 0 1rem;
+    }
+
+    .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        opacity: 0.5;
     }
 
     h1 {

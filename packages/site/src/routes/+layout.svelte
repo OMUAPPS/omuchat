@@ -7,10 +7,10 @@
     const isInApp = /\/app\/./gm.test($page.url.pathname);
 </script>
 
+<Theme />
 {#if isInApp}
     <div class="app">
         <slot />
-        <Theme />
     </div>
 {:else}
     <div class="app">
@@ -19,11 +19,6 @@
         <main>
             <slot />
         </main>
-
-        <footer>
-            <p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-        </footer>
-        <Theme />
     </div>
 {/if}
 
@@ -43,23 +38,5 @@
         max-width: 64rem;
         padding: 1rem;
         margin: 0 auto;
-    }
-
-    footer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 12px;
-    }
-
-    footer a {
-        font-weight: bold;
-    }
-
-    @media (width >= 480px) {
-        footer {
-            padding: 12px 0;
-        }
     }
 </style>
