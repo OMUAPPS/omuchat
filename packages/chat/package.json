@@ -43,8 +43,8 @@
         "nodemon": "^3.1.0",
         "ts-node": "10.9.2",
         "typescript": "^5.4.5",
-        "websocket": "1.0.34",
-        "ws": "8.16.0"
+        "websocket": "1.0.35",
+        "ws": "8.17.0"
     },
     "dependencies": {
         "@omujs/omu": "workspace:*"
