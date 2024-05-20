@@ -52,7 +52,7 @@
         {/if}
         <a href="/app">
             アプリを探す
-            <i class="ti ti-player-play" />
+            <i class="ti ti-external-link" />
         </a>
     </p>
     <button on:click={() => (showExtra = !showExtra)}>
@@ -112,7 +112,7 @@
             padding: 0.6rem;
             margin-right: 1rem;
             margin-bottom: 1rem;
-            font-size: 1.1rem;
+            font-size: 1rem;
             background: var(--color-bg-2);
 
             &:hover {
