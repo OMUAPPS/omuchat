@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { models } from '@omujs/chat';
-    import { onMount } from 'svelte';
+    import { onDestroy } from 'svelte';
 
     import { t } from '$lib/i18n/i18n-context.js';
 
@@ -19,13 +19,12 @@
 
     let checkIntervalLeft = 0;
 
-    onMount(() => {
-        const interval = setInterval(() => {
-            checkIntervalLeft = 15 - ((new Date().getTime() / 1000) % 15);
-        }, 1000);
-        return () => {
-            clearInterval(interval);
-        };
+    const interval = setInterval(() => {
+        checkIntervalLeft = 15 - ((new Date().getTime() / 1000) % 15);
+    }, 1000);
+
+    onDestroy(() => {
+        clearInterval(interval);
     });
 </script>
 

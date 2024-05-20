@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Omu } from '@omujs/omu';
     import { Identifier } from '@omujs/omu/identifier.js';
-    import { onMount } from 'svelte';
+    import { onDestroy } from 'svelte';
     import type { ReactionApp } from '../reaction.js';
 
     export let omu: Omu;
@@ -189,23 +189,21 @@
     }
 
     let animationTimer: number;
-    onMount(() => {
-        animationTimer = requestAnimationFrame(async function drawLoop() {
-            await new Promise((resolve) => {
-                const currentTime = Date.now();
-                const delay = previousTime + 1000 / 30 - currentTime;
-                setTimeout(resolve, delay);
-                previousTime = currentTime;
-            });
-            updateSpawn();
-            updatePosition();
-            draw();
-            animationTimer = requestAnimationFrame(drawLoop);
+    animationTimer = requestAnimationFrame(async function drawLoop() {
+        await new Promise((resolve) => {
+            const currentTime = Date.now();
+            const delay = previousTime + 1000 / 30 - currentTime;
+            setTimeout(resolve, delay);
+            previousTime = currentTime;
         });
+        updateSpawn();
+        updatePosition();
+        draw();
+        animationTimer = requestAnimationFrame(drawLoop);
+    });
 
-        return () => {
-            cancelAnimationFrame(animationTimer);
-        };
+    onDestroy(() => {
+        cancelAnimationFrame(animationTimer);
     });
 </script>
 

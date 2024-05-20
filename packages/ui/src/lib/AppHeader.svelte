@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { App } from '@omujs/omu';
-    import { onMount } from 'svelte';
+    import { onDestroy } from 'svelte';
     import Header from './Header.svelte';
     import { client } from './stores.js';
 
@@ -10,22 +10,22 @@
     let icon = '';
     let description = '';
 
-    onMount(() => {
-        return $client.whenReady(() => {
-            const metadata = app.metadata;
-            if (metadata) {
-                if (metadata.name) {
-                    title = $client.i18n.translate(metadata.name);
-                }
-                if (metadata.icon) {
-                    icon = $client.i18n.translate(metadata.icon);
-                }
-                if (metadata.description) {
-                    description = $client.i18n.translate(metadata.description);
-                }
+    const unlisten = $client.whenReady(() => {
+        const metadata = app.metadata;
+        if (metadata) {
+            if (metadata.name) {
+                title = $client.i18n.translate(metadata.name);
             }
-        });
+            if (metadata.icon) {
+                icon = $client.i18n.translate(metadata.icon);
+            }
+            if (metadata.description) {
+                description = $client.i18n.translate(metadata.description);
+            }
+        }
     });
+
+    onDestroy(unlisten);
 </script>
 
 <Header {title} icon={`ti ti-${icon}`} subtitle={description}>

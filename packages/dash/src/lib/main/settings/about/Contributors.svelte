@@ -1,7 +1,6 @@
 <script lang="ts">
     import { t } from '$lib/i18n/i18n-context.js';
     import { ExternalLink, FlexColWrapper } from '@omujs/ui';
-    import { onMount } from 'svelte';
 
     interface Contributor {
         login: string;
@@ -28,13 +27,13 @@
     const contributorsUrl = 'https://api.github.com/repos/OMUAPPS/omuapps/contributors';
     let contributors: Contributor[] = [];
 
-    onMount(async () => {
-        const res = await fetch(contributorsUrl);
-        contributors = await res.json();
-        contributors = contributors
-            .filter((contributor) => contributor.type !== 'Bot')
-            .sort((a, b) => b.contributions - a.contributions);
-    });
+    fetch(contributorsUrl)
+        .then((res) => res.json())
+        .then((data: Contributor[]) => {
+            contributors = data
+                .filter((contributor) => contributor.type !== 'Bot')
+                .sort((a, b) => b.contributions - a.contributions);
+        });
 </script>
 
 <FlexColWrapper widthFull gap>

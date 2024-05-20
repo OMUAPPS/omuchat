@@ -1,14 +1,14 @@
 <script lang="ts">
     import type { models } from '@omujs/chat';
-    import { onMount } from 'svelte';
+    import { onDestroy } from 'svelte';
 
     import { installed } from '../settings.js';
 
     import { t } from '$lib/i18n/i18n-context.js';
 
+    import { chat, omu } from '$lib/client.js';
     import Background from '$lib/common/Background.svelte';
     import ProviderIcon from '$lib/common/ProviderIcon.svelte';
-    import { chat, omu } from '$lib/client.js';
     import Screen from '$lib/common/screen/Screen.svelte';
     import { type ScreenHandle } from '$lib/common/screen/screen.js';
     import { IdentifierMap } from '@omujs/omu/identifier.js';
@@ -65,13 +65,11 @@
         tooltipHint = hints[hints.indexOf(tooltipHint) + 1] || hints[0];
     }
 
-    onMount(() => {
-        updateHint();
-        const handle = setInterval(updateHint, 1400);
+    updateHint();
+    const handle = setInterval(updateHint, 1400);
 
-        return () => {
-            clearInterval(handle);
-        };
+    onDestroy(() => {
+        clearInterval(handle);
     });
 </script>
 

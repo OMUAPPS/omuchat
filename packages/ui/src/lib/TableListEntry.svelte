@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    import { onDestroy } from 'svelte';
 
     export let selected: boolean;
     export let key: string;
@@ -8,15 +8,14 @@
 
     let element: HTMLElement;
 
-    onMount(() => {
-        const timeout = transition
-            ? window.setTimeout(() => {
-                  transition = false;
-              }, 200)
-            : 0;
-        return () => {
-            window.clearTimeout(timeout);
-        };
+    const timeout = transition
+        ? window.setTimeout(() => {
+              transition = false;
+          }, 200)
+        : 0;
+
+    onDestroy(() => {
+        window.clearTimeout(timeout);
     });
 
     $: if (selected && element) {

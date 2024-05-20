@@ -1,16 +1,15 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    import { onDestroy } from 'svelte';
     import { writable } from 'svelte/store';
 
+    import { NetworkStatus } from '@omujs/omu/network/network.js';
     import { FlexColWrapper, Tooltip } from '@omujs/ui';
     import { omu } from '../client.js';
-    import { NetworkStatus } from '@omujs/omu/network/network.js';
 
     const status = writable<NetworkStatus>(omu.network.status);
 
-    onMount(() => {
-        return omu.network.event.status.listen((newStatus) => status.set(newStatus));
-    });
+    const unlisten = omu.network.event.status.listen((newStatus) => status.set(newStatus));
+    onDestroy(unlisten);
 </script>
 
 <p class={$status}>
