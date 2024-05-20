@@ -3,6 +3,7 @@
     import { Identifier } from '@omujs/omu/identifier.js';
     import { onDestroy } from 'svelte';
     import type { ReactionApp } from '../reaction.js';
+    import { BROWSER } from 'esm-env';
 
     export let omu: Omu;
     export let reactionApp: ReactionApp;
@@ -188,23 +189,25 @@
         });
     }
 
-    let animationTimer: number;
-    animationTimer = requestAnimationFrame(async function drawLoop() {
-        await new Promise((resolve) => {
-            const currentTime = Date.now();
-            const delay = previousTime + 1000 / 30 - currentTime;
-            setTimeout(resolve, delay);
-            previousTime = currentTime;
+    if (BROWSER) {
+        let animationTimer: number;
+        animationTimer = requestAnimationFrame(async function drawLoop() {
+            await new Promise((resolve) => {
+                const currentTime = Date.now();
+                const delay = previousTime + 1000 / 30 - currentTime;
+                setTimeout(resolve, delay);
+                previousTime = currentTime;
+            });
+            updateSpawn();
+            updatePosition();
+            draw();
+            animationTimer = requestAnimationFrame(drawLoop);
         });
-        updateSpawn();
-        updatePosition();
-        draw();
-        animationTimer = requestAnimationFrame(drawLoop);
-    });
 
-    onDestroy(() => {
-        cancelAnimationFrame(animationTimer);
-    });
+        onDestroy(() => {
+            cancelAnimationFrame(animationTimer);
+        });
+    }
 </script>
 
 <div class="hidden">😳😄❤🎉💯</div>
