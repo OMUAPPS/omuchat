@@ -1,11 +1,19 @@
 <script lang="ts">
-    import { Header } from '@omujs/ui';
+    import { Omu } from '@omujs/omu';
+    import { AppHeader, setClient } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
-    import { omu } from './client.js';
+    import { APP } from './app.js';
+
+    export const omu = new Omu(APP);
+    setClient(omu);
+
+    omu.plugins.require({
+        omuplugin_onecomme: '==0.4.2',
+    });
 
     if (BROWSER) {
         omu.start();
     }
 </script>
 
-<Header title="わんコメテンプレート同期" icon="ti-dog"></Header>
+<AppHeader app={APP} />

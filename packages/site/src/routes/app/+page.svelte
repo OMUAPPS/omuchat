@@ -1,11 +1,8 @@
 <script lang="ts">
-    import { page } from '$app/stores';
     import { FlexColWrapper, FlexRowWrapper, Localized } from '@omujs/ui';
     import AppEntry from './AppEntry.svelte';
-    import { apps, loadApps } from './apps.js';
+    import { apps } from './apps.js';
     import { TAG_REGISTRY } from './category.js';
-
-    loadApps($page.url.origin);
 
     let filteredApps = apps;
     let selectedCategories: string[] = [];

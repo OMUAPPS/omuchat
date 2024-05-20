@@ -1,13 +1,10 @@
-import { App, Omu } from '@omujs/omu';
-import { BROWSER } from 'esm-env';
-import { IDENTIFIER } from './app.js';
-import { NotifyEntry } from './model.js';
 import { Chat } from '@omujs/chat';
+import { Omu } from '@omujs/omu';
+import { BROWSER } from 'esm-env';
+import { APP, IDENTIFIER } from './app.js';
+import { NotifyEntry } from './model.js';
 
-const app = new App(IDENTIFIER, {
-    version: '1.0.0',
-});
-export const omu = new Omu(app);
+export const omu = new Omu(APP);
 const chat = new Chat(omu);
 export const notifyTable = omu.tables.model(IDENTIFIER, {
     name: 'notify',

@@ -138,27 +138,6 @@ export class EmojiApp {
 }
 
 export const emojiApp: Writable<EmojiApp> = writable();
-// export const emojis = omu.tables.get(EMOJI_TABLE);
-// export const selectedEmoji = writable<Emoji | null>(null);
-
-// export function deleteEmoji(emoji: Emoji) {
-//     emojis.remove(emoji);
-//     selectedEmoji.update((value) => {
-//         if (value?.id === emoji.id) {
-//             return null;
-//         }
-//         return value;
-//     });
-// }
-
-// export function saveEmoji(emoji: Emoji) {
-//     emojis.update(emoji);
-//     selectedEmoji.set(null);
-// }
-
-// export function editEmoji(emoji: Emoji) {
-//     selectedEmoji.set(emoji);
-// }
 
 export const EMOJI_TEST_PROVIDER = new Provider({
     id: IDENTIFIER,

@@ -1,24 +1,24 @@
 import { App } from '@omujs/omu';
 import { omu } from '../client.js';
-import emoji from './emoji/app.js';
-import notifier from './notifier/app.js';
-import onecomme from './onecomme/app.js';
-import playqueue from './playqueue/app.js';
-import reaction from './reaction/app.js';
-import tester from './tester/app.js';
-import translator from './translator/app.js';
-import caption from './caption/app.js';
+import { APP as emoji } from './emoji/app.js';
+import { APP as notifier } from './notifier/app.js';
+import { APP as onecomme } from './onecomme/app.js';
+import { APP as playqueue } from './playqueue/app.js';
+import { APP as reaction } from './reaction/app.js';
+import { APP as tester } from './tester/app.js';
+import { APP as translator } from './translator/app.js';
+import { APP as caption } from './caption/app.js';
 
-export const apps = [] as App[];
-
-export function loadApps(origin: string) {
-    if (apps.length) return;
-    apps.push(
-        ...[notifier, onecomme, playqueue, emoji, tester, reaction, translator, caption].map(
-            (app) => app(origin),
-        ),
-    );
-}
+export const apps = [
+    emoji,
+    notifier,
+    onecomme,
+    playqueue,
+    reaction,
+    tester,
+    translator,
+    caption,
+] satisfies App[];
 
 export const appTable = omu.dashboard.apps;
 omu.whenReady(async () => {

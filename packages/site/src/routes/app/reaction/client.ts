@@ -1,14 +1,9 @@
-import { ASSET_UPLOAD_PERMISSION_ID } from "@omujs/omu/extension/asset/asset-extension.js";
-import { setClient } from "@omujs/ui";
-import { BROWSER } from "esm-env";
-import getApp from "./app.js";
-import { Omu } from "@omujs/omu";
+import { Omu } from '@omujs/omu';
+import { ASSET_UPLOAD_PERMISSION_ID } from '@omujs/omu/extension/asset/asset-extension.js';
+import { setClient } from '@omujs/ui';
+import { APP } from './app.js';
 
-const app = getApp(BROWSER ? window.location.origin : "");
-export const omu = new Omu(app);
+export const omu = new Omu(APP);
 setClient(omu);
 
-omu.permissions.require(
-  ASSET_UPLOAD_PERMISSION_ID,
-  "com.omuapps:chatprovider/youtube/reaction",
-);
+omu.permissions.require(ASSET_UPLOAD_PERMISSION_ID, 'com.omuapps:chatprovider/youtube/reaction');

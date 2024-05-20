@@ -1,10 +1,11 @@
 <script lang="ts">
     import { App, Omu } from '@omujs/omu';
-    import { IDENTIFIER } from './app.js';
-    import { CaptionApp, LANGUAGES, LANGUAGES_OPTIONS } from './caption-app.js';
+    import { Combobox } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import CaptionRenderer from './CaptionRenderer.svelte';
-    import { Combobox } from '@omujs/ui';
+    import { IDENTIFIER } from './app.js';
+    import { CaptionApp } from './caption-app.js';
+    import { LANGUAGES_OPTIONS } from './types.js';
 
     export const omu = new Omu(
         new App(IDENTIFIER, {
@@ -43,8 +44,8 @@
 </script>
 
 <svelte:head>
-    <title>Home</title>
-    <meta name="description" content="Svelte demo app" />
+    <title>リアルタイム字幕</title>
+    <meta name="description" content="リアルタイム字幕" />
 </svelte:head>
 
 <section>
