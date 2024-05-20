@@ -124,5 +124,6 @@
 
     a {
         text-decoration: none;
+        height: 100%;
     }
 </style>
