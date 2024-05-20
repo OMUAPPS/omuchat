@@ -65,6 +65,10 @@
     .inner {
         align-self: flex-end;
         overflow: hidden;
+
+        &:focus {
+            outline: none;
+        }
     }
 
     @keyframes slide {
