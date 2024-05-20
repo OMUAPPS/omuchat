@@ -3,13 +3,13 @@
 
     import { client } from './stores.js';
 
-    import { VirtualList } from '@omujs/ui';
+    import VirtualList from './VirtualList.svelte';
 
     import TableListEntry from './TableListEntry.svelte';
 
     import type { Table } from '@omujs/omu/extension/table/table.js';
     import type { Keyable } from '@omujs/omu/interface.js';
-    import { onMount, onDestroy, tick, type ComponentType, type SvelteComponent } from 'svelte';
+    import { onDestroy, onMount, tick, type ComponentType, type SvelteComponent } from 'svelte';
 
     export let table: Table<T>;
     export let component: ComponentType<SvelteComponent<{ entry: T; selected?: boolean }>>;
