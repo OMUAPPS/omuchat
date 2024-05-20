@@ -1,8 +1,9 @@
 import { env } from '$env/dynamic/private';
+import { DEV } from 'esm-env';
 import type { RequestHandler } from './$types.js';
 
 async function cached<T>(key: string | undefined, fn: () => Promise<T>): Promise<T> {
-    if (!key || typeof cache === 'undefined') {
+    if (!DEV || !key) {
         return fn();
     }
     const cached = await cache.match<T>(key);
