@@ -1,7 +1,9 @@
+import { Identifier } from '@omujs/omu';
+
 type Primitive =
     | {
-        [key: string]: Primitive | string | number | boolean | null;
-    }
+          [key: string]: Primitive | string | number | boolean | null;
+      }
     | any[]
     | string
     | number
@@ -18,7 +20,7 @@ export interface Parent {
 }
 
 export abstract class Component<T extends string = string, D extends Primitive = Primitive> {
-    constructor(public type: T) { }
+    constructor(public type: T) {}
 
     abstract toJson(): D;
 
@@ -167,6 +169,22 @@ export class Image extends Component<'image', ImageData> {
     }
 }
 
+export type AssetData = {
+    id: string;
+};
+
+export class Asset extends Component<'asset', AssetData> {
+    constructor(public id: Identifier) {
+        super('asset');
+    }
+
+    toJson(): AssetData {
+        return {
+            id: this.id.key(),
+        };
+    }
+}
+
 export type LinkData = {
     url: string;
     children: ComponentJson[];
@@ -200,8 +218,9 @@ export class System extends Component<'system', SystemData> implements Parent {
     }
 }
 
-register('root', (json: RootData) => new Root(json.map(deserialize)));
-register('text', (json: TextData) => new Text(json));
-register('image', (json: ImageData) => new Image(json.url, json.id, json.name));
-register('link', (json: LinkData) => new Link(json.url, json.children.map(deserialize)));
-register('system', (json: SystemData) => new System(json.map(deserialize)));
+register('root', (data: RootData) => new Root(data.map(deserialize)));
+register('text', (data: TextData) => new Text(data));
+register('image', (data: ImageData) => new Image(data.url, data.id, data.name));
+register('asset', (data: AssetData) => new Asset(Identifier.fromKey(data.id)));
+register('link', (data: LinkData) => new Link(data.url, data.children.map(deserialize)));
+register('system', (data: SystemData) => new System(data.map(deserialize)));

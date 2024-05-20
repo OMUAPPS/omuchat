@@ -1,9 +1,8 @@
 <script lang="ts">
-    import { ButtonMini, FlexRowWrapper, Tooltip } from '@omujs/ui';
-    import { omu } from './client.js';
-    import { EMOJI_TABLE, deleteEmoji, editEmoji, testEmoji, type Emoji } from './emoji.js';
+    import { ButtonMini, FlexRowWrapper, Tooltip, client } from '@omujs/ui';
+    import { EMOJI_TEST_PROVIDER, Emoji, EmojiApp, emojiApp } from './emoji.js';
 
-    const emojis = omu.tables.get(EMOJI_TABLE);
+    const { emojis, selectedEmoji } = $emojiApp;
 
     export let entry: Emoji;
     export let selected: boolean = false;
@@ -11,14 +10,24 @@
     function copyName() {
         navigator.clipboard.writeText(entry.id);
     }
+
+    function testEmoji() {
+        $emojiApp.testEmoji(entry);
+    }
+    function editEmoji() {
+        $selectedEmoji = entry;
+    }
+    function deleteEmoji() {
+        emojis.remove(entry);
+    }
 </script>
 
 <div class="emoji-entry" class:selected>
     <FlexRowWrapper>
         <Tooltip>
-            <img src={omu.assets.url(entry.asset)} alt={entry.asset.key()} class="preview" />
+            <img src={$client.assets.url(entry.asset)} alt={entry.asset.key()} class="preview" />
         </Tooltip>
-        <img src={omu.assets.url(entry.asset)} alt={entry.asset.key()} />
+        <img src={$client.assets.url(entry.asset)} alt={entry.asset.key()} />
     </FlexRowWrapper>
     <div class="info">
         <button class="name" on:click={copyName}>
@@ -31,15 +40,15 @@
     </div>
     {#if selected}
         <FlexRowWrapper>
-            <ButtonMini on:click={() => testEmoji(entry)}>
+            <ButtonMini on:click={testEmoji}>
                 <Tooltip>テスト</Tooltip>
                 <i class="ti ti-send" />
             </ButtonMini>
-            <ButtonMini on:click={() => editEmoji(entry)}>
+            <ButtonMini on:click={editEmoji}>
                 <Tooltip>編集</Tooltip>
                 <i class="ti ti-pencil" />
             </ButtonMini>
-            <ButtonMini on:click={() => deleteEmoji(entry)}>
+            <ButtonMini on:click={deleteEmoji}>
                 <Tooltip>削除</Tooltip>
                 <i class="ti ti-trash" />
             </ButtonMini>

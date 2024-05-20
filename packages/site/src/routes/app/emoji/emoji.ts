@@ -1,30 +1,16 @@
-import { createRegistryStore } from '$lib/helper.js';
-import { models } from '@omujs/chat';
 import { Provider } from '@omujs/chat/models/provider.js';
-import { RegistryType } from '@omujs/omu/extension/registry/registry.js';
-import { TableType } from '@omujs/omu/extension/table/index.js';
+import type { Omu } from '@omujs/omu';
+import { TableType, type Table } from '@omujs/omu/extension/table/index.js';
 import { Identifier } from '@omujs/omu/identifier.js';
 import type { Keyable } from '@omujs/omu/interface.js';
 import type { Model } from '@omujs/omu/model.js';
-import { writable } from 'svelte/store';
 import { IDENTIFIER } from './app.js';
-import { chat, omu } from './client.js';
+import { writable, type Writable } from 'svelte/store';
+import { createRegistryStore } from '$lib/helper.js';
+import { RegistryType } from '@omujs/omu/extension/registry/registry.js';
+import { Chat, models } from '@omujs/chat';
 
 const PLUGIN_IDENTIFIER = IDENTIFIER.join('plugin');
-
-export type EmojiConfig = {
-    active: boolean;
-};
-
-export const config = createRegistryStore(
-    omu,
-    RegistryType.createJson<EmojiConfig>(PLUGIN_IDENTIFIER, {
-        name: 'config',
-        defaultValue: {
-            active: true,
-        },
-    }),
-);
 
 export type TextPattern = {
     type: 'text';
@@ -103,30 +89,79 @@ export const EMOJI_TABLE = TableType.createModel(PLUGIN_IDENTIFIER, {
     model: Emoji,
 });
 
-export const emojis = omu.tables.get(EMOJI_TABLE);
-export const selectedEmoji = writable<Emoji | null>(null);
+export type Config = {
+    active: boolean;
+};
 
-export function deleteEmoji(emoji: Emoji) {
-    emojis.remove(emoji);
-    selectedEmoji.update((value) => {
-        if (value?.id === emoji.id) {
-            return null;
-        }
-        return value;
-    });
+const CONFIG_REGISTRY_TYPE = RegistryType.createJson<Config>(PLUGIN_IDENTIFIER, {
+    name: 'config',
+    defaultValue: {
+        active: true,
+    },
+});
+
+export class EmojiApp {
+    public readonly emojis: Table<Emoji>;
+    public readonly config: Writable<Config>;
+    public readonly selectedEmoji: Writable<Emoji | null>;
+
+    constructor(
+        private readonly omu: Omu,
+        private readonly chat: Chat,
+    ) {
+        this.emojis = omu.tables.get(EMOJI_TABLE);
+        this.config = createRegistryStore(omu, CONFIG_REGISTRY_TYPE);
+        this.selectedEmoji = writable<Emoji | null>(null);
+    }
+
+    testEmoji(emoji: Emoji) {
+        const room = new models.Room({
+            id: EMOJI_TEST_PROVIDER.id.join('test'),
+            providerId: EMOJI_TEST_PROVIDER.id,
+            connected: false,
+            status: 'offline',
+            createdAt: new Date(),
+        });
+        this.chat.rooms.update(room);
+        this.chat.messages.add(
+            new models.Message({
+                id: EMOJI_TEST_PROVIDER.id.join('test', 'message', new Date().getTime().toString()),
+                roomId: room.id,
+                content: new models.content.System([
+                    new models.content.Asset(emoji.asset),
+                    new models.content.Text(emoji.id),
+                ]),
+                createdAt: new Date(),
+            }),
+        );
+    }
 }
 
-export function saveEmoji(emoji: Emoji) {
-    emojis.update(emoji);
-    selectedEmoji.set(null);
-}
+export const emojiApp: Writable<EmojiApp> = writable();
+// export const emojis = omu.tables.get(EMOJI_TABLE);
+// export const selectedEmoji = writable<Emoji | null>(null);
 
-export function editEmoji(emoji: Emoji) {
-    selectedEmoji.set(emoji);
-}
+// export function deleteEmoji(emoji: Emoji) {
+//     emojis.remove(emoji);
+//     selectedEmoji.update((value) => {
+//         if (value?.id === emoji.id) {
+//             return null;
+//         }
+//         return value;
+//     });
+// }
+
+// export function saveEmoji(emoji: Emoji) {
+//     emojis.update(emoji);
+//     selectedEmoji.set(null);
+// }
+
+// export function editEmoji(emoji: Emoji) {
+//     selectedEmoji.set(emoji);
+// }
 
 export const EMOJI_TEST_PROVIDER = new Provider({
-    id: omu.app.id,
+    id: IDENTIFIER,
     name: 'Emoji Test',
     description: 'Send emoji preview',
     regex: '',
@@ -134,29 +169,3 @@ export const EMOJI_TEST_PROVIDER = new Provider({
     url: 'https://example.com',
     version: '0.0.1',
 });
-
-export function testEmoji(emoji: Emoji) {
-    const room = new models.Room({
-        id: EMOJI_TEST_PROVIDER.id.join('test'),
-        providerId: EMOJI_TEST_PROVIDER.id,
-        connected: false,
-        status: 'offline',
-        createdAt: new Date(),
-    });
-    chat.rooms.update(room);
-    chat.messages.add(
-        new models.Message({
-            id: EMOJI_TEST_PROVIDER.id.join('test', 'message', new Date().getTime().toString()),
-            roomId: room.id,
-            content: new models.content.System([
-                models.content.Image.of({
-                    url: omu.assets.url(emoji.asset),
-                    id: emoji.id,
-                    name: emoji.id,
-                }),
-                models.content.Text.of(emoji.id),
-            ]),
-            createdAt: new Date(),
-        }),
-    );
-}

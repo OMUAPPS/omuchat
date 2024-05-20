@@ -1,13 +1,27 @@
 <script lang="ts">
-    import { FlexRowWrapper, Header, TableList, Textbox, Toggle } from '@omujs/ui';
+    import { Chat } from '@omujs/chat';
+    import { App, Omu } from '@omujs/omu';
+    import { FlexRowWrapper, Header, TableList, Textbox, Toggle, setClient } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import EmojiEdit from './EmojiEdit.svelte';
     import EmojiEntry from './EmojiEntry.svelte';
     import { IDENTIFIER } from './app.js';
-    import { omu } from './client.js';
-    import { EMOJI_TABLE, Emoji, config, selectedEmoji } from './emoji.js';
+    import { EMOJI_TABLE, Emoji, EmojiApp, emojiApp } from './emoji.js';
+    import { ASSET_UPLOAD_MANY_PERMISSION_ID } from '@omujs/omu/extension/asset/asset-extension.js';
 
-    const emojis = omu.tables.get(EMOJI_TABLE);
+    const app = new App(IDENTIFIER, {
+        version: '0.1.0',
+    });
+    const omu = new Omu(app);
+    const chat = new Chat(omu);
+    $emojiApp = new EmojiApp(omu, chat);
+    const { emojis, config, selectedEmoji } = $emojiApp;
+    setClient(omu);
+
+    omu.plugins.require({
+        omuplugin_emoji: '==0.4.2',
+    });
+    omu.permissions.require(ASSET_UPLOAD_MANY_PERMISSION_ID);
 
     let search: string = '';
 
@@ -15,10 +29,6 @@
 
     function createFilter(search: string) {
         return (key: string, emoji: Emoji) => emoji.id.includes(search);
-    }
-
-    function updateFilter() {
-        searchFilter = createFilter(search);
     }
 
     let uploading: number = 0;
@@ -82,7 +92,13 @@
 <main>
     <Header title="絵文字" icon="ti-icons">
         <FlexRowWrapper gap alignItems="center">
-            <Textbox placeholder="検索" bind:value={search} on:input={updateFilter} />
+            <Textbox
+                placeholder="検索"
+                bind:value={search}
+                on:input={() => {
+                    searchFilter = createFilter(search);
+                }}
+            />
             <Toggle value={$config.active} handleToggle={toggle} />
         </FlexRowWrapper>
     </Header>

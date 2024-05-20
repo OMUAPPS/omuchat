@@ -8,16 +8,10 @@
         FlexRowWrapper,
         MessageRenderer,
         Tooltip,
+        client,
     } from '@omujs/ui';
-    import { omu } from './client.js';
     import dummy_icon from './dummy_icon.svg';
-    import {
-        EMOJI_TEST_PROVIDER,
-        deleteEmoji,
-        saveEmoji,
-        type Emoji,
-        type Pattern,
-    } from './emoji.js';
+    import { EMOJI_TEST_PROVIDER, emojiApp, type Emoji, type Pattern } from './emoji.js';
 
     export let emoji: Emoji;
 
@@ -39,6 +33,14 @@
             label: '絵文字',
         },
     };
+
+    function save() {
+        $emojiApp.emojis.update(emoji);
+    }
+
+    function remove() {
+        $emojiApp.emojis.remove(emoji);
+    }
 </script>
 
 <FlexRowWrapper widthFull gap>
@@ -50,9 +52,16 @@
                 name: 'test',
                 avatarUrl: new URL(dummy_icon, window.location.origin).toString(),
             })}
-            content={new content.Root([
-                new content.Image(omu.assets.url(emoji.asset), emoji.asset.key()),
-            ])}
+            content={new content.Root([new content.Asset(emoji.asset)])}
+        />
+        <MessageRenderer
+            author={new Author({
+                providerId: EMOJI_TEST_PROVIDER.id,
+                id: EMOJI_TEST_PROVIDER.id.join(`${Date.now()}`),
+                name: 'test',
+                avatarUrl: new URL(dummy_icon, window.location.origin).toString(),
+            })}
+            content={new content.Root([new content.Text(emoji.id), new content.Asset(emoji.asset)])}
         />
         <MessageRenderer
             author={new Author({
@@ -62,27 +71,15 @@
                 avatarUrl: new URL(dummy_icon, window.location.origin).toString(),
             })}
             content={new content.Root([
-                new content.Text(emoji.id),
-                new content.Image(omu.assets.url(emoji.asset), emoji.asset.key()),
-            ])}
-        />
-        <MessageRenderer
-            author={new Author({
-                providerId: EMOJI_TEST_PROVIDER.id,
-                id: EMOJI_TEST_PROVIDER.id.join(`${Date.now()}`),
-                name: 'test',
-                avatarUrl: new URL(dummy_icon, window.location.origin).toString(),
-            })}
-            content={new content.Root([
-                new content.Image(omu.assets.url(emoji.asset), emoji.asset.key()),
-                new content.Image(omu.assets.url(emoji.asset), emoji.asset.key()),
-                new content.Image(omu.assets.url(emoji.asset), emoji.asset.key()),
+                new content.Asset(emoji.asset),
+                new content.Asset(emoji.asset),
+                new content.Asset(emoji.asset),
             ])}
         />
     </div>
     <div class="emoji-edit">
         <div class="left">
-            <img src={omu.assets.url(emoji.asset)} alt={emoji.asset.key()} />
+            <img src={$client.assets.url(emoji.asset)} alt={emoji.asset.key()} />
         </div>
         <FlexColWrapper widthFull gap>
             <FlexRowWrapper widthFull between>
@@ -91,11 +88,11 @@
                     <input class="name" type="text" bind:value={emoji.id} placeholder="Name" />
                 </FlexRowWrapper>
                 <FlexRowWrapper gap>
-                    <ButtonMini on:click={() => saveEmoji(emoji)}>
+                    <ButtonMini on:click={save}>
                         <Tooltip>保存</Tooltip>
                         <i class="ti ti-device-floppy" />
                     </ButtonMini>
-                    <ButtonMini on:click={() => deleteEmoji(emoji)}>
+                    <ButtonMini on:click={remove}>
                         <Tooltip>削除</Tooltip>
                         <i class="ti ti-trash" />
                     </ButtonMini>

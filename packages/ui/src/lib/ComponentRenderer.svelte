@@ -3,6 +3,7 @@
     import { LinkableText, Tooltip } from '@omujs/ui';
     import FlexColWrapper from './FlexColWrapper.svelte';
     import FlexRowWrapper from './FlexRowWrapper.svelte';
+    import { client } from './stores.js';
 
     export let component: content.Component;
 </script>
@@ -27,6 +28,10 @@
             </FlexRowWrapper>
         </Tooltip>
         <img src={component.url} alt={component.id} />
+    </span>
+{:else if component instanceof content.Asset}
+    <span>
+        <img src={$client.assets.url(component.id)} alt={component.id.key()} />
     </span>
 {:else if component instanceof content.Link}
     <a href={component.url} target="_blank" rel="noopener noreferrer">
