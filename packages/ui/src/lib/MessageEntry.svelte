@@ -19,10 +19,6 @@
     function handleCopy() {
         ClipboardHelper.writeText(entry.text);
     }
-
-    function handleBookmark() {
-        console.log('bookmark');
-    }
 </script>
 
 <MessageRenderer
@@ -32,6 +28,5 @@
     content={entry.content}
     {author}
     {handleCopy}
-    {handleBookmark}
     {selected}
 />

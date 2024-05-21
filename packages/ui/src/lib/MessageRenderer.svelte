@@ -17,7 +17,6 @@
     export let createdAt: Date | undefined = undefined;
     export let content: models.content.Component | undefined = undefined;
     export let handleCopy: () => void = () => {};
-    export let handleBookmark: () => void = () => {};
     export let selected: boolean = false;
 </script>
 
@@ -108,10 +107,6 @@
                     </FlexColWrapper>
                     {#if selected}
                         <div class="actions">
-                            <button on:click={handleBookmark}>
-                                <Tooltip>{$translate('panels.messages.bookmark')}</Tooltip>
-                                <i class="ti ti-bookmark" />
-                            </button>
                             <button on:click={handleCopy}>
                                 <Tooltip>{$translate('panels.messages.copy')}</Tooltip>
                                 <i class="ti ti-files" />
