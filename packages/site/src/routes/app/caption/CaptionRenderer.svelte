@@ -30,6 +30,8 @@
     <div
         style={style({
             minWidth: `${previosWidth}px`,
+            color: $config.style.color,
+            backgroundColor: $config.style.backgroundColor,
         })}
     >
         <p
@@ -37,6 +39,7 @@
             style={style({
                 fontFamily,
                 fontSize: `${$config.style.fontSize}px`,
+                fontWeight: $config.style.fontWeight,
             })}
         >
             {text}
@@ -48,8 +51,6 @@
     div {
         display: flex;
         flex-direction: column;
-        color: var(--color-1);
-        background: var(--color-bg-2);
         align-items: center;
         margin: 0;
         padding: 1rem 2rem;
@@ -58,7 +59,6 @@
     }
 
     p {
-        font-weight: bold;
         width: fit-content;
     }
 </style>

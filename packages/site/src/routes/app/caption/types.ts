@@ -20,7 +20,7 @@ export type Font = {
 export type CaptionStyle = {
     fonts: Font[];
     fontSize: number;
-    weight: number;
+    fontWeight: number;
     color: string;
     backgroundColor: string;
 };
@@ -42,9 +42,9 @@ export const CONFIG_REGISTRY = RegistryType.createJson<Config>(IDENTIFIER, {
                 },
             ],
             fontSize: 24,
-            weight: 700,
-            color: 'white',
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            fontWeight: 700,
+            color: '#0B6F72',
+            backgroundColor: '#FFFEFC',
         },
     },
 });
@@ -111,3 +111,25 @@ export const LANGUAGES_OPTIONS = Object.fromEntries(
     ]),
 ) as { [key: string]: { value: LanguageKey; label: string } };
 export type LanguageKey = keyof typeof LANGUAGES;
+
+export const FONTS = [
+    'Zen Maru Gothic',
+    'Darumadrop One',
+    'Dela Gothic One',
+    'Monomaniac One',
+    'DotGothic16',
+    'Mochiy Pop One',
+    'Stick',
+    'Hina Mincho',
+    'Rampart One',
+    'Reggae One',
+    'Mochiy Pop P One',
+    'Hachi Maru Pop',
+    'Chokokutai',
+    'Cherry Bomb One',
+    'Slackside One',
+    'Tsukimi Rounded',
+    'Palette Mosaic',
+    'Shizuru',
+    'Rock 3D',
+];

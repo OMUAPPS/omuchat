@@ -1,12 +1,21 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import { Omu } from '@omujs/omu';
-    import { AppHeader, Combobox, DragLink, FlexRowWrapper, Textbox, setClient } from '@omujs/ui';
+    import {
+        AppHeader,
+        Combobox,
+        DragLink,
+        FlexRowWrapper,
+        Popup,
+        Textbox,
+        setClient,
+        style,
+    } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import CaptionRenderer from './CaptionRenderer.svelte';
     import { APP } from './app.js';
     import { CaptionApp } from './caption-app.js';
-    import { LANGUAGES_OPTIONS, type LanguageKey } from './types.js';
+    import { FONTS, LANGUAGES_OPTIONS, type LanguageKey } from './types.js';
 
     export const omu = new Omu(APP);
     setClient(omu);
@@ -54,6 +63,17 @@
     function updateConfig() {
         $config = { ...$config };
     }
+
+    $: {
+        if ($config.style.fonts.length === 0) {
+            $config.style.fonts = [
+                {
+                    url: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap',
+                    family: 'Noto Sans JP',
+                },
+            ];
+        }
+    }
 </script>
 
 <svelte:head>
@@ -62,6 +82,19 @@
 </svelte:head>
 
 <AppHeader app={APP} />
+<section>
+    <h3>字幕</h3>
+    <DragLink href={createAssetUrl}>
+        <h3 slot="preview" class="drag-preview">
+            これをOBSにドロップ
+            <i class="ti ti-upload" />
+        </h3>
+        <div class="drag">
+            <i class="ti ti-drag-drop" />
+            ここをOBSにドラッグ&ドロップ
+        </div>
+    </DragLink>
+</section>
 <section>
     <h3>言語選択</h3>
     <FlexRowWrapper gap>
@@ -81,77 +114,136 @@
 <section>
     <FlexRowWrapper gap alignItems="end" between>
         <h3>フォント</h3>
-        <button
-            on:click={() => {
-                $config.style.fonts = [...$config.style.fonts, { family: '', url: '' }];
-                updateConfig();
-            }}
-            class="add-font"
-        >
+        <button class="add-font">
+            <Popup>
+                <div class="font-popup">
+                    {#each FONTS as font}
+                        <button
+                            on:click={() => {
+                                $config.style.fonts = [
+                                    ...$config.style.fonts,
+                                    {
+                                        family: font,
+                                        url: `https://fonts.googleapis.com/css2?family=${font}:ital,wght@0,400&directory=3&display=block`,
+                                    },
+                                ];
+                                updateConfig();
+                            }}
+                        >
+                            <link
+                                rel="stylesheet"
+                                href={`https://fonts.googleapis.com/css2?family=${font}:ital,wght@0,400&directory=3&display=block&text=サンプルテキスト`}
+                            />
+                            <p
+                                style={style({
+                                    fontFamily: `'${font}', sans-serif`,
+                                    fontSize: '1rem',
+                                    lineHeight: 1.5,
+                                    margin: 0,
+                                    padding: 0,
+                                    display: 'inline-block',
+                                })}
+                            >
+                                サンプルテキスト
+                            </p>
+                        </button>
+                    {/each}
+                </div>
+            </Popup>
             フォント追加
             <i class="ti ti-plus" />
         </button>
     </FlexRowWrapper>
-    <div>
-        <small> フォントサイズ </small>
-        <input
-            type="range"
-            min="10"
-            max="100"
-            step="1"
-            bind:value={$config.style.fontSize}
-            on:mouseup={updateConfig}
-            on:keyup={updateConfig}
-        />
-        {$config.style.fontSize}
-    </div>
     <div class="font-list">
-        {#each $config.style.fonts as font, i}
-            <span class="font">
-                <span>
-                    <small> ファミリー </small>
-                    <Textbox
-                        value={font.family}
-                        on:input={(value) => {
-                            $config.style.fonts[i].family = value.detail.value;
+        {#key $config.style.fonts}
+            {#each $config.style.fonts as font, i}
+                <span class="font">
+                    <span>
+                        <small> ファミリー </small>
+                        <Textbox
+                            value={font.family}
+                            on:input={(value) => {
+                                $config.style.fonts[i].family = value.detail.value;
+                                updateConfig();
+                            }}
+                        />
+                    </span>
+                    <span>
+                        <small> URL </small>
+                        <Textbox
+                            value={font.url}
+                            on:input={(value) => {
+                                $config.style.fonts[i].url = value.detail.value;
+                                updateConfig();
+                            }}
+                        />
+                    </span>
+                    <button
+                        on:click={() => {
+                            $config.style.fonts.splice(i, 1);
                             updateConfig();
                         }}
-                    />
+                    >
+                        削除
+                        <i class="ti ti-x" />
+                    </button>
                 </span>
-                <span>
-                    <small> URL </small>
-                    <Textbox
-                        value={font.url}
-                        on:input={(value) => {
-                            $config.style.fonts[i].url = value.detail.value;
-                            updateConfig();
-                        }}
-                    />
-                </span>
-                <button
-                    on:click={() => {
-                        $config.style.fonts = $config.style.fonts.filter((_, j) => i !== j);
-                        updateConfig();
-                    }}
-                >
-                    削除
-                    <i class="ti ti-x" />
-                </button>
-            </span>
-        {/each}
+            {/each}
+        {/key}
+    </div>
+    <div>
+        <div>
+            <small> フォントサイズ </small>
+            <input
+                type="range"
+                min="10"
+                max="100"
+                step="1"
+                bind:value={$config.style.fontSize}
+                on:mouseup={updateConfig}
+                on:keyup={updateConfig}
+            />
+            {$config.style.fontSize}
+        </div>
+        <div>
+            <small> フォントウェイト </small>
+            <input
+                type="range"
+                min="100"
+                max="900"
+                step="100"
+                bind:value={$config.style.fontWeight}
+                on:mouseup={updateConfig}
+                on:keyup={updateConfig}
+            />
+            {$config.style.fontWeight}
+        </div>
     </div>
 </section>
 <section>
-    <DragLink href={createAssetUrl}>
-        <h3 slot="preview" class="drag-preview">
-            これをOBSにドロップ
-            <i class="ti ti-upload" />
-        </h3>
-        <div class="drag">
-            <i class="ti ti-drag-drop" />
-            ここをOBSにドラッグ&ドロップ
-        </div>
-    </DragLink>
+    <h3>
+        <FlexRowWrapper gap alignItems="center">
+            色
+            <button
+                on:click={() => {
+                    $config.style.color = '#0B6F72';
+                    $config.style.backgroundColor = '#FFFEFC';
+                    updateConfig();
+                }}
+            >
+                色をリセット
+                <i class="ti ti-reload" />
+            </button>
+        </FlexRowWrapper>
+    </h3>
+    <div>
+        <small> 背景色 </small>
+        <input type="color" bind:value={$config.style.backgroundColor} on:change={updateConfig} />
+    </div>
+    <div>
+        <small> 文字色 </small>
+        <input type="color" bind:value={$config.style.color} on:change={updateConfig} />
+    </div>
 </section>
 <section class="preview">
     <small>字幕のプレビュー</small>
@@ -215,6 +307,25 @@
         background: var(--color-bg-2);
         width: fit-content;
         align-self: flex-end;
+    }
+
+    .font-popup {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        padding: 1rem;
+        width: min(80vw, 600px);
+        background: var(--color-bg-2);
+
+        > button {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 0.2rem;
+            margin: 0.2rem;
+            align-items: center;
+            outline: none;
+            background: var(--color-bg-1);
+        }
     }
 
     .drag-preview {
