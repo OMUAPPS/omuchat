@@ -1,9 +1,10 @@
 <script lang="ts">
     import { content } from '@omujs/chat/models/index.js';
-    import { LinkableText, Tooltip } from '@omujs/ui';
     import FlexColWrapper from './FlexColWrapper.svelte';
     import FlexRowWrapper from './FlexRowWrapper.svelte';
     import { client } from './stores.js';
+    import LinkableText from './LinkableText.svelte';
+    import Tooltip from './Tooltip.svelte';
 
     export let component: content.Component;
 </script>
