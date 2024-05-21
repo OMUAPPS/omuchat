@@ -23,6 +23,8 @@
         height: 0,
     };
     let tooltipPos: { x: number; y: number } = { x: 0, y: 0 };
+    let pointerPos: { x: number; y: number } = { x: 0, y: 0 };
+    let direction: 'top' | 'bottom' = 'bottom';
 
     function showTooltip() {
         show = true;
@@ -41,6 +43,10 @@
         const padding = 5;
         if (target && tooltip) {
             tooltipRect = tooltip.getBoundingClientRect();
+            direction =
+                targetRect.y + targetRect.height + tooltipRect.height + 10 > window.innerHeight
+                    ? 'top'
+                    : 'bottom';
             tooltipPos = {
                 x: clamp(
                     targetRect.x + targetRect.width / 2 - tooltipRect.width / 2,
@@ -48,7 +54,9 @@
                     window.innerWidth - tooltipRect.width - padding,
                 ),
                 y: clamp(
-                    targetRect.y + targetRect.height + 10,
+                    direction === 'bottom'
+                        ? targetRect.y + targetRect.height + 10
+                        : targetRect.y - tooltipRect.height - 10,
                     padding,
                     window.innerHeight - tooltipRect.height - padding,
                 ),
@@ -81,6 +89,7 @@
         <div
             class="tooltip"
             class:background={!noBackground}
+            class:top={direction === 'top'}
             style={style({ top: `${tooltipPos.y}px`, left: `${tooltipPos.x}px` })}
             bind:this={tooltip}
         >
@@ -88,9 +97,13 @@
         </div>
         <div
             class="pointer"
+            class:top={direction === 'top'}
             style={style({
-                top: `${targetRect.y + targetRect.height}px`,
                 left: `${targetRect.x + targetRect.width / 2}px`,
+                top:
+                    direction === 'bottom'
+                        ? `${targetRect.y + targetRect.height}px`
+                        : `${targetRect.y - 10}px`,
             })}
         />
     {/if}
@@ -122,6 +135,10 @@
         border: 5px solid transparent;
         border-bottom-color: #000;
         transform: translateX(-50%);
+
+        &.top {
+            transform: translateX(-50%) rotate(180deg);
+        }
     }
 
     .wrapper {
