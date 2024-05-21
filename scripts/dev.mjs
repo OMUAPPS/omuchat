@@ -27,7 +27,7 @@ execa('pnpm', ['--filter', 'site', 'check:watch'], {
     stderr: process.stderr,
     stdout: process.stdout,
 });
-execa('pnpm', ['--filter', 'ui', 'check:watch'], {
+execa('pnpm', ['--filter', 'ui', 'watch'], {
     stderr: process.stderr,
     stdout: process.stdout,
 });
