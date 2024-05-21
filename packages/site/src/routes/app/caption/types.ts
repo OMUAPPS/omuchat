@@ -12,14 +12,40 @@ export const CAPTION_SIGNAL = SignalType.createJson<Caption>(IDENTIFIER, {
     name: 'caption',
 });
 
+export type Font = {
+    url: string;
+    family: string;
+};
+
+export type CaptionStyle = {
+    fonts: Font[];
+    fontSize: number;
+    weight: number;
+    color: string;
+    backgroundColor: string;
+};
+
 export type Config = {
     lang: LanguageKey;
+    style: CaptionStyle;
 };
 
 export const CONFIG_REGISTRY = RegistryType.createJson<Config>(IDENTIFIER, {
     name: 'config',
     defaultValue: {
         lang: BROWSER ? (window.navigator.language as LanguageKey) : 'ja-JP',
+        style: {
+            fonts: [
+                {
+                    url: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap',
+                    family: 'Noto Sans JP',
+                },
+            ],
+            fontSize: 24,
+            weight: 700,
+            color: 'white',
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        },
     },
 });
 

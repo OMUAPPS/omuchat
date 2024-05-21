@@ -23,13 +23,24 @@
 </script>
 
 {#if id}
-    <CaptionRenderer {captionApp} />
+    <main>
+        <CaptionRenderer {captionApp} />
+    </main>
 {:else}
     <p>id is not provided</p>
 {/if}
 
 <style>
     :global(body) {
-        background: var(--color-bg-2);
+        background: transparent !important;
+    }
+
+    main {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        padding: 1rem;
     }
 </style>

@@ -16,7 +16,7 @@ export const APP = new App(IDENTIFIER, {
             en: 'Displays real-time captions.',
             ja: 'リアルタイムで字幕を表示します。',
         },
-        icon: 'bell',
+        icon: 'text-caption',
         tags: ['tool'] as TagKey[],
     },
 });
