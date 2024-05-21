@@ -30,6 +30,6 @@
 
 <style>
     :global(body) {
-        background: var(--color-bg-2);
+        background: transparent !important;
     }
 </style>
