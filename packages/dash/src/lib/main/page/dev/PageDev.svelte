@@ -79,29 +79,6 @@
             <TableList table={omu.server.apps} component={AppEntry} />
         </div>
     </div>
-    <div class="section">
-        <h3>Theme Color</h3>
-        <div>
-            {#each Object.entries($theme) as [key, value]}
-                <div>
-                    {key}: {value}
-                    <input
-                        type="color"
-                        {value}
-                        on:change={(e) => {
-                            if (!e.currentTarget) return;
-                            const value = e.currentTarget.value;
-                            if (!value) return;
-                            $theme = {
-                                ...$theme,
-                                [key]: value,
-                            };
-                        }}
-                    />
-                </div>
-            {/each}
-        </div>
-    </div>
 </div>
 
 <style lang="scss">

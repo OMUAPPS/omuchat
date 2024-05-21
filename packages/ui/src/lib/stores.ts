@@ -27,20 +27,25 @@ export function setChat<T extends Chat>(newChat: T): T {
     return newChat;
 }
 
-type Theme = {
-    [key: string]: string;
+export type Color = {
+    r: number;
+    g: number;
+    b: number;
+    a?: number;
+};
+export type Theme = {
+    [key: string]: Color | number;
 };
 
 export const theme: Writable<Theme> = writable({
-    '--color-bg-1': '#f6f3eb',
-    '--color-bg-2': '#fffefc',
-    '--color-1': '#0b6f72',
-    '--color-2': '#35dfe1',
-    '--color-text': '#444',
-    '--color-outline': 'rgba(0, 0, 0, 0.1)',
-    '--margin': '10px',
+    'color-bg-1': { r: 246, g: 243, b: 235 },
+    'color-bg-2': { r: 255, g: 254, b: 252 },
+    'color-1': { r: 11, g: 111, b: 114 },
+    'color-2': { r: 53, g: 223, b: 225 },
+    'color-text': { r: 68, g: 68, b: 68 },
+    'color-outline': { r: 0, g: 0, b: 0, a: 0.1 },
+    margin: 10,
 });
-
 export const dateTimeFormats = writable<{
     full: Intl.DateTimeFormat;
     short: Intl.DateTimeFormat;

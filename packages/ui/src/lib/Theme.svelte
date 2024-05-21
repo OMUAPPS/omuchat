@@ -1,11 +1,23 @@
 <script lang="ts">
-    import { theme } from './stores.js';
+    import { theme, type Color } from './stores.js';
 
     let css = '';
 
+    function format(value: Color | number) {
+        if (typeof value === 'object') {
+            if (value.a !== undefined) {
+                return `rgba(${value.r}, ${value.g}, ${value.b}, ${value.a})`;
+            }
+            return `rgb(${value.r}, ${value.g}, ${value.b})`;
+        }
+        return `${value}px`;
+    }
+
     $: {
         const properties = Object.entries($theme);
-        const lines = properties.map(([key, value]) => `${key}: ${value};`);
+        const lines = properties.map(([key, value]) => {
+            return `--${key}: ${format(value)};`;
+        });
         css = `:root {
             ${lines.join('\n')}
         }`;
