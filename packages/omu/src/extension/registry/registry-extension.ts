@@ -81,6 +81,7 @@ class RegistryImpl<T> implements Registry<T> {
             id: this.type.id,
             value: this.type.serializer.serialize(value),
         });
+        this.eventEmitter.emit(value);
     }
 
     public async update(fn: (value: T) => T): Promise<void> {
@@ -89,7 +90,7 @@ class RegistryImpl<T> implements Registry<T> {
         await this.set(newValue);
     }
 
-    public listen(handler: (value: T) => void): Unlisten {
+    public listen(handler: (value: T) => Promise<void> | void): Unlisten {
         if (!this.listening) {
             this.client.whenReady(() => {
                 this.client.send(REGISTRY_LISTEN_PACKET, this.type.id);
