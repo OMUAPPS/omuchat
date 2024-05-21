@@ -12,7 +12,6 @@
     const eventDispatcher = createEventDispatcher();
 
     function handleChange(event: Event) {
-        console.log('handleChange');
         inputValue = (event.target as HTMLInputElement).value;
         if (!lazy) {
             value = inputValue;
