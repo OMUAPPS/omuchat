@@ -38,9 +38,9 @@
 
         img {
             position: absolute;
-            top: 0;
+            bottom: 5rem;
             display: block;
-            height: 40%;
+            height: 30%;
         }
 
         .info {
