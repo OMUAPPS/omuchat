@@ -21,7 +21,6 @@
     let reactionArray: Reaction[] = [];
     const spawnQueue: string[] = [];
     const MAX_REACTION_LIMIT = 100;
-    let replaceRegistry: Record<string, HTMLImageElement | null> = {};
 
     reactionSignal.listen((message) => {
         Object.entries(message.reactions).forEach(([text, count]) => {
@@ -34,8 +33,9 @@
         });
     });
 
+    let replaceImages: Record<string, HTMLImageElement | null> = {};
     replaces.subscribe((replaces) => {
-        replaceRegistry = Object.fromEntries(
+        replaceImages = Object.fromEntries(
             Object.entries(replaces).map(([key, assetId]) => {
                 if (!assetId) {
                     return [key, null];
@@ -50,29 +50,48 @@
     });
 
     let canvas: HTMLCanvasElement;
+    let ctx: CanvasRenderingContext2D;
     let width: number;
     let height: number;
 
     $: if (canvas) {
         resize();
+        const context = canvas.getContext('2d');
+        if (!context) {
+            throw new Error('Failed to get 2d context');
+        }
+        ctx = context;
     }
 
     function resize() {
-        if (!canvas) {
-            return;
-        }
-
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientHeight;
     }
-
-    let previousTime = Date.now();
 
     function getSpawnRate() {
         if (spawnQueue.length === 0) {
             return 10;
         }
         return Math.min(10, 1 / spawnQueue.length);
+    }
+
+    let prevSpawnTime = Date.now();
+
+    function updateSpawn() {
+        const currentTime = Date.now();
+        const elapsedTime = (currentTime - prevSpawnTime) / 1000;
+        const spawnRate = getSpawnRate();
+
+        if (elapsedTime < spawnRate) {
+            return;
+        }
+
+        prevSpawnTime = currentTime;
+
+        const toSpawnCount = Math.min(Math.floor(elapsedTime / spawnRate), spawnQueue.length);
+        for (let i = 0; i < toSpawnCount; i++) {
+            spawnReaction(spawnQueue.shift()!);
+        }
     }
 
     function spawnReaction(text: string) {
@@ -91,28 +110,8 @@
         });
     }
 
-    let prevSpawnTime = Date.now();
-
-    function updateSpawn() {
-        const currentTime = Date.now();
-        const elapsedTime = (currentTime - prevSpawnTime) / 1000;
-        const spawnRate = getSpawnRate();
-
-        if (elapsedTime > spawnRate) {
-            prevSpawnTime = currentTime;
-
-            const toSpawnCount = Math.min(Math.floor(elapsedTime / spawnRate), spawnQueue.length);
-            for (let i = 0; i < toSpawnCount; i++) {
-                spawnReaction(spawnQueue.shift()!);
-            }
-        }
-    }
-
     function updatePosition() {
-        const currentTime = Date.now();
-        const deltaTime = (currentTime - previousTime) / 20;
-
-        const expandedScreenBound = {
+        const screenBounds = {
             left: -100,
             top: -100,
             right: canvas.width + 100,
@@ -139,33 +138,27 @@
                     velocity: [newVx, newVy],
                     opacity: newOpacity,
                     rotation: newRotation,
-                    age: reaction.age + deltaTime,
+                    age: reaction.age + 1,
                 } satisfies Reaction;
             })
             .filter(({ position }) => {
                 const [x, y] = position;
                 return (
-                    x >= expandedScreenBound.left &&
-                    x <= expandedScreenBound.right &&
-                    y >= expandedScreenBound.top &&
-                    y <= expandedScreenBound.bottom
+                    x >= screenBounds.left &&
+                    x <= screenBounds.right &&
+                    y >= screenBounds.top &&
+                    y <= screenBounds.bottom
                 );
             });
     }
 
     function draw() {
-        if (!canvas) {
+        if (!canvas || !ctx) {
             return;
         }
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-            return;
-        }
-
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
         ctx.font = '30px "Noto Color Emoji"';
+
         reactionArray.forEach(({ text, position, opacity, rotation }) => {
             const [x, y] = position;
 
@@ -177,7 +170,7 @@
             ctx.globalAlpha = opacity;
             ctx.translate(x, y);
             ctx.rotate(rotation);
-            const replacementImage = replaceRegistry[text];
+            const replacementImage = replaceImages[text];
             if (replacementImage) {
                 const height = 50;
                 const width = height * (replacementImage.width / replacementImage.height);
@@ -189,15 +182,22 @@
         });
     }
 
+    let previousTime = Date.now();
+    async function waitForDelay() {
+        const currentTime = Date.now();
+        const timeInterval = 1000 / 30;
+        const delay = previousTime + timeInterval - currentTime;
+        previousTime = currentTime;
+
+        if (delay > 0) {
+            await new Promise<void>((resolve) => setTimeout(resolve, delay));
+        }
+    }
+
     if (BROWSER) {
-        let animationTimer: number;
-        animationTimer = requestAnimationFrame(async function drawLoop() {
-            await new Promise((resolve) => {
-                const currentTime = Date.now();
-                const delay = previousTime + 1000 / 30 - currentTime;
-                setTimeout(resolve, delay);
-                previousTime = currentTime;
-            });
+        let animationTimer = requestAnimationFrame(async function drawLoop() {
+            await waitForDelay();
+
             updateSpawn();
             updatePosition();
             draw();
@@ -210,7 +210,10 @@
     }
 </script>
 
-<div class="hidden">😳😄❤🎉💯</div>
+<div class="hidden">
+    <!-- canvas内だとフォントが読み込まれないので、ここで読み込む -->
+    😳😄❤🎉💯
+</div>
 
 <svelte:window on:resize={resize} />
 <canvas bind:this={canvas} bind:clientWidth={width} bind:clientHeight={height} />

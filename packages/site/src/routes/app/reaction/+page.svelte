@@ -12,7 +12,7 @@
 
     const omu = new Omu(APP);
     const reactionApp = new ReactionApp(omu);
-    const replaces = reactionApp.replaces;
+    const { replaces } = reactionApp;
     setClient(omu);
 
     omu.permissions.require(
