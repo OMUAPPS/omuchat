@@ -26,7 +26,6 @@
 
 <style lang="scss">
     p {
-        margin-top: 10rem;
         text-wrap: nowrap;
     }
 

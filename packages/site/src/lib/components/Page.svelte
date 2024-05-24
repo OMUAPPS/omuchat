@@ -1,8 +1,7 @@
 <script lang="ts">
+    import background from '$lib/images/background.png';
     import Content from './Content.svelte';
     import Header from './Header.svelte';
-    import background from '$lib/images/background.png';
-    import { FlexColWrapper } from '@omujs/ui';
 </script>
 
 <Header />
@@ -11,14 +10,16 @@
 </slot>
 <header>
     <Content>
-        <div>
+        <div class="header-content">
             <slot name="header" />
         </div>
     </Content>
 </header>
 <main>
     <Content>
-        <slot name="content" />
+        <div class="main-content">
+            <slot name="content" />
+        </div>
     </Content>
 </main>
 
@@ -40,7 +41,7 @@
         height: $haeder-height;
         width: 100%;
 
-        div {
+        .header-content {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -58,5 +59,9 @@
         min-height: calc(100% - #{$haeder-height});
         height: fit-content;
         background: var(--color-bg-2);
+
+        .main-content {
+            margin-top: 4rem;
+        }
     }
 </style>

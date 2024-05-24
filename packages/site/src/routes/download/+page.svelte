@@ -1,8 +1,7 @@
 <script lang="ts">
+    import Page from '$lib/components/Page.svelte';
     import type { Platform, VersionManifest } from '$lib/api/index.js';
     import { Api } from '$lib/api/index.js';
-    import Page from '$lib/components/Page.svelte';
-    import title from '$lib/images/title.svg';
     import { onMount } from 'svelte';
 
     let versions: VersionManifest | undefined;
@@ -93,7 +92,6 @@
     }
 
     p {
-        margin-top: 10rem;
         text-wrap: nowrap;
 
         a {
