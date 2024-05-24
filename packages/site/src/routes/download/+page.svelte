@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Platform, VersionManifest } from '$lib/api/index.js';
     import { Api } from '$lib/api/index.js';
+    import Page from '$lib/components/Page.svelte';
     import title from '$lib/images/title.svg';
     import { onMount } from 'svelte';
 
@@ -31,74 +32,64 @@
     <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
-    <h1>
-        <span class="welcome">
-            <img src={title} alt="title" />
-            <p class="info">OMUAPPSは、配信者と視聴者をつなぐAPIです。</p>
-        </span>
-    </h1>
-
-    <p>
-        {#if version}
-            <a href={version?.url} class="download" on:click={() => (downloading = true)}>
-                {#if downloading}
-                    ダウンロード中...
-                {:else}
-                    ダウンロード
-                {/if}
-                <i class="ti ti-download" />
+<Page>
+    <header slot="header">
+        <h1>
+            ダウンロード
+            <i class="ti ti-search" />
+        </h1>
+        <small> OMUAPPSをダウンロードして使ってみる </small>
+    </header>
+    <main slot="content">
+        <p>
+            {#if version}
+                <a href={version?.url} class="download" on:click={() => (downloading = true)}>
+                    {#if downloading}
+                        ダウンロード中...
+                    {:else}
+                        ダウンロード
+                    {/if}
+                    <i class="ti ti-download" />
+                </a>
+            {/if}
+            <a href="/app">
+                アプリを探す
+                <i class="ti ti-external-link" />
             </a>
+        </p>
+        <button on:click={() => (showExtra = !showExtra)}>
+            <small>
+                別のインストール方法をお探しですか？
+                <i class="ti ti-chevron-{showExtra ? 'up' : 'down'}" />
+            </small>
+        </button>
+        {#if showExtra}
+            <ul>
+                {#each Object.entries(versions?.platforms ?? {}) as [key, platform] (key)}
+                    <li>
+                        <a
+                            href={platform.url}
+                            class="download"
+                            on:click={() => (downloading = true)}
+                        >
+                            {key}
+                            <i class="ti ti-download" />
+                        </a>
+                    </li>
+                {/each}
+            </ul>
+            <code>pip install omuserver</code>
+            <code>npm install omuserver</code>
         {/if}
-        <a href="/app">
-            アプリを探す
-            <i class="ti ti-external-link" />
-        </a>
-    </p>
-    <button on:click={() => (showExtra = !showExtra)}>
-        <small>
-            別のインストール方法をお探しですか？
-            <i class="ti ti-chevron-{showExtra ? 'up' : 'down'}" />
-        </small>
-    </button>
-    {#if showExtra}
-        <ul>
-            {#each Object.entries(versions?.platforms ?? {}) as [key, platform] (key)}
-                <li>
-                    <a href={platform.url} class="download" on:click={() => (downloading = true)}>
-                        {key}
-                        <i class="ti ti-download" />
-                    </a>
-                </li>
-            {/each}
-        </ul>
-        <code>pip install omuserver</code>
-        <code>npm install omuserver</code>
-    {/if}
-</section>
+    </main>
+</Page>
 
 <style lang="scss">
-    section {
-        container-type: inline-size;
-        display: flex;
-        flex: 0.6;
-        flex-direction: column;
-        align-items: start;
-        justify-content: center;
-        padding: 0 1rem;
-    }
-
     h1 {
-        width: 100%;
-    }
-
-    .info {
-        padding: 0.5rem;
-        margin-bottom: 1rem;
-        font-size: 1rem;
-        font-weight: 500;
+        font-size: 2rem;
+        font-weight: 600;
+        width: fit-content;
         color: var(--color-1);
-        background: var(--color-bg-2);
     }
 
     p {
@@ -151,35 +142,12 @@
         background: var(--color-bg-2);
     }
 
-    .welcome {
-        position: relative;
-        display: block;
-        width: 100%;
-        height: 0;
-        padding: 0 0 calc(max(100% * 400 / 2048, 100px) + 0.5rem) 0;
-        margin-top: 10rem;
-
-        img {
-            position: absolute;
-            top: 0;
-            display: block;
-            height: 40%;
-        }
-
-        .info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            font-weight: 700;
-        }
-    }
-
     @container (max-width: 480px) {
         section {
             padding: 0 0.5rem;
         }
 
-        .welcome {
+        header {
             margin-top: 5rem;
         }
 
@@ -189,10 +157,6 @@
             a {
                 font-size: 0.8rem;
             }
-        }
-
-        .info {
-            font-size: 0.8rem;
         }
 
         button {

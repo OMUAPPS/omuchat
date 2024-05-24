@@ -3,6 +3,7 @@
     import AppEntry from './AppEntry.svelte';
     import { apps } from './apps.js';
     import { TAG_REGISTRY } from './category.js';
+    import Page from '$lib/components/Page.svelte';
 
     let filteredApps = apps;
     let selectedCategories: string[] = [];
@@ -28,44 +29,49 @@
     <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<h2>
-    <b>
-        アプリを探す
-        <i class="ti ti-search" />
-    </b>
-</h2>
-<section>
-    <FlexRowWrapper widthFull heightFull between gap>
-        <div class="search">
-            <h3>
-                <i class="ti ti-tag" />
-                タグから探す
-            </h3>
-            <FlexColWrapper>
-                {#each Object.entries(TAG_REGISTRY) as [key, category] (key)}
-                    {@const selected = selectedCategories.includes(key)}
-                    <button on:click={() => toggleCategory(key)} class="category" class:selected>
-                        <i class={category.icon} />
-                        <Localized text={category.name} />
-                        <i class="hint ti ti-{selected ? 'check' : 'plus'}" />
-                    </button>
+<Page>
+    <header slot="header">
+        <h1>
+            アプリを探す
+            <i class="ti ti-search" />
+        </h1>
+        <small> アプリを探してみる </small>
+    </header>
+    <main slot="content">
+        <FlexRowWrapper widthFull heightFull between gap>
+            <div class="search">
+                <h3>
+                    <i class="ti ti-tag" />
+                    タグから探す
+                </h3>
+                <FlexColWrapper>
+                    {#each Object.entries(TAG_REGISTRY) as [key, category] (key)}
+                        {@const selected = selectedCategories.includes(key)}
+                        <button
+                            on:click={() => toggleCategory(key)}
+                            class="category"
+                            class:selected
+                        >
+                            <i class={category.icon} />
+                            <Localized text={category.name} />
+                            <i class="hint ti ti-{selected ? 'check' : 'plus'}" />
+                        </button>
+                    {/each}
+                </FlexColWrapper>
+            </div>
+            <FlexColWrapper widthFull gap>
+                {#each filteredApps as app (app.key())}
+                    <AppEntry {app} />
                 {/each}
             </FlexColWrapper>
-        </div>
-        <FlexColWrapper widthFull gap>
-            {#each filteredApps as app (app.key())}
-                <AppEntry {app} />
-            {/each}
-        </FlexColWrapper>
-    </FlexRowWrapper>
-</section>
+        </FlexRowWrapper>
+    </main>
+</Page>
 
 <style lang="scss">
-    h2 {
-        margin: 1rem;
-        padding: 1rem 0rem;
-        font-size: 1.5rem;
-        font-weight: 500;
+    h1 {
+        font-size: 2rem;
+        font-weight: 600;
         width: fit-content;
         color: var(--color-1);
     }
@@ -124,13 +130,5 @@
         &:active {
             margin-left: -1px;
         }
-    }
-
-    section {
-        display: flex;
-        flex: 0.6;
-        flex-direction: column;
-        align-items: start;
-        justify-content: center;
     }
 </style>

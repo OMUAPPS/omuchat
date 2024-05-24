@@ -50,12 +50,6 @@ button:focus:not(:focus-visible) {
     outline: none;
 }
 
-@media (width >=720px) {
-    h1 {
-        font-size: 2.4rem;
-    }
-}
-
 .visually-hidden {
     position: absolute;
     width: 1px;

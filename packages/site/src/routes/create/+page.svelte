@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Page from '$lib/components/Page.svelte';
 </script>
 
 <svelte:head>
@@ -6,24 +7,21 @@
     <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
-    <h1>
-        アプリを作る
-        <i class="ti ti-player-play" />
-    </h1>
-</section>
+<Page>
+    <header slot="header">
+        <h1>
+            アプリを作る
+            <i class="ti ti-pencil" />
+        </h1>
+        <small> OMUシステムを使ってアプリを作ってみる </small>
+    </header>
+</Page>
 
 <style lang="scss">
     h1 {
-        margin: 4rem 0;
-    }
-
-    section {
-        display: flex;
-        flex: 0.6;
-        flex-direction: column;
-        align-items: start;
-        justify-content: center;
-        padding: 0 1rem;
+        font-size: 2rem;
+        font-weight: 600;
+        width: fit-content;
+        color: var(--color-1);
     }
 </style>

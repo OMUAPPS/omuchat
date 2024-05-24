@@ -1,39 +1,48 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import title from '$lib/images/title.svg';
+    import Content from './Content.svelte';
 </script>
 
 <header>
-    <nav>
-        <a href="/" class="title">
-            <img src={title} alt="title" />
-        </a>
-        <ul>
-            <a href="/download">
-                <li aria-current={$page.url.pathname.startsWith('/download') ? 'page' : undefined}>
-                    <i class="ti ti-download" />
-                    ダウンロード
-                </li>
+    <Content>
+        <nav>
+            <a href="/" class="title">
+                <img src={title} alt="title" />
             </a>
-            <a href="/app">
-                <li aria-current={$page.url.pathname.startsWith('/app') ? 'page' : undefined}>
-                    <i class="ti ti-search" />
-                    アプリを探す
-                </li>
-            </a>
-            <a href="/create">
-                <li aria-current={$page.url.pathname.startsWith('/create') ? 'page' : undefined}>
-                    <i class="ti ti-pencil" />
-                    アプリを作る
-                </li>
-            </a>
-        </ul>
-    </nav>
+            <ul>
+                <a href="/download">
+                    <li
+                        aria-current={$page.url.pathname.startsWith('/download')
+                            ? 'page'
+                            : undefined}
+                    >
+                        <i class="ti ti-download" />
+                        ダウンロード
+                    </li>
+                </a>
+                <a href="/app">
+                    <li aria-current={$page.url.pathname.startsWith('/app') ? 'page' : undefined}>
+                        <i class="ti ti-search" />
+                        アプリを探す
+                    </li>
+                </a>
+                <a href="/create">
+                    <li
+                        aria-current={$page.url.pathname.startsWith('/create') ? 'page' : undefined}
+                    >
+                        <i class="ti ti-pencil" />
+                        アプリを作る
+                    </li>
+                </a>
+            </ul>
+        </nav>
+    </Content>
 </header>
 
 <style lang="scss">
     header {
-        position: relative;
+        position: sticky;
         right: 0;
         left: 0;
         z-index: 100;
@@ -41,8 +50,6 @@
         width: 100%;
         height: fit-content;
         padding: 1rem;
-        background: var(--color-bg-2);
-        border-bottom: 1px solid var(--color-outline);
     }
 
     nav {
@@ -68,8 +75,8 @@
         padding: 0.75rem;
         gap: 0.25rem;
         font-size: 0;
-        font-weight: 700;
-        color: var(--color-text);
+        font-weight: 800;
+        color: var(--color-1);
         text-decoration: none;
         text-transform: uppercase;
         letter-spacing: 0.1em;
@@ -91,9 +98,8 @@
         display: flex;
         align-items: center;
         height: 3em;
-        margin: 0 1rem;
         height: 1.2rem;
-        margin: 0 2rem;
+        margin-right: 2rem;
 
         img {
             height: 1.1rem;
