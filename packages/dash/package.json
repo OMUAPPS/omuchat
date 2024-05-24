@@ -57,12 +57,10 @@
         "sugarss": "^4.0.1",
         "svelte": "^4.2.17",
         "svelte-check": "^3.7.1",
+        "svelte-markdown": "^0.4.1",
         "tslib": "^2.6.2",
         "typescript": "^5.4.5",
         "vite": "^5.2.11",
         "vitest": "^1.6.0"
-    },
-    "dependencies": {
-        "svelte-markdown": "^0.4.1"
     }
 }
