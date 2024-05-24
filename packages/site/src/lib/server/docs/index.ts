@@ -11,10 +11,10 @@ export type DocsSection = {
     readonly slug: string;
 };
 
-export async function getDocsData(): Promise<DocsData[]> {
+export async function getDocsData(path = 'create'): Promise<DocsData[]> {
     const { readdir, readFile } = await import('node:fs/promises');
-    const docsDir = join(process.cwd(), '../..', 'documentation');
-    const docFiles = await readdir(docsDir);
+    const docsDir = join(process.cwd(), '../..', 'documentation', path);
+    const docFiles = await readdir(docsDir, { recursive: true });
     const docsData: DocsData[] = [];
 
     for (const file of docFiles) {
