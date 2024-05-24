@@ -35,7 +35,7 @@
     <header slot="header">
         <h1>
             ダウンロード
-            <i class="ti ti-search" />
+            <i class="ti ti-download" />
         </h1>
         <small> OMUAPPSをダウンロードして使ってみる </small>
     </header>
