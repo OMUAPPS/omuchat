@@ -4,7 +4,7 @@ export * as content from './content.js';
 export { Gift } from './gift.js';
 export { Message } from './message.js';
 export { Paid } from './paid.js';
+export { Reaction } from './reaction.js';
 export { Provider } from './provider.js';
 export { Role } from './role.js';
 export { Room } from './room.js';
-

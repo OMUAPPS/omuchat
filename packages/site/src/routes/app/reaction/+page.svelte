@@ -8,26 +8,31 @@
     import { Omu } from '@omujs/omu';
     import { ASSET_UPLOAD_PERMISSION_ID } from '@omujs/omu/extension/asset/asset-extension.js';
     import { setClient } from '@omujs/ui';
-    import { APP } from './app.js';
+    import { APP, IDENTIFIER } from './app.js';
+    import { Chat } from '@omujs/chat';
+    import { Reaction } from '@omujs/chat/models/reaction.js';
+    import { CHAT_REACTION_PERMISSION_ID } from '@omujs/chat/permissions.js';
 
     const omu = new Omu(APP);
-    const reactionApp = new ReactionApp(omu);
+    const chat = new Chat(omu);
+    const reactionApp = new ReactionApp(omu, chat);
     const { replaces } = reactionApp;
     setClient(omu);
 
-    omu.permissions.require(
-        ASSET_UPLOAD_PERMISSION_ID,
-        'com.omuapps:chatprovider/youtube/reaction',
-    );
+    omu.permissions.require(ASSET_UPLOAD_PERMISSION_ID, CHAT_REACTION_PERMISSION_ID);
 
     function test() {
-        reactionApp.send('test', {
-            '❤': 1,
-            '😄': 1,
-            '🎉': 1,
-            '😳': 1,
-            '💯': 1,
+        const reaction = new Reaction({
+            roomId: IDENTIFIER.join('test'),
+            reactions: {
+                '❤': 1,
+                '😄': 1,
+                '🎉': 1,
+                '😳': 1,
+                '💯': 1,
+            },
         });
+        reactionApp.send(reaction);
     }
 
     async function handleReplace(key: string, files: FileList) {
