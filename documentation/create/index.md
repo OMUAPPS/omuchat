@@ -1,3 +1,3 @@
-# Documentation
+# Index
 
 This is the documentation for the project.

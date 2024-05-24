@@ -1,9 +1,8 @@
 <script lang="ts">
     import Page from '$lib/components/Page.svelte';
+    import type { DocsSection } from '$lib/server/docs/index.js';
     import { FlexRowWrapper } from '@omujs/ui';
     import { docs } from './stores.js';
-    import type { DocsSection } from '$lib/server/docs/index.js';
-    import { base } from '$app/paths';
 
     export let data: { sections: DocsSection[] };
 
@@ -26,8 +25,9 @@
     </header>
     <main slot="content">
         <div class="sections">
+            <a href="/create/index">Docs</a>
             {#each sections as section (section.slug)}
-                <a href={`${base}/docs/${section.slug}`}>{section.title}</a>
+                <a href={`/create/${section.slug}`}>{section.title}</a>
             {/each}
         </div>
         <slot />
