@@ -1,7 +1,10 @@
 <script lang="ts">
     import background from '$lib/images/background.png';
     import Content from './Content.svelte';
+    import Footer from './Footer.svelte';
     import Header from './Header.svelte';
+
+    export let noBackground = false;
 </script>
 
 <Header />
@@ -15,11 +18,12 @@
         </div>
     </Content>
 </header>
-<main>
+<main class:no-background={noBackground}>
     <Content>
         <div class="main-content">
             <slot name="content" />
         </div>
+        <Footer />
     </Content>
 </main>
 
@@ -62,6 +66,10 @@
 
         .main-content {
             margin-top: 4rem;
+        }
+
+        &.no-background {
+            background: none;
         }
     }
 </style>

@@ -1,7 +1,6 @@
 <script lang="ts">
-    import title from '$lib/images/title.svg';
-    import background from '$lib/images/background.png';
     import Page from '$lib/components/Page.svelte';
+    import title from '$lib/images/title.svg';
 </script>
 
 <svelte:head>
@@ -9,7 +8,7 @@
     <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<Page>
+<Page noBackground>
     <header slot="header">
         <img src={title} alt="title" />
         <p class="info">OMUAPPSは、配信者と視聴者をつなぐAPIです。</p>
@@ -17,16 +16,19 @@
     <main slot="content">
         <section>
             <p>
+                OMUAPPSは、配信者と視聴者をつなぐAPIです。
+                <br />
                 <a href="/app">アプリを探す</a>
-                <a href="/create">アプリを作る</a>
             </p>
         </section>
     </main>
 </Page>
 
 <style lang="scss">
-    p {
-        text-wrap: nowrap;
+    section {
+        background: var(--color-bg-2);
+        padding: 1rem;
+        width: fit-content;
     }
 
     header {
