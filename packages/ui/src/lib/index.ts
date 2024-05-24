@@ -24,6 +24,7 @@ export { default as Textbox } from './Textbox.svelte';
 export { default as Theme } from './Theme.svelte';
 export { default as Toggle } from './Toggle.svelte';
 export { default as Tooltip } from './Tooltip.svelte';
+export { default as FileDrop } from './FileDrop.svelte';
 export { default as VirtualList } from './VirtualList.svelte';
 export { chat, client, setClient, theme, translate } from './stores.js';
 export type { TypedComponent } from './typed-component.js';

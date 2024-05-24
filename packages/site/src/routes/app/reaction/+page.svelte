@@ -1,21 +1,24 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import { Identifier } from '@omujs/omu/identifier.js';
-    import { AppHeader, ButtonMini, DragLink, FlexRowWrapper, Tooltip } from '@omujs/ui';
+    import { AppHeader, ButtonMini, DragLink, FileDrop, FlexRowWrapper, Tooltip } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
-    import { omu } from './client.js';
     import ReactionRenderer from './components/ReactionRenderer.svelte';
     import { ReactionApp } from './reaction.js';
+    import { Omu } from '@omujs/omu';
+    import { ASSET_UPLOAD_PERMISSION_ID } from '@omujs/omu/extension/asset/asset-extension.js';
+    import { setClient } from '@omujs/ui';
+    import { APP } from './app.js';
 
-    function createAssetUrl() {
-        const url = new URL($page.url);
-        url.pathname = `${url.pathname}asset`;
-        url.searchParams.set('assetId', Date.now().toString());
-        return url;
-    }
-
+    const omu = new Omu(APP);
     const reactionApp = new ReactionApp(omu);
     const replaces = reactionApp.replaces;
+    setClient(omu);
+
+    omu.permissions.require(
+        ASSET_UPLOAD_PERMISSION_ID,
+        'com.omuapps:chatprovider/youtube/reaction',
+    );
 
     function test() {
         reactionApp.send('test', {
@@ -27,20 +30,7 @@
         });
     }
 
-    let fileDrop: HTMLInputElement;
-    let files: FileList | null;
-    let fileCallback: () => void;
-
-    function openFileDrop() {
-        return new Promise<void>((resolve) => {
-            fileCallback = resolve;
-            fileDrop.click();
-        });
-    }
-
-    async function handleReplace(key: string) {
-        await openFileDrop();
-        if (!files) return;
+    async function handleReplace(key: string, files: FileList) {
         const file = files[0];
         const reader = new FileReader();
         const id = omu.app.id.join('asset', key);
@@ -75,7 +65,14 @@
     <h3>OBSに貼り付ける</h3>
     <section>
         {#if BROWSER}
-            <DragLink href={createAssetUrl}>
+            <DragLink
+                href={() => {
+                    const url = new URL($page.url);
+                    url.pathname = `${url.pathname}asset`;
+                    url.searchParams.set('assetId', Date.now().toString());
+                    return url;
+                }}
+            >
                 <h3 slot="preview" class="drag-preview">
                     これをOBSにドロップ
                     <i class="ti ti-upload" />
@@ -90,14 +87,6 @@
 
     <h3>画像を置き換える</h3>
     <section>
-        <input
-            type="file"
-            bind:this={fileDrop}
-            bind:files
-            on:change={fileCallback}
-            multiple
-            hidden
-        />
         {#each Object.entries($replaces) as [key, assetId]}
             <div class="replace-entry">
                 <FlexRowWrapper alignItems="center" gap>
@@ -114,10 +103,10 @@
                     {/if}
                 </FlexRowWrapper>
                 <FlexRowWrapper gap>
-                    <button on:click={() => handleReplace(key)}>
+                    <FileDrop handle={(files) => handleReplace(key, files)}>
                         <i class="ti ti-upload" />
                         置き換える
-                    </button>
+                    </FileDrop>
                     {#if assetId}
                         <ButtonMini on:click={() => ($replaces = { ...$replaces, [key]: null })}>
                             <Tooltip>置き換えを削除</Tooltip>
