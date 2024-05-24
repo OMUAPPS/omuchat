@@ -1,10 +1,25 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import title from '$lib/images/title.svg';
+    import { onMount } from 'svelte';
     import Content from './Content.svelte';
+
+    let onTop = true;
+
+    function onScroll() {
+        onTop = window.scrollY < 1;
+    }
+
+    onMount(() => {
+        window.addEventListener('scroll', onScroll);
+
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+        };
+    });
 </script>
 
-<header>
+<header class:ontop={onTop}>
     <Content>
         <nav>
             <a href="/" class="title">
@@ -43,6 +58,7 @@
 <style lang="scss">
     header {
         position: sticky;
+        top: 0;
         right: 0;
         left: 0;
         z-index: 100;
@@ -50,6 +66,12 @@
         width: 100%;
         height: fit-content;
         padding: 1rem;
+        transition: background 0.06s;
+
+        &:not(.ontop) {
+            background: var(--color-bg-2);
+            border-bottom: 1px solid var(--color-outline);
+        }
     }
 
     nav {
@@ -122,7 +144,7 @@
         font-size: 1.1rem;
     }
 
-    @container (min-width: 750px) {
+    @container (min-width: 600px) {
         li {
             font-size: 0.8rem;
         }
