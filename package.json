@@ -13,7 +13,7 @@
         "clean": "node ./scripts/clean.mjs"
     },
     "engines": {
-        "pnpm": "^8.0.0"
+        "pnpm": "^8.0.0 || ^9.0.0"
     },
     "workspaces": [
         "packages/*"
