@@ -81,7 +81,7 @@ class SignalImpl<T> implements Signal<T> {
 
     public listen(handler: (value: T) => void): Unlisten {
         if (!this.listening) {
-            this.client.whenReady(() => {
+            this.client.onReady(() => {
                 this.client.send(SIGNAL_LISTEN_PACKET, this.type.id);
             });
             this.listening = true;

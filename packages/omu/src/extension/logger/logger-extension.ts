@@ -61,7 +61,7 @@ export class LoggerExtension {
 
     public listen(id: Identifier, listener: LogListener): Unlisten {
         if (!this.listeners.has(id)) {
-            this.client.whenReady(() => {
+            this.client.onReady(() => {
                 this.client.send(LOGGER_LISTEN_PACKET, id);
             });
         }

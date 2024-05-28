@@ -111,7 +111,7 @@
     }
 
     const unlisten = batchCall(
-        $client.whenReady(() => {
+        $client.onReady(() => {
             entries.clear();
             fetch();
         }),

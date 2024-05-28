@@ -49,5 +49,5 @@ export interface Client {
 
     stop(): void;
 
-    whenReady(callback: () => void): Unlisten;
+    onReady(callback: () => void): Unlisten;
 }

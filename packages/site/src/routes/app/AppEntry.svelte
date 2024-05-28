@@ -25,7 +25,7 @@
         }
     }
 
-    omu.whenReady(async () => {
+    omu.onReady(async () => {
         alreadyAdded = !!(await appTable.get(app.key()));
     });
 

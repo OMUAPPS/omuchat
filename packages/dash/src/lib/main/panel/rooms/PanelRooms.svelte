@@ -24,7 +24,7 @@
         chat.rooms.listen((newRooms: Map<string, models.Room>) => {
             rooms = newRooms;
         }),
-        omu.whenReady(() => {
+        omu.onReady(() => {
             chat.rooms.fetchItems({
                 after: 100,
             });

@@ -2,7 +2,7 @@
     import { AppHeader, FlexRowWrapper, Toggle } from '@omujs/ui';
     import { omu, config } from './client.js';
 
-    const promise = new Promise<void>((resolve) => omu.whenReady(resolve));
+    const promise = new Promise<void>((resolve) => omu.onReady(resolve));
     function toggle() {
         $config = {
             ...$config,

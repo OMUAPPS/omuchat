@@ -114,7 +114,7 @@ export class Omu implements Client {
         this.event.stopped.emit();
     }
 
-    public whenReady(callback: () => void): Unlisten {
+    public onReady(callback: () => void): Unlisten {
         if (this.ready) {
             callback();
         }

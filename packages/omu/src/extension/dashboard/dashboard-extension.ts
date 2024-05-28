@@ -145,7 +145,7 @@ export class DashboardExtension {
             throw new Error('Dashboard already set');
         }
         this.dashboard = dashboard;
-        this.client.whenReady(async () => {
+        this.client.onReady(async () => {
             const response = await this.client.endpoints.call(
                 DASHBOARD_SET_ENDPOINT,
                 this.client.app.id,

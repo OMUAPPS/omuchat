@@ -16,7 +16,7 @@
         omu.start();
         language.subscribe(loadLocale);
         await new Promise<void>((resolve, reject) => {
-            omu.whenReady(resolve);
+            omu.onReady(resolve);
             omu.network.event.status.listen((status) => {
                 if (status === NetworkStatus.ERROR) {
                     reject(status);

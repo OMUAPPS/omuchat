@@ -8,7 +8,7 @@
             version: '1.0.0',
         });
         client.set(new Omu(app));
-        return new Promise<void>((resolve) => $client.whenReady(resolve));
+        return new Promise<void>((resolve) => $client.onReady(resolve));
     };
 </script>
 

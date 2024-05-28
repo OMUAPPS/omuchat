@@ -278,7 +278,7 @@ class TableImpl<T> implements Table<T> {
 
     public listen(listener?: (items: Map<string, T>) => void): Unlisten {
         if (!this.listening) {
-            this.client.whenReady(() => {
+            this.client.onReady(() => {
                 this.client.send(TABLE_LISTEN_PACKET, this.id);
             });
             this.listening = true;
@@ -292,7 +292,7 @@ class TableImpl<T> implements Table<T> {
     public proxy(callback: (item: T) => T | undefined): Unlisten {
         if (this.proxies.length === 0) {
             let cancel = (): void => {};
-            cancel = this.client.whenReady(() => {
+            cancel = this.client.onReady(() => {
                 if (this.proxies.length === 0) {
                     cancel();
                     return;
@@ -438,15 +438,15 @@ class TableImpl<T> implements Table<T> {
         let items: Map<string, T> = await this.fetchItems(
             backward
                 ? {
-                    before: 0,
-                    after: this.cacheSize ?? 100,
-                    cursor,
-                }
+                      before: 0,
+                      after: this.cacheSize ?? 100,
+                      cursor,
+                  }
                 : {
-                    before: this.cacheSize ?? 100,
-                    after: 0,
-                    cursor,
-                },
+                      before: this.cacheSize ?? 100,
+                      after: 0,
+                      cursor,
+                  },
         );
         yield* items.values();
         while (items.size > 0) {

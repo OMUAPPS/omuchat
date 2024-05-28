@@ -22,7 +22,7 @@ export class Dashboard implements DashboardHandler {
     constructor(omu: Omu) {
         this.apps = omu.dashboard.apps;
         omu.dashboard.set(this);
-        omu.whenReady(() => {
+        omu.onReady(() => {
             omu.i18n.setLocale(window.navigator.languages as Locale[]);
         });
         this.apps.event.add.listen(() => {

@@ -92,7 +92,7 @@ class RegistryImpl<T> implements Registry<T> {
 
     public listen(handler: (value: T) => Promise<void> | void): Unlisten {
         if (!this.listening) {
-            this.client.whenReady(() => {
+            this.client.onReady(() => {
                 this.client.send(REGISTRY_LISTEN_PACKET, this.type.id);
             });
             this.listening = true;

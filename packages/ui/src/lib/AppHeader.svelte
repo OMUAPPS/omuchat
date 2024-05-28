@@ -10,7 +10,7 @@
     let icon = '';
     let description = '';
 
-    const unlisten = $client.whenReady(() => {
+    const unlisten = $client.onReady(() => {
         const metadata = app.metadata;
         if (metadata) {
             if (metadata.name) {
