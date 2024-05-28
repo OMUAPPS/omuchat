@@ -1,23 +1,3 @@
-# アプリの作成（マークダウンの表示のテストのために作られた嘘で満たされた内容のないドキュメント）
-
-ここでは、omuアプリを作成するための手順を説明します。
-
-## 1. アプリの作成
-
-まず、アプリを作成します。アプリは、`omu create`コマンドを使って作成できます。
-
-```bash
-$ omu create myapp
-```
-
-```plaintext
-myapp/
-├── omu.toml
-└── src/
-    └── main.rs
-```
-
-```svelte
 <script lang="ts">
     import { ButtonMini, Tooltip } from '@omujs/ui';
 
@@ -63,14 +43,14 @@ myapp/
     {/each}
 </code>
 
-<style>
+<style lang="scss">
     code {
         display: flex;
         flex-direction: column;
         background-color: var(--color-bg-1);
         color: var(--color-1);
         padding: 0.5rem 1rem;
-        margin: 0.5rem 0;
+        margin: 1rem 0;
         border-radius: 4px;
         font-size: 0.9rem;
         font-weight: 600;
@@ -99,12 +79,14 @@ myapp/
         margin: 0 0.5rem;
         font-size: 0.9rem;
         font-weight: 400;
+        user-select: none;
     }
 
     .line {
         display: flex;
         align-items: baseline;
         height: 1.5rem;
+        user-select: text;
     }
 
     .selected {
@@ -112,4 +94,3 @@ myapp/
         background-color: var(--color-bg-2);
     }
 </style>
-```
