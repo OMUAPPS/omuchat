@@ -70,7 +70,7 @@
 
     function getSpawnRate() {
         if (spawnQueue.length === 0) {
-            return 10;
+            return 0.1;
         }
         return Math.min(10, 1 / spawnQueue.length);
     }
