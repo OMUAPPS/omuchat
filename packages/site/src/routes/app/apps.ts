@@ -21,6 +21,6 @@ export const apps = [
 ] satisfies App[];
 
 export const appTable = omu.dashboard.apps;
-omu.whenReady(async () => {
+omu.onReady(async () => {
     console.log(await appTable.fetchAll());
 });
