@@ -77,7 +77,8 @@ impl Uv {
         let contents = download_url(&uv_url).unwrap();
         println!("Downloaded uv to {}", contents.len());
         let dst = options.uv_path.join(uv_download.version());
-        unpack_archive(&contents, &dst, 0).unwrap();
+        let strip = if cfg!(target_os = "windows") { 0 } else { 1 };
+        unpack_archive(&contents, &dst, strip).unwrap();
         Ok(())
     }
 

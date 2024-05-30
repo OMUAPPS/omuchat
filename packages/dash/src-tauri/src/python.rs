@@ -18,13 +18,11 @@ pub struct Python {
 impl Python {
     pub fn ensure(options: &InstallOptions) -> Result<Self, Error> {
         let python_path = get_dir(&options);
-        let python_bin = python_path
-            .join("install")
-            .join(if cfg!(target_os = "windows") {
-                "python.exe"
-            } else {
-                "python"
-            });
+        let python_bin = if cfg!(target_os = "windows") {
+            python_path.join("install").join("python.exe")
+        } else {
+            python_path.join("install").join("bin").join("python")
+        };
         if python_path.exists() {
             match read_venv_marker(&python_path) {
                 Some(version) => Ok(Self {
