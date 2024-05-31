@@ -17,12 +17,14 @@ const REPLAY_DATA_REGISTRY_TYPE = RegistryType.createJson<ReplayData | null>(IDE
 });
 
 type ReplayConfig = {
+    active: boolean;
     playbackRate: number;
 };
 
 const REPLAY_CONFIG_REGISTRY_TYPE = RegistryType.createJson<ReplayConfig>(IDENTIFIER, {
     name: 'replay_config',
     defaultValue: {
+        active: false,
         playbackRate: 1,
     },
 });

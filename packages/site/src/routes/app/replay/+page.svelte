@@ -1,6 +1,14 @@
 <script lang="ts">
     import { Omu } from '@omujs/omu';
-    import { AppHeader, DragLink, TableList, Textbox, setClient } from '@omujs/ui';
+    import {
+        AppHeader,
+        DragLink,
+        FlexRowWrapper,
+        TableList,
+        Textbox,
+        Toggle,
+        setClient,
+    } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { onMount } from 'svelte';
     import { APP } from './app.js';
@@ -59,13 +67,26 @@
     if (BROWSER) {
         omu.start();
     }
+
+    const promise = new Promise<void>((resolve) => omu.onReady(resolve));
 </script>
 
 <svelte:head>
     <script src="https://www.youtube.com/iframe_api"></script>
 </svelte:head>
 
-<AppHeader app={APP} />
+{#await promise}
+    <AppHeader app={omu.app} />
+{:then}
+    <AppHeader app={omu.app}>
+        <FlexRowWrapper alignItems="center" gap>
+            <small>表示</small>
+            <Toggle bind:value={$config.active} />
+        </FlexRowWrapper>
+    </AppHeader>
+    <slot />
+{/await}
+
 <main>
     <div class="rooms">
         <h3>URLから</h3>

@@ -61,16 +61,18 @@
 </svelte:head>
 
 <main>
-    <Player
-        videoId={$replayData?.videoId}
-        bind:player
-        options={{
-            events: {
-                onReady,
-            },
-        }}
-        hide
-    />
+    {#if $config.active}
+        <Player
+            videoId={$replayData?.videoId}
+            bind:player
+            options={{
+                events: {
+                    onReady,
+                },
+            }}
+            hide
+        />
+    {/if}
 </main>
 
 <style lang="scss">
