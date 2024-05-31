@@ -93,10 +93,17 @@
         <Textbox
             placeholder="URLを入力"
             on:input={(event) => {
-                const url = event.detail.value;
-                const videoId = new URL(url).searchParams.get('v');
-                if (!videoId) return;
-                $playVideo(videoId);
+                const url = new URL(event.detail.value);
+                if (url.hostname === 'youtu.be') {
+                    const videoId = url.pathname.slice(1);
+                    $playVideo(videoId);
+                } else if (url.hostname.endsWith('youtube.com')) {
+                    const videoId = url.searchParams.get('v');
+                    if (!videoId) return;
+                    $playVideo(videoId);
+                } else {
+                    console.log('unsupported url', url);
+                }
             }}
             lazy
         />
