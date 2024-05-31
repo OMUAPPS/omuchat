@@ -1,4 +1,4 @@
-import { createRegistryStore } from '$lib/helper.js';
+import { makeRegistryWritable } from '$lib/helper.js';
 import type { Omu } from '@omujs/omu';
 import { RegistryType } from '@omujs/omu/extension/registry/index.js';
 import type { Writable } from 'svelte/store';
@@ -31,7 +31,7 @@ export class ReactionApp {
         private readonly omu: Omu,
         private readonly chat: Chat,
     ) {
-        this.replaces = createRegistryStore(omu, REACTION_REPLACE_REGISTRY_TYPE);
+        this.replaces = makeRegistryWritable(omu.registry.get(REACTION_REPLACE_REGISTRY_TYPE));
         this.reactionSignal = chat.reactionSignal;
     }
 

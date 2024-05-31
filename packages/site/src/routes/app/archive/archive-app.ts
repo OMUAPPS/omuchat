@@ -1,4 +1,4 @@
-import { createRegistryStore } from '$lib/helper.js';
+import { makeRegistryWritable } from '$lib/helper.js';
 import type { Omu } from '@omujs/omu';
 import { type Table } from '@omujs/omu/extension/table/table.js';
 import type { Writable } from 'svelte/store';
@@ -11,7 +11,7 @@ export class ArchiveApp {
 
     constructor(private readonly omu: Omu) {
         this.archiveTable = omu.tables.get(ARCHIVE_TABLE);
-        this.config = createRegistryStore(omu, CONFIG_REGISTRY);
+        this.config = makeRegistryWritable(omu.registry.get(CONFIG_REGISTRY));
     }
 
     public openOutputDir() {

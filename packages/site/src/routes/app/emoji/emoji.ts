@@ -6,7 +6,7 @@ import type { Keyable } from '@omujs/omu/interface.js';
 import type { Model } from '@omujs/omu/model.js';
 import { IDENTIFIER } from './app.js';
 import { writable, type Writable } from 'svelte/store';
-import { createRegistryStore } from '$lib/helper.js';
+import { makeRegistryWritable } from '$lib/helper.js';
 import { RegistryType } from '@omujs/omu/extension/registry/registry.js';
 import { Chat, models } from '@omujs/chat';
 
@@ -110,7 +110,7 @@ export class EmojiApp {
         private readonly chat: Chat,
     ) {
         this.emojis = omu.tables.get(EMOJI_TABLE);
-        this.config = createRegistryStore(omu, CONFIG_REGISTRY_TYPE);
+        this.config = makeRegistryWritable(omu.registry.get(CONFIG_REGISTRY_TYPE));
         this.selectedEmoji = writable<Emoji | null>(null);
     }
 

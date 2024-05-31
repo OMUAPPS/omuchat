@@ -1,4 +1,4 @@
-import { createRegistryStore } from '$lib/helper.js';
+import { makeRegistryWritable } from '$lib/helper.js';
 import type { Omu } from '@omujs/omu';
 import { type Signal } from '@omujs/omu/extension/signal/signal.js';
 import type { Writable } from 'svelte/store';
@@ -16,7 +16,7 @@ export class CaptionApp {
                 listener(caption);
             }
         });
-        this.config = createRegistryStore(omu, CONFIG_REGISTRY);
+        this.config = makeRegistryWritable(omu.registry.get(CONFIG_REGISTRY));
     }
 
     public setCaption(caption: Caption) {
