@@ -14,6 +14,9 @@
     omu.onReady(() => {});
 
     if (BROWSER) {
+        omu.plugins.require({
+            omuplugin_archive: '==0.4.2',
+        });
         omu.start();
     }
 </script>
@@ -92,13 +95,6 @@
     h3 {
         font-size: 0.9rem;
         margin-bottom: 0.5rem;
-    }
-
-    label {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-        justify-content: space-between;
     }
 
     .archive-list {
