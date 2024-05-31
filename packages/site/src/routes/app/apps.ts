@@ -9,6 +9,7 @@ import { APP as tester } from './tester/app.js';
 import { APP as translator } from './translator/app.js';
 import { APP as caption } from './caption/app.js';
 import { APP as archive } from './archive/app.js';
+import { APP as replay } from './replay/app.js';
 
 export const apps = [
     emoji,
@@ -20,6 +21,7 @@ export const apps = [
     translator,
     caption,
     archive,
+    replay,
 ] satisfies App[];
 
 export const appTable = omu.dashboard.apps;
