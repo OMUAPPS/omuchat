@@ -17,6 +17,6 @@ export const APP = new App(IDENTIFIER, {
             ja: 'リアルタイムで字幕を表示します。',
         },
         icon: 'text-caption',
-        tags: ['tool'] as TagKey[],
+        tags: ['tool', 'asset'] as TagKey[],
     },
 });
