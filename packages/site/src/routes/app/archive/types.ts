@@ -1,0 +1,35 @@
+import { TableType } from '@omujs/omu/extension/table/table.js';
+import { Archive, type ArchiveConfig } from './archive.js';
+import { RegistryType } from '@omujs/omu/extension/registry/registry.js';
+import { IDENTIFIER } from './app.js';
+import { EndpointType } from '@omujs/omu/extension/endpoint/endpoint.js';
+
+export const PLUGIN_ID = IDENTIFIER.join('plugin');
+export const ARCHIVE_TABLE = TableType.createModel(PLUGIN_ID, {
+    model: Archive,
+    name: 'archive',
+});
+export const CONFIG_REGISTRY = RegistryType.createJson<ArchiveConfig>(PLUGIN_ID, {
+    name: 'config',
+    defaultValue: {
+        active: false,
+        archive_limit: {
+            count: 0,
+            duration_days: 0,
+            size_mb: 0,
+        },
+        output_dir: '',
+        yt_dlp_info: {
+            channel: '',
+            git_head: '',
+            origin: '',
+            update_hint: '',
+            variant: '',
+            version: '',
+        },
+        yt_dlp_options: {},
+    },
+});
+export const OPEN_OUTPUT_DIR_ENDPOINT_TYPE = EndpointType.createJson<null, null>(PLUGIN_ID, {
+    name: 'open_output_dir',
+});
