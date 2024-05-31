@@ -17,6 +17,6 @@ export const APP = new App(IDENTIFIER, {
             ja: '配信をリプレイします。',
         },
         icon: 'clock-play',
-        tags: ['tool'] as TagKey[],
+        tags: ['tool', 'youtube', 'asset'] as TagKey[],
     },
 });
