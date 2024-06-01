@@ -64,7 +64,7 @@
                         top: `${-padding}px`,
                         clipPath: `inset(${padding}px 0 ${padding}px 0)`,
                     })}
-                    src="https://www.youtube.com/embed/{initialVideoId}?enablejsapi=1&mute=1&controls=0&showinfo=0"
+                    src="https://www.youtube.com/embed/{initialVideoId}?enablejsapi=1&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1"
                     frameborder="0"
                     title="YouTube video player"
                 ></iframe>
@@ -74,7 +74,7 @@
                     id="player"
                     {width}
                     {height}
-                    src="https://www.youtube.com/embed/{initialVideoId}?enablejsapi=1"
+                    src="https://www.youtube.com/embed/{initialVideoId}?enablejsapi=1&rel=0&modestbranding=1"
                     frameborder="0"
                     title="YouTube video player"
                 ></iframe>
