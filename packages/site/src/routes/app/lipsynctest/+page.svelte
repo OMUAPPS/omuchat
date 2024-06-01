@@ -28,6 +28,9 @@
         e: new Float32Array(data.e),
         o: new Float32Array(data.o),
         n: new Float32Array(data.n),
+        breath1: new Float32Array(data.breath1),
+        breath2: new Float32Array(data.breath2),
+        breath3: new Float32Array(data.breath3),
     };
     let vowelDotProduct: { [key: string]: number } = {};
     let loudness: number;
