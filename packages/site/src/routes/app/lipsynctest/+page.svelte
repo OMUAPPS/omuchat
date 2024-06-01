@@ -20,13 +20,14 @@
     let timeDomainArray: Float32Array;
     let frequencyArray: Float32Array;
     let vowels: {
-        [key: string]: Float32Array;
+        [key: string]: Float32Array | null;
     } = {
         a: new Float32Array(data.a),
         i: new Float32Array(data.i),
         u: new Float32Array(data.u),
         e: new Float32Array(data.e),
         o: new Float32Array(data.o),
+        n: new Float32Array(data.n),
     };
     let vowelDotProduct: { [key: string]: number } = {};
     let loudness: number;
