@@ -56,7 +56,7 @@
     }
 
     .subtitle {
-        font-size: 12px;
+        font-size: 0.6rem;
         font-weight: 600;
     }
 </style>
