@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { FlexColWrapper, FlexRowWrapper, Localized } from '@omujs/ui';
+    import { FlexColWrapper, FlexRowWrapper, Localized, Tooltip } from '@omujs/ui';
 
     import { omu } from '$lib/client.js';
     import { t } from '$lib/i18n/i18n-context.js';
@@ -16,6 +16,11 @@
 </script>
 
 <button on:click={openApp} class:selected>
+    {#if entry.metadata?.description}
+        <Tooltip>
+            <Localized text={entry.metadata?.description} />
+        </Tooltip>
+    {/if}
     <FlexRowWrapper widthFull between>
         <FlexRowWrapper>
             <div class="icon">
