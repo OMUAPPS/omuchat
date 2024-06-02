@@ -1,18 +1,15 @@
 <script lang="ts">
     import { Chat } from '@omujs/chat';
-    import { App, Omu } from '@omujs/omu';
-    import { FlexRowWrapper, Header, TableList, Textbox, Toggle, setClient } from '@omujs/ui';
+    import { Omu } from '@omujs/omu';
+    import { ASSET_UPLOAD_MANY_PERMISSION_ID } from '@omujs/omu/extension/asset/asset-extension.js';
+    import { AppHeader, FlexRowWrapper, TableList, Textbox, Toggle, setClient } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import EmojiEdit from './EmojiEdit.svelte';
     import EmojiEntry from './EmojiEntry.svelte';
-    import { IDENTIFIER } from './app.js';
-    import { EMOJI_TABLE, Emoji, EmojiApp, emojiApp } from './emoji.js';
-    import { ASSET_UPLOAD_MANY_PERMISSION_ID } from '@omujs/omu/extension/asset/asset-extension.js';
+    import { APP, IDENTIFIER } from './app.js';
+    import { Emoji, EmojiApp, emojiApp } from './emoji.js';
 
-    const app = new App(IDENTIFIER, {
-        version: '0.1.0',
-    });
-    const omu = new Omu(app);
+    const omu = new Omu(APP);
     const chat = new Chat(omu);
     $emojiApp = new EmojiApp(omu, chat);
     const { emojis, config, selectedEmoji } = $emojiApp;
@@ -90,7 +87,7 @@
 </script>
 
 <main>
-    <Header title="絵文字" icon="ti-icons">
+    <AppHeader app={APP}>
         <FlexRowWrapper gap alignItems="center">
             <Textbox
                 placeholder="検索"
@@ -101,7 +98,7 @@
             />
             <Toggle value={$config.active} handleToggle={toggle} />
         </FlexRowWrapper>
-    </Header>
+    </AppHeader>
     {#if $selectedEmoji}
         <div class="emoji-edit">
             <EmojiEdit emoji={$selectedEmoji} />

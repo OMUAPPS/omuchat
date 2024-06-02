@@ -13,6 +13,10 @@ export const APP = new App(IDENTIFIER, {
             en: 'Emoji',
             ja: '絵文字',
         },
+        description: {
+            en: 'Convert specific strings to emojis.',
+            ja: '特定の文字列を絵文字に変換します。',
+        },
         icon: icon,
         tags: [] as TagKey[],
     },
