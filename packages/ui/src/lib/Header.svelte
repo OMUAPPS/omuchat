@@ -6,11 +6,17 @@
 
 <header>
     <div class="title">
-        <i class="ti {icon}" />
-        {title}
-        {#if subtitle}
-            <span class="subtitle">{subtitle}</span>
+        {#if icon.startsWith('ti-')}
+            <i class="ti {icon}"></i>
+        {:else}
+            <img src={icon} alt={title} />
         {/if}
+        <span class="text">
+            {title}
+            {#if subtitle}
+                <span class="subtitle">{subtitle}</span>
+            {/if}
+        </span>
     </div>
     <slot />
 </header>
@@ -34,13 +40,22 @@
         display: flex;
         flex-direction: row;
         gap: 10px;
-        align-items: baseline;
+        align-items: center;
         font-size: 18px;
         font-weight: 600;
     }
 
+    img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .text {
+        display: flex;
+        flex-direction: column;
+    }
+
     .subtitle {
-        margin-left: 10px;
         font-size: 12px;
         font-weight: 600;
     }
