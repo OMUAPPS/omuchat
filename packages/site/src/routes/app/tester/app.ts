@@ -13,6 +13,10 @@ export const APP = new App(IDENTIFIER, {
             en: 'Tester',
             ja: 'コメントテスター',
         },
+        description: {
+            en: 'Test comments.',
+            ja: 'コメントのテストをします。',
+        },
         icon: icon,
         tags: ['tool'] as TagKey[],
     },
