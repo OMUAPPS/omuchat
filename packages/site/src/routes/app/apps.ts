@@ -5,7 +5,6 @@ import { APP as archive } from './archive/app.js';
 import { APP as caption } from './caption/app.js';
 import { APP as emoji } from './emoji/app.js';
 import { APP as lipsynctest } from './lipsynctest/app.js';
-import { APP as notifier } from './notifier/app.js';
 import { APP as onecomme } from './onecomme/app.js';
 import { APP as playqueue } from './playqueue/app.js';
 import { APP as reaction } from './reaction/app.js';
@@ -18,7 +17,6 @@ export const apps = [
     caption,
     emoji,
     lipsynctest,
-    notifier,
     onecomme,
     playqueue,
     reaction,
