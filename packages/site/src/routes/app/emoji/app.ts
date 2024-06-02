@@ -2,6 +2,7 @@ import { App } from '@omujs/omu';
 import { Identifier } from '@omujs/omu/identifier.js';
 import type { TagKey } from '../category.js';
 import { ORIGIN } from '../origin.js';
+import icon from './icon.png';
 
 export const IDENTIFIER = new Identifier('com.omuapps', 'emoji');
 export const APP = new App(IDENTIFIER, {
@@ -12,7 +13,7 @@ export const APP = new App(IDENTIFIER, {
             en: 'Emoji',
             ja: '絵文字',
         },
-        icon: 'icons',
+        icon: icon,
         tags: [] as TagKey[],
     },
 });

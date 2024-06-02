@@ -16,7 +16,7 @@ export const APP = new App(IDENTIFIER, {
             en: 'Lipsync technology test',
             ja: 'リップシンク技術のテスト',
         },
-        icon: 'language-katakana',
+        icon: 'ti-language-katakana',
         tags: ['tool'] as TagKey[],
     },
 });

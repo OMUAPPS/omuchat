@@ -16,7 +16,7 @@ export const APP = new App(IDENTIFIER, {
             en: 'Display comments in the OneComme template without any settings.',
             ja: '設定無しでコメントをわんコメのテンプレートに表示します。',
         },
-        icon: 'dog',
+        icon: 'ti-dog',
         tags: ['tool'] as TagKey[],
     },
 });

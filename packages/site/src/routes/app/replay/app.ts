@@ -2,6 +2,7 @@ import { App } from '@omujs/omu';
 import { Identifier } from '@omujs/omu/identifier.js';
 import type { TagKey } from '../category.js';
 import { ORIGIN } from '../origin.js';
+import icon from './icon.png';
 
 export const IDENTIFIER = Identifier.fromKey('com.omuapps:replay');
 export const APP = new App(IDENTIFIER, {
@@ -16,7 +17,7 @@ export const APP = new App(IDENTIFIER, {
             en: 'Replay live streams.',
             ja: '配信をリプレイします。',
         },
-        icon: 'clock-play',
+        icon: icon,
         tags: ['tool', 'youtube', 'asset'] as TagKey[],
     },
 });

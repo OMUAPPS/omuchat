@@ -3,6 +3,7 @@ import { Identifier } from '@omujs/omu/identifier.js';
 import type { TagKey } from '../category.js';
 import thumbnail from './thumbnail.png';
 import { ORIGIN } from '../origin.js';
+import icon from './icon.png';
 
 export const IDENTIFIER = new Identifier('com.omuapps', 'translator');
 export const APP = new App(IDENTIFIER, {
@@ -17,7 +18,7 @@ export const APP = new App(IDENTIFIER, {
             en: 'Translate messages.',
             ja: 'メッセージを翻訳します。',
         },
-        icon: 'language-hiragana',
+        icon: icon,
         image: thumbnail,
         tags: ['tool'] as TagKey[],
     },

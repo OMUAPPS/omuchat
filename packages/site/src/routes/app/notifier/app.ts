@@ -9,7 +9,7 @@ export const APP = new App(IDENTIFIER, {
     metadata: {
         locale: 'en',
         name: 'Notifier',
-        icon: 'bell',
+        icon: 'ti-bell',
         tags: ['tool'] as TagKey[],
     },
 });
