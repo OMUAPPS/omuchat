@@ -41,7 +41,7 @@
         flex-direction: row;
         gap: 10px;
         align-items: center;
-        font-size: 18px;
+        font-size: 1rem;
         font-weight: 600;
     }
 
