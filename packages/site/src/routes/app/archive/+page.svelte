@@ -28,11 +28,7 @@
         <div class="settings">
             <div>
                 <h3>出力ディレクトリ</h3>
-                <input
-                    type="text"
-                    bind:value={$config.output_dir}
-                    on:input={() => ($config = { ...$config })}
-                />
+                <input type="text" bind:value={$config.output_dir} />
                 <button on:click={() => archiveApp.openOutputDir()}>
                     <i class="ti ti-folder-open" />
                 </button>
@@ -65,7 +61,7 @@
 <style lang="scss">
     main {
         display: flex;
-        height: 100%;
+        height: calc(100vh - 7rem);
         gap: 2rem;
         padding: 2rem;
         padding-top: 1rem;
@@ -98,9 +94,9 @@
     }
 
     .archive-list {
+        flex: 1;
         background: var(--color-bg-2);
         height: 100%;
-        overflow-y: scroll;
     }
 
     .yt-dlp-info {
