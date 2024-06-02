@@ -19,10 +19,10 @@
     <FlexRowWrapper widthFull between>
         <FlexRowWrapper>
             <div class="icon">
-                {#if icon && icon.startsWith('http')}
-                    <img src={icon} alt="icon" />
-                {:else}
+                {#if icon && icon.startsWith('ti-')}
                     <i class="ti ti-{icon ?? `box`}" />
+                {:else}
+                    <img src={icon} alt="icon" />
                 {/if}
             </div>
             <FlexColWrapper>

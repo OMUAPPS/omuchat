@@ -29,23 +29,19 @@
         alreadyAdded = !!(await appTable.get(app.key()));
     });
 
-    let tags: (Tag | string)[] = [];
-
-    $: {
-        tags =
-            app.metadata?.tags?.map((tag) => {
-                const tagData = REGISTRIES[tag];
-                if (tagData) {
-                    return tagData;
-                }
-                return tag;
-            }) || [];
-    }
+    $: tags =
+        app.metadata?.tags?.map((tag) => {
+            const tagData = REGISTRIES[tag];
+            if (tagData) {
+                return tagData;
+            }
+            return tag;
+        }) || [];
 </script>
 
 <article class:added={alreadyAdded}>
     {#if BROWSER && app.metadata?.image}
-        <img src={omu.i18n.translate(app.metadata.image)} alt="" />
+        <img src={omu.i18n.translate(app.metadata.image)} alt="" class="thumbnail" />
     {/if}
     <div class="overlay">
         <FlexRowWrapper baseline widthFull heightFull between>
@@ -54,7 +50,12 @@
                     <FlexRowWrapper alignItems="center" gap>
                         <span class="icon">
                             {#if BROWSER && app.metadata.icon}
-                                <i class="ti ti-{omu.i18n.translate(app.metadata.icon)}" />
+                                {@const icon = omu.i18n.translate(app.metadata.icon)}
+                                {#if icon.startsWith('ti-')}
+                                    <i class="ti {icon}" />
+                                {:else}
+                                    <img src={icon} alt="" />
+                                {/if}
                             {:else}
                                 <i class="ti ti-app" />
                             {/if}
@@ -125,7 +126,7 @@
         }
     }
 
-    img {
+    .thumbnail {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -151,6 +152,12 @@
         margin-right: 0.25rem;
         font-size: 1.25rem;
         background: var(--color-bg-2);
+
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
     }
 
     p {
