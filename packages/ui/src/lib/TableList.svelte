@@ -15,7 +15,7 @@
     export let component: ComponentType<SvelteComponent<{ entry: T; selected?: boolean }>>;
     export let filter: (key: string, entry: T) => boolean = () => true;
     export let sort: (a: T, b: T) => number = () => 0;
-    export let reverse: boolean = false;
+    export let reverse: boolean = true;
     export let initial: number = 40;
     export let limit = 400;
     export let fitHeight = false;
