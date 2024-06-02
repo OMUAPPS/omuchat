@@ -1,9 +1,10 @@
 <script lang="ts">
     import { type Component } from '@omujs/chat/models/content.js';
     import { Author, Message, Provider, Room, content } from '@omujs/chat/models/index.js';
-    import { FlexColWrapper, FlexRowWrapper, Header, MessageRenderer } from '@omujs/ui';
+    import { AppHeader, FlexColWrapper, FlexRowWrapper, Header, MessageRenderer } from '@omujs/ui';
     import { chat, omu } from './client.js';
     import ComponentEditor from './components/ComponentEditor.svelte';
+    import { APP } from './app.js';
 
     let component: Component = new content.Root([
         new content.Text('Hello, World!'),
@@ -57,7 +58,7 @@
     }
 </script>
 
-<Header title="テスター" icon="ti-text-size" />
+<AppHeader app={APP} />
 <main>
     <section>
         <FlexRowWrapper gap>
