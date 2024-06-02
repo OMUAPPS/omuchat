@@ -180,7 +180,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* **ui:** package.jsonのpublishConfig.accessをpublicに ([708a2bb](https://github.com/omuapps/dashboard/commit/708a2bbc325a73dc2e72a847f88856d729a14e7a))
+* **ui:** package.jsonのpublishConfig.accessをpublicに ([708a2bb](https://github.com/omuapps/omuapps/commit/708a2bbc325a73dc2e72a847f88856d729a14e7a))
 
 
 
@@ -202,7 +202,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
--   **omu:** assetのurlを取得する関数をpython側と同じように更新 ([e0ea52b](https://github.com/omuapps/dashboard/commit/e0ea52bd0b52033c010196881444f2e363e3d4da))
+-   **omu:** assetのurlを取得する関数をpython側と同じように更新 ([e0ea52b](https://github.com/omuapps/omuapps/commit/e0ea52bd0b52033c010196881444f2e363e3d4da))
 
 ## 0.1.1 (2024-03-18)
 
@@ -212,7 +212,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
--   **omu:** asset-extensionを強化 ([1db5eb5](https://github.com/omuapps/dashboard/commit/1db5eb5177ac2daa529181b7fbbe3e0d67a11c91))
+-   **omu:** asset-extensionを強化 ([1db5eb5](https://github.com/omuapps/omuapps/commit/1db5eb5177ac2daa529181b7fbbe3e0d67a11c91))
 
 ## 0.0.20 (2024-03-15)
 
@@ -250,12 +250,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package dashboard
 
-## [0.0.11](https://github.com/omuapps/dashboard/compare/v0.0.10...v0.0.11) (2024-02-14)
+## [0.0.11](https://github.com/omuapps/omuapps/compare/v0.0.10...v0.0.11) (2024-02-14)
 
 ### Bug Fixes
 
--   **omu:** ByteWriterが書き込むときバッファーが足りない問題を修正 ([2c4a9be](https://github.com/omuapps/dashboard/commit/2c4a9bef06150727b8824c15bcb254b5a9e577c8))
--   **omu:** registryの更新を受け取るのを忘れてた ([b62f272](https://github.com/omuapps/dashboard/commit/b62f2727a0435653675c6bd0ea6855707fdb51bd))
+-   **omu:** ByteWriterが書き込むときバッファーが足りない問題を修正 ([2c4a9be](https://github.com/omuapps/omuapps/commit/2c4a9bef06150727b8824c15bcb254b5a9e577c8))
+-   **omu:** registryの更新を受け取るのを忘れてた ([b62f272](https://github.com/omuapps/omuapps/commit/b62f2727a0435653675c6bd0ea6855707fdb51bd))
 
 ## 0.0.10 (2024-02-10)
 

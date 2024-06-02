@@ -9,16 +9,16 @@
 </p>
 <br/>
 <p align="center">
-    <a href="https://github.com/OMUAPPS/dashboard/issues">
-        <img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues/OMUAPPS/dashboard">
+    <a href="https://github.com/OMUAPPS/omuapps/issues">
+        <img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues/OMUAPPS/omuapps">
     </a>
-    <a href="https://github.com/OMUAPPS/dashboard/pulls">
-        <img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues-pr/OMUAPPS/dashboard">
+    <a href="https://github.com/OMUAPPS/omuapps/pulls">
+        <img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues-pr/OMUAPPS/omuapps">
     </a>
-    <a href="https://github.com/OMUAPPS/dashboard/blob/master/LICENSE">
-        <img alt="GitHub License" src="https://img.shields.io/github/license/OMUAPPS/dashboard">
+    <a href="https://github.com/OMUAPPS/omuapps/blob/master/LICENSE">
+        <img alt="GitHub License" src="https://img.shields.io/github/license/OMUAPPS/omuapps">
     </a>
-    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/OMUAPPS/dashboard">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/OMUAPPS/omuapps">
 </p>
 <br/>
 
