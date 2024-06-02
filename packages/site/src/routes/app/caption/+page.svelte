@@ -20,7 +20,7 @@
     export const omu = new Omu(APP);
     setClient(omu);
     const captionApp = new CaptionApp(omu);
-    const config = captionApp.config;
+    const { config, setCaption } = captionApp;
 
     if (BROWSER) {
         const recognition = new (webkitSpeechRecognition || SpeechRecognition)();
@@ -37,7 +37,7 @@
                 .flatMap((result) => [...result])
                 .map((result) => result.transcript);
             const final = event.results[event.results.length - 1].isFinal;
-            captionApp.setCaption({ texts, final });
+            setCaption({ texts, final });
         };
 
         recognition.onend = () => {
@@ -58,11 +58,6 @@
 
     function resetLang() {
         $config.lang = window.navigator.language as LanguageKey;
-        updateConfig();
-    }
-
-    function updateConfig() {
-        $config = { ...$config };
     }
 
     $: {
@@ -104,7 +99,6 @@
             defaultValue={$config.lang}
             handleChange={(key, value) => {
                 $config.lang = value;
-                updateConfig();
             }}
         />
         {#if BROWSER && $config.lang !== window.navigator.language}
@@ -128,7 +122,6 @@
                                         url: `https://fonts.googleapis.com/css2?family=${font}:ital,wght@0,400&directory=3&display=block`,
                                     },
                                 ];
-                                updateConfig();
                             }}
                         >
                             <link
@@ -161,28 +154,17 @@
                 <span class="font">
                     <span>
                         <small> ファミリー </small>
-                        <Textbox
-                            value={font.family}
-                            on:input={(value) => {
-                                $config.style.fonts[i].family = value.detail.value;
-                                updateConfig();
-                            }}
-                        />
+                        <Textbox bind:value={font.family} />
                     </span>
                     <span>
                         <small> URL </small>
-                        <Textbox
-                            value={font.url}
-                            on:input={(value) => {
-                                $config.style.fonts[i].url = value.detail.value;
-                                updateConfig();
-                            }}
-                        />
+                        <Textbox bind:value={font.url} />
                     </span>
                     <button
                         on:click={() => {
-                            $config.style.fonts.splice(i, 1);
-                            updateConfig();
+                            $config.style.fonts = $config.style.fonts.filter(
+                                (_, index) => index !== i,
+                            );
                         }}
                     >
                         削除
@@ -195,15 +177,7 @@
     <div>
         <div>
             <small> フォントサイズ </small>
-            <input
-                type="range"
-                min="10"
-                max="100"
-                step="1"
-                bind:value={$config.style.fontSize}
-                on:mouseup={updateConfig}
-                on:keyup={updateConfig}
-            />
+            <input type="range" min="10" max="100" step="1" bind:value={$config.style.fontSize} />
             {$config.style.fontSize}
         </div>
         <div>
@@ -214,8 +188,6 @@
                 max="900"
                 step="100"
                 bind:value={$config.style.fontWeight}
-                on:mouseup={updateConfig}
-                on:keyup={updateConfig}
             />
             {$config.style.fontWeight}
         </div>
@@ -229,7 +201,6 @@
                 on:click={() => {
                     $config.style.color = '#0B6F72';
                     $config.style.backgroundColor = '#FFFEFC';
-                    updateConfig();
                 }}
             >
                 色をリセット
@@ -239,11 +210,11 @@
     </h3>
     <div>
         <small> 背景色 </small>
-        <input type="color" bind:value={$config.style.backgroundColor} on:change={updateConfig} />
+        <input type="color" bind:value={$config.style.backgroundColor} />
     </div>
     <div>
         <small> 文字色 </small>
-        <input type="color" bind:value={$config.style.color} on:change={updateConfig} />
+        <input type="color" bind:value={$config.style.color} />
     </div>
 </section>
 <section class="preview">

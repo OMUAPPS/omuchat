@@ -9,7 +9,7 @@ export class CaptionApp {
     private readonly captionSignal: Signal<Caption>;
     public readonly config: Writable<Config>;
 
-    constructor(private readonly omu: Omu) {
+    constructor(omu: Omu) {
         this.captionSignal = omu.signal.get(CAPTION_SIGNAL);
         this.captionSignal.listen((caption) => {
             for (const listener of this.listeners) {
