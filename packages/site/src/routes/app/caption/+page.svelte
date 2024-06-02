@@ -29,6 +29,7 @@
         recognition.lang = $config.lang;
         config.subscribe((value) => {
             recognition.lang = value.lang;
+            recognition.stop();
         });
 
         recognition.onresult = (event) => {
