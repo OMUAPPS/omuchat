@@ -186,6 +186,8 @@ export class GlContext {
 
     constructor(public readonly gl: WebGL2RenderingContext) {}
 
+    public destroy(): void {}
+
     public static create(canvas: HTMLCanvasElement): GlContext {
         const gl = canvas.getContext('webgl2');
         if (gl == null) {

@@ -1,4 +1,4 @@
-import type { ShaderSource } from './glcontext.js';
+import type { ShaderSource } from '$lib/components/canvas/glcontext.js';
 
 export const LIVE_VERTEX_SHADER: ShaderSource = {
     source: `#version 300 es

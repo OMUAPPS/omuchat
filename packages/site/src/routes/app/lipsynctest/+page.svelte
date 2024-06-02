@@ -1,64 +1,25 @@
 <script lang="ts">
-    import { BROWSER } from 'esm-env';
+    import Canvas from '$lib/components/canvas/Canvas.svelte';
+    import type { GlBuffer, GlContext, GlProgram } from '$lib/components/canvas/glcontext.js';
     import { LINE_FRAGMENT_SHADER, LIVE_VERTEX_SHADER } from './shader.js';
-    import { GlContext } from './glcontext.js';
-    import { onMount } from 'svelte';
-    import { data } from './vowels.js';
+    import { Spectrum } from './spectrum.js';
+    import { vowels } from './vowels.js';
 
-    let canvas: HTMLCanvasElement;
-    let requestId: number | null = null;
-    let glContext: GlContext;
-    let gl: WebGL2RenderingContext;
-    let width: number;
-    let height: number;
-
-    $: if (canvas) {
-        glContext = GlContext.create(canvas);
-        gl = glContext.gl;
-    }
-
-    let timeDomainArray: Float32Array;
-    let frequencyArray: Float32Array;
-    let vowels: {
-        [key: string]: Float32Array | null;
-    } = {
-        a: new Float32Array(data.a),
-        i: new Float32Array(data.i),
-        u: new Float32Array(data.u),
-        e: new Float32Array(data.e),
-        o: new Float32Array(data.o),
-        n: new Float32Array(data.n),
-        breath1: new Float32Array(data.breath1),
-        breath2: new Float32Array(data.breath2),
-        breath3: new Float32Array(data.breath3),
-    };
-    let vowelDotProduct: { [key: string]: number } = {};
+    let spectrum: Spectrum;
     let loudness: number;
+    let highestVowel = { key: '', value: 0 };
+    let vowelScores: { key: string; value: number }[] = [];
 
-    function normalize(a: Float32Array) {
-        const magnitude = Math.sqrt(a.reduce((acc, x) => acc + x * x, 0));
-        return a.map((x) => x / magnitude);
-    }
-
-    function dotProduct(a: Float32Array, b: Float32Array) {
-        return a.reduce((acc, x, i) => acc + x * b[i], 0);
-    }
-
-    function updateVowelDotProduct(frequencyArray: Float32Array) {
-        const normalized = normalize(frequencyArray);
-        for (const [key, value] of Object.entries(vowels)) {
+    function updateScores(spectrum: Spectrum) {
+        const vowelDotProduct: { [key: string]: number } = {};
+        for (const [key, value] of vowels.entries()) {
             if (value) {
-                vowelDotProduct[key] = dotProduct(normalized, normalize(value));
+                vowelDotProduct[key] = spectrum.normalize().dot(value.normalize());
             } else {
                 vowelDotProduct[key] = 0;
             }
         }
-    }
 
-    let highestVowel = { key: '', value: 0 };
-    let vowelScores: { key: string; value: number }[] = [];
-
-    $: {
         const scores = Object.entries(vowelDotProduct)
             .map(([key, value]) => ({ key, value }))
             .sort((a, b) => b.value - a.value);
@@ -84,96 +45,86 @@
         }
     }
 
-    async function init() {
+    let analyzer: AnalyserNode;
+    let program: GlProgram;
+    let timeDomainArray: Float32Array;
+    let frequencyArray: Float32Array;
+    let timeDomainVbo: GlBuffer;
+    let frequencyVbo: GlBuffer;
+
+    async function init(glContext: GlContext) {
         const audioCtx = new AudioContext();
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const input = audioCtx.createMediaStreamSource(stream);
-        const analyzer = audioCtx.createAnalyser();
+        analyzer = audioCtx.createAnalyser();
         analyzer.fftSize = Math.pow(2, 10);
-        analyzer.smoothingTimeConstant = 0.8;
+        analyzer.smoothingTimeConstant = 0.7;
         input.connect(analyzer);
 
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-
-        const program = glContext.createProgram([
+        glContext.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        program = glContext.createProgram([
             glContext.createShader(LIVE_VERTEX_SHADER),
             glContext.createShader(LINE_FRAGMENT_SHADER),
         ]);
 
         timeDomainArray = new Float32Array(analyzer.fftSize);
         frequencyArray = new Float32Array(analyzer.frequencyBinCount);
-        const timeDomainVbo = glContext.createBuffer();
-        const frequencyVbo = glContext.createBuffer();
+        timeDomainVbo = glContext.createBuffer();
+        frequencyVbo = glContext.createBuffer();
         timeDomainVbo.bind(() => {
             timeDomainVbo.setData(timeDomainArray, 'dynamic');
         });
         frequencyVbo.bind(() => {
             frequencyVbo.setData(frequencyArray, 'dynamic');
         });
+    }
 
-        const render = () => {
-            program.use(() => {
-                const u_length = program.getUniform('u_length');
-                const u_minValue = program.getUniform('u_minValue');
-                const u_maxValue = program.getUniform('u_maxValue');
-                const u_color = program.getUniform('u_color');
-                u_length.set1f(timeDomainArray.length);
-                u_minValue.set1f(-1.0);
-                u_maxValue.set1f(1.0);
-                u_color.set3f(1.0, 0.0, 0.0);
+    async function render(glContext: GlContext) {
+        const { gl } = glContext;
+        program.use(() => {
+            const u_length = program.getUniform('u_length');
+            const u_minValue = program.getUniform('u_minValue');
+            const u_maxValue = program.getUniform('u_maxValue');
+            const u_color = program.getUniform('u_color');
+            u_length.set1f(timeDomainArray.length);
+            u_minValue.set1f(-1.0);
+            u_maxValue.set1f(1.0);
+            u_color.set3f(1.0, 0.0, 0.0);
 
-                analyzer.getFloatTimeDomainData(timeDomainArray);
-                timeDomainVbo.bind(() => {
-                    timeDomainVbo.setSubData(timeDomainArray, 0);
-                    gl.enableVertexAttribArray(0);
-                    gl.vertexAttribPointer(0, 1, gl.FLOAT, false, 0, 0);
-                    gl.drawArrays(gl.LINE_STRIP, 0, timeDomainArray.length);
-                });
-
-                u_length.set1f(frequencyArray.length);
-                u_minValue.set1f(analyzer.minDecibels);
-                u_maxValue.set1f(analyzer.maxDecibels);
-                u_color.set3f(0.0, 0.0, 1.0);
-
-                analyzer.getFloatFrequencyData(frequencyArray);
-                frequencyVbo.bind(() => {
-                    frequencyVbo.setSubData(frequencyArray, 0);
-                    gl.enableVertexAttribArray(0);
-                    gl.vertexAttribPointer(0, 1, gl.FLOAT, false, 0, 0);
-                    gl.drawArrays(gl.LINE_STRIP, 0, frequencyArray.length);
-                });
+            analyzer.getFloatTimeDomainData(timeDomainArray);
+            timeDomainVbo.bind(() => {
+                timeDomainVbo.setSubData(timeDomainArray, 0);
+                gl.enableVertexAttribArray(0);
+                gl.vertexAttribPointer(0, 1, gl.FLOAT, false, 0, 0);
+                gl.drawArrays(gl.LINE_STRIP, 0, timeDomainArray.length);
             });
 
-            loudness = timeDomainArray.reduce((acc, x) => acc + x * x, 0);
-            updateVowelDotProduct(frequencyArray);
+            u_length.set1f(frequencyArray.length);
+            u_minValue.set1f(analyzer.minDecibels);
+            u_maxValue.set1f(analyzer.maxDecibels);
+            u_color.set3f(0.0, 0.0, 1.0);
 
-            requestId = requestAnimationFrame(render);
-        };
+            analyzer.getFloatFrequencyData(frequencyArray);
+            frequencyVbo.bind(() => {
+                frequencyVbo.setSubData(frequencyArray, 0);
+                gl.enableVertexAttribArray(0);
+                gl.vertexAttribPointer(0, 1, gl.FLOAT, false, 0, 0);
+                gl.drawArrays(gl.LINE_STRIP, 0, frequencyArray.length);
+            });
+        });
 
-        requestId = requestAnimationFrame(render);
+        loudness = timeDomainArray.reduce((acc, x) => acc + x * x, 0);
+        spectrum = new Spectrum(frequencyArray.slice()).normalize();
+        updateScores(spectrum);
     }
 
-    function resize() {
-        if (requestId != null) {
-            cancelAnimationFrame(requestId);
+    function copy() {
+        const lines = [] as string[];
+        for (const [key, value] of vowels.entries()) {
+            lines.push(`vowels.set('${key}', Spectrum.deserialize(\`${value.serialize()}\`));`);
         }
-        gl.viewport(0.0, 0.0, canvas.width, canvas.height);
-        requestId = requestAnimationFrame(render);
-    }
-
-    function copyToClipboard() {
-        const data = JSON.stringify(
-            Object.fromEntries(
-                Object.entries(vowels).map(([key, value]) => [key, Array.from(value!)]),
-            ),
-        );
-        navigator.clipboard.writeText(data);
-    }
-
-    if (BROWSER) {
-        onMount(() => {
-            init();
-            resize();
+        document.addEventListener('click', async () => {
+            await navigator.clipboard.writeText(lines.join('\n'));
         });
     }
 </script>
@@ -183,45 +134,44 @@
     <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<canvas
-    bind:this={canvas}
-    {width}
-    {height}
-    bind:clientWidth={width}
-    bind:clientHeight={height}
-    on:resize={resize}
-/>
-{#each Object.entries(vowelDotProduct) as [key, value]}
-    <div>
-        <button
-            on:click={() => {
-                vowels[key] = frequencyArray.slice();
-            }}
-        >
-            set
-        </button>
-        {key}: {vowelScores.find((v) => v.key === key)?.value.toFixed(2)}
-        <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={vowelScores.find((v) => v.key === key)?.value}
-        />
-    </div>
-{/each}
-{#if highestVowel.value > 0.5}
-    <div class="highest">
-        {highestVowel.key}
-    </div>
-{/if}
-<div>loudness: {loudness}</div>
-<button on:click={copyToClipboard}>copy</button>
+<main>
+    <Canvas init={(ctx) => init(ctx)} render={(ctx) => render(ctx)} />
+    {#each vowels.keys() as key}
+        <div class="vowel">
+            <div>
+                {key}: {vowelScores.find((v) => v.key === key)?.value.toFixed(2)}
+                <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={vowelScores.find((v) => v.key === key)?.value}
+                />
+            </div>
+            <button
+                on:click={() => {
+                    vowels.set(key, spectrum);
+                }}
+            >
+                set
+            </button>
+        </div>
+    {/each}
+    {#if highestVowel.value > 0.5}
+        <div class="highest">
+            {highestVowel.key}
+        </div>
+    {/if}
+    <div>loudness: {loudness}</div>
+    <button on:click={() => copy()}>copy</button>
+</main>
 
 <style lang="scss">
-    canvas {
-        width: 100%;
-        height: 100%;
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
     }
 
     .highest {
@@ -230,5 +180,12 @@
         left: 50%;
         transform: translate(-50%, -50%);
         font-size: 5rem;
+    }
+
+    .vowel {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 0.5rem;
     }
 </style>
