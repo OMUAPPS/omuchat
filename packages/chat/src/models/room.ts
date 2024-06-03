@@ -11,6 +11,8 @@ export type MetadataJson = {
     created_at?: string;
     started_at?: string;
     ended_at?: string;
+    first_message_id?: string;
+    last_message_id?: string;
 };
 
 export type Status = 'online' | 'reserved' | 'offline';
@@ -20,7 +22,7 @@ export type RoomJson = {
     provider_id: string;
     connected: boolean;
     status: Status;
-    metadata?: MetadataJson;
+    metadata: MetadataJson;
     channel_id?: string;
     created_at: string; // ISO 8601 date string
 };
@@ -30,7 +32,7 @@ export class Room implements Model<RoomJson>, Keyable, Timestamped {
     public providerId: Identifier;
     public connected: boolean;
     public status: Status;
-    public metadata?: MetadataJson;
+    public metadata: MetadataJson;
     public channelId?: string;
     public createdAt: Date;
 
@@ -39,7 +41,7 @@ export class Room implements Model<RoomJson>, Keyable, Timestamped {
         providerId: Identifier;
         connected: boolean;
         status: Status;
-        metadata?: MetadataJson;
+        metadata: MetadataJson;
         channelId?: string;
         createdAt: Date;
     }) {
