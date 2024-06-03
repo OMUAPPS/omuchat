@@ -4,9 +4,7 @@ import { Identifier } from '../../identifier.js';
 import type { TableConfig } from './table.js';
 
 export class TablePacket {
-    constructor(
-        public readonly id: Identifier,
-    ) { }
+    constructor(public readonly id: Identifier) {}
 
     public static serialize(packet: TablePacket): Uint8Array {
         const writer = new ByteWriter();
@@ -25,7 +23,7 @@ export class TableItemsPacket {
     constructor(
         public readonly id: Identifier,
         public readonly items: Record<string, Uint8Array>,
-    ) { }
+    ) {}
 
     public static serialize(packet: TableItemsPacket): Uint8Array {
         const writer = new ByteWriter();
@@ -56,7 +54,7 @@ export class TableKeysPacket {
     constructor(
         public readonly id: Identifier,
         public readonly keys: string[],
-    ) { }
+    ) {}
 
     public static serialize(packet: TableKeysPacket): Uint8Array {
         const writer = new ByteWriter();
@@ -85,7 +83,7 @@ export class TableProxyPacket {
         public readonly id: Identifier,
         public readonly items: Record<string, Uint8Array>,
         public readonly key: number,
-    ) { }
+    ) {}
 
     public static serialize(packet: TableProxyPacket): Uint8Array {
         const writer = new ByteWriter();
@@ -119,7 +117,7 @@ export class TableFetchPacket {
         public readonly before: number | null,
         public readonly after: number | null,
         public readonly cursor: string | null,
-    ) { }
+    ) {}
 
     public static serialize(packet: TableFetchPacket): Uint8Array {
         const writer = new ByteWriter();
@@ -151,17 +149,42 @@ export class TableFetchPacket {
         const reader = new ByteReader(data);
         const id = Identifier.fromKey(reader.readString());
         const flags = reader.readByte();
-        const before = (flags & 0b1) ? reader.readInt() : null;
-        const after = (flags & 0b10) ? reader.readInt() : null;
-        const cursor = (flags & 0b100) ? reader.readString() : null;
+        const before = flags & 0b1 ? reader.readInt() : null;
+        const after = flags & 0b10 ? reader.readInt() : null;
+        const cursor = flags & 0b100 ? reader.readString() : null;
         return new TableFetchPacket(id, before, after, cursor);
     }
 }
+
+export class TableFetchRangePacket {
+    constructor(
+        public readonly id: Identifier,
+        public readonly start: string,
+        public readonly end: string,
+    ) {}
+
+    public static serialize(packet: TableFetchRangePacket): Uint8Array {
+        const writer = new ByteWriter();
+        writer.writeString(packet.id.key());
+        writer.writeString(packet.start);
+        writer.writeString(packet.end);
+        return writer.finish();
+    }
+
+    public static deserialize(data: Uint8Array): TableFetchRangePacket {
+        const reader = new ByteReader(data);
+        const id = Identifier.fromKey(reader.readString());
+        const start = reader.readString();
+        const end = reader.readString();
+        return new TableFetchRangePacket(id, start, end);
+    }
+}
+
 export class SetConfigPacket {
     constructor(
         public readonly id: Identifier,
         public readonly config: TableConfig,
-    ) { }
+    ) {}
 
     public static serialize(packet: SetConfigPacket): Uint8Array {
         const writer = new ByteWriter();
@@ -186,7 +209,7 @@ export class SetPermissionPacket {
         public readonly write: Identifier | null,
         public readonly remove: Identifier | null,
         public readonly proxy: Identifier | null,
-    ) { }
+    ) {}
 
     public static serialize(packet: SetPermissionPacket): Uint8Array {
         const writer = new ByteWriter();
@@ -220,18 +243,11 @@ export class SetPermissionPacket {
         const reader = new ByteReader(data);
         const id = Identifier.fromKey(reader.readString());
         const flags = reader.readByte();
-        const all = (flags & 0b1) ? Identifier.fromKey(reader.readString()) : null;
-        const read = (flags & 0b10) ? Identifier.fromKey(reader.readString()) : null;
-        const write = (flags & 0b100) ? Identifier.fromKey(reader.readString()) : null;
-        const remove = (flags & 0b1000) ? Identifier.fromKey(reader.readString()) : null;
-        const proxy = (flags & 0b10000) ? Identifier.fromKey(reader.readString()) : null;
-        return new SetPermissionPacket(
-            id,
-            all,
-            read,
-            write,
-            remove,
-            proxy,
-        );
+        const all = flags & 0b1 ? Identifier.fromKey(reader.readString()) : null;
+        const read = flags & 0b10 ? Identifier.fromKey(reader.readString()) : null;
+        const write = flags & 0b100 ? Identifier.fromKey(reader.readString()) : null;
+        const remove = flags & 0b1000 ? Identifier.fromKey(reader.readString()) : null;
+        const proxy = flags & 0b10000 ? Identifier.fromKey(reader.readString()) : null;
+        return new SetPermissionPacket(id, all, read, write, remove, proxy);
     }
 }

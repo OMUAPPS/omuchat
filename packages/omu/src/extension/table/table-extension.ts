@@ -15,6 +15,7 @@ import {
     SetConfigPacket,
     SetPermissionPacket,
     TableFetchPacket,
+    TableFetchRangePacket,
     TableItemsPacket,
     TableKeysPacket,
     TablePacket,
@@ -88,6 +89,15 @@ const TABLE_FETCH_ENDPOINT = EndpointType.createSerialized<TableFetchPacket, Tab
         permissionId: TABLE_PERMISSION_ID,
     },
 );
+const TABLE_FETCH_RANGE_ENDPOINT = EndpointType.createSerialized<
+    TableFetchRangePacket,
+    TableItemsPacket
+>(TABLE_EXTENSION_TYPE, {
+    name: 'fetch_range',
+    requestSerializer: TableFetchRangePacket,
+    responseSerializer: TableItemsPacket,
+    permissionId: TABLE_PERMISSION_ID,
+});
 const TABLE_FETCH_ALL_ENDPOINT = EndpointType.createSerialized<TablePacket, TableItemsPacket>(
     TABLE_EXTENSION_TYPE,
     {
@@ -414,6 +424,23 @@ class TableImpl<T> implements Table<T> {
             TABLE_FETCH_ENDPOINT,
             new TableFetchPacket(this.id, before, after, cursor ?? null),
         );
+        const items = this.deserializeItems(res.items);
+        this.updateCache(items);
+        return items;
+    }
+
+    public async fetchRange({
+        start,
+        end,
+    }: {
+        start?: string | undefined;
+        end?: string | undefined;
+    }): Promise<Map<string, T>> {
+        const res = await this.client.endpoints.call(TABLE_FETCH_RANGE_ENDPOINT, {
+            id: this.id,
+            start,
+            end,
+        });
         const items = this.deserializeItems(res.items);
         this.updateCache(items);
         return items;

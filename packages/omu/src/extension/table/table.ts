@@ -29,6 +29,7 @@ export interface Table<T> {
         after?: number;
         cursor?: string;
     }): Promise<Map<string, T>>;
+    fetchRange({ start, end }: { start?: string; end?: string }): Promise<Map<string, T>>;
     fetchAll(): Promise<Map<string, T>>;
     iterate({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T>;
     size(): Promise<number>;
@@ -47,7 +48,7 @@ export type TableEvents<T> = {
     remove: EventEmitter<(items: Map<string, T>) => void>;
     clear: EventEmitter<() => void>;
     cacheUpdate: EventEmitter<(items: Map<string, T>) => void>;
-}
+};
 
 export type TablePermissions = {
     all?: Identifier;
@@ -63,7 +64,7 @@ export class TableType<T> {
         public serializer: Serializable<T, Uint8Array>,
         public keyFunction: (item: T) => string,
         public permissions?: TablePermissions,
-    ) { }
+    ) {}
 
     public static createModel<T extends Keyable & Model<D>, D = unknown>(
         identifier: Identifier | ExtensionType,
