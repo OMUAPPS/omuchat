@@ -56,7 +56,7 @@ export class TableEvent<T> extends ListenerEvent<[Map<string, T>]> {
 
         const subscribe = (emit: EventHandler<[T]>, chat: Chat): Unlisten => {
             const listener = getListener(this.getTable(chat));
-            batchWrapper = TableEvent.createBatchWrapper(emit);
+            batchWrapper = TableEvent.createBatchWrapper((item) => emit(item));
             return listener.listen(batchWrapper);
         };
 
@@ -81,7 +81,7 @@ export class EventRegistry {
     }
 
     public register<P extends Array<any>>(event: EventSource<P>, handler: EventHandler<P>): void {
-        let entry = this.events.get(event);
+        let entry = this.events.get(event) as Entry<P> | null;
         if (!entry) {
             const newEntry: Entry<P> = {
                 source: event,
@@ -89,8 +89,8 @@ export class EventRegistry {
             };
             entry = newEntry;
             this.events.set(event, newEntry);
-            event.subscribe(newEntry.listeners.emit, this.chat);
+            event.subscribe((...args) => newEntry.listeners.emit(...args), this.chat);
         }
-        entry.listeners.listen(handler);
+        entry.listeners.listen((...args) => handler(...args));
     }
 }
