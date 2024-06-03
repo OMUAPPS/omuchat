@@ -17,9 +17,9 @@ import type { PacketType } from './network/packet/packet.js';
 import type { TokenProvider } from './token.js';
 
 export type ClientEvents = {
-    started: EventEmitter<() => void>;
-    stopped: EventEmitter<() => void>;
-    ready: EventEmitter<() => void>;
+    started: EventEmitter<[]>;
+    stopped: EventEmitter<[]>;
+    ready: EventEmitter<[]>;
 };
 
 export interface Client {

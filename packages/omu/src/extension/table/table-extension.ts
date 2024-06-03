@@ -199,11 +199,11 @@ class TableImpl<T> implements Table<T> {
         this.keyFunction = tableType.keyFunction;
         this.cache = new Map();
         this.event = {
-            add: new EventEmitter<(items: Map<string, T>) => void>(),
-            update: new EventEmitter<(items: Map<string, T>) => void>(),
-            remove: new EventEmitter<(items: Map<string, T>) => void>(),
-            clear: new EventEmitter<() => void>(),
-            cacheUpdate: new EventEmitter<(items: Map<string, T>) => void>(),
+            add: new EventEmitter<[Map<string, T>]>(),
+            update: new EventEmitter<[Map<string, T>]>(),
+            remove: new EventEmitter<[Map<string, T>]>(),
+            clear: new EventEmitter<[]>(),
+            cacheUpdate: new EventEmitter<[Map<string, T>]>(),
         };
         this.promiseMap = new Map();
         this.proxies = [];

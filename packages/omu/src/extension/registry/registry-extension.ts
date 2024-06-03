@@ -53,7 +53,7 @@ export class RegistryExtension implements Extension {
 }
 
 class RegistryImpl<T> implements Registry<T> {
-    private readonly eventEmitter: EventEmitter<(value: T) => void> = new EventEmitter();
+    private readonly eventEmitter: EventEmitter<[T]> = new EventEmitter();
     private listening = false;
     public value: T;
 

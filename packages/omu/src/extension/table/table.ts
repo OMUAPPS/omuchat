@@ -43,11 +43,11 @@ export interface Table<T> {
 }
 
 export type TableEvents<T> = {
-    add: EventEmitter<(items: Map<string, T>) => void>;
-    update: EventEmitter<(items: Map<string, T>) => void>;
-    remove: EventEmitter<(items: Map<string, T>) => void>;
-    clear: EventEmitter<() => void>;
-    cacheUpdate: EventEmitter<(items: Map<string, T>) => void>;
+    add: EventEmitter<[Map<string, T>]>;
+    update: EventEmitter<[Map<string, T>]>;
+    remove: EventEmitter<[Map<string, T>]>;
+    clear: EventEmitter<[]>;
+    cacheUpdate: EventEmitter<[Map<string, T>]>;
 };
 
 export type TablePermissions = {

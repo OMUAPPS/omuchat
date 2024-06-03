@@ -20,7 +20,7 @@ import type { Packet, PacketType } from './packet/packet.js';
 
 type PacketHandler<T> = {
     readonly type: PacketType<T>;
-    event: EventEmitter<(packet: T) => void>;
+    event: EventEmitter<[T]>;
 };
 
 export enum NetworkStatus {
@@ -35,10 +35,10 @@ export enum NetworkStatus {
 export class Network {
     public status: NetworkStatus = NetworkStatus.DISCONNECTED;
     public readonly event = {
-        connected: new EventEmitter<() => void>(),
-        disconnected: new EventEmitter<() => void>(),
-        packet: new EventEmitter<(packet: Packet) => void>(),
-        status: new EventEmitter<(status: NetworkStatus) => void>(),
+        connected: new EventEmitter<[]>(),
+        disconnected: new EventEmitter<[]>(),
+        packet: new EventEmitter<[Packet]>(),
+        status: new EventEmitter<[NetworkStatus]>(),
     };
     private readonly tasks: Array<() => Promise<void> | void> = [];
     private readonly packetMapper = new PacketMapper();
