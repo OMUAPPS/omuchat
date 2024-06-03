@@ -20,7 +20,7 @@
     export const omu = new Omu(APP);
     setClient(omu);
     const captionApp = new CaptionApp(omu);
-    const { config, setCaption } = captionApp;
+    const { config } = captionApp;
 
     if (BROWSER) {
         const recognition = new (webkitSpeechRecognition || SpeechRecognition)();
@@ -37,7 +37,7 @@
                 .flatMap((result) => [...result])
                 .map((result) => result.transcript);
             const final = event.results[event.results.length - 1].isFinal;
-            setCaption({ texts, final });
+            captionApp.setCaption({ texts, final });
         };
 
         recognition.onend = () => {
