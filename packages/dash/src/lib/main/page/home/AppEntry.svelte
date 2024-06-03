@@ -25,7 +25,7 @@
         <FlexRowWrapper>
             <div class="icon">
                 {#if icon && icon.startsWith('ti-')}
-                    <i class="ti ti-{icon ?? `box`}" />
+                    <i class="ti {icon ?? `box`}" />
                 {:else}
                     <img src={icon} alt="icon" />
                 {/if}
