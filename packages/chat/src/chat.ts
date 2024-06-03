@@ -7,7 +7,9 @@ import { TableType } from '@omujs/omu/extension/table/index.js';
 import { Serializer } from '@omujs/omu/serializer.js';
 
 import { IDENTIFIER } from './const.js';
-import { Reaction, Author, Channel, Message, Provider, Room } from './models/index.js';
+import type { EventHandler, EventSource } from './event/event.js';
+import { EventRegistry } from './event/event.js';
+import { Author, Channel, Message, Provider, Reaction, Room } from './models/index.js';
 import {
     CHAT_CHANNEL_TREE_PERMISSION_ID,
     CHAT_PERMISSION_ID,
@@ -73,16 +75,18 @@ const REACTION_SIGNAL = SignalType.createJson(IDENTIFIER, {
 });
 
 export class Chat {
-    readonly messages: Table<Message>;
-    readonly authors: Table<Author>;
-    readonly channels: Table<Channel>;
-    readonly providers: Table<Provider>;
-    readonly rooms: Table<Room>;
-    readonly reactionSignal: Signal<Reaction>;
+    public readonly messages: Table<Message>;
+    public readonly authors: Table<Author>;
+    public readonly channels: Table<Channel>;
+    public readonly providers: Table<Provider>;
+    public readonly rooms: Table<Room>;
+    public readonly reactionSignal: Signal<Reaction>;
+    private readonly eventRegistry: EventRegistry;
 
     constructor(private readonly client: Client) {
         client.server.require(IDENTIFIER);
         client.permissions.require(CHAT_PERMISSION_ID);
+        this.eventRegistry = new EventRegistry(this);
         this.messages = client.tables.get(MESSAGE_TABLE_TYPE);
         this.authors = client.tables.get(AUTHOR_TABLE_TYPE);
         this.channels = client.tables.get(CHANNEL_TABLE_TYPE);
@@ -93,7 +97,11 @@ export class Chat {
         this.authors.setCacheSize(500);
     }
 
-    async createChannelTree(url: string): Promise<Channel[]> {
+    public async createChannelTree(url: string): Promise<Channel[]> {
         return await this.client.endpoints.call(CREATE_CHANNEL_TREE_ENDPOINT, url);
+    }
+
+    public on<P extends Array<any>>(event: EventSource<P>, handler: EventHandler<P>): void {
+        this.eventRegistry.register(event, handler);
     }
 }
