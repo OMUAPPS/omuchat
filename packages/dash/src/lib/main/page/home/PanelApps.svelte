@@ -1,9 +1,7 @@
 <script lang="ts">
-    import { DEV } from 'esm-env';
     import AppEntry from './AppEntry.svelte';
 
     import { dashboard } from '$lib/client.js';
-    import { t } from '$lib/i18n/i18n-context.js';
     import type { App } from '@omujs/omu';
     import { TableList } from '@omujs/ui';
 
@@ -11,11 +9,7 @@
 </script>
 
 <div class="container">
-    <TableList table={dashboard.apps} component={AppEntry} fitHeight={true} {filter} />
-    <a href={DEV ? 'http://localhost:5173' : 'https://omuapps.com/'} target="_blank">
-        {$t('panels.apps.found_apps')}
-        <i class="ti ti-external-link" />
-    </a>
+    <TableList table={dashboard.apps} component={AppEntry} {filter} />
 </div>
 
 <style lang="scss">
@@ -23,18 +17,6 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        overflow-y: auto;
         background: var(--color-bg-1);
-    }
-
-    a {
-        width: fit-content;
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: none;
-
-        &:hover {
-            border-bottom: 1px solid var(--color-1);
-        }
     }
 </style>
