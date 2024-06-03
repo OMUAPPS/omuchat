@@ -1,12 +1,13 @@
 <script lang="ts">
     import { page } from '$app/stores';
+    import { Chat } from '@omujs/chat';
+    import { CHAT_REACTION_PERMISSION_ID } from '@omujs/chat/permissions.js';
     import { App, Omu } from '@omujs/omu';
     import { setClient } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { IDENTIFIER } from '../app.js';
     import ReactionOverlay from '../components/ReactionRenderer.svelte';
     import { ReactionApp } from '../reaction.js';
-    import { Chat } from '@omujs/chat';
 
     let assetId = BROWSER && $page.url.searchParams.get('assetId');
     const id = assetId || Date.now().toString();
@@ -16,10 +17,10 @@
     const omu = new Omu(app);
     const chat = new Chat(omu);
     setClient(omu);
-    omu.permissions.require('com.omuapps:chatprovider/youtube/reaction');
     let reactionApp = new ReactionApp(omu, chat);
 
     if (BROWSER) {
+        omu.permissions.require(CHAT_REACTION_PERMISSION_ID);
         omu.start();
     }
 </script>

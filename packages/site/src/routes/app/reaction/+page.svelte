@@ -1,25 +1,30 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { Identifier } from '@omujs/omu/identifier.js';
-    import { AppHeader, ButtonMini, DragLink, FileDrop, FlexRowWrapper, Tooltip } from '@omujs/ui';
-    import { BROWSER } from 'esm-env';
-    import ReactionRenderer from './components/ReactionRenderer.svelte';
-    import { ReactionApp } from './reaction.js';
-    import { Omu } from '@omujs/omu';
-    import { ASSET_UPLOAD_PERMISSION_ID } from '@omujs/omu/extension/asset/asset-extension.js';
-    import { setClient } from '@omujs/ui';
-    import { APP, IDENTIFIER } from './app.js';
     import { Chat } from '@omujs/chat';
     import { Reaction } from '@omujs/chat/models/reaction.js';
     import { CHAT_REACTION_PERMISSION_ID } from '@omujs/chat/permissions.js';
+    import { Omu } from '@omujs/omu';
+    import { ASSET_UPLOAD_PERMISSION_ID } from '@omujs/omu/extension/asset/asset-extension.js';
+    import { Identifier } from '@omujs/omu/identifier.js';
+    import {
+        AppHeader,
+        ButtonMini,
+        DragLink,
+        FileDrop,
+        FlexRowWrapper,
+        Tooltip,
+        setClient,
+    } from '@omujs/ui';
+    import { BROWSER } from 'esm-env';
+    import { APP, IDENTIFIER } from './app.js';
+    import ReactionRenderer from './components/ReactionRenderer.svelte';
+    import { ReactionApp } from './reaction.js';
 
     const omu = new Omu(APP);
     const chat = new Chat(omu);
     const reactionApp = new ReactionApp(omu, chat);
     const { replaces } = reactionApp;
     setClient(omu);
-
-    omu.permissions.require(ASSET_UPLOAD_PERMISSION_ID, CHAT_REACTION_PERMISSION_ID);
 
     function test() {
         const reaction = new Reaction({
@@ -48,6 +53,7 @@
     }
 
     if (BROWSER) {
+        omu.permissions.require(ASSET_UPLOAD_PERMISSION_ID, CHAT_REACTION_PERMISSION_ID);
         omu.start();
     }
 </script>
