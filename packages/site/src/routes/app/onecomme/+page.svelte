@@ -3,6 +3,7 @@
     import { AppHeader, setClient } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { APP } from './app.js';
+    import AppPage from '$lib/components/AppPage.svelte';
 
     export const omu = new Omu(APP);
     setClient(omu);
@@ -16,4 +17,8 @@
     }
 </script>
 
-<AppHeader app={APP} />
+<AppPage>
+    <header slot="header">
+        <AppHeader app={APP} />
+    </header>
+</AppPage>

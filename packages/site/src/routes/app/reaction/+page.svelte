@@ -19,6 +19,7 @@
     import { APP, IDENTIFIER } from './app.js';
     import ReactionRenderer from './components/ReactionRenderer.svelte';
     import { ReactionApp } from './reaction.js';
+    import AppPage from '$lib/components/AppPage.svelte';
 
     const omu = new Omu(APP);
     const chat = new Chat(omu);
@@ -58,77 +59,83 @@
     }
 </script>
 
-<AppHeader app={omu.app} />
-<main>
-    <div class="preview">
-        <ReactionRenderer {omu} {reactionApp} />
-    </div>
-    <h3>リアクションをテストする</h3>
-    <section>
-        <FlexRowWrapper gap>
-            <button on:click={test}>
-                <i class="ti ti-player-play" />
-                テスト
-            </button>
-        </FlexRowWrapper>
-    </section>
+<AppPage>
+    <header slot="header">
+        <AppHeader app={APP} />
+    </header>
+    <main>
+        <div class="preview">
+            <ReactionRenderer {omu} {reactionApp} />
+        </div>
+        <h3>リアクションをテストする</h3>
+        <section>
+            <FlexRowWrapper gap>
+                <button on:click={test}>
+                    <i class="ti ti-player-play" />
+                    テスト
+                </button>
+            </FlexRowWrapper>
+        </section>
 
-    <h3>OBSに貼り付ける</h3>
-    <section>
-        {#if BROWSER}
-            <DragLink
-                href={() => {
-                    const url = new URL($page.url);
-                    url.pathname = `${url.pathname}asset`;
-                    url.searchParams.set('assetId', Date.now().toString());
-                    return url;
-                }}
-            >
-                <h3 slot="preview" class="drag-preview">
-                    これをOBSにドロップ
-                    <i class="ti ti-upload" />
-                </h3>
-                <div class="drag">
-                    <i class="ti ti-drag-drop" />
-                    ここをOBSにドラッグ&ドロップ
-                </div>
-            </DragLink>
-        {/if}
-    </section>
-
-    <h3>画像を置き換える</h3>
-    <section>
-        {#each Object.entries($replaces) as [key, assetId]}
-            <div class="replace-entry">
-                <FlexRowWrapper alignItems="center" gap>
-                    <h1>
-                        {key}
-                    </h1>
-                    {#if assetId}
-                        <i class="ti ti-chevron-right" />
-                        <img
-                            src={omu.assets.url(Identifier.fromKey(assetId), { noCache: true })}
-                            alt={key}
-                            class="replace-image"
-                        />
-                    {/if}
-                </FlexRowWrapper>
-                <FlexRowWrapper gap>
-                    <FileDrop handle={(files) => handleReplace(key, files)}>
+        <h3>OBSに貼り付ける</h3>
+        <section>
+            {#if BROWSER}
+                <DragLink
+                    href={() => {
+                        const url = new URL($page.url);
+                        url.pathname = `${url.pathname}asset`;
+                        url.searchParams.set('assetId', Date.now().toString());
+                        return url;
+                    }}
+                >
+                    <h3 slot="preview" class="drag-preview">
+                        これをOBSにドロップ
                         <i class="ti ti-upload" />
-                        置き換える
-                    </FileDrop>
-                    {#if assetId}
-                        <ButtonMini on:click={() => ($replaces = { ...$replaces, [key]: null })}>
-                            <Tooltip>置き換えを削除</Tooltip>
-                            <i class="ti ti-trash" />
-                        </ButtonMini>
-                    {/if}
-                </FlexRowWrapper>
-            </div>
-        {/each}
-    </section>
-</main>
+                    </h3>
+                    <div class="drag">
+                        <i class="ti ti-drag-drop" />
+                        ここをOBSにドラッグ&ドロップ
+                    </div>
+                </DragLink>
+            {/if}
+        </section>
+
+        <h3>画像を置き換える</h3>
+        <section>
+            {#each Object.entries($replaces) as [key, assetId]}
+                <div class="replace-entry">
+                    <FlexRowWrapper alignItems="center" gap>
+                        <h1>
+                            {key}
+                        </h1>
+                        {#if assetId}
+                            <i class="ti ti-chevron-right" />
+                            <img
+                                src={omu.assets.url(Identifier.fromKey(assetId), { noCache: true })}
+                                alt={key}
+                                class="replace-image"
+                            />
+                        {/if}
+                    </FlexRowWrapper>
+                    <FlexRowWrapper gap>
+                        <FileDrop handle={(files) => handleReplace(key, files)}>
+                            <i class="ti ti-upload" />
+                            置き換える
+                        </FileDrop>
+                        {#if assetId}
+                            <ButtonMini
+                                on:click={() => ($replaces = { ...$replaces, [key]: null })}
+                            >
+                                <Tooltip>置き換えを削除</Tooltip>
+                                <i class="ti ti-trash" />
+                            </ButtonMini>
+                        {/if}
+                    </FlexRowWrapper>
+                </div>
+            {/each}
+        </section>
+    </main>
+</AppPage>
 
 <style lang="scss">
     main {

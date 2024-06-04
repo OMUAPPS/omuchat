@@ -18,6 +18,7 @@
     import RoomEntry from './components/RoomEntry.svelte';
     import { playVideo } from './stores.js';
     import { page } from '$app/stores';
+    import AppPage from '$lib/components/AppPage.svelte';
     const omu = new Omu(APP);
     const chat = new Chat(omu);
     const { replayData, config } = new ReplayApp(omu);
@@ -75,72 +76,76 @@
     <script src="https://www.youtube.com/iframe_api"></script>
 </svelte:head>
 
-{#await promise}
-    <AppHeader app={omu.app} />
-{:then}
-    <AppHeader app={omu.app}>
-        <FlexRowWrapper alignItems="center" gap>
-            <small>表示</small>
-            <Toggle bind:value={$config.active} />
-        </FlexRowWrapper>
-    </AppHeader>
-    <slot />
-{/await}
+<AppPage>
+    <header slot="header">
+        {#await promise}
+            <AppHeader app={omu.app} />
+        {:then}
+            <AppHeader app={omu.app}>
+                <FlexRowWrapper alignItems="center" gap>
+                    <small>表示</small>
+                    <Toggle bind:value={$config.active} />
+                </FlexRowWrapper>
+            </AppHeader>
+            <slot />
+        {/await}
+    </header>
 
-<main>
-    <div class="rooms">
-        <h3>URLから</h3>
-        <Textbox
-            placeholder="URLを入力"
-            on:input={(event) => {
-                const url = new URL(event.detail.value);
-                if (url.hostname === 'youtu.be') {
-                    const videoId = url.pathname.slice(1);
-                    $playVideo(videoId);
-                } else if (url.hostname.endsWith('youtube.com')) {
-                    const videoId = url.searchParams.get('v');
-                    if (!videoId) return;
-                    $playVideo(videoId);
-                } else {
-                    console.log('unsupported url', url);
-                }
-            }}
-            lazy
-        />
-        <h3>最近の配信から</h3>
-        <div class="table">
-            <TableList
-                table={chat.rooms}
-                component={RoomEntry}
-                filter={(_, room) => !!room.metadata?.url}
+    <main>
+        <div class="rooms">
+            <h3>URLから</h3>
+            <Textbox
+                placeholder="URLを入力"
+                on:input={(event) => {
+                    const url = new URL(event.detail.value);
+                    if (url.hostname === 'youtu.be') {
+                        const videoId = url.pathname.slice(1);
+                        $playVideo(videoId);
+                    } else if (url.hostname.endsWith('youtube.com')) {
+                        const videoId = url.searchParams.get('v');
+                        if (!videoId) return;
+                        $playVideo(videoId);
+                    } else {
+                        console.log('unsupported url', url);
+                    }
+                }}
+                lazy
             />
-        </div>
-    </div>
-    <div class="player">
-        <Player
-            videoId={$replayData?.videoId}
-            options={{
-                events: {
-                    onReady,
-                    onPlaybackRateChange,
-                    onStateChange,
-                },
-            }}
-        />
-
-        <h3>アセット</h3>
-        <DragLink href={createAssetUrl}>
-            <h3 slot="preview" class="drag-preview">
-                これをOBSにドロップ
-                <i class="ti ti-upload" />
-            </h3>
-            <div class="drag">
-                <i class="ti ti-drag-drop" />
-                ここをOBSにドラッグ&ドロップ
+            <h3>最近の配信から</h3>
+            <div class="table">
+                <TableList
+                    table={chat.rooms}
+                    component={RoomEntry}
+                    filter={(_, room) => !!room.metadata?.url}
+                />
             </div>
-        </DragLink>
-    </div>
-</main>
+        </div>
+        <div class="player">
+            <Player
+                videoId={$replayData?.videoId}
+                options={{
+                    events: {
+                        onReady,
+                        onPlaybackRateChange,
+                        onStateChange,
+                    },
+                }}
+            />
+
+            <h3>アセット</h3>
+            <DragLink href={createAssetUrl}>
+                <h3 slot="preview" class="drag-preview">
+                    これをOBSにドロップ
+                    <i class="ti ti-upload" />
+                </h3>
+                <div class="drag">
+                    <i class="ti ti-drag-drop" />
+                    ここをOBSにドラッグ&ドロップ
+                </div>
+            </DragLink>
+        </div>
+    </main>
+</AppPage>
 
 <style lang="scss">
     main {

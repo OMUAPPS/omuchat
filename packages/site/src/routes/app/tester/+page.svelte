@@ -5,6 +5,7 @@
     import { chat, omu } from './client.js';
     import ComponentEditor from './components/ComponentEditor.svelte';
     import { APP } from './app.js';
+    import AppPage from '$lib/components/AppPage.svelte';
 
     let component: Component = new content.Root([
         new content.Text('Hello, World!'),
@@ -43,6 +44,7 @@
             connected: false,
             createdAt: new Date(),
             providerId: TEST_PROVIDER.id,
+            metadata: {},
             status: 'offline',
         });
         chat.rooms.update(room);
@@ -58,46 +60,50 @@
     }
 </script>
 
-<AppHeader app={APP} />
-<main>
-    <section>
-        <FlexRowWrapper gap>
-            <button on:click={reset}>
-                <i class="ti ti-reload" />
-                Reset
-            </button>
-            <button on:click={send}>
-                <i class="ti ti-send" />
-                Send
-            </button>
-        </FlexRowWrapper>
-    </section>
-    <h3>
-        <i class="ti ti-eye" />
-        Preview
-    </h3>
-    <section class="fill">
-        <MessageRenderer bind:content={component} />
-    </section>
-    <h3>
-        <i class="ti ti-pencil" />
-        Content
-    </h3>
-    <section>
-        <FlexRowWrapper widthFull gap between>
-            <FlexColWrapper widthFull heightFull>
-                <small>INPUT</small>
-                <div class="editor">
-                    <ComponentEditor bind:component remove={reset} />
-                </div>
-            </FlexColWrapper>
-            <FlexColWrapper widthFull heightFull>
-                <small>JSON</small>
-                <pre>{JSON.stringify(content.serialize(component), null, 4)}</pre>
-            </FlexColWrapper>
-        </FlexRowWrapper>
-    </section>
-</main>
+<AppPage>
+    <header slot="header">
+        <AppHeader app={APP} />
+    </header>
+    <main>
+        <section>
+            <FlexRowWrapper gap>
+                <button on:click={reset}>
+                    <i class="ti ti-reload" />
+                    Reset
+                </button>
+                <button on:click={send}>
+                    <i class="ti ti-send" />
+                    Send
+                </button>
+            </FlexRowWrapper>
+        </section>
+        <h3>
+            <i class="ti ti-eye" />
+            Preview
+        </h3>
+        <section class="fill">
+            <MessageRenderer bind:content={component} />
+        </section>
+        <h3>
+            <i class="ti ti-pencil" />
+            Content
+        </h3>
+        <section>
+            <FlexRowWrapper widthFull gap between>
+                <FlexColWrapper widthFull heightFull>
+                    <small>INPUT</small>
+                    <div class="editor">
+                        <ComponentEditor bind:component remove={reset} />
+                    </div>
+                </FlexColWrapper>
+                <FlexColWrapper widthFull heightFull>
+                    <small>JSON</small>
+                    <pre>{JSON.stringify(content.serialize(component), null, 4)}</pre>
+                </FlexColWrapper>
+            </FlexRowWrapper>
+        </section>
+    </main>
+</AppPage>
 
 <style lang="scss">
     main {

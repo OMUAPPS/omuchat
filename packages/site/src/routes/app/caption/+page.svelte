@@ -16,6 +16,7 @@
     import { APP } from './app.js';
     import { CaptionApp } from './caption-app.js';
     import { FONTS, LANGUAGES_OPTIONS, type LanguageKey } from './types.js';
+    import AppPage from '$lib/components/AppPage.svelte';
 
     export const omu = new Omu(APP);
     setClient(omu);
@@ -77,150 +78,160 @@
     <meta name="description" content="リアルタイム字幕" />
 </svelte:head>
 
-<AppHeader app={APP} />
-<section>
-    <h3>字幕</h3>
-    <DragLink href={createAssetUrl}>
-        <h3 slot="preview" class="drag-preview">
-            これをOBSにドロップ
-            <i class="ti ti-upload" />
-        </h3>
-        <div class="drag">
-            <i class="ti ti-drag-drop" />
-            ここをOBSにドラッグ&ドロップ
-        </div>
-    </DragLink>
-</section>
-<section>
-    <h3>言語選択</h3>
-    <FlexRowWrapper gap>
-        <Combobox
-            options={LANGUAGES_OPTIONS}
-            defaultValue={$config.lang}
-            handleChange={(key, value) => {
-                $config.lang = value;
-            }}
-        />
-        {#if BROWSER && $config.lang !== window.navigator.language}
-            <button on:click={resetLang}> 言語をリセット </button>
-        {/if}
-    </FlexRowWrapper>
-</section>
-<section>
-    <FlexRowWrapper gap alignItems="end" between>
-        <h3>フォント</h3>
-        <button class="add-font">
-            <Popup>
-                <div class="font-popup">
-                    {#each FONTS as font}
-                        <button
-                            on:click={() => {
-                                $config.style.fonts = [
-                                    ...$config.style.fonts,
-                                    {
-                                        family: font,
-                                        url: `https://fonts.googleapis.com/css2?family=${font}:ital,wght@0,400&directory=3&display=block`,
-                                    },
-                                ];
-                            }}
-                        >
-                            <link
-                                rel="stylesheet"
-                                href={`https://fonts.googleapis.com/css2?family=${font}:ital,wght@0,400&directory=3&display=block&text=サンプルテキスト`}
-                            />
-                            <p
-                                style={style({
-                                    fontFamily: `'${font}', sans-serif`,
-                                    fontSize: '1rem',
-                                    lineHeight: 1.5,
-                                    margin: 0,
-                                    padding: 0,
-                                    display: 'inline-block',
-                                })}
-                            >
-                                サンプルテキスト
-                            </p>
-                        </button>
-                    {/each}
-                </div>
-            </Popup>
-            フォント追加
-            <i class="ti ti-plus" />
-        </button>
-    </FlexRowWrapper>
-    <div class="font-list">
-        {#key $config.style.fonts}
-            {#each $config.style.fonts as font, i}
-                <span class="font">
-                    <span>
-                        <small> ファミリー </small>
-                        <Textbox bind:value={font.family} />
-                    </span>
-                    <span>
-                        <small> URL </small>
-                        <Textbox bind:value={font.url} />
-                    </span>
-                    <button
-                        on:click={() => {
-                            $config.style.fonts = $config.style.fonts.filter(
-                                (_, index) => index !== i,
-                            );
-                        }}
-                    >
-                        削除
-                        <i class="ti ti-x" />
-                    </button>
-                </span>
-            {/each}
-        {/key}
-    </div>
-    <div>
-        <div>
-            <small> フォントサイズ </small>
-            <input type="range" min="10" max="100" step="1" bind:value={$config.style.fontSize} />
-            {$config.style.fontSize}
-        </div>
-        <div>
-            <small> フォントウェイト </small>
-            <input
-                type="range"
-                min="100"
-                max="900"
-                step="100"
-                bind:value={$config.style.fontWeight}
-            />
-            {$config.style.fontWeight}
-        </div>
-    </div>
-</section>
-<section>
-    <h3>
-        <FlexRowWrapper gap alignItems="center">
-            色
-            <button
-                on:click={() => {
-                    $config.style.color = '#0B6F72';
-                    $config.style.backgroundColor = '#FFFEFC';
+<AppPage>
+    <header slot="header">
+        <AppHeader app={APP} />
+    </header>
+    <section>
+        <h3>字幕</h3>
+        <DragLink href={createAssetUrl}>
+            <h3 slot="preview" class="drag-preview">
+                これをOBSにドロップ
+                <i class="ti ti-upload" />
+            </h3>
+            <div class="drag">
+                <i class="ti ti-drag-drop" />
+                ここをOBSにドラッグ&ドロップ
+            </div>
+        </DragLink>
+    </section>
+    <section>
+        <h3>言語選択</h3>
+        <FlexRowWrapper gap>
+            <Combobox
+                options={LANGUAGES_OPTIONS}
+                defaultValue={$config.lang}
+                handleChange={(key, value) => {
+                    $config.lang = value;
                 }}
-            >
-                色をリセット
-                <i class="ti ti-reload" />
+            />
+            {#if BROWSER && $config.lang !== window.navigator.language}
+                <button on:click={resetLang}> 言語をリセット </button>
+            {/if}
+        </FlexRowWrapper>
+    </section>
+    <section>
+        <FlexRowWrapper gap alignItems="end" between>
+            <h3>フォント</h3>
+            <button class="add-font">
+                <Popup>
+                    <div class="font-popup">
+                        {#each FONTS as font}
+                            <button
+                                on:click={() => {
+                                    $config.style.fonts = [
+                                        ...$config.style.fonts,
+                                        {
+                                            family: font,
+                                            url: `https://fonts.googleapis.com/css2?family=${font}:ital,wght@0,400&directory=3&display=block`,
+                                        },
+                                    ];
+                                }}
+                            >
+                                <link
+                                    rel="stylesheet"
+                                    href={`https://fonts.googleapis.com/css2?family=${font}:ital,wght@0,400&directory=3&display=block&text=サンプルテキスト`}
+                                />
+                                <p
+                                    style={style({
+                                        fontFamily: `'${font}', sans-serif`,
+                                        fontSize: '1rem',
+                                        lineHeight: 1.5,
+                                        margin: 0,
+                                        padding: 0,
+                                        display: 'inline-block',
+                                    })}
+                                >
+                                    サンプルテキスト
+                                </p>
+                            </button>
+                        {/each}
+                    </div>
+                </Popup>
+                フォント追加
+                <i class="ti ti-plus" />
             </button>
         </FlexRowWrapper>
-    </h3>
-    <div>
-        <small> 背景色 </small>
-        <input type="color" bind:value={$config.style.backgroundColor} />
-    </div>
-    <div>
-        <small> 文字色 </small>
-        <input type="color" bind:value={$config.style.color} />
-    </div>
-</section>
-<section class="preview">
-    <small>字幕のプレビュー</small>
-    <CaptionRenderer {captionApp} />
-</section>
+        <div class="font-list">
+            {#key $config.style.fonts}
+                {#each $config.style.fonts as font, i}
+                    <span class="font">
+                        <span>
+                            <small> ファミリー </small>
+                            <Textbox bind:value={font.family} />
+                        </span>
+                        <span>
+                            <small> URL </small>
+                            <Textbox bind:value={font.url} />
+                        </span>
+                        <button
+                            on:click={() => {
+                                $config.style.fonts = $config.style.fonts.filter(
+                                    (_, index) => index !== i,
+                                );
+                            }}
+                        >
+                            削除
+                            <i class="ti ti-x" />
+                        </button>
+                    </span>
+                {/each}
+            {/key}
+        </div>
+        <div>
+            <div>
+                <small> フォントサイズ </small>
+                <input
+                    type="range"
+                    min="10"
+                    max="100"
+                    step="1"
+                    bind:value={$config.style.fontSize}
+                />
+                {$config.style.fontSize}
+            </div>
+            <div>
+                <small> フォントウェイト </small>
+                <input
+                    type="range"
+                    min="100"
+                    max="900"
+                    step="100"
+                    bind:value={$config.style.fontWeight}
+                />
+                {$config.style.fontWeight}
+            </div>
+        </div>
+    </section>
+    <section>
+        <h3>
+            <FlexRowWrapper gap alignItems="center">
+                色
+                <button
+                    on:click={() => {
+                        $config.style.color = '#0B6F72';
+                        $config.style.backgroundColor = '#FFFEFC';
+                    }}
+                >
+                    色をリセット
+                    <i class="ti ti-reload" />
+                </button>
+            </FlexRowWrapper>
+        </h3>
+        <div>
+            <small> 背景色 </small>
+            <input type="color" bind:value={$config.style.backgroundColor} />
+        </div>
+        <div>
+            <small> 文字色 </small>
+            <input type="color" bind:value={$config.style.color} />
+        </div>
+    </section>
+    <section class="preview">
+        <small>字幕のプレビュー</small>
+        <CaptionRenderer {captionApp} />
+    </section>
+</AppPage>
 
 <style lang="scss">
     section {

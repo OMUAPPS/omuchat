@@ -2,16 +2,18 @@
     import { Chat, models } from '@omujs/chat';
     import { App, Omu } from '@omujs/omu';
 
-    import { Header } from '@omujs/ui';
+    import AppPage from '$lib/components/AppPage.svelte';
+    import { AppHeader, setClient } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import PlayQueueEntry from './PlayQueueEntry.svelte';
-    import { IDENTIFIER } from './app.js';
+    import { APP, IDENTIFIER } from './app.js';
     import type { Entry } from './playqueue.js';
 
     const app = new App(IDENTIFIER, {
         version: '0.1.0',
     });
     const omu = new Omu(app);
+    setClient(omu);
     const chat = new Chat(omu);
     chat.authors.listen();
     chat.messages.event.add.listen(async (messages) => {
@@ -56,60 +58,64 @@
     }
 </script>
 
-<main>
-    <Header title="参加型管理" icon="ti-icons">
-        <div class="actions">
-            <button on:click={() => (settingOpen = !settingOpen)}>
-                {#if settingOpen}
-                    設定を閉じる
-                {:else}
-                    設定を編集
-                    <i class="ti ti-chevron-down" />
-                {/if}
-            </button>
-            <div class="action">
-                <span>
-                    {active ? `終了する` : `開始する`}
-                </span>
-                <button class="toggle" on:click={() => (active = !active)} class:active>
-                    <i class="ti ti-check" />
+<AppPage>
+    <header slot="header">
+        <AppHeader app={APP}>
+            <div class="actions">
+                <button on:click={() => (settingOpen = !settingOpen)}>
+                    {#if settingOpen}
+                        設定を閉じる
+                    {:else}
+                        設定を編集
+                        <i class="ti ti-chevron-down" />
+                    {/if}
                 </button>
+                <div class="action">
+                    <span>
+                        {active ? `終了する` : `開始する`}
+                    </span>
+                    <button class="toggle" on:click={() => (active = !active)} class:active>
+                        <i class="ti ti-check" />
+                    </button>
+                </div>
             </div>
-        </div>
-    </Header>
-    {#if settingOpen}
-        <div class="settings">
-            <span class="setting">
-                <i class="ti ti-arrow-down-right" />
-                参加ワード
-                <input type="text" bind:value={joinWord} />
-            </span>
-            <span class="setting">
-                <i class="ti ti-arrow-up-right" />
-                辞退ワード
-                <input type="text" bind:value={leaveWord} />
-            </span>
-        </div>
-    {:else}
-        <div class="description">
-            <div>
-                <span>
-                    {joinWord}
+        </AppHeader>
+    </header>
+    <main>
+        {#if settingOpen}
+            <div class="settings">
+                <span class="setting">
+                    <i class="ti ti-arrow-down-right" />
+                    参加ワード
+                    <input type="text" bind:value={joinWord} />
                 </span>
-                で参加
-                <span>
-                    {leaveWord}
+                <span class="setting">
+                    <i class="ti ti-arrow-up-right" />
+                    辞退ワード
+                    <input type="text" bind:value={leaveWord} />
                 </span>
-                で辞退
             </div>
+        {:else}
+            <div class="description">
+                <div>
+                    <span>
+                        {joinWord}
+                    </span>
+                    で参加
+                    <span>
+                        {leaveWord}
+                    </span>
+                    で辞退
+                </div>
+            </div>
+        {/if}
+        <div class="entries">
+            {#each entries as entry}
+                <PlayQueueEntry {entry} />
+            {/each}
         </div>
-    {/if}
-    <div class="entries">
-        {#each entries as entry}
-            <PlayQueueEntry {entry} />
-        {/each}
-    </div>
-</main>
+    </main>
+</AppPage>
 
 <style lang="scss">
     main {

@@ -5,6 +5,7 @@
     import { APP } from './app.js';
     import { ArchiveApp } from './archive-app.js';
     import ArchiveEntry from './components/ArchiveEntry.svelte';
+    import AppPage from '$lib/components/AppPage.svelte';
 
     export const omu = new Omu(APP);
     setClient(omu);
@@ -21,42 +22,46 @@
     }
 </script>
 
-<AppHeader app={APP} />
-<main>
-    <section style="flex: 0 0 250px;">
-        <h2>設定</h2>
-        <div class="settings">
-            <div>
-                <h3>出力ディレクトリ</h3>
-                <input type="text" bind:value={$config.output_dir} />
-                <button on:click={() => archiveApp.openOutputDir()}>
-                    <i class="ti ti-folder-open" />
-                </button>
+<AppPage>
+    <header slot="header">
+        <AppHeader app={APP} />
+    </header>
+    <main>
+        <section style="flex: 0 0 250px;">
+            <h2>設定</h2>
+            <div class="settings">
+                <div>
+                    <h3>出力ディレクトリ</h3>
+                    <input type="text" bind:value={$config.output_dir} />
+                    <button on:click={() => archiveApp.openOutputDir()}>
+                        <i class="ti ti-folder-open" />
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="yt-dlp-info">
-            <a href="https://github.com/yt-dlp/yt-dlp" target="_blank">
-                <h3>
-                    yt-dlp
-                    <i class="ti ti-external-link" />
-                </h3>
-            </a>
-            <p>このアプリは yt-dlp を使用しています</p>
-            <p>
-                <span>バージョン:</span>
-                {$config.yt_dlp_info.version}
-                {$config.yt_dlp_info.channel}
-            </p>
-            <p>git head: {$config.yt_dlp_info.git_head}</p>
-        </div>
-    </section>
-    <section>
-        <h2>アーカイブリスト</h2>
-        <div class="archive-list">
-            <TableList table={archiveTable} component={ArchiveEntry} />
-        </div>
-    </section>
-</main>
+            <div class="yt-dlp-info">
+                <a href="https://github.com/yt-dlp/yt-dlp" target="_blank">
+                    <h3>
+                        yt-dlp
+                        <i class="ti ti-external-link" />
+                    </h3>
+                </a>
+                <p>このアプリは yt-dlp を使用しています</p>
+                <p>
+                    <span>バージョン:</span>
+                    {$config.yt_dlp_info.version}
+                    {$config.yt_dlp_info.channel}
+                </p>
+                <p>git head: {$config.yt_dlp_info.git_head}</p>
+            </div>
+        </section>
+        <section>
+            <h2>アーカイブリスト</h2>
+            <div class="archive-list">
+                <TableList table={archiveTable} component={ArchiveEntry} />
+            </div>
+        </section>
+    </main>
+</AppPage>
 
 <style lang="scss">
     main {

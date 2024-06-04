@@ -8,6 +8,7 @@
     import EmojiEntry from './EmojiEntry.svelte';
     import { APP, IDENTIFIER } from './app.js';
     import { Emoji, EmojiApp, emojiApp } from './emoji.js';
+    import AppPage from '$lib/components/AppPage.svelte';
 
     const omu = new Omu(APP);
     const chat = new Chat(omu);
@@ -86,50 +87,54 @@
     }
 </script>
 
-<main>
-    <AppHeader app={APP}>
-        <FlexRowWrapper gap alignItems="center">
-            <Textbox
-                placeholder="検索"
-                bind:value={search}
-                on:input={() => {
-                    searchFilter = createFilter(search);
-                }}
-            />
-            <Toggle value={$config.active} handleToggle={toggle} />
-        </FlexRowWrapper>
-    </AppHeader>
-    {#if $selectedEmoji}
-        <div class="emoji-edit">
-            <EmojiEdit emoji={$selectedEmoji} />
-        </div>
-    {/if}
-    <div class="emojis">
-        <button on:click={() => fileDrop.click()}>
-            ファイルを選択してアップロード
-            <i class="ti ti-upload" />
-        </button>
-        <input
-            type="file"
-            multiple
-            hidden
-            bind:files
-            bind:this={fileDrop}
-            on:change={uploadFiles}
-            accept="image/*"
-            placeholder="画像を選択"
-        />
-        {#if uploading > 0}
-            <span>
-                <i class="ti ti-upload" />
-                アップロード中…
-            </span>
+<AppPage>
+    <header slot="header">
+        <AppHeader app={APP}>
+            <FlexRowWrapper gap alignItems="center">
+                <Textbox
+                    placeholder="検索"
+                    bind:value={search}
+                    on:input={() => {
+                        searchFilter = createFilter(search);
+                    }}
+                />
+                <Toggle value={$config.active} handleToggle={toggle} />
+            </FlexRowWrapper>
+        </AppHeader>
+    </header>
+    <main>
+        {#if $selectedEmoji}
+            <div class="emoji-edit">
+                <EmojiEdit emoji={$selectedEmoji} />
+            </div>
         {/if}
-        <div class="list">
-            <TableList table={emojis} component={EmojiEntry} filter={searchFilter} />
+        <div class="emojis">
+            <button on:click={() => fileDrop.click()}>
+                ファイルを選択してアップロード
+                <i class="ti ti-upload" />
+            </button>
+            <input
+                type="file"
+                multiple
+                hidden
+                bind:files
+                bind:this={fileDrop}
+                on:change={uploadFiles}
+                accept="image/*"
+                placeholder="画像を選択"
+            />
+            {#if uploading > 0}
+                <span>
+                    <i class="ti ti-upload" />
+                    アップロード中…
+                </span>
+            {/if}
+            <div class="list">
+                <TableList table={emojis} component={EmojiEntry} filter={searchFilter} />
+            </div>
         </div>
-    </div>
-</main>
+    </main>
+</AppPage>
 
 <style lang="scss">
     main {
