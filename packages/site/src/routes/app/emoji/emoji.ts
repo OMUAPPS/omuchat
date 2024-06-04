@@ -120,6 +120,7 @@ export class EmojiApp {
             providerId: EMOJI_TEST_PROVIDER.id,
             connected: false,
             status: 'offline',
+            metadata: {},
             createdAt: new Date(),
         });
         this.chat.rooms.update(room);
