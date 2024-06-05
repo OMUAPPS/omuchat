@@ -29,7 +29,7 @@ export interface Table<T> {
         after?: number;
         cursor?: string;
     }): Promise<Map<string, T>>;
-    fetchRange({ start, end }: { start?: string; end?: string }): Promise<Map<string, T>>;
+    fetchRange({ start, end }: { start: string; end: string }): Promise<Map<string, T>>;
     fetchAll(): Promise<Map<string, T>>;
     iterate({ backward, cursor }: { backward?: boolean; cursor?: string }): AsyncIterable<T>;
     size(): Promise<number>;

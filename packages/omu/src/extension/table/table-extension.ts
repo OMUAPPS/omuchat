@@ -433,8 +433,8 @@ class TableImpl<T> implements Table<T> {
         start,
         end,
     }: {
-        start?: string | undefined;
-        end?: string | undefined;
+        start: string;
+        end: string;
     }): Promise<Map<string, T>> {
         const res = await this.client.endpoints.call(TABLE_FETCH_RANGE_ENDPOINT, {
             id: this.id,
