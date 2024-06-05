@@ -117,11 +117,7 @@
                             />
                         {/if}
                     </FlexRowWrapper>
-                    <FlexRowWrapper gap>
-                        <FileDrop handle={(files) => handleReplace(key, files)}>
-                            <i class="ti ti-upload" />
-                            置き換える
-                        </FileDrop>
+                    <FlexRowWrapper gap alignItems="center">
                         {#if assetId}
                             <ButtonMini
                                 on:click={() => ($replaces = { ...$replaces, [key]: null })}
@@ -130,6 +126,10 @@
                                 <i class="ti ti-trash" />
                             </ButtonMini>
                         {/if}
+                        <FileDrop handle={(files) => handleReplace(key, files)}>
+                            <i class="ti ti-upload" />
+                            置き換える
+                        </FileDrop>
                     </FlexRowWrapper>
                 </div>
             {/each}
