@@ -6,13 +6,10 @@
 </script>
 
 <div class="entry">
+    <small>
+        {entry.id.key()}
+    </small>
     <FlexColWrapper heightFull>
-        <JustifyBaselineWrapper>
-            <small>
-                {entry.id.namespace.split('.').reverse().join('.')}
-                <i class="ti ti-slash" />
-            </small>
-        </JustifyBaselineWrapper>
         <JustifyBaselineWrapper>
             {#if entry.metadata?.name}
                 <b>
