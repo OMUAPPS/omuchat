@@ -6,4 +6,5 @@ export const events = {
     channel: new TableEvent((chat) => chat.channels),
     provider: new TableEvent((chat) => chat.providers),
     room: new TableEvent((chat) => chat.rooms),
+    vote: new TableEvent((chat) => chat.votes),
 };

@@ -9,7 +9,7 @@ import { Serializer } from '@omujs/omu/serializer.js';
 import { IDENTIFIER } from './const.js';
 import type { EventHandler, EventSource } from './event/event.js';
 import { EventRegistry } from './event/event.js';
-import { Author, Channel, Message, Provider, Reaction, Room } from './models/index.js';
+import { Author, Channel, Message, Provider, Reaction, Room, Vote } from './models/index.js';
 import {
     CHAT_CHANNEL_TREE_PERMISSION_ID,
     CHAT_PERMISSION_ID,
@@ -62,6 +62,15 @@ const ROOM_TABLE_TYPE = TableType.createModel(IDENTIFIER, {
         write: CHAT_WRITE_PERMISSION_ID,
     },
 });
+const VOTE_TABLE_TYPE = TableType.createModel(IDENTIFIER, {
+    name: 'votes',
+    model: Vote,
+    permissions: {
+        all: CHAT_PERMISSION_ID,
+        read: CHAT_READ_PERMISSION_ID,
+        write: CHAT_WRITE_PERMISSION_ID,
+    },
+});
 const CREATE_CHANNEL_TREE_ENDPOINT = EndpointType.createJson(IDENTIFIER, {
     name: 'create_channel_tree',
     requestSerializer: Serializer.noop<string>(),
@@ -80,6 +89,7 @@ export class Chat {
     public readonly channels: Table<Channel>;
     public readonly providers: Table<Provider>;
     public readonly rooms: Table<Room>;
+    public readonly votes: Table<Vote>;
     public readonly reactionSignal: Signal<Reaction>;
     private readonly eventRegistry: EventRegistry;
 
@@ -92,6 +102,7 @@ export class Chat {
         this.channels = client.tables.get(CHANNEL_TABLE_TYPE);
         this.providers = client.tables.get(PROVIDER_TABLE_TYPE);
         this.rooms = client.tables.get(ROOM_TABLE_TYPE);
+        this.votes = client.tables.get(VOTE_TABLE_TYPE);
         this.reactionSignal = client.signal.get(REACTION_SIGNAL);
         this.messages.setCacheSize(1000);
         this.authors.setCacheSize(500);

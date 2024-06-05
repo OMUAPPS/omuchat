@@ -8,3 +8,4 @@ export { Reaction } from './reaction.js';
 export { Provider } from './provider.js';
 export { Role } from './role.js';
 export { Room } from './room.js';
+export { Vote, Choice } from './vote.js';
