@@ -11,6 +11,7 @@ import { APP as reaction } from './reaction/app.js';
 import { APP as replay } from './replay/app.js';
 import { APP as tester } from './tester/app.js';
 import { APP as translator } from './translator/app.js';
+import { APP as chatSubtitle } from './chatsubtitle/app.js';
 
 export const apps = [
     archive,
@@ -23,6 +24,7 @@ export const apps = [
     replay,
     tester,
     translator,
+    chatSubtitle,
 ] satisfies App[];
 if (DEV && BROWSER) {
     apps.forEach((app) => {
