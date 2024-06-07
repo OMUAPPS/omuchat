@@ -1,11 +1,16 @@
 <script lang="ts">
     import type { Room } from '@omujs/chat/models/room.js';
+    import { createSubtitle } from '../stores.js';
 
     export let entry: Room;
     export let selected: boolean = false;
+
+    function create() {
+        $createSubtitle(entry);
+    }
 </script>
 
-<button class="room-entry" class:selected>
+<button class="room-entry" class:selected on:click={create}>
     <img src={entry.metadata?.thumbnail} class="thumbnail" alt="" />
     <div class="info">
         <div class="title">{entry.metadata?.title}</div>

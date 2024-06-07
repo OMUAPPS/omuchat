@@ -188,14 +188,6 @@
         console.log('Creating chat subtitle for room:', room);
     });
 
-    omu.onReady(async () => {
-        const rooms = await chat.rooms.fetchAll();
-        const room = [...rooms.values()].at(-3);
-        if (!room) return;
-        console.log(room);
-        $createSubtitle(room);
-    });
-
     if (BROWSER) {
         omu.start();
     }
@@ -212,7 +204,12 @@
             </a>
         {/if}
         <section>
-            <TableList table={chat.rooms} component={RoomEntry} />
+            <TableList
+                table={chat.rooms}
+                component={RoomEntry}
+                filter={(key, room) =>
+                    !!(room.metadata.first_message_id && room.metadata.last_message_id)}
+            />
         </section>
     </main>
 </AppPage>
