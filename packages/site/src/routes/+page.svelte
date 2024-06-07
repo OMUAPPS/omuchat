@@ -14,13 +14,7 @@
         <p class="info">OMUAPPSは、配信者と視聴者をつなぐAPIです。</p>
     </header>
     <main slot="content">
-        <section>
-            <p>
-                OMUAPPSは、配信者と視聴者をつなぐAPIです。
-                <br />
-                <a href="/app">アプリを探す</a>
-            </p>
-        </section>
+        <section></section>
     </main>
 </Page>
 
