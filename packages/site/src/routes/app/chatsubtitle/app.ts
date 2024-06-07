@@ -18,6 +18,6 @@ export const APP = new App(IDENTIFIER, {
             ja: 'チャットを表示する字幕を生成します。',
         },
         icon: icon,
-        tags: ['tool'] as TagKey[],
+        tags: ['tool', 'underdevelopment'] as TagKey[],
     },
 });

@@ -51,6 +51,17 @@ export const TAG_REGISTRY = {
         },
         icon: 'ti ti-tools',
     },
+    underdevelopment: {
+        name: {
+            en: 'Under development',
+            ja: '開発中',
+        },
+        description: {
+            ja: '開発中のアプリ。',
+            en: 'Apps under development.',
+        },
+        icon: 'ti ti-package',
+    },
 } as const satisfies Record<string, Tag>;
 export const REGISTRIES = { ...TAG_REGISTRY } as Record<string, Tag>;
 

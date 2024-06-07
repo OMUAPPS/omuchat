@@ -18,6 +18,6 @@ export const APP = new App(IDENTIFIER, {
             ja: 'コメントのテストをします。',
         },
         icon: icon,
-        tags: ['tool'] as TagKey[],
+        tags: ['tool', 'underdevelopment'] as TagKey[],
     },
 });

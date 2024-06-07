@@ -17,6 +17,6 @@ export const APP = new App(IDENTIFIER, {
             ja: 'リップシンク技術のテスト',
         },
         icon: 'ti-language-katakana',
-        tags: ['tool'] as TagKey[],
+        tags: ['tool', 'underdevelopment'] as TagKey[],
     },
 });

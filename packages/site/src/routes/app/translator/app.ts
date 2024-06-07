@@ -20,6 +20,6 @@ export const APP = new App(IDENTIFIER, {
         },
         icon: icon,
         image: thumbnail,
-        tags: ['tool'] as TagKey[],
+        tags: ['tool', 'underdevelopment'] as TagKey[],
     },
 });

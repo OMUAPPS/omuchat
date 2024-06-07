@@ -44,10 +44,10 @@
         <img src={omu.i18n.translate(app.metadata.image)} alt="" class="thumbnail" />
     {/if}
     <div class="overlay">
-        <FlexRowWrapper baseline widthFull heightFull between>
+        <FlexRowWrapper alignItems="start" widthFull heightFull between>
             <FlexColWrapper heightFull between>
                 {#if app.metadata}
-                    <FlexRowWrapper alignItems="center" gap>
+                    <FlexRowWrapper alignItems="center">
                         <span class="icon">
                             {#if BROWSER && app.metadata.icon}
                                 {@const icon = omu.i18n.translate(app.metadata.icon)}
@@ -61,16 +61,16 @@
                             {/if}
                         </span>
                         <span>
-                            <p>
+                            <p class="name">
                                 <Localized text={app.metadata.name} />
                             </p>
-                            <small>
+                            <small class="description">
                                 <Localized text={app.metadata.description} />
                             </small>
                         </span>
                     </FlexRowWrapper>
                 {/if}
-                <small>
+                <small class="tag-list">
                     {#each tags || [] as tag, i (i)}
                         <span class="tag">
                             {#if typeof tag === 'string'}
@@ -105,24 +105,20 @@
 <style lang="scss">
     article {
         position: relative;
-        display: flex;
         flex-direction: column;
         justify-content: space-between;
         gap: 1rem;
-        width: 100%;
-        height: 100%;
-        background: var(--color-bg-1);
         display: flex;
         width: 100%;
         height: 130px;
         padding: 0.5rem;
         color: var(--color-1);
         background: var(--color-bg-2);
-        border-bottom: 1px solid var(--color-outline);
+        outline: 1px solid var(--color-outline);
 
         &:hover {
             transition: 0.06s;
-            margin-left: 3px;
+            margin-left: 2px;
         }
     }
 
@@ -141,17 +137,20 @@
 
     article:hover .overlay {
         outline: 1px solid var(--color-1);
-        outline-offset: 2px;
+        outline-offset: 11px;
     }
 
     .icon {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 10px;
-        margin-left: 0.5rem;
-        margin-right: 0.25rem;
+        margin-left: 0.25rem;
+        margin-top: 0.25rem;
+        margin-right: 0.5rem;
         font-size: 1.25rem;
-        background: var(--color-bg-2);
+        width: 40px;
+        height: 40px;
 
         img {
             width: 40px;
@@ -160,19 +159,24 @@
         }
     }
 
-    p {
+    .name {
         font-weight: bold;
         width: fit-content;
-        background: var(--color-bg-2);
     }
 
-    small {
+    .description {
         font-weight: bold;
         display: flex;
         gap: 10px;
         align-items: center;
-        font-size: 0.7rem;
-        background: var(--color-bg-2);
+        font-size: 0.6rem;
+    }
+
+    .tag-list {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
     }
 
     .tag {
@@ -195,7 +199,7 @@
         border-bottom: 1px solid var(--color-outline);
 
         &.active {
-            background: var(--color-bg-1);
+            background: var(--color-bg-2);
             color: var(--color-1);
             outline: 1px solid var(--color-1);
             outline-offset: -2px;

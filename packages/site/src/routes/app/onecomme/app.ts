@@ -17,6 +17,6 @@ export const APP = new App(IDENTIFIER, {
             ja: '設定無しでコメントをわんコメのテンプレートに表示します。',
         },
         icon: 'ti-dog',
-        tags: ['tool'] as TagKey[],
+        tags: ['tool', 'underdevelopment'] as TagKey[],
     },
 });

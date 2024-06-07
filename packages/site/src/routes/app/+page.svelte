@@ -6,21 +6,27 @@
     import Page from '$lib/components/Page.svelte';
 
     let filteredApps = apps;
-    let selectedCategories: string[] = [];
+    let filterTags: string[] = [];
 
-    function toggleCategory(category: string) {
-        if (selectedCategories.includes(category)) {
-            selectedCategories = selectedCategories.filter((c) => c !== category);
+    function toggleTag(category: string) {
+        if (filterTags.includes(category)) {
+            filterTags = filterTags.filter((c) => c !== category);
         } else {
-            selectedCategories = [...selectedCategories, category];
+            filterTags = [...filterTags, category];
         }
     }
 
     $: {
-        filteredApps = apps.filter((app) => {
-            if (selectedCategories.length === 0) return true;
-            return selectedCategories.every((category) => app.metadata?.tags?.includes(category));
-        });
+        if (filterTags.length !== 0) {
+            filteredApps = apps.filter((app) => {
+                return filterTags.some((tag) => app.metadata?.tags?.includes(tag));
+            });
+        }
+        if (!filterTags.includes('underdevelopment')) {
+            filteredApps = filteredApps.filter(
+                (app) => !app.metadata?.tags?.includes('underdevelopment'),
+            );
+        }
     }
 </script>
 
@@ -45,15 +51,11 @@
                     タグから探す
                 </h3>
                 <FlexColWrapper>
-                    {#each Object.entries(TAG_REGISTRY) as [key, category] (key)}
-                        {@const selected = selectedCategories.includes(key)}
-                        <button
-                            on:click={() => toggleCategory(key)}
-                            class="category"
-                            class:selected
-                        >
-                            <i class={category.icon} />
-                            <Localized text={category.name} />
+                    {#each Object.entries(TAG_REGISTRY) as [key, tag] (key)}
+                        {@const selected = filterTags.includes(key)}
+                        <button on:click={() => toggleTag(key)} class="tag" class:selected>
+                            <i class={tag.icon} />
+                            <Localized text={tag.name} />
                             <i class="hint ti ti-{selected ? 'check' : 'plus'}" />
                         </button>
                     {/each}
@@ -89,13 +91,19 @@
         padding: 20px;
     }
 
+    .tag {
+        display: flex;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
     button {
         display: flex;
         align-items: center;
         width: 100%;
         height: 40px;
         border: none;
-        background: var(--color-bg-2);
+        background: var(--color-bg-1);
         color: var(--color-1);
         font-weight: 600;
         text-align: start;
@@ -124,11 +132,11 @@
             outline-offset: -3px;
             transition: 0.06s;
             transition-property: margin-left;
-            margin-left: 3px;
+            margin-left: 2px;
         }
 
         &:active {
-            margin-left: -1px;
+            margin-left: 1px;
         }
     }
 </style>
