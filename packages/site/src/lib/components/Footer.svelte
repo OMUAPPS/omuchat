@@ -5,7 +5,6 @@
 <footer>
     <FlexRowWrapper gap between heightFull>
         <FlexColWrapper gap>
-            <p>Links</p>
             <a href="https://github.com/OMUAPPS/omuapps">
                 <p>
                     <i class="ti ti-brand-github" />
