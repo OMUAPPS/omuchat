@@ -1,12 +1,14 @@
 <script lang="ts">
-    import { FlexColWrapper, FlexRowWrapper, Localized } from '@omujs/ui';
+    import { FlexColWrapper, FlexRowWrapper, Localized, Textbox } from '@omujs/ui';
     import AppEntry from './AppEntry.svelte';
     import { apps } from './apps.js';
     import { TAG_REGISTRY } from './category.js';
     import Page from '$lib/components/Page.svelte';
+    import { omu } from '../client.js';
 
     let filteredApps = apps;
     let filterTags: string[] = [];
+    let search = '';
 
     function toggleTag(category: string) {
         if (filterTags.includes(category)) {
@@ -16,7 +18,8 @@
         }
     }
 
-    $: {
+    function updateFilters(filterTags: string[], search: string) {
+        filteredApps = apps;
         if (filterTags.length !== 0) {
             filteredApps = apps.filter((app) => {
                 return filterTags.some((tag) => app.metadata?.tags?.includes(tag));
@@ -27,6 +30,33 @@
                 (app) => !app.metadata?.tags?.includes('underdevelopment'),
             );
         }
+        if (search) {
+            filteredApps = filteredApps.filter((app) => {
+                if (!app.metadata?.name) return;
+                const name = app.metadata.name;
+                if (omu.i18n.translate(name).toLowerCase().includes(search.toLowerCase())) {
+                    return true;
+                }
+                const tags = app.metadata.tags;
+                if (tags) {
+                    return tags.some((tag) =>
+                        omu.i18n.translate(tag).toLowerCase().includes(search.toLowerCase()),
+                    );
+                }
+                const description = app.metadata.description;
+                if (description) {
+                    return omu.i18n
+                        .translate(description)
+                        .toLowerCase()
+                        .includes(search.toLowerCase());
+                }
+                return false;
+            });
+        }
+    }
+
+    $: {
+        updateFilters(filterTags, search);
     }
 </script>
 
@@ -45,7 +75,7 @@
     </header>
     <main slot="content">
         <FlexRowWrapper widthFull heightFull between gap>
-            <div class="search">
+            <div class="tags">
                 <h3>
                     <i class="ti ti-tag" />
                     タグから探す
@@ -62,6 +92,14 @@
                 </FlexColWrapper>
             </div>
             <FlexColWrapper widthFull gap>
+                <div class="search">
+                    <Textbox placeholder="アプリを検索" bind:value={search} />
+                    {#if search}
+                        <button on:click={() => (search = '')} class="clear">
+                            <i class="ti ti-x" />
+                        </button>
+                    {/if}
+                </div>
                 {#each filteredApps as app (app.key())}
                     <AppEntry {app} />
                 {/each}
@@ -83,21 +121,36 @@
         color: var(--color-1);
     }
 
-    .search {
-        width: 400px;
+    .tags {
+        width: 300px;
         height: 100%;
-        border-right: 1px solid var(--color-outline);
+        margin: 30px 0;
         margin-right: 40px;
-        padding: 20px;
+
+        > h3 {
+            margin-bottom: 30px;
+        }
+    }
+
+    .search {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .clear {
+        width: 2rem;
+        height: 2rem;
+        border: none;
+        background: transparent;
+        color: var(--color-1);
+        margin-left: 0.5rem;
+        cursor: pointer;
     }
 
     .tag {
-        display: flex;
-        font-weight: 600;
         font-size: 0.9rem;
-    }
-
-    button {
         display: flex;
         align-items: center;
         width: 100%;
