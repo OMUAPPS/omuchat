@@ -5,7 +5,9 @@ import type { Address } from '@omujs/omu/address.js';
 
 import { invoke, IS_TAURI } from '$lib/utils/tauri.js';
 
+import { Chat } from '@omujs/chat';
 import { CHAT_CHANNEL_TREE_PERMISSION_ID } from '@omujs/chat/permissions.js';
+import { App, Omu } from '@omujs/omu';
 import {
     DASHBOARD_OPEN_APP_PERMISSION_ID,
     DASHOBARD_APP_EDIT_PERMISSION_ID,
@@ -20,10 +22,8 @@ import {
     SERVER_SHUTDOWN_PERMISSION_ID,
 } from '@omujs/omu/extension/server/index.js';
 import { Identifier } from '@omujs/omu/identifier.js';
-import { setChat } from '../../../ui/dist/stores.js';
-import { App, Omu } from '@omujs/omu';
-import { Chat } from '@omujs/chat';
 import { BrowserTokenProvider } from '@omujs/omu/token.js';
+import { setChat } from '../../../ui/dist/stores.js';
 
 const IDENTIFIER = new Identifier('com.omuapps', 'dashboard');
 const app = new App(IDENTIFIER, {
@@ -76,4 +76,17 @@ omu.permissions.require(
     I18N_SET_LOCALES_PERMISSION_ID,
 );
 
-export { chat, omu, dashboard };
+export { chat, dashboard, omu };
+
+import { checkUpdate, onUpdaterEvent } from '@tauri-apps/api/updater';
+import { screenContext } from './common/screen/screen.js';
+import UpdateScreen from './main/screen/UpdateScreen.svelte';
+
+checkUpdate().then((update) => {
+    const { manifest, shouldUpdate } = update;
+    if (!shouldUpdate || !manifest) return;
+
+    omu.onReady(() => {
+        screenContext.push(UpdateScreen, { manifest });
+    });
+});

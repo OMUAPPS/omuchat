@@ -162,6 +162,11 @@
             "name": "プラグインを要求",
             "icon": "ti ti-plug",
             "description": "プラグインを要求します。"
+        },
+        "update": {
+            "name": "アップデート",
+            "icon": "ti ti-download",
+            "description": "新しいバージョンがあります。"
         }
     },
     "settings": {
