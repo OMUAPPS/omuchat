@@ -18,7 +18,7 @@ importers:
         specifier: ^25.0.1
         version: 25.0.1
 
-  packages/chat:
+  packages-js/chat:
     dependencies:
       '@omujs/omu':
         specifier: workspace:*
@@ -73,7 +73,7 @@ importers:
         specifier: 8.17.0
         version: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
-  packages/dash:
+  packages-js/dash:
     devDependencies:
       '@fontsource/noto-sans-jp':
         specifier: ^5.0.19
@@ -196,7 +196,7 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.13.0)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))
 
-  packages/i18n:
+  packages-js/i18n:
     devDependencies:
       '@types/node':
         specifier: ^20.13.0
@@ -247,7 +247,7 @@ importers:
         specifier: 8.17.0
         version: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
-  packages/omu:
+  packages-js/omu:
     devDependencies:
       '@types/node':
         specifier: ^20.13.0
@@ -298,9 +298,9 @@ importers:
         specifier: 8.17.0
         version: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
-  packages/shared: {}
+  packages-js/shared: {}
 
-  packages/site:
+  packages-js/site:
     devDependencies:
       '@fontsource/noto-sans-jp':
         specifier: ^5.0.19
@@ -414,7 +414,7 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.13.0)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))
 
-  packages/ui:
+  packages-js/ui:
     dependencies:
       '@omujs/chat':
         specifier: workspace:*
@@ -11396,7 +11396,7 @@ snapshots:
       eslint-scope: 7.2.2
       eslint-utils: 3.0.0(eslint@8.4.1)
       eslint-visitor-keys: 3.4.3
-      espree: 9.2.0
+      espree: 9.6.1
       esquery: 1.5.0
       esutils: 2.0.3
       fast-deep-equal: 3.1.3
@@ -12410,13 +12410,13 @@ snapshots:
   jake@10.9.1:
     dependencies:
       async: 3.2.5
-      chalk: 4.1.0
+      chalk: 4.1.2
       filelist: 1.0.4
       minimatch: 3.1.2
 
   jest-diff@29.7.0:
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       diff-sequences: 29.6.3
       jest-get-type: 29.6.3
       pretty-format: 29.7.0
@@ -12992,7 +12992,7 @@ snapshots:
       array-differ: 3.0.0
       array-union: 2.1.0
       arrify: 2.0.1
-      minimatch: 3.0.5
+      minimatch: 3.1.2
 
   mustache@4.2.0: {}
 
@@ -13222,7 +13222,7 @@ snapshots:
       '@yarnpkg/parsers': 3.0.0-rc.46
       '@zkochan/js-yaml': 0.0.7
       axios: 1.7.2
-      chalk: 4.1.0
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
       cliui: 8.0.1
@@ -13345,7 +13345,7 @@ snapshots:
   ora@5.3.0:
     dependencies:
       bl: 4.1.0
-      chalk: 4.1.0
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
       is-interactive: 1.0.0

@@ -24,11 +24,13 @@
 
 ## Setup
 
-- Install latest Rust [here](https://www.rust-lang.org/ja)
-- Install LTS Nodejs [here](https://nodejs.org/)
-- Install pnpm [how to install](https://pnpm.io/ja/installation)
-- Install/Setup dependencies `pnpm install`
+- Install [Rust](https://www.rust-lang.org/ja)
+- Install [Nodejs](https://nodejs.org/)
+- Install [pnpm](https://pnpm.io/ja/installation)
+- Install [rye](https://rye.astral.sh/)
+- Install/Setup `rye sync` `pnpm i`
 
 ## Development
 
 Run development mode `pnpm run dev`
+![alt text](image.png)

@@ -3,7 +3,7 @@ name: Storybook
 on:
     push:
         paths:
-            - packages/ui/**
+            - packages-js/ui/**
     workflow_dispatch:
 
 jobs:

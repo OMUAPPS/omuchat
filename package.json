@@ -4,19 +4,19 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "build-tauri": "node ./scripts/build.mjs --build tauri",
-        "build-site": "node ./scripts/build.mjs --build site",
-        "dev": "node ./scripts/build.mjs && node ./scripts/dev.mjs",
-        "build": "node ./scripts/build.mjs",
+        "build-tauri": "node ./scripts/js-build.mjs --build tauri",
+        "build-site": "node ./scripts/js-build.mjs --build site",
+        "dev": "node ./scripts/js-build.mjs && node ./scripts/js-dev.mjs",
+        "build": "node ./scripts/js-build.mjs",
         "lint": "pnpm -r lint",
         "fix": "pnpm -r fix",
-        "clean": "node ./scripts/clean.mjs"
+        "clean": "node ./scripts/js-clean.mjs"
     },
     "engines": {
         "pnpm": "^8.0.0 || ^9.0.0"
     },
     "workspaces": [
-        "packages/*"
+        "packages-js/*"
     ],
     "devDependencies": {
         "execa": "^9.1.0",
