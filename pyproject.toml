@@ -37,7 +37,7 @@ members = ["packages-py/*"]
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/omuproject"]
+packages = []
 
 [tool.ruff.lint]
 select = [
