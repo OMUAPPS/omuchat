@@ -19,10 +19,12 @@ execaSync('pnpm', ['--filter', 'chat', 'build'], {
     stdout: process.stdout,
 });
 
-if (process.argv.length > 2) {
-    const target = process.argv[2];
-    execaSync('pnpm', ['--filter', target, 'build'], {
-        stderr: process.stderr,
-        stdout: process.stdout,
+if (process.argv.includes('--build')) {
+    const targets = process.argv[process.argv.indexOf('--build') + 1];
+    targets.split(',').forEach((target) => {
+        execaSync('pnpm', ['--filter', target, 'build'], {
+            stderr: process.stderr,
+            stdout: process.stdout,
+        });
     });
 }

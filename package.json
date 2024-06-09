@@ -4,8 +4,8 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "build-tauri": "node ./scripts/build.mjs tauri",
-        "build-site": "node ./scripts/build.mjs site",
+        "build-tauri": "node ./scripts/build.mjs --build tauri",
+        "build-site": "node ./scripts/build.mjs --build site",
         "dev": "node ./scripts/build.mjs && node ./scripts/dev.mjs",
         "build": "node ./scripts/build.mjs",
         "lint": "pnpm -r lint",
