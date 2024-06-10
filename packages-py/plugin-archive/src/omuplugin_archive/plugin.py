@@ -73,6 +73,8 @@ async def start_archive(archive: Archive):
 
 @chat.on(events.room.add)
 async def on_room_add(room: Room):
+    if not config_registry.value["active"]:
+        return
     metadata = room.metadata or {}
     url = metadata.get("url")
     if url is None:

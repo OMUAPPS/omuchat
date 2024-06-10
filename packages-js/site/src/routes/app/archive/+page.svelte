@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Omu } from '@omujs/omu';
-    import { AppHeader, setClient, TableList } from '@omujs/ui';
+    import { AppHeader, setClient, TableList, Toggle } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { APP } from './app.js';
     import { ArchiveApp } from './archive-app.js';
@@ -24,7 +24,9 @@
 
 <AppPage>
     <header slot="header">
-        <AppHeader app={APP} />
+        <AppHeader app={APP}>
+            <Toggle bind:value={$config.active} />
+        </AppHeader>
     </header>
     <main>
         <section style="flex: 0 0 250px;">
