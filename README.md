@@ -32,5 +32,10 @@
 
 ## Development
 
-Run development mode `pnpm run dev`
-![alt text](image.png)
+```
+if (IS_VSCODE) {
+    press(F5);
+} else {
+    start('pnpm run dev');
+}
+```

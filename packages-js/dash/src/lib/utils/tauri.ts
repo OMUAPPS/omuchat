@@ -101,23 +101,24 @@ let loaded = false;
 const loadHandlers: (() => void)[] = [];
 const loadPromises: (() => Promise<void>)[] = [];
 
-function loadLazy<T>(load: () => Promise<T>): T {
+function loadLazy<T extends object>(load: () => Promise<T>): T {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let obj: T | any = {};
+    let obj: T = {} as T;
     loadPromises.push(async () => {
         obj = await load();
     });
+    const get = (_: T, prop: string | symbol) => {
+        if (!loaded) {
+            throw new Error('Tauri not loaded yet');
+        }
+        if (prop in obj) {
+            return Object.getOwnPropertyDescriptor(obj, prop)?.value;
+        } else {
+            throw new Error(`Property ${prop.toString()} not found`);
+        }
+    };
     return new Proxy(obj, {
-        get(target, prop) {
-            if (!loaded) {
-                throw new Error('Tauri not loaded yet');
-            }
-            if (prop in obj) {
-                return obj[prop];
-            } else {
-                throw new Error(`Property ${prop.toString()} not found`);
-            }
-        },
+        get,
     });
 }
 

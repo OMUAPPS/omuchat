@@ -112,7 +112,7 @@ export class Chat {
         return await this.client.endpoints.call(CREATE_CHANNEL_TREE_ENDPOINT, url);
     }
 
-    public on<P extends Array<any>>(event: EventSource<P>, handler: EventHandler<P>): void {
+    public on<P extends Array<unknown>>(event: EventSource<P>, handler: EventHandler<P>): void {
         this.eventRegistry.register(event, handler);
     }
 }

@@ -4,7 +4,7 @@ type Primitive =
     | {
           [key: string]: Primitive | string | number | boolean | null;
       }
-    | any[]
+    | Primitive[]
     | string
     | number
     | boolean

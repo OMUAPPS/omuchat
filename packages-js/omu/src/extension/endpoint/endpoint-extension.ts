@@ -17,13 +17,13 @@ type CallPromise = {
     reject: (error: Error) => void;
 };
 
-type EndpointHandler = {
-    type: EndpointType;
-    handler: (arg: any) => Promise<any>;
+type EndpointHandler<Req, Res> = {
+    type: EndpointType<Req, Res>;
+    handler: (arg: Req) => Promise<Res>;
 };
 
 export class EndpointExtension {
-    private readonly registeredEndpoints = new IdentifierMap<EndpointHandler>();
+    private readonly registeredEndpoints = new IdentifierMap<EndpointHandler<any, any>>();
     private readonly promiseMap: Map<number, CallPromise> = new Map();
     private callId: number;
 

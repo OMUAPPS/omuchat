@@ -1,6 +1,6 @@
 <script lang="ts">
     import Canvas from '$lib/components/canvas/Canvas.svelte';
-    import type { GlBuffer, GlContext, GlProgram } from '$lib/components/canvas/glcontext.js';
+    import type { GlBuffer, GlContext, GlProgram } from '@omujs/flat-gl';
     import { LINE_FRAGMENT_SHADER, LIVE_VERTEX_SHADER } from './shader.js';
     import { Spectrum } from './spectrum.js';
     import { vowels } from './vowels.js';

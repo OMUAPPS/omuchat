@@ -196,6 +196,107 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.13.0)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))
 
+  packages-js/flat:
+    dependencies:
+      '@omujs/omu':
+        specifier: workspace:*
+        version: link:../omu
+    devDependencies:
+      '@types/node':
+        specifier: ^20.13.0
+        version: 20.13.0
+      '@types/websocket':
+        specifier: 1.0.10
+        version: 1.0.10
+      '@types/ws':
+        specifier: 8.5.10
+        version: 8.5.10
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^7.11.0
+        version: 7.11.0(@typescript-eslint/parser@7.11.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)(typescript@5.4.5)
+      '@typescript-eslint/parser':
+        specifier: ^7.11.0
+        version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@8.57.0)
+      eslint-plugin-import:
+        specifier: ^2.29.1
+        version: 2.29.1(@typescript-eslint/parser@7.11.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)
+      eslint-plugin-prettier:
+        specifier: ^5.1.3
+        version: 5.1.3(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.3.0)
+      eslint-plugin-svelte:
+        specifier: ^2.39.0
+        version: 2.39.0(eslint@8.57.0)(svelte@4.2.17)(ts-node@10.9.2(@types/node@20.13.0)(typescript@5.4.5))
+      eslint-plugin-unused-imports:
+        specifier: ^3.2.0
+        version: 3.2.0(@typescript-eslint/eslint-plugin@7.11.0(@typescript-eslint/parser@7.11.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)
+      nodemon:
+        specifier: ^3.1.2
+        version: 3.1.2
+      ts-node:
+        specifier: 10.9.2
+        version: 10.9.2(@types/node@20.13.0)(typescript@5.4.5)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
+      websocket:
+        specifier: 1.0.35
+        version: 1.0.35
+      ws:
+        specifier: 8.17.0
+        version: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+
+  packages-js/flat-gl:
+    dependencies:
+      '@omujs/flat':
+        specifier: workspace:*
+        version: link:../flat
+    devDependencies:
+      '@types/node':
+        specifier: ^20.13.0
+        version: 20.13.0
+      '@types/websocket':
+        specifier: 1.0.10
+        version: 1.0.10
+      '@types/ws':
+        specifier: 8.5.10
+        version: 8.5.10
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^7.11.0
+        version: 7.11.0(@typescript-eslint/parser@7.11.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)(typescript@5.4.5)
+      '@typescript-eslint/parser':
+        specifier: ^7.11.0
+        version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@8.57.0)
+      eslint-plugin-import:
+        specifier: ^2.29.1
+        version: 2.29.1(@typescript-eslint/parser@7.11.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)
+      eslint-plugin-prettier:
+        specifier: ^5.1.3
+        version: 5.1.3(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.3.0)
+      eslint-plugin-unused-imports:
+        specifier: ^3.2.0
+        version: 3.2.0(@typescript-eslint/eslint-plugin@7.11.0(@typescript-eslint/parser@7.11.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)
+      nodemon:
+        specifier: ^3.1.2
+        version: 3.1.2
+      ts-node:
+        specifier: 10.9.2
+        version: 10.9.2(@types/node@20.13.0)(typescript@5.4.5)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
+
   packages-js/i18n:
     devDependencies:
       '@types/node':
@@ -311,6 +412,12 @@ importers:
       '@omujs/chat':
         specifier: workspace:*
         version: link:../chat
+      '@omujs/flat':
+        specifier: workspace:*
+        version: link:../flat
+      '@omujs/flat-gl':
+        specifier: workspace:*
+        version: link:../flat-gl
       '@omujs/i18n':
         specifier: workspace:*
         version: link:../i18n

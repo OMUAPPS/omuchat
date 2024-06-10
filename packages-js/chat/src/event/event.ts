@@ -4,13 +4,13 @@ import type { Table } from '@omujs/omu/extension/table/table.js';
 
 import type { Chat } from '../chat.js';
 
-export type EventHandler<P extends Array<any>> = (...args: P) => Promise<void> | void;
+export type EventHandler<P extends Array<unknown>> = (...args: P) => Promise<void> | void;
 
-export interface EventSource<P extends Array<any>> {
+export interface EventSource<P extends Array<unknown>> {
     subscribe(handler: EventHandler<P>, chat: Chat): Unlisten;
 }
 
-export class ListenerEvent<P extends Array<any>> implements EventSource<P> {
+export class ListenerEvent<P extends Array<unknown>> implements EventSource<P> {
     constructor(private readonly getListener: (chat: Chat) => EventEmitter<P>) {}
 
     public subscribe(handler: EventHandler<P>, chat: Chat): Unlisten {
@@ -66,21 +66,21 @@ export class TableEvent<T> extends ListenerEvent<[Map<string, T>]> {
     }
 }
 
-type Entry<P extends Array<any>> = {
+type Entry<P extends Array<unknown>> = {
     source: EventSource<P>;
     listeners: EventEmitter<P>;
 };
 
 export class EventRegistry {
     private readonly chat: Chat;
-    private readonly events: Map<EventSource<any>, Entry<any>>;
+    private readonly events: Map<EventSource<unknown[]>, Entry<unknown[]>>;
 
     constructor(chat: Chat) {
         this.chat = chat;
         this.events = new Map();
     }
 
-    public register<P extends Array<any>>(event: EventSource<P>, handler: EventHandler<P>): void {
+    public register<P extends Array<unknown>>(event: EventSource<P>, handler: EventHandler<P>): void {
         let entry = this.events.get(event) as Entry<P> | null;
         if (!entry) {
             const newEntry: Entry<P> = {

@@ -21,6 +21,8 @@
     "devDependencies": {
         "@fontsource/noto-sans-jp": "^5.0.19",
         "@neoconfetti/svelte": "^2.2.1",
+        "@omujs/flat-gl": "workspace:*",
+        "@omujs/flat": "workspace:*",
         "@omujs/chat": "workspace:*",
         "@omujs/i18n": "workspace:*",
         "@omujs/omu": "workspace:*",

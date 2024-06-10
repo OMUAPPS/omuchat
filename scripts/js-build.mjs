@@ -5,6 +5,10 @@ await Promise.all([
         stderr: process.stderr,
         stdout: process.stdout,
     }),
+    execa('pnpm', ['--filter', 'flat', 'build'], {
+        stderr: process.stderr,
+        stdout: process.stdout,
+    }),
     execa('pnpm', ['--filter', 'i18n', 'build'], {
         stderr: process.stderr,
         stdout: process.stdout,
@@ -14,10 +18,16 @@ await Promise.all([
         stdout: process.stdout,
     }),
 ]);
-execaSync('pnpm', ['--filter', 'chat', 'build'], {
-    stderr: process.stderr,
-    stdout: process.stdout,
-});
+await Promise.all([
+    execa('pnpm', ['--filter', 'chat', 'build'], {
+        stderr: process.stderr,
+        stdout: process.stdout,
+    }),
+    execa('pnpm', ['--filter', 'flat-gl', 'build'], {
+        stderr: process.stderr,
+        stdout: process.stdout,
+    }),
+]);
 
 if (process.argv.includes('--build')) {
     const targets = process.argv[process.argv.indexOf('--build') + 1];

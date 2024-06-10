@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { GlContext } from './glcontext.js';
+    import { GlContext } from '@omujs/flat-gl';
 
     export let glContext: GlContext | undefined = undefined;
     export let canvas: HTMLCanvasElement | undefined = undefined;

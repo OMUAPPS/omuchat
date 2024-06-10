@@ -16,3 +16,5 @@ execa('pnpm', ['--filter', 'ui', 'watch'], { stderr: process.stderr, stdout: pro
 execa('pnpm', ['--filter', 'i18n', 'watch'], { stderr: process.stderr, stdout: process.stdout });
 execa('pnpm', ['--filter', 'omu', 'watch'], { stderr: process.stderr, stdout: process.stdout });
 execa('pnpm', ['--filter', 'chat', 'watch'], { stderr: process.stderr, stdout: process.stdout });
+execa('pnpm', ['--filter', 'flat', 'watch'], { stderr: process.stderr, stdout: process.stdout });
+execa('pnpm', ['--filter', 'flat-gl', 'watch'], { stderr: process.stderr, stdout: process.stdout });
