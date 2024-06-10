@@ -138,18 +138,11 @@
 
         &.active {
             z-index: 2;
-            color: var(--color-bg-1);
-            background: var(--color-1);
-
-            &::after {
-                position: absolute;
-                top: 50%;
-                right: 0;
-                content: '';
-                border: 8px solid transparent;
-                border-left-color: var(--color-bg-2);
-                transform: translate(100%, -50%);
-            }
+            color: var(--color-1);
+            background: color-mix(in srgb, var(--color-1) 12%, transparent 0%);
+            border-left: 4px solid var(--color-1);
+            outline: 2px solid var(--color-bg-2);
+            outline-offset: -2px;
         }
     }
 
