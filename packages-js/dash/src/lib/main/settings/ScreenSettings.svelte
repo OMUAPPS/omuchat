@@ -35,7 +35,7 @@
 
 <div class="container">
     <Header
-        icon="ti ti-settings"
+        icon="ti-settings"
         title={$t('screen.settings.name')}
         subtitle={$t('screen.settings.description')}
     />
