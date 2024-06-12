@@ -32,7 +32,9 @@ def format_content(*components: content.Component | None) -> str:
     stack = [*components]
     while stack:
         component = stack.pop(0)
-        if isinstance(component, content.Text):
+        if isinstance(component, content.Log):
+            continue
+        elif isinstance(component, content.Text):
             parts.append(escape(component.text))
         elif isinstance(component, content.Image):
             parts.append(
@@ -49,7 +51,7 @@ def format_content(*components: content.Component | None) -> str:
         elif isinstance(component, content.Parent):
             parts.append(f"<span>{format_content(*component.get_children())}</span>")
         else:
-            raise ValueError(f"Unknown component type: {component}")
+            logger.warning("Unknown component: %s", component)
     return "".join(parts)
 
 
