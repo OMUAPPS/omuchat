@@ -49,7 +49,8 @@ async def start_onecomme(server: Server):
     # https://onecomme.com/news/#:~:text=--disable-api-server%3A%20APIサーバーを起動しない
     bin = find_onecomme_binary()
     if bin is None:
-        raise FileNotFoundError("OneComme binary not found")
+        logger.error("OneComme binary not found")
+        return
     await asyncio.create_subprocess_exec(
         bin,
         "",  # empty args for issue https://forum.onecomme.com/t/topic/1641
