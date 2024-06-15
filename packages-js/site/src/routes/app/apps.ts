@@ -12,6 +12,7 @@ import { APP as replay } from './replay/app.js';
 import { APP as tester } from './tester/app.js';
 import { APP as translator } from './translator/app.js';
 import { APP as chatSubtitle } from './chatsubtitle/app.js';
+import { APP as fries } from './aoikuru-fries/app.js';
 
 export const apps = [
     archive,
@@ -28,12 +29,13 @@ export const apps = [
 ] satisfies App[];
 
 const personalApps: Record<string, App[]> = {
+    aoikuru: [fries],
 };
 
 if (BROWSER) {
     const pass = BROWSER && new URL(window.location.href).searchParams.get('pass');
     if (pass && pass in personalApps) {
-        apps.unshift(...personalApps[pass])
+        apps.unshift(...personalApps[pass]);
     }
 }
 

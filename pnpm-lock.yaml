@@ -305,6 +305,9 @@ importers:
       '@fontsource/noto-sans-jp':
         specifier: ^5.0.19
         version: 5.0.19
+      '@fontsource/rocknroll-one':
+        specifier: ^5.0.14
+        version: 5.0.14
       '@neoconfetti/svelte':
         specifier: ^2.2.1
         version: 2.2.1
@@ -1570,6 +1573,9 @@ packages:
 
   '@fontsource/noto-sans-jp@5.0.19':
     resolution: {integrity: sha512-N0KUmSqX6tlAlnqFQnDywj9e+4RithtLgFGlcRt/85EI8rmDYJFYQCZVhc+xTIk5Kgr1gLtNToHZzK61BTsWqw==}
+
+  '@fontsource/rocknroll-one@5.0.14':
+    resolution: {integrity: sha512-9XhmwvVNqOPQ89aA98GhcxtLNXonCd15hjeDFdoodjKsEBNlWCajZ+2wsiwCYLKvBMPFkVSiCzci0x3LYl1Zvg==}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -8345,6 +8351,8 @@ snapshots:
   '@fastify/busboy@2.1.1': {}
 
   '@fontsource/noto-sans-jp@5.0.19': {}
+
+  '@fontsource/rocknroll-one@5.0.14': {}
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
