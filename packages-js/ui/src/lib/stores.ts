@@ -38,7 +38,7 @@ export type Theme = {
 };
 
 export const theme: Writable<Theme> = writable({
-    'color-bg-1': { r: 246, g: 243, b: 235 },
+    'color-bg-1': { r: 246, g: 242, b: 235 },
     'color-bg-2': { r: 255, g: 254, b: 252 },
     'color-1': { r: 11, g: 111, b: 114 },
     'color-2': { r: 53, g: 223, b: 225 },
