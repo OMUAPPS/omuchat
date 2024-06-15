@@ -77,8 +77,6 @@
                     </li>
                 {/each}
             </ul>
-            <code>pip install omuserver</code>
-            <code>npm install omuserver</code>
         {/if}
     </main>
 </Page>
