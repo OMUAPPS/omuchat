@@ -4,8 +4,8 @@
 </script>
 
 <svelte:head>
-    <title>OMUAPPS API</title>
-    <meta name="description" content="Svelte demo app" />
+    <title>OMUAPPS</title>
+    <meta name="description" content="配信者と視聴者をつなぐAPI" />
 </svelte:head>
 
 <Page noBackground>

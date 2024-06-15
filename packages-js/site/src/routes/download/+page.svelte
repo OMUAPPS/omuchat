@@ -27,8 +27,8 @@
 </script>
 
 <svelte:head>
-    <title>Home</title>
-    <meta name="description" content="Svelte demo app" />
+    <title>OMUAPPS - ダウンロード</title>
+    <meta name="description" content="OMUAPPSをダウンロードして使ってみる" />
 </svelte:head>
 
 <Page>
