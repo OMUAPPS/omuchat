@@ -340,13 +340,18 @@ class YoutubeChat(ChatService):
             else:
                 logger.warning(f"Unknown chat action: {action}")
         if len(authors) > 0:
-            added_authors: list[Author] = []
-            for author in authors:
-                if author.key() in self.chat.authors.cache:
-                    continue
-                added_authors.append(author)
-            await self.chat.authors.add(*added_authors)
-            self.author_fetch_queue.extend(added_authors)
+            to_fetch_authors = [
+                author
+                for author in authors
+                if author.id.key() not in self.chat.authors.cache
+            ]
+            self.author_fetch_queue.extend(to_fetch_authors)
+            new_authors = [
+                author
+                for author in authors
+                if await self.chat.authors.get(author.id.key()) is None
+            ]
+            await self.chat.authors.add(*new_authors)
         if len(messages) > 0:
             await self.chat.messages.add(*messages)
             await self.update_message_ids(messages)
