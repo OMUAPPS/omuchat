@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.3.0 (2024-06-17)
+
+
+### Features
+
+* **aoikuru-fries:** 複数のアイテムを同時に投げる ([ef95d31](https://github.com/OMUAPPS/omuapps/commit/ef95d3147ef49934b6bedc9149c693bbbb5c3b3a))
+
+
+
+
+
 ## 0.2.1 (2024-06-07)
 
 **Note:** Version bump only for package @omujs/chat
