@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import license from 'license-checker';
+import '../../../scripts/js-build.mjs';
 
 async function generateLicense() {
     const licenses = await new Promise((resolve, reject) => {
