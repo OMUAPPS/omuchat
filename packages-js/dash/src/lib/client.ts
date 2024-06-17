@@ -62,8 +62,8 @@ setClient(omu);
 setChat(chat);
 
 omu.plugins.require({
-    omuplugin_chat: '==0.4.3',
-    omu_chatprovider: '==0.4.3',
+    omuplugin_chat: '==0.4.4',
+    omu_chatprovider: '==0.4.4',
 });
 omu.permissions.require(
     CHAT_CHANNEL_TREE_PERMISSION_ID,

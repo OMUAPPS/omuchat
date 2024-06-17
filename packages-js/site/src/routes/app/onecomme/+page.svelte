@@ -9,7 +9,7 @@
     setClient(omu);
 
     omu.plugins.require({
-        omuplugin_onecomme: '==0.4.3',
+        omuplugin_onecomme: '==0.4.4',
     });
 
     if (BROWSER) {

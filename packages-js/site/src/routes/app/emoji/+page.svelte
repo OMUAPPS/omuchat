@@ -17,7 +17,7 @@
     setClient(omu);
 
     omu.plugins.require({
-        omuplugin_emoji: '==0.4.3',
+        omuplugin_emoji: '==0.4.4',
     });
     omu.permissions.require(ASSET_UPLOAD_MANY_PERMISSION_ID);
 
