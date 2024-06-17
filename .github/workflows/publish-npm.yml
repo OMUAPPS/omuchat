@@ -59,7 +59,10 @@ jobs:
             - name: Version
               run: npx lerna version --yes
 
+            - name: Setup npmrc
+              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+
             - name: Publish
-              run: pnpm publish --access public
+              run: pnpm publish -r --access public
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
