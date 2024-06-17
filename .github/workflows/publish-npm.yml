@@ -2,15 +2,6 @@ name: Publish NPM
 
 on:
     workflow_dispatch:
-        inputs:
-            releaseType:
-                type: choice
-                description: Release type
-                required: true
-                options:
-                    - release
-                    - prerelease
-                    - graduate
 
 permissions:
     contents: write # for checkout and tag
@@ -65,9 +56,8 @@ jobs:
             - name: Build
               run: npx lerna run build
 
-            - if: ${{ inputs.releaseType == 'release' }}
-              run: npx lerna publish --yes --no-private
-            - if: ${{ inputs.releaseType == 'prerelease' }}
-              run: npx lerna publish --yes --no-private --conventional-prerelease --dist-tag alpha
-            - if: ${{ inputs.releaseType == 'graduate' }}
-              run: npx lerna publish --yes --no-private --conventional-graduate
+            - name: Version
+              run: npx lerna version --yes --no-push --no-git-tag-version --exact --force-publish
+
+            - name: Publish
+              run: pnpm publish --access public
