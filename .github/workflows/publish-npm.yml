@@ -57,7 +57,7 @@ jobs:
               run: npx lerna run build
 
             - name: Version
-              run: npx lerna version --yes --no-push --no-git-tag-version --exact --force-publish
+              run: npx lerna version --yes
 
             - name: Publish
               run: pnpm publish --access public
