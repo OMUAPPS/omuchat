@@ -7,6 +7,8 @@
     import eating1 from './img/eating1.png';
     import eating2 from './img/eating2.png';
     import idle_start from './img/idle_start.png';
+    import throw_many from './img/throw_many.png';
+    import throw_many_hit from './img/throw_many_hit.png';
 
     export let state: Writable<State>;
 
@@ -16,6 +18,8 @@
         throwing,
         catching,
         eating: eating1,
+        throw_many,
+        throw_many_hit,
         idle_start,
     } satisfies Record<StateType, string>;
 
@@ -34,6 +38,40 @@
             setTimeout(() => {
                 $state = { type: 'idle' };
             }, 100);
+        }
+        if ($state.type === 'throw_start') {
+            $state = {
+                ...$state,
+                type: 'throwing',
+            };
+            setTimeout(() => {
+                if ($state.type === 'throwing') {
+                    $state = {
+                        ...$state,
+                        type: 'catching',
+                    };
+                }
+            }, 200);
+        }
+        if ($state.type === 'throw_many') {
+            setTimeout(() => {
+                if ($state.type === 'throw_many') {
+                    $state = {
+                        ...$state,
+                        type: 'throw_many_hit',
+                    };
+                }
+            }, 90);
+        }
+        if ($state.type === 'throw_many_hit') {
+            setTimeout(() => {
+                if ($state.type === 'throw_many_hit') {
+                    $state = {
+                        ...$state,
+                        type: 'idle_start',
+                    };
+                }
+            }, 1000);
         }
     }
 

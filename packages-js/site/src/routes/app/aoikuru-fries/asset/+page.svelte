@@ -28,12 +28,20 @@
 
     function processQueue() {
         if ($state.type !== 'idle') return;
-        const data = queue.shift();
-        if (!data) return;
-        $state = {
-            type: 'throw_start',
-            thrower: data.thrower,
-        };
+        if (queue.length >= 2) {
+            $state = {
+                type: 'throw_many',
+                throwers: queue.map((v) => v.thrower),
+            };
+            queue = [];
+        } else {
+            const data = queue.shift();
+            if (!data) return;
+            $state = {
+                type: 'throw_start',
+                thrower: data.thrower,
+            };
+        }
     }
 
     state.subscribe((v) => {
