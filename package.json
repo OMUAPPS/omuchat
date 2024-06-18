@@ -8,8 +8,8 @@
         "build-site": "node ./scripts/js-build.mjs --build site",
         "dev": "node ./scripts/js-build.mjs && node ./scripts/js-dev.mjs",
         "build": "node ./scripts/js-build.mjs",
-        "lint": "pnpm -r lint",
-        "fix": "pnpm -r fix",
+        "lint": "bun -r lint",
+        "fix": "bun -r fix",
         "clean": "node ./scripts/js-clean.mjs"
     },
     "workspaces": [

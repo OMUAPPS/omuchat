@@ -11,7 +11,7 @@
             "label": "dev",
             "type": "shell",
             "isBackground": true,
-            "command": "pnpm dev",
+            "command": "bun dev",
         }
     ]
 }

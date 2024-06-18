@@ -57,7 +57,7 @@ jobs:
               run: npx lerna run build
 
             - name: Version
-              run: npx lerna version --yes
+              run: npx lerna version --yes --conventional-commits
 
             - name: Setup npmrc
               run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
