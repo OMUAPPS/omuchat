@@ -15,7 +15,7 @@
 {#if 'throwers' in $state}
     {#key $state.throwers}
         <p>
-            {$state.throwers.join('と')}が🍟を投げた！
+            {$state.throwers.join(' と ')}が🍟を投げた！
         </p>
     {/key}
 {/if}
