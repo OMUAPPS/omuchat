@@ -1,6 +1,8 @@
 <script lang="ts">
     import '@fontsource/rocknroll-one';
     import { Chat, events } from '@omujs/chat';
+    import { content } from '@omujs/chat/models/index.js';
+    import type { Message } from '@omujs/chat/models/message.js';
     import { App, Omu } from '@omujs/omu';
     import { setClient } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
@@ -45,8 +47,21 @@
         processQueue();
     });
 
+    function isMessageGreasy(message:Message):boolean{
+        if (!message.content) return false;
+        return [...message.content.iter()].some((part) => {
+            if (part instanceof content.Image) {
+                if (part.id === '🍟') {
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
     chat.on(events.message.add, async (message) => {
         if (!message.authorId) return;
+        if (!isMessageGreasy(message)) return;
         const author = await chat.authors.get(message.authorId.key());
         queue.push({
             thrower: author?.name || '',

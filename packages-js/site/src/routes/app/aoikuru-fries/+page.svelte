@@ -1,10 +1,10 @@
 <script lang="ts">
+    import AppPage from '$lib/components/AppPage.svelte';
     import { Omu } from '@omujs/omu';
+    import { setClient } from '@omujs/ui';
+    import { BROWSER } from 'esm-env';
     import { APP } from './app.js';
     import { FriesApp } from './fries-app.js';
-    import { BROWSER } from 'esm-env';
-    import AppPage from '$lib/components/AppPage.svelte';
-    import { setClient } from '@omujs/ui';
 
     const omu = new Omu(APP);
     setClient(omu);
