@@ -132,6 +132,7 @@ jobs:
 
     publish-tauri:
         if: ${{ github.event.inputs.tauri == true }}
+        needs: publish-npm
         permissions:
             contents: write
         strategy:
