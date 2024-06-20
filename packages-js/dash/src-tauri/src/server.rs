@@ -80,6 +80,8 @@ impl Server {
         cmd.arg("omuserver");
         cmd.arg("--token");
         cmd.arg(self.token.lock().unwrap().as_ref().unwrap());
+        cmd.arg("--port");
+        cmd.arg(self.option.port.to_string());
         cmd.current_dir(&self.option.data_dir);
 
         #[cfg(target_os = "windows")]
