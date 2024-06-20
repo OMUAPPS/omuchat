@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { page } from '$app/stores';
     import '@fontsource/rocknroll-one';
+    import { Chat, events } from '@omujs/chat';
     import { App, Omu } from '@omujs/omu';
     import { setClient } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
@@ -11,11 +11,8 @@
     import Board from './Board.svelte';
     import Fries from './Fries.svelte';
     import bg from './img/bg.png';
-    import { Chat, events } from '@omujs/chat';
 
-    let assetId = BROWSER && $page.url.searchParams.get('assetId');
-    const id = assetId || Date.now().toString();
-    const ASSET_APP = new App(IDENTIFIER.join('asset', id), {
+    const ASSET_APP = new App(IDENTIFIER.join('asset'), {
         version: '0.1.0',
     });
     const omu = new Omu(ASSET_APP);
