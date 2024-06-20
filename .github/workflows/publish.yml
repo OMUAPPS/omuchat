@@ -78,6 +78,7 @@ jobs:
               run: npx lerna version --yes
 
             - name: Setup npmrc
+              if: ${{ github.event.inputs.npm == 'true' }}
               run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
 
             - name: Get version
@@ -115,7 +116,11 @@ jobs:
 
             - name: Generate version file
               run: |
-                  python scripts/py-generate_version.py --version ${{ env.VERSION }}
+                  rye run gen_version
+
+            - name: Push
+              run: |
+                  git push --follow-tags
 
             - name: Install dependencies
               run: |
