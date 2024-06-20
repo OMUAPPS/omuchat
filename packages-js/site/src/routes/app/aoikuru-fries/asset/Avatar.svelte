@@ -51,7 +51,7 @@
                         type: 'catching',
                     };
                 }
-            }, 200);
+            }, 8 * 33.3);
         }
         if ($state.type === 'throw_many') {
             setTimeout(() => {

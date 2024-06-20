@@ -25,20 +25,20 @@
 
     function processQueue() {
         if ($state.type !== 'idle') return;
-        if (queue.length >= 2) {
-            $state = {
-                type: 'throw_many',
-                throwers: queue.map((v) => v.thrower),
-            };
-            queue = [];
-        } else {
-            const data = queue.shift();
-            if (!data) return;
-            $state = {
-                type: 'throw_start',
-                thrower: data.thrower,
-            };
-        }
+        // if (queue.length >= 2) {
+        //     $state = {
+        //         type: 'throw_many',
+        //         throwers: queue.map((v) => v.thrower),
+        //     };
+        //     queue = [];
+        // } else {
+        const data = queue.shift();
+        if (!data) return;
+        $state = {
+            type: 'throw_start',
+            thrower: data.thrower,
+        };
+        // }
     }
 
     state.subscribe((v) => {
@@ -113,7 +113,7 @@
         right: calc(27px * 2);
         font-size: 40px;
         padding: 5px 10px;
-        color: #F0EBE0;
+        color: #f0ebe0;
         font-family: 'RocknRoll One', sans-serif;
         font-weight: 500;
     }
