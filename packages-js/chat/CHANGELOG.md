@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.3.3 (2024-06-20)
+
+
+### Bug Fixes
+
+* **aoikuru-fries:** デバッグ情報を消した ([2555c7c](https://github.com/OMUAPPS/omuapps/commit/2555c7cba6d853b23bac19eb236b87146bcb2152))
+
+
+
+
+
 ## 0.3.2 (2024-06-17)
 
 **Note:** Version bump only for package @omujs/chat
