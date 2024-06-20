@@ -304,7 +304,7 @@ class YoutubeChat(ChatService):
         try:
             self._room.connected = True
             await self.chat.rooms.update(self._room)
-            while True:
+            while not self._closed:
                 chat_data = await self.youtube_chat.next()
                 if chat_data is None:
                     break
