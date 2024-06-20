@@ -13,9 +13,6 @@
         <img src={title} alt="title" />
         <p class="info">OMUAPPSは、配信者と視聴者をつなぐAPIです。</p>
     </header>
-    <main slot="content">
-        <section></section>
-    </main>
 </Page>
 
 <style lang="scss">
