@@ -62,7 +62,16 @@ jobs:
             - name: Setup npmrc
               run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
 
+            - name: Get version
+              id: get_version
+              run: echo ::set-output name=VERSION::$(npx lerna ls --json | jq -r '.[0].version')
+
+            - name: Push
+              run: |
+                  git push --follow-tags
+                  echo "VERSION=${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
+
             - name: Publish
-              run: pnpm publish -r --access public
+              run: pnpm publish -r --access public --no-git-checks
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
