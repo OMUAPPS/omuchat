@@ -120,7 +120,9 @@ jobs:
 
             - name: Push
               run: |
-                  git push --follow-tags
+                  git add .
+                  git commit -m "chore: bump version"
+                  git push
 
             - name: Install dependencies
               run: |
