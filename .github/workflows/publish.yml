@@ -88,13 +88,13 @@ jobs:
                   echo "VERSION=${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
 
             - name: Publish
-              if: ${{ github.event.inputs.npm == true }}
+              if: ${{ github.event.inputs.npm == 'true' }}
               run: pnpm publish -r --access public --no-git-checks
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
     publish-pypi:
-        if: ${{ github.event.inputs.pypi == true }}
+        if: ${{ github.event.inputs.pypi == 'true' }}
         needs: publish-npm
         runs-on: ubuntu-latest
         steps:
@@ -131,7 +131,7 @@ jobs:
                   python -m twine upload --repository pypi --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} dist/*
 
     publish-tauri:
-        if: ${{ github.event.inputs.tauri == true }}
+        if: ${{ github.event.inputs.tauri == 'true' }}
         needs: publish-npm
         permissions:
             contents: write
