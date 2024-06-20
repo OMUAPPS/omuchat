@@ -27,7 +27,6 @@ dev-dependencies = [
 
 [tool.rye.scripts]
 clean = "python ./scripts/py-clean.py"
-version = "python ./scripts/py-version.py"
 gen_version = "python ./scripts/py-generate_version.py"
 
 [tool.rye.workspace]

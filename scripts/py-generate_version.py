@@ -1,3 +1,5 @@
+import json
+import re
 import tomllib
 from pathlib import Path
 from typing import TypedDict
@@ -16,7 +18,7 @@ def get_project(project: Path) -> Project:
     return Project(data["project"])
 
 
-def generate_project_version(path: Path):
+def gen_version(path: Path):
     project = get_project(path)
     version_path = path / "src" / project["name"] / "version.py"
     version_path.write_text(f"""\
@@ -25,9 +27,32 @@ VERSION = "{project['version']}"
 """)
 
 
+def get_version(project: Path) -> str:
+    toml = project / "pyproject.toml"
+    version_match = re.search(r"version\s*=\s*\"([0-9.]*)\"", toml.read_text())
+    if version_match is None:
+        raise ValueError(f"Could not find version in {toml}")
+    return version_match.group(1)
+
+
+def set_version(project: Path, version: str):
+    toml = project / "pyproject.toml"
+    toml.write_text(
+        re.sub(
+            r"version\s*=\s*\"([0-9.]*)\"", f'version = "{version}"', toml.read_text()
+        )
+    )
+
+
 def main():
+    lerna = Path("lerna.json")
+    if not lerna.exists():
+        raise FileNotFoundError(f"Could not find {lerna}")
+    version = json.loads(lerna.read_text())["version"]
     for package in Path("packages-py").glob("*"):
-        generate_project_version(package)
+        print(f"[{package.name}] {get_version(package)} -> {version}")
+        set_version(package, version)
+        gen_version(package)
 
 
 if __name__ == "__main__":
