@@ -2,6 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "generate-token",
+            "type": "shell",
+            "command": "rye run gen_token",
+            "isBackground": false,
+        },
+        {
             "label": "pyright",
             "type": "shell",
             "command": "rye run pyright --watch",
@@ -12,6 +18,6 @@
             "type": "shell",
             "isBackground": true,
             "command": "pnpm dev",
-        }
+        },
     ]
 }

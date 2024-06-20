@@ -16,8 +16,8 @@
             "module": "omuserver",
             "args": [
                 "--debug",
-                "--token",
-                "dev-token",
+                "--token-file",
+                "token.txt",
             ],
             "cwd": "${workspaceFolder}/appdata",
             "justMyCode": true,
@@ -38,6 +38,7 @@
                 "Server",
                 "Client"
             ],
+            "preLaunchTask": "generate-token",
             "stopAll": true
         }
     ],

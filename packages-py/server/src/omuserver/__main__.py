@@ -30,8 +30,14 @@ def setup_logging():
 @click.command()
 @click.option("--debug", is_flag=True)
 @click.option("--token", type=str, default=None)
-@click.option("--port", type=str, default=26423)
-def main(debug: bool, token: str | None, port: int):
+@click.option("--token-file", type=click.Path(), default=None)
+@click.option("--port", type=int, default=26423)
+def main(
+    debug: bool,
+    token: str | None,
+    token_file: str | None,
+    port: int,
+):
     loop = asyncio.get_event_loop()
 
     config = Config()
@@ -40,10 +46,11 @@ def main(debug: bool, token: str | None, port: int):
         port=int(port),
         secure=False,
     )
-    config.dashboard_token = token
+    config.dashboard_token = token or (token_file and open(token_file).read())
 
     if debug:
         logger.warning("Debug mode enabled")
+        logger.warning("Strict origin disabled")
         config.strict_origin = False
         tracemalloc.start()
 

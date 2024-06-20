@@ -42,8 +42,11 @@ impl Server {
         }
     }
 
-    pub fn is_port_in_use(&self) -> bool {
-        !portpicker::is_free(self.option.port)
+    pub fn is_port_free(&self) -> bool {
+        match std::net::TcpListener::bind((self.option.address.as_str(), self.option.port)) {
+            Ok(_) => true,
+            Err(_) => false,
+        }
     }
 
     fn change_state(&self, state: ServerStatus) {
@@ -58,19 +61,29 @@ impl Server {
     }
 
     pub fn start(&self) -> Result<(), Error> {
-        if self.is_port_in_use() {
+        if cfg!(dev) {
+            let token_path = std::env::current_dir()?.join("../../../appdata/token.txt");
+            println!("{:?}", token_path);
+            let token = std::fs::read_to_string(token_path).expect("token.txt not found");
+            self.token.lock().unwrap().get_or_insert(token);
+        } else {
+            self.token
+                .lock()
+                .unwrap()
+                .get_or_insert_with(generate_token);
+        }
+
+        if !self.is_port_free() {
             // return Err(anyhow!("Port {} is already in use", self.option.port));
             println!("Port {} is already in use", self.option.port);
             self.change_state(ServerStatus::AlreadyRunning);
             return Ok(());
         }
+        println!("Running server on port {}", self.option.port);
+
         if !self.option.data_dir.exists() {
             std::fs::create_dir_all(&self.option.data_dir)?;
         }
-        self.token
-            .lock()
-            .unwrap()
-            .get_or_insert_with(generate_token);
 
         self.change_state(ServerStatus::Installing);
         self.uv.update(LATEST_PIP, REQUIREMENTS)?;
@@ -98,13 +111,9 @@ impl Server {
 }
 
 fn generate_token() -> String {
-    if cfg!(dev) {
-        "dev-token".to_string()
-    } else {
-        rand::thread_rng()
-            .sample_iter(&rand::distributions::Alphanumeric)
-            .take(32)
-            .map(char::from)
-            .collect::<String>()
-    }
+    rand::thread_rng()
+        .sample_iter(&rand::distributions::Alphanumeric)
+        .take(32)
+        .map(char::from)
+        .collect::<String>()
 }
