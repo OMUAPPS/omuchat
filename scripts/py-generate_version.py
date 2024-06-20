@@ -4,6 +4,8 @@ import tomllib
 from pathlib import Path
 from typing import TypedDict
 
+import click
+
 
 class Project(TypedDict):
     name: str
@@ -44,14 +46,16 @@ def set_version(project: Path, version: str):
     )
 
 
-def main():
+@click.command()
+@click.option("--version", help="Version to set", default=None)
+def main(version: str | None = None):
     lerna = Path("lerna.json")
     if not lerna.exists():
         raise FileNotFoundError(f"Could not find {lerna}")
-    version = json.loads(lerna.read_text())["version"]
+    new_version = version or json.loads(lerna.read_text())["version"]
     for package in Path("packages-py").glob("*"):
-        print(f"[{package.name}] {get_version(package)} -> {version}")
-        set_version(package, version)
+        print(f"[{package.name}] {get_version(package)} -> {new_version}")
+        set_version(package, new_version)
         gen_version(package)
 
 

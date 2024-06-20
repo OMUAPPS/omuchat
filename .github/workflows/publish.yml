@@ -113,7 +113,7 @@ jobs:
 
             - name: Generate version file
               run: |
-                  python scripts/py-generate_version.py
+                  python scripts/py-generate_version.py --version ${{ env.VERSION }}
 
             - name: Install dependencies
               run: |
