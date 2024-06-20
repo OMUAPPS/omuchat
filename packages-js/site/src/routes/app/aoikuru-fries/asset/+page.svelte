@@ -116,9 +116,9 @@
         right: calc(27px * 2);
         font-size: 40px;
         padding: 5px 10px;
-        background: #fefdfc;
-        color: #77544b;
+        color: #F0EBE0;
         font-family: 'RocknRoll One', sans-serif;
+        font-weight: 500;
     }
 
     :global(body) {
