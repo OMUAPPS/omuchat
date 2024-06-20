@@ -95,10 +95,6 @@
         </small>
     {/if}
 </main>
-<div class="debug">
-    {JSON.stringify($state)}
-    {$frame}
-</div>
 
 <style lang="scss">
     main {
