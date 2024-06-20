@@ -27,17 +27,17 @@
         if ($state.type === 'catching') {
             setTimeout(() => {
                 $state.type = 'eating';
-            }, 200);
+            }, 10 * 33.3);
         }
         if ($state.type === 'eating') {
             setTimeout(() => {
                 $state = { type: 'idle_start' };
-            }, 1400);
+            }, 50 * 33.3);
         }
         if ($state.type === 'idle_start') {
             setTimeout(() => {
                 $state = { type: 'idle' };
-            }, 100);
+            }, 8 * 33.3);
         }
         if ($state.type === 'throw_start') {
             $state = {
