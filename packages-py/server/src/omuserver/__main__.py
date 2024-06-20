@@ -30,13 +30,14 @@ def setup_logging():
 @click.command()
 @click.option("--debug", is_flag=True)
 @click.option("--token", type=str, default=None)
-def main(debug: bool, token: str | None):
+@click.option("--port", type=str, default=26423)
+def main(debug: bool, token: str | None, port: int):
     loop = asyncio.get_event_loop()
 
     config = Config()
     config.address = Address(
         host=None,
-        port=26423,
+        port=int(port),
         secure=False,
     )
     config.dashboard_token = token
