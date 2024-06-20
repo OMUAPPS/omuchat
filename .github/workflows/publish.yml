@@ -73,6 +73,7 @@ jobs:
               run: npx lerna run build
 
             - name: Version
+              if: ${{ github.event.inputs.npm == 'true' }}
               run: npx lerna version --yes
 
             - name: Setup npmrc
