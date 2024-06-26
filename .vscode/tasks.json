@@ -2,9 +2,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "generate-token",
+            "label": "prelaunch",
             "type": "shell",
-            "command": "rye run gen_token",
+            "command": "rye run prelaunch",
             "isBackground": false,
         },
         {

@@ -2,6 +2,8 @@ import random
 import string
 from pathlib import Path
 
+from helper import update_version
+
 TOKEN_PATH = Path("appdata/token.txt")
 
 
@@ -11,5 +13,10 @@ def gen_token(length: int = 32):
     print(f"Token saved to {TOKEN_PATH}")
 
 
+def main():
+    update_version()
+    gen_token()
+
+
 if __name__ == "__main__":
-    gen_token(32)
+    main()

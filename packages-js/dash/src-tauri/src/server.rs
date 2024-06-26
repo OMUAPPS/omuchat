@@ -6,12 +6,9 @@ use std::{
 use anyhow::{Error, Result};
 use rand::Rng;
 
+use crate::version::VERSION;
 use crate::{app::ServerStatus, python::Python, uv::Uv};
-
 const LATEST_PIP: &str = "pip==23.3.2";
-const REQUIREMENTS: &str = r#"
-omuserver==0.4.11
-"#;
 
 pub struct ServerOption {
     pub data_dir: PathBuf,
@@ -86,7 +83,8 @@ impl Server {
         }
 
         self.change_state(ServerStatus::Installing);
-        self.uv.update(LATEST_PIP, REQUIREMENTS)?;
+        let requirements = format!("omuserver=={}", VERSION);
+        self.uv.update(LATEST_PIP, &requirements)?;
         self.change_state(ServerStatus::Installed);
         let mut cmd = self.python.cmd();
         cmd.arg("-m");

@@ -24,10 +24,11 @@ import {
 import { Identifier } from '@omujs/omu/identifier.js';
 import { BrowserTokenProvider } from '@omujs/omu/token.js';
 import { setChat } from '../../../ui/dist/stores.js';
+import { version } from './version.json';
 
 const IDENTIFIER = new Identifier('com.omuapps', 'dashboard');
 const app = new App(IDENTIFIER, {
-    version: '0.1.0',
+    version,
 });
 
 const address = {
@@ -60,11 +61,10 @@ const chat = new Chat(omu);
 const dashboard = new Dashboard(omu);
 setClient(omu);
 setChat(chat);
-
 omu.plugins.require({
-    omuplugin_chat: '==0.4.11',
-    omu_chat_youtube: '==0.4.11',
-    omu_chatprovider: '==0.4.11',
+    omuplugin_chat: `==${version}`,
+    omu_chat_youtube: `==${version}`,
+    omu_chatprovider: `==${version}`,
 });
 omu.permissions.require(
     CHAT_CHANNEL_TREE_PERMISSION_ID,

@@ -3,13 +3,14 @@
     import { AppHeader, setClient } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { APP } from './app.js';
+    import { version } from '$lib/version.json';
     import AppPage from '$lib/components/AppPage.svelte';
 
     export const omu = new Omu(APP);
     setClient(omu);
 
     omu.plugins.require({
-        omuplugin_onecomme: '==0.4.11',
+        omuplugin_onecomme: `==${version}`,
     });
 
     if (BROWSER) {

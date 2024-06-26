@@ -1,11 +1,12 @@
 <script lang="ts">
+    import AppPage from '$lib/components/AppPage.svelte';
+    import { version } from '$lib/version.json';
     import { Omu } from '@omujs/omu';
     import { AppHeader, setClient, TableList, Toggle } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { APP } from './app.js';
     import { ArchiveApp } from './archive-app.js';
     import ArchiveEntry from './components/ArchiveEntry.svelte';
-    import AppPage from '$lib/components/AppPage.svelte';
 
     export const omu = new Omu(APP);
     setClient(omu);
@@ -16,7 +17,7 @@
 
     if (BROWSER) {
         omu.plugins.require({
-            omuplugin_archive: '==0.4.11',
+            omuplugin_archive: `==${version}`,
         });
         omu.start();
     }

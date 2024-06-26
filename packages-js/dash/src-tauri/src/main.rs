@@ -9,6 +9,7 @@ mod sources;
 mod sync;
 mod utils;
 mod uv;
+mod version;
 
 use anyhow::Result;
 use app::{AppState, ServerStatus};

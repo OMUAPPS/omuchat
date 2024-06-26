@@ -38,7 +38,7 @@
                 "Server",
                 "Client"
             ],
-            "preLaunchTask": "generate-token",
+            "preLaunchTask": "prelaunch",
             "stopAll": true
         }
     ],
