@@ -16,7 +16,7 @@
 
     if (BROWSER) {
         omu.plugins.require({
-            omuplugin_archive: '==0.4.7',
+            omuplugin_archive: '==0.4.11',
         });
         omu.start();
     }
