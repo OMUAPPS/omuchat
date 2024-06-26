@@ -20,9 +20,11 @@
         "lerna": "^8.1.5",
         "license-checker": "^25.0.1"
     },
-    "resolutions": {
-        "lerna/**/string-width": "4",
-        "lerna/**/strip-ansi": "6",
-        "lerna/**/wrap-ansi": "7"
+    "pnpm": {
+        "overrides": {
+            "string-width": "4",
+            "strip-ansi": "6",
+            "wrap-ansi": "7"
+        }
     }
 }
