@@ -16,7 +16,7 @@ DASHBOARD_SET_PERMISSION = PermissionType(
         },
         "note": {
             "en": "Permission to set the dashboard session",
-            "ja": "ダッシュボードを設定する権限",
+            "ja": "ダッシュボードを設定",
         },
     },
 )
@@ -44,7 +44,7 @@ DASHOBARD_APP_READ_PERMISSION = PermissionType(
         },
         "note": {
             "en": "Permission to get the list of saved apps on the dashboard",
-            "ja": "ダッシュボードに保存されたアプリのリストを取得する権限",
+            "ja": "ダッシュボードに保存されたアプリのリストを取得",
         },
     },
 )
@@ -58,7 +58,7 @@ DASHOBARD_APP_EDIT_PERMISSION = PermissionType(
         },
         "note": {
             "en": "Permission to edit saved apps on the dashboard",
-            "ja": "ダッシュボードに保存されたアプリの情報を編集する権限",
+            "ja": "ダッシュボードに保存されたアプリの情報を編集",
         },
     },
 )

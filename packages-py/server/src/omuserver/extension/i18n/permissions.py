@@ -12,7 +12,7 @@ I18N_SET_LOCALES_PERMISSION = PermissionType(
         },
         "note": {
             "en": "Permission to set locales such as language",
-            "ja": "言語などのロケールを設定する権限",
+            "ja": "言語などのロケールを設定",
         },
     },
 )
@@ -26,7 +26,7 @@ I18N_GET_LOCALES_PERMISSION = PermissionType(
         },
         "note": {
             "en": "Permission to get locales such as language",
-            "ja": "言語などのロケールを取得する権限",
+            "ja": "言語などのロケールを取得",
         },
     },
 )

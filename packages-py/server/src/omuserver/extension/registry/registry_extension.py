@@ -31,7 +31,7 @@ REGISTRY_PERMISSION = PermissionType(
         },
         "note": {
             "en": "Permission to read and write to a registry",
-            "ja": "レジストリに読み書きする権限",
+            "ja": "レジストリの読み書き",
         },
     },
 )
