@@ -24,7 +24,7 @@ use uv::Uv;
 use window_shadows::set_shadow;
 
 static APP_DIRECTORY: Lazy<ProjectDirs> =
-    Lazy::new(|| match ProjectDirs::from("cc", "OMUAPPS", "Dashboard") {
+    Lazy::new(|| match ProjectDirs::from("com", "OMUAPPS", "Dashboard") {
         Some(proj_dirs) => proj_dirs,
         None => panic!("Failed to get project directories!"),
     });
