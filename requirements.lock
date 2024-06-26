@@ -48,7 +48,7 @@ brotli==1.1.0
     # via yt-dlp
 bs4==0.0.2
     # via iwashi
-certifi==2024.2.2
+certifi==2024.6.2
     # via requests
     # via yt-dlp
 charset-normalizer==3.3.2
@@ -67,7 +67,7 @@ frozenlist==1.4.1
 idna==3.7
     # via requests
     # via yarl
-iwashi==3.0.4
+iwashi==3.0.5
     # via omu-chatprovider
     # via omuplugin-chat
 loguru==0.7.2
@@ -91,26 +91,26 @@ multidict==6.0.5
     # via yarl
 mutagen==1.47.0
     # via yt-dlp
-packaging==24.0
+packaging==24.1
     # via omuserver
-pip==24.0
+pip==24.1
     # via omuserver
-psutil==5.9.8
+psutil==6.0.0
     # via omuplugin-obssync
     # via omuserver
 pycryptodomex==3.20.0
     # via yt-dlp
-requests==2.31.0
+requests==2.32.3
     # via yt-dlp
-result==0.16.1
+result==0.17.0
     # via omu
     # via omuserver
 soupsieve==2.5
     # via beautifulsoup4
-urllib3==2.2.1
+urllib3==2.2.2
     # via requests
     # via yt-dlp
-uv==0.1.44
+uv==0.2.15
     # via omuserver
 websockets==12.0
     # via yt-dlp
@@ -118,5 +118,5 @@ win32-setctime==1.1.0
     # via loguru
 yarl==1.9.4
     # via aiohttp
-yt-dlp==2024.4.9
+yt-dlp==2024.5.27
     # via omuplugin-archive

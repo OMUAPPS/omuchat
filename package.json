@@ -16,8 +16,8 @@
         "packages-js/*"
     ],
     "devDependencies": {
-        "execa": "^9.1.0",
-        "lerna": "^8.1.3",
+        "execa": "^9.3.0",
+        "lerna": "^8.1.5",
         "license-checker": "^25.0.1"
     }
 }
