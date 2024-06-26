@@ -63,6 +63,7 @@ setChat(chat);
 
 omu.plugins.require({
     omuplugin_chat: '==0.4.11',
+    omu_chat_youtube: '==0.4.11',
     omu_chatprovider: '==0.4.11',
 });
 omu.permissions.require(
