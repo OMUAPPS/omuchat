@@ -17,7 +17,12 @@
     ],
     "devDependencies": {
         "execa": "^9.3.0",
-        "lerna": "^8.1.3",
+        "lerna": "^8.1.5",
         "license-checker": "^25.0.1"
+    },
+    "resolutions": {
+        "lerna/**/string-width": "4",
+        "lerna/**/strip-ansi": "6",
+        "lerna/**/wrap-ansi": "7"
     }
 }
