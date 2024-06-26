@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.4.9 (2024-06-26)
+
+
+### Bug Fixes
+
+* **scripts:** build-tauriでダッシュボードのビルドが出来るように ([17ca435](https://github.com/OMUAPPS/omuapps/commit/17ca4356d85e7bb08d96abd9f1a8cbf2bc90962f))
+
+
+
+
+
 ## 0.4.8 (2024-06-26)
 
 **Note:** Version bump only for package omuapps
