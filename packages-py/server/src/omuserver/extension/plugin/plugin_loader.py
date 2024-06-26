@@ -100,7 +100,9 @@ class DependencyResolver:
         changed = False
         for dependency, specifier in dependencies.items():
             if dependency not in self._dependencies:
-                if specifier is not None and self.is_package_satisfied(dependency, specifier):
+                if specifier is not None and self.is_package_satisfied(
+                    dependency, specifier
+                ):
                     continue
                 self._dependencies[dependency] = specifier or SpecifierSet()
                 changed = True

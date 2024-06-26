@@ -17,6 +17,7 @@ def clean(path: Path, *patterns: str):
         for p in path.glob(pattern):
             remove(p)
 
+
 @click.command()
 def main():
     cwd = Path.cwd()

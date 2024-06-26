@@ -78,7 +78,7 @@ omu.permissions.require(
 
 export { chat, dashboard, omu };
 
-import { checkUpdate, onUpdaterEvent } from '@tauri-apps/api/updater';
+import { checkUpdate } from '@tauri-apps/api/updater';
 import { screenContext } from './common/screen/screen.js';
 import UpdateScreen from './main/screen/UpdateScreen.svelte';
 
