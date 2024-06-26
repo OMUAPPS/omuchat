@@ -114,6 +114,15 @@ jobs:
                   enable-cache: true
                   cache-prefix: 'rye'
 
+            - name: Install dependencies
+              run: |
+                  rye config --set-bool behavior.use-uv=true
+                  rye sync
+
+            - name: Generate version file
+              run: |
+                  rye run gen_version
+
             - name: Git Identity
               run: |
                   git config --global user.name 'github-actions[bot]'
@@ -127,15 +136,6 @@ jobs:
                   git add .
                   git commit -m "chore: bump version"
                   git push
-
-            - name: Install dependencies
-              run: |
-                  rye config --set-bool behavior.use-uv=true
-                  rye sync
-
-            - name: Generate version file
-              run: |
-                  rye run gen_version
 
             - name: Build
               run: |
