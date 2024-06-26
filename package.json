@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "build-tauri": "node ./scripts/js-build.mjs --build tauri",
+        "build-tauri": "node ./scripts/js-build.mjs --build dash",
         "build-site": "node ./scripts/js-build.mjs --build site",
         "dev": "node ./scripts/js-build.mjs && node ./scripts/js-dev.mjs",
         "build": "node ./scripts/js-build.mjs",
