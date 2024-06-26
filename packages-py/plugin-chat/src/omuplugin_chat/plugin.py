@@ -138,7 +138,7 @@ async def create_channel_tree(url: str) -> list[Channel]:
     if results is None:
         return []
     found_channels: list[Channel] = []
-    services = await providers.fetch_items()
+    services = await providers.fetch_all()
     for result in results.to_list():
         for provider in services.values():
             if re.search(provider.regex, result.url) is None:
@@ -147,11 +147,11 @@ async def create_channel_tree(url: str) -> list[Channel]:
                 Channel(
                     provider_id=provider.id,
                     id=provider.id / result.id,
-                    url=result.url,
                     name=result.name or result.id or result.service.name,
                     description=result.description or "",
-                    active=True,
                     icon_url=result.profile_picture or "",
+                    url=result.url,
+                    active=True,
                 )
             )
     return found_channels
