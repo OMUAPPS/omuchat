@@ -55,7 +55,7 @@ TABLE_PERMISSION = PermissionType(
         },
         "note": {
             "en": "Permission to read, write, and remove items in a table",
-            "ja": "テーブル内のアイテムを読み書き、削除する権限",
+            "ja": "テーブル内のアイテムを編集する権限",
         },
     },
 )

@@ -114,7 +114,7 @@ client.permissions.register(
             },
             "note": {
                 "en": "Permission to get reactions",
-                "ja": "リアクションを取得する権限",
+                "ja": "リアクションの取得",
             },
         },
     ),

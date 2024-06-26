@@ -12,11 +12,11 @@ DASHBOARD_SET_PERMISSION = PermissionType(
         "level": "low",
         "name": {
             "en": "Dashboard Set Permission",
-            "ja": "ダッシュボード設定権限",
+            "ja": "ダッシュボードを設定",
         },
         "note": {
             "en": "Permission to set the dashboard session",
-            "ja": "ダッシュボードセッションを設定する権限",
+            "ja": "ダッシュボードを設定する権限",
         },
     },
 )
@@ -26,7 +26,7 @@ DASHBOARD_OPEN_APP_PERMISSION = PermissionType(
         "level": "low",
         "name": {
             "en": "Dashboard Open App Permission",
-            "ja": "アプリを開く権限",
+            "ja": "アプリを開く",
         },
         "note": {
             "en": "Permission to open an app on the dashboard",
@@ -40,7 +40,7 @@ DASHOBARD_APP_READ_PERMISSION = PermissionType(
         "level": "low",
         "name": {
             "en": "Access to Saved Apps on Dashboard",
-            "ja": "保存されたアプリのリストの取得権限",
+            "ja": "保存されたアプリを取得",
         },
         "note": {
             "en": "Permission to get the list of saved apps on the dashboard",
@@ -54,11 +54,11 @@ DASHOBARD_APP_EDIT_PERMISSION = PermissionType(
         "level": "medium",
         "name": {
             "en": "Edit Saved Apps on Dashboard",
-            "ja": "保存されたアプリの編集する権限",
+            "ja": "保存されたアプリの編集",
         },
         "note": {
             "en": "Permission to edit saved apps on the dashboard",
-            "ja": "ダッシュボードに保存されたアプリを編集する権限",
+            "ja": "ダッシュボードに保存されたアプリの情報を編集する権限",
         },
     },
 )
