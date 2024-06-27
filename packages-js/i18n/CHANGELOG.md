@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.4.16 (2024-06-27)
+
+**Note:** Version bump only for package @omujs/i18n
+
+
+
+
+
 ## 0.4.15 (2024-06-27)
 
 **Note:** Version bump only for package @omujs/i18n
