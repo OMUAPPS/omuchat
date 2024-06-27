@@ -32,159 +32,151 @@
         <AppHeader app={APP} />
     </header>
     <main>
-        <FlexRowWrapper widthFull between gap>
-            <FlexColWrapper widthFull>
-                <h3>タイム</h3>
-                <section>
-                    <Timer {timer} />
-                </section>
+        <FlexColWrapper widthFull>
+            <h3>タイム</h3>
+            <section>
+                <Timer {timer} />
+            </section>
 
-                <h3>操作</h3>
-                <section>
-                    <FlexRowWrapper gap>
-                        <button on:click={() => timer.toggle()}>
-                            <Tooltip>
-                                {#if $data.running}
-                                    タイマーを停止します
-                                {:else}
-                                    タイマーを開始します
-                                {/if}
-                            </Tooltip>
+            <h3>操作</h3>
+            <section>
+                <FlexRowWrapper gap>
+                    <button on:click={() => timer.toggle()}>
+                        <Tooltip>
                             {#if $data.running}
-                                停止
-                                <i class="ti ti-player-pause" />
+                                タイマーを停止します
                             {:else}
-                                開始
-                                <i class="ti ti-player-play" />
+                                タイマーを開始します
                             {/if}
-                        </button>
-                        <button on:click={() => timer.reset()}>
-                            <Tooltip>タイマーをリセットします</Tooltip>
-                            リセット
-                            <i class="ti ti-reload" />
-                        </button>
-                    </FlexRowWrapper>
-                </section>
-                <h3>時間形式</h3>
-                <section>
-                    <Textbox bind:value={$config.format} />
-                    <small>
-                        それぞれ
-                        <p>
-                            {'{minutes}'}
-                            <i class="ti ti-chevron-right" />
-                            分
-                        </p>
-                        <p>
-                            {'{seconds}'}
-                            <i class="ti ti-chevron-right" />
-                            秒
-                        </p>
-                        <p>
-                            {'{centiseconds}'}
-                            <i class="ti ti-chevron-right" />
-                            少数第2位までの秒
-                        </p>
-                        で置換されます。
-                    </small>
-                </section>
-            </FlexColWrapper>
-            <FlexColWrapper widthFull>
-                <h3>OBSに貼り付ける</h3>
-                <section>
-                    {#if BROWSER}
-                        <DragLink
-                            href={() => {
-                                const url = new URL($page.url);
-                                url.pathname = `${url.pathname}asset`;
-                                url.searchParams.set('assetId', Date.now().toString());
-                                return url;
-                            }}
-                        >
-                            <h3 slot="preview" class="drag-preview">
-                                これをOBSにドロップ
-                                <i class="ti ti-upload" />
-                            </h3>
-                            <div class="drag">
-                                <i class="ti ti-drag-drop" />
-                                ここをOBSにドラッグ&ドロップ
-                            </div>
-                        </DragLink>
-                    {/if}
-                </section>
-                <h3>見た目</h3>
-                <section>
-                    <p class="setting">
-                        <small>配置</small>
-                        <Align bind:align={$config.style.align} />
+                        </Tooltip>
+                        {#if $data.running}
+                            停止
+                            <i class="ti ti-player-pause" />
+                        {:else}
+                            開始
+                            <i class="ti ti-player-play" />
+                        {/if}
+                    </button>
+                    <button on:click={() => timer.reset()}>
+                        <Tooltip>タイマーをリセットします</Tooltip>
+                        リセット
+                        <i class="ti ti-reload" />
+                    </button>
+                </FlexRowWrapper>
+            </section>
+            <h3>時間形式</h3>
+            <section>
+                <Textbox bind:value={$config.format} />
+                <small>
+                    それぞれ
+                    <p>
+                        {'{minutes}'}
+                        <i class="ti ti-chevron-right" />
+                        分
                     </p>
-                    <p class="setting">
-                        <small>文字の色</small>
-                        <input type="color" bind:value={$config.style.color} />
+                    <p>
+                        {'{seconds}'}
+                        <i class="ti ti-chevron-right" />
+                        秒
                     </p>
-                    <p class="setting">
-                        <small>文字の大きさ</small>
-                        <span class="font-size">
-                            <input
-                                type="range"
-                                min="10"
-                                max="100"
-                                bind:value={$config.style.fontSize}
-                            />
-                            <input type="number" bind:value={$config.style.fontSize} />
-                        </span>
+                    <p>
+                        {'{centiseconds}'}
+                        <i class="ti ti-chevron-right" />
+                        少数第2位までの秒
                     </p>
-                    <p class="setting">
-                        <small>文字のフォント</small>
-                        <input type="text" bind:value={$config.style.fontFamily} />
-                    </p>
-                    <p class="setting">
-                        <small>背景の色</small>
-                        <input type="color" bind:value={$config.style.backgroundColor} />
-                    </p>
-                    <p class="setting">
-                        <small>背景の透明度</small>
-                        <span class="font-size">
+                    で置換されます。
+                </small>
+            </section>
+        </FlexColWrapper>
+        <FlexColWrapper widthFull>
+            <h3>OBSに貼り付ける</h3>
+            <section>
+                {#if BROWSER}
+                    <DragLink
+                        href={() => {
+                            const url = new URL($page.url);
+                            url.pathname = `${url.pathname}asset`;
+                            url.searchParams.set('assetId', Date.now().toString());
+                            return url;
+                        }}
+                    >
+                        <h3 slot="preview" class="drag-preview">
+                            これをOBSにドロップ
+                            <i class="ti ti-upload" />
+                        </h3>
+                        <div class="drag">
+                            <i class="ti ti-drag-drop" />
+                            ここをOBSにドラッグ&ドロップ
+                        </div>
+                    </DragLink>
+                {/if}
+            </section>
+            <h3>見た目</h3>
+            <section>
+                <p class="setting">
+                    <small>配置</small>
+                    <Align bind:align={$config.style.align} />
+                </p>
+                <p class="setting">
+                    <small>文字の色</small>
+                    <input type="color" bind:value={$config.style.color} />
+                </p>
+                <p class="setting">
+                    <small>文字の大きさ</small>
+                    <span class="font-size">
+                        <input
+                            type="range"
+                            min="10"
+                            max="100"
+                            bind:value={$config.style.fontSize}
+                        />
+                        <input type="number" bind:value={$config.style.fontSize} />
+                    </span>
+                </p>
+                <p class="setting">
+                    <small>文字のフォント</small>
+                    <input type="text" bind:value={$config.style.fontFamily} />
+                </p>
+                <p class="setting">
+                    <small>背景の色</small>
+                    <input type="color" bind:value={$config.style.backgroundColor} />
+                </p>
+                <p class="setting">
+                    <small>背景の透明度</small>
+                    <span class="font-size">
+                        <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            bind:value={$config.style.backgroundOpacity}
+                        />
+                        <input type="number" bind:value={$config.style.backgroundOpacity} />
+                    </span>
+                </p>
+                <div class="setting">
+                    <FlexColWrapper>
+                        <small>背景の余白</small>
+                        <div>
                             <input
                                 type="range"
                                 min="0"
-                                max="1"
-                                step="0.01"
-                                bind:value={$config.style.backgroundOpacity}
+                                max="100"
+                                bind:value={$config.style.backgroundPadding[0]}
                             />
-                            <input type="number" bind:value={$config.style.backgroundOpacity} />
-                        </span>
-                    </p>
-                    <div class="setting">
-                        <FlexColWrapper>
-                            <small>背景の余白</small>
-                            <div>
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="100"
-                                    bind:value={$config.style.backgroundPadding[0]}
-                                />
-                                <input
-                                    type="number"
-                                    bind:value={$config.style.backgroundPadding[0]}
-                                />
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="100"
-                                    bind:value={$config.style.backgroundPadding[1]}
-                                />
-                                <input
-                                    type="number"
-                                    bind:value={$config.style.backgroundPadding[1]}
-                                />
-                            </div>
-                        </FlexColWrapper>
-                    </div>
-                </section>
-            </FlexColWrapper>
-        </FlexRowWrapper>
+                            <input type="number" bind:value={$config.style.backgroundPadding[0]} />
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                bind:value={$config.style.backgroundPadding[1]}
+                            />
+                            <input type="number" bind:value={$config.style.backgroundPadding[1]} />
+                        </div>
+                    </FlexColWrapper>
+                </div>
+            </section>
+        </FlexColWrapper>
     </main>
 </AppPage>
 
@@ -192,12 +184,12 @@
     main {
         position: relative;
         display: flex;
-        flex-direction: column;
         align-items: start;
+        gap: 30px;
         justify-content: flex-start;
         width: 100%;
         height: 100vh;
-        padding: 40px;
+        padding: 30px;
     }
 
     .drag-preview {
