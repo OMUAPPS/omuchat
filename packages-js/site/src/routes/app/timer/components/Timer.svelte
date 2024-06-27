@@ -51,4 +51,12 @@
     }
 </script>
 
-<h1>{displayTime}</h1>
+<h1 style="
+    color: {$config.style.color};
+    background: {$config.style.backgroundColor}{Math.floor($config.style.backgroundOpacity * 255).toString(16)};
+    padding: {$config.style.backgroundPadding[0]}px {$config.style.backgroundPadding[1]}px;
+    font-size: {$config.style.fontSize}px;
+    font-family: {$config.style.fontFamily};
+">
+    {displayTime}
+</h1>

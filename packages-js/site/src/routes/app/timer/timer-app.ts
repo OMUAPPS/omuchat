@@ -13,6 +13,14 @@ export type TimerData = {
 
 export type TimerConfig = {
     format: string;
+    style: {
+        color: string;
+        backgroundColor: string;
+        backgroundOpacity: number;
+        backgroundPadding: [number, number];
+        fontSize: number;
+        fontFamily: string;
+    };
 };
 
 const TIMER_REGISTRY_TYPE = RegistryType.createJson<TimerData>(IDENTIFIER, {
@@ -29,6 +37,14 @@ const TIMER_CONFIG_REGISTRY_TYPE = RegistryType.createJson<TimerConfig>(IDENTIFI
     name: 'timer-config',
     defaultValue: {
         format: '{minutes}:{seconds}.{centiseconds}',
+        style: {
+            color: '#000000',
+            backgroundColor: '#ffffff',
+            backgroundOpacity: 0.5,
+            backgroundPadding: [10, 5],
+            fontSize: 32,
+            fontFamily: 'Noto Sans JP',
+        },
     },
 });
 

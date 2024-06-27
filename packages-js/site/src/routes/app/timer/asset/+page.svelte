@@ -23,7 +23,9 @@
 </script>
 
 {#if id}
-    <Timer {timer} />
+    <main>
+        <Timer {timer} />
+    </main>
 {:else}
     <p>id is not provided</p>
 {/if}
@@ -31,5 +33,12 @@
 <style>
     :global(body) {
         background: transparent !important;
+    }
+
+    main {
+        display: flex;
+        justify-content: start;
+        align-items: start;
+        height: 100vh;
     }
 </style>

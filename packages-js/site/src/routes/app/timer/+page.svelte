@@ -2,7 +2,15 @@
     import { page } from '$app/stores';
     import AppPage from '$lib/components/AppPage.svelte';
     import { Omu } from '@omujs/omu';
-    import { AppHeader, DragLink, setClient, Textbox } from '@omujs/ui';
+    import {
+        AppHeader,
+        DragLink,
+        FlexColWrapper,
+        FlexRowWrapper,
+        setClient,
+        Textbox,
+        Tooltip,
+    } from '@omujs/ui';
     import { BROWSER } from 'esm-env';
     import { APP } from './app.js';
     import { TimerApp } from './timer-app.js';
@@ -12,6 +20,17 @@
     const timer = new TimerApp(omu);
     const { data, config } = timer;
     setClient(omu);
+
+    omu.onReady(() => {
+        $config.style = {
+            color: '#000000',
+            backgroundColor: '#ffffff',
+            backgroundOpacity: 0.5,
+            backgroundPadding: [10, 5],
+            fontSize: 32,
+            fontFamily: 'sans-serif',
+        };
+    });
 
     if (BROWSER) {
         omu.start();
@@ -23,50 +42,155 @@
         <AppHeader app={APP} />
     </header>
     <main>
-        <h3>操作</h3>
-        <section>
-            <button on:click={() => timer.toggle()}>
-                {#if $data.running}
-                    停止
-                    <i class="ti ti-player-pause" />
-                {:else}
-                    開始
-                    <i class="ti ti-player-play" />
-                {/if}
-            </button>
-            <button on:click={() => timer.reset()}>
-                リセット
-                <i class="ti ti-reload" />
-            </button>
-            <Textbox bind:value={$config.format} />
-        </section>
-        <h3>タイム</h3>
-        <section>
-            <Timer {timer} />
-        </section>
+        <FlexRowWrapper widthFull between gap>
+            <FlexColWrapper widthFull>
+                <h3>タイム</h3>
+                <section>
+                    <Timer {timer} />
+                </section>
 
-        <h3>OBSに貼り付ける</h3>
-        <section>
-            {#if BROWSER}
-                <DragLink
-                    href={() => {
-                        const url = new URL($page.url);
-                        url.pathname = `${url.pathname}asset`;
-                        url.searchParams.set('assetId', Date.now().toString());
-                        return url;
-                    }}
-                >
-                    <h3 slot="preview" class="drag-preview">
-                        これをOBSにドロップ
-                        <i class="ti ti-upload" />
-                    </h3>
-                    <div class="drag">
-                        <i class="ti ti-drag-drop" />
-                        ここをOBSにドラッグ&ドロップ
+                <h3>操作</h3>
+                <section>
+                    <FlexRowWrapper gap>
+                        <button on:click={() => timer.toggle()}>
+                            <Tooltip>
+                                {#if $data.running}
+                                    タイマーを停止します
+                                {:else}
+                                    タイマーを開始します
+                                {/if}
+                            </Tooltip>
+                            {#if $data.running}
+                                停止
+                                <i class="ti ti-player-pause" />
+                            {:else}
+                                開始
+                                <i class="ti ti-player-play" />
+                            {/if}
+                        </button>
+                        <button on:click={() => timer.reset()}>
+                            <Tooltip>タイマーをリセットします</Tooltip>
+                            リセット
+                            <i class="ti ti-reload" />
+                        </button>
+                    </FlexRowWrapper>
+                </section>
+                <h3>時間形式</h3>
+                <section>
+                    <Textbox bind:value={$config.format} />
+                    <small>
+                        それぞれ
+                        <p>
+                            {'{minutes}'}
+                            <i class="ti ti-chevron-right" />
+                            分
+                        </p>
+                        <p>
+                            {'{seconds}'}
+                            <i class="ti ti-chevron-right" />
+                            秒
+                        </p>
+                        <p>
+                            {'{centiseconds}'}
+                            <i class="ti ti-chevron-right" />
+                            少数第2位までの秒
+                        </p>
+                        で置換されます。
+                    </small>
+                </section>
+            </FlexColWrapper>
+            <FlexColWrapper widthFull>
+                <h3>OBSに貼り付ける</h3>
+                <section>
+                    {#if BROWSER}
+                        <DragLink
+                            href={() => {
+                                const url = new URL($page.url);
+                                url.pathname = `${url.pathname}asset`;
+                                url.searchParams.set('assetId', Date.now().toString());
+                                return url;
+                            }}
+                        >
+                            <h3 slot="preview" class="drag-preview">
+                                これをOBSにドロップ
+                                <i class="ti ti-upload" />
+                            </h3>
+                            <div class="drag">
+                                <i class="ti ti-drag-drop" />
+                                ここをOBSにドラッグ&ドロップ
+                            </div>
+                        </DragLink>
+                    {/if}
+                </section>
+                <h3>見た目</h3>
+                <section>
+                    <p class="setting">
+                        <small>文字の色</small>
+                        <input type="color" bind:value={$config.style.color} />
+                    </p>
+                    <p class="setting">
+                        <small>文字の大きさ</small>
+                        <span class="font-size">
+                            <input
+                                type="range"
+                                min="10"
+                                max="100"
+                                bind:value={$config.style.fontSize}
+                            />
+                            <input type="number" bind:value={$config.style.fontSize} />
+                        </span>
+                    </p>
+                    <p class="setting">
+                        <small>文字のフォント</small>
+                        <input type="text" bind:value={$config.style.fontFamily} />
+                    </p>
+                    <p class="setting">
+                        <small>背景の色</small>
+                        <input type="color" bind:value={$config.style.backgroundColor} />
+                    </p>
+                    <p class="setting">
+                        <small>背景の透明度</small>
+                        <span class="font-size">
+                            <input
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.01"
+                                bind:value={$config.style.backgroundOpacity}
+                            />
+                            <input type="number" bind:value={$config.style.backgroundOpacity} />
+                        </span>
+                    </p>
+                    <div class="setting">
+                        <FlexColWrapper>
+                            <small>背景の余白</small>
+                            <div>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    bind:value={$config.style.backgroundPadding[0]}
+                                />
+                                <input
+                                    type="number"
+                                    bind:value={$config.style.backgroundPadding[0]}
+                                />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    bind:value={$config.style.backgroundPadding[1]}
+                                />
+                                <input
+                                    type="number"
+                                    bind:value={$config.style.backgroundPadding[1]}
+                                />
+                            </div>
+                        </FlexColWrapper>
                     </div>
-                </DragLink>
-            {/if}
-        </section>
+                </section>
+            </FlexColWrapper>
+        </FlexRowWrapper>
     </main>
 </AppPage>
 
@@ -112,6 +236,51 @@
         }
     }
 
+    .setting {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
+        background: var(--color-bg-2);
+        padding: 10px;
+
+        & > input {
+            height: 2rem;
+            padding: 0;
+            background: var(--color-bg-2);
+            color: var(--color-1);
+            font-weight: bold;
+
+            &[type='color'] {
+                border: 2px solid var(--color-1);
+                padding: 0;
+                width: 2rem;
+                height: 2rem;
+            }
+
+            &[type='text'] {
+                padding: 0 0.5rem;
+                border: 2px solid var(--color-1);
+                width: 8rem;
+            }
+        }
+
+        & > .font-size {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            & > input[type='range'] {
+                width: 6rem;
+            }
+
+            & > input[type='number'] {
+                width: 3rem;
+            }
+        }
+    }
+
     h3 {
         color: var(--color-1);
         margin-bottom: 10px;
@@ -146,7 +315,6 @@
         align-items: start;
         justify-content: flex-start;
         width: 100%;
-        padding: 0px;
         margin-bottom: 20px;
     }
 </style>
