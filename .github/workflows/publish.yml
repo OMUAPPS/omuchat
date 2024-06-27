@@ -26,7 +26,6 @@ permissions:
 
 jobs:
     publish-npm:
-        if: ${{ github.event.inputs.npm == 'true' }}
         runs-on: ubuntu-latest
         env:
             NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -71,12 +70,15 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Build
+              if: ${{ github.event.inputs.npm == 'true' }}
               run: npx lerna run build
 
             - name: Version
+              if: ${{ github.event.inputs.npm == 'true' }}
               run: npx lerna version --yes
 
             - name: Setup npmrc
+              if: ${{ github.event.inputs.npm == 'true' }}
               run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
 
             - name: Get version
@@ -89,6 +91,7 @@ jobs:
                   echo "VERSION=${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
 
             - name: Publish
+              if: ${{ github.event.inputs.npm == 'true' }}
               run: pnpm publish -r --access public --no-git-checks
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
