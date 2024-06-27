@@ -199,14 +199,9 @@ jobs:
                       ${{ runner.os }}-pnpm-store-
 
             - name: Pull
-              run: |
-                  git config --global user.name 'github-actions[bot]'
-                  git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-                  git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
-                  git fetch
-                  git checkout ${{ needs.publish-pypi.outputs.VERSION }}
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ needs.publish-pypi.outputs.VERSION }}
 
             - name: Install dependencies
               run: pnpm i --frozen-lockfile
