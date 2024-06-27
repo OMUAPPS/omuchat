@@ -3,17 +3,8 @@
 
     export let align: AlignType;
 
-    $: vertical = {
-        top: 'top',
-        center: 'center',
-        bottom: 'bottom',
-    }[align.split('-')[0]];
-
-    $: horizontal = {
-        left: 'left',
-        center: 'center',
-        right: 'right',
-    }[align.split('-')[1]];
+    $: vertical = align.split('-')[0];
+    $: horizontal = align.split('-')[1];
 </script>
 
 <div class="container">
