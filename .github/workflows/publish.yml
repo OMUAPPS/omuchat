@@ -119,15 +119,15 @@ jobs:
                   rye config --set-bool behavior.use-uv=true
                   rye sync
 
-            - name: Git Identity
+            - name: Pull
               run: |
                   git config --global user.name 'github-actions[bot]'
                   git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
-            - name: Pull
-              run: |
+                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GH_REPO
                   git pull
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GH_REPO: ${{ github.repository }}
 
             - name: Generate version file
               run: |
