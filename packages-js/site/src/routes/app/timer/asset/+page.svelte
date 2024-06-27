@@ -14,16 +14,31 @@
     });
     const omu = new Omu(app);
     const timer = new TimerApp(omu);
-    const { data } = timer;
+    const { config } = timer;
     setClient(omu);
 
     if (BROWSER) {
         omu.start();
     }
+
+    $: alignVertical = {
+        top: 'start',
+        center: 'center',
+        bottom: 'end',
+    }[$config.style.align.split('-')[0]];
+    $: alignHorizontal = {
+        left: 'start',
+        center: 'center',
+        right: 'end',
+    }[$config.style.align.split('-')[1]];
 </script>
 
 {#if id}
-    <main>
+    <main
+        style="
+        justify-content: {alignHorizontal};
+        align-items: {alignVertical};"
+    >
         <Timer {timer} />
     </main>
 {:else}
@@ -37,8 +52,6 @@
 
     main {
         display: flex;
-        justify-content: start;
-        align-items: start;
         height: 100vh;
     }
 </style>

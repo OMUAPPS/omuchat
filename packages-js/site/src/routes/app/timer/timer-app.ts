@@ -11,6 +11,8 @@ export type TimerData = {
     running: boolean;
 };
 
+export type AlignType = 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center-center' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+
 export type TimerConfig = {
     format: string;
     style: {
@@ -20,6 +22,7 @@ export type TimerConfig = {
         backgroundPadding: [number, number];
         fontSize: number;
         fontFamily: string;
+        align: AlignType;
     };
 };
 
@@ -44,6 +47,7 @@ const TIMER_CONFIG_REGISTRY_TYPE = RegistryType.createJson<TimerConfig>(IDENTIFI
             backgroundPadding: [10, 5],
             fontSize: 32,
             fontFamily: 'Noto Sans JP',
+            align: 'bottom-right',
         },
     },
 });

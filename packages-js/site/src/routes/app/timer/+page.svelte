@@ -15,22 +15,12 @@
     import { APP } from './app.js';
     import { TimerApp } from './timer-app.js';
     import Timer from './components/Timer.svelte';
+    import Align from './components/Align.svelte';
 
     const omu = new Omu(APP);
     const timer = new TimerApp(omu);
     const { data, config } = timer;
     setClient(omu);
-
-    omu.onReady(() => {
-        $config.style = {
-            color: '#000000',
-            backgroundColor: '#ffffff',
-            backgroundOpacity: 0.5,
-            backgroundPadding: [10, 5],
-            fontSize: 32,
-            fontFamily: 'sans-serif',
-        };
-    });
 
     if (BROWSER) {
         omu.start();
@@ -124,6 +114,10 @@
                 </section>
                 <h3>見た目</h3>
                 <section>
+                    <p class="setting">
+                        <small>配置</small>
+                        <Align bind:align={$config.style.align} />
+                    </p>
                     <p class="setting">
                         <small>文字の色</small>
                         <input type="color" bind:value={$config.style.color} />
