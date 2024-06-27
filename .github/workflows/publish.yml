@@ -119,15 +119,17 @@ jobs:
                   rye config --set-bool behavior.use-uv=true
                   rye sync
 
-            - name: Pull
+            - name: Git Identity
               run: |
                   git config --global user.name 'github-actions[bot]'
                   git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GH_REPO
-                  git pull
+                  git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  GH_REPO: ${{ github.repository }}
+
+            - name: Pull
+              run: |
+                  git pull
 
             - name: Generate version file
               run: |
@@ -189,17 +191,15 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pnpm-store-
 
-            - name: Git Identity
+            - name: Pull
               run: |
                   git config --global user.name 'github-actions[bot]'
                   git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-                  git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GH_REPO
+                  git pull
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Pull
-              run: |
-                  git pull
+                  GH_REPO: ${{ github.repository }}
 
             - name: Install dependencies
               run: pnpm i --frozen-lockfile
