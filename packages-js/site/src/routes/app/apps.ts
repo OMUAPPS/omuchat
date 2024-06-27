@@ -13,6 +13,7 @@ import { APP as tester } from './tester/app.js';
 import { APP as translator } from './translator/app.js';
 import { APP as chatSubtitle } from './chatsubtitle/app.js';
 import { APP as fries } from './aoikuru-fries/app.js';
+import { APP as timer } from './timer/app.js';
 
 export const apps = [
     archive,
@@ -26,6 +27,7 @@ export const apps = [
     tester,
     translator,
     chatSubtitle,
+    timer,
 ] satisfies App[];
 
 const personalApps: Record<string, App[]> = {
