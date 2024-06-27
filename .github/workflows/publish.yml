@@ -191,16 +191,6 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pnpm-store-
 
-            - name: Pull
-              run: |
-                  git config --global user.name 'github-actions[bot]'
-                  git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GH_REPO
-                  git pull
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  GH_REPO: ${{ github.repository }}
-
             - name: Install dependencies
               run: pnpm i --frozen-lockfile
 
@@ -213,8 +203,13 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
 
+            - name: Pull
+              uses: actions/checkout@v4
+
             - name: build-pre
-              run: pnpm --filter dash run build-pre
+              run: |
+                  pnpm build
+                  pnpm --filter dash run build-pre
 
             - uses: tauri-apps/tauri-action@v0
               env:
