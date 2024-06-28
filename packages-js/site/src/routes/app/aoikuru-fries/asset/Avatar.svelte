@@ -1,7 +1,8 @@
 <script lang="ts">
     import type { Writable } from 'svelte/store';
     import { frame, type State, type StateType } from '../state.js';
-    import idle from './img/idle.png';
+    import idle1 from './img/idle1.png';
+    import idle2 from './img/idle2.png';
     import throwing from './img/throwing.png';
     import catching from './img/catching.png';
     import eating1 from './img/eating1.png';
@@ -13,7 +14,7 @@
     export let state: Writable<State>;
 
     const images = {
-        idle,
+        idle: idle1,
         throw_start: throwing,
         throwing,
         catching,
@@ -76,6 +77,28 @@
     }
 
     let eatTime = 0;
+    let idleTime = 0;
+
+    const idleFrames = [
+        { src: idle1, frame: 250 * 0 },
+        { src: idle2, frame: 250 * 1 },
+        { src: idle1, frame: 250 * 2 },
+        { src: idle2, frame: 250 * 3 },
+        { src: idle1, frame: 250 * 4 },
+    ];
+    const idleDuration = idleFrames.reduce((acc, v) => acc + v.frame, 0);
+
+    function getIdleFrame(frame: number) {
+        let time = (idleTime += frame);
+        let f = time % idleDuration;
+        for (const { src, frame: f2 } of idleFrames) {
+            if (f < f2) {
+                return src;
+            }
+            f -= f2;
+        }
+        return idle1;
+    }
 </script>
 
 {#if $state.type === 'eating'}
@@ -84,16 +107,21 @@
     {:else}
         <img src={eating2} alt="" />
     {/if}
+{:else if $state.type === 'idle'}
+    <img src={getIdleFrame($frame)} alt="" />
 {:else}
     <img src={images[$state.type]} alt="" />
 {/if}
 <div class="preloader">
-    <img src={idle} alt="" />
+    <img src={idle1} alt="" />
+    <img src={idle2} alt="" />
     <img src={throwing} alt="" />
     <img src={catching} alt="" />
     <img src={eating1} alt="" />
     <img src={eating2} alt="" />
     <img src={idle_start} alt="" />
+    <img src={throw_many} alt="" />
+    <img src={throw_many_hit} alt="" />
 </div>
 
 <style lang="scss">
