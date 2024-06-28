@@ -22,10 +22,12 @@
 -e file:packages-py/chat-youtube
 -e file:packages-py/omu
     # via omu-chat
+    # via omuplugin-marshmallow
     # via omuserver
 -e file:packages-py/plugin-archive
 -e file:packages-py/plugin-chat
 -e file:packages-py/plugin-emoji
+-e file:packages-py/plugin-marshmallow
 -e file:packages-py/plugin-nyanya
 -e file:packages-py/plugin-obssync
 -e file:packages-py/plugin-onecomme
@@ -34,15 +36,19 @@
 aiohttp==3.9.5
     # via edgetrans
     # via iwashi
+    # via marshmallowqa-py
     # via omu
     # via omu-chatprovider
     # via omuserver
 aiosignal==1.3.1
     # via aiohttp
+annotated-types==0.7.0
+    # via pydantic
 attrs==23.2.0
     # via aiohttp
 beautifulsoup4==4.12.3
     # via bs4
+    # via marshmallowqa-py
     # via omu-chatprovider
 brotli==1.1.0
     # via yt-dlp
@@ -56,6 +62,10 @@ charset-normalizer==3.3.2
 click==8.1.7
     # via iwashi
     # via omuserver
+colorama==0.4.6
+    # via click
+    # via loguru
+    # via pytest
 coverage==7.5.4
     # via pytest-cov
 edgetrans==0.2.3
@@ -80,6 +90,7 @@ loguru==0.7.2
     # via omuplugin-archive
     # via omuplugin-chat
     # via omuplugin-emoji
+    # via omuplugin-marshmallow
     # via omuplugin-nyanya
     # via omuplugin-obssync
     # via omuplugin-onecomme
@@ -87,6 +98,8 @@ loguru==0.7.2
     # via omuserver
 lxml==5.2.2
     # via omu-chatprovider
+marshmallowqa-py==0.2.1
+    # via omuplugin-marshmallow
 multidict==6.0.5
     # via aiohttp
     # via yarl
@@ -106,6 +119,10 @@ psutil==6.0.0
     # via omuserver
 pycryptodomex==3.20.0
     # via yt-dlp
+pydantic==2.7.4
+    # via marshmallowqa-py
+pydantic-core==2.18.4
+    # via pydantic
 pyright==1.1.369
 pytest==8.2.2
     # via pytest-asyncio
@@ -117,9 +134,14 @@ requests==2.32.3
 result==0.17.0
     # via omu
     # via omuserver
+rookiepy==0.5.1
+    # via marshmallowqa-py
 ruff==0.4.10
 soupsieve==2.5
     # via beautifulsoup4
+typing-extensions==4.12.2
+    # via pydantic
+    # via pydantic-core
 urllib3==2.2.2
     # via requests
     # via yt-dlp
@@ -127,6 +149,8 @@ uv==0.2.15
     # via omuserver
 websockets==12.0
     # via yt-dlp
+win32-setctime==1.1.0
+    # via loguru
 yarl==1.9.4
     # via aiohttp
 yt-dlp==2024.5.27
