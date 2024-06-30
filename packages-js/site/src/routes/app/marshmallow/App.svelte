@@ -50,7 +50,10 @@
         <div class="messages">
             {#each messages as item}
                 <button class="message" on:click={() => (message = item)}>
-                    <Tooltip>クリックでメッセージを表示</Tooltip>
+                    <Tooltip>
+                        クリックでメッセージを表示
+                        <i class="ti ti-chevron-right" />
+                    </Tooltip>
                     <p>{item.content}</p>
                     <button class="like">
                         <Tooltip>お気に入りにする</Tooltip>
@@ -62,6 +65,16 @@
                     </button>
                 </button>
             {/each}
+            {#if message}
+                <button on:click={() => (message = null)} class="message hide">
+                    <Tooltip>
+                        クリックでメッセージを非表示
+                        <i class="ti ti-chevron-right" />
+                    </Tooltip>
+                    <p>メッセージを非表示</p>
+                    <i class="ti ti-x" />
+                </button>
+            {/if}
         </div>
     </div>
     <div class="right">
@@ -89,6 +102,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
+        height: 100%;
 
         > .message {
             display: flex;
@@ -121,7 +135,7 @@
                 color: var(--color-1);
             }
 
-            .like {
+            > .like {
                 margin-left: auto;
                 background: none;
                 border: none;
@@ -145,12 +159,18 @@
         }
     }
 
+    .hide {
+        margin-top: auto;
+    }
+
     .left {
         position: absolute;
         top: 0;
         bottom: 0;
         width: 300px;
         min-width: 300px;
+        display: flex;
+        flex-direction: column;
         background: var(--color-bg-2);
         border-right: 1px solid var(--color-outline);
     }
