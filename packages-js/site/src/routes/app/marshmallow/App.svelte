@@ -36,6 +36,7 @@
 
     $: {
         if (user) {
+            messages = [];
             marshmallow.getMessages(user.name).then((res) => {
                 console.log(res);
                 messages = res;
