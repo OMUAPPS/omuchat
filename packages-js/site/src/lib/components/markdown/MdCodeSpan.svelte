@@ -1,7 +1,5 @@
 <script lang="ts">
-    import { ButtonMini, Tooltip } from '@omujs/ui';
-
-    export let raw: string;
+    // export let raw: string;
     export let text: string;
 </script>
 

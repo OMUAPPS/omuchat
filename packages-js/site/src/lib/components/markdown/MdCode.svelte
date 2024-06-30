@@ -2,7 +2,7 @@
     import { ButtonMini, Tooltip } from '@omujs/ui';
 
     export let lang: string;
-    export let raw: string;
+    // export let raw: string;
     export let text: string;
 
     $: lines = text.split('\n');

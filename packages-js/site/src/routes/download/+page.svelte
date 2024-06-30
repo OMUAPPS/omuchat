@@ -130,14 +130,6 @@
         outline: none;
     }
 
-    code {
-        padding: 0.1rem;
-        margin-bottom: 0.2rem;
-        font-size: 0.9rem;
-        color: var(--color-1);
-        background: var(--color-bg-2);
-    }
-
     @container (max-width: 480px) {
         section {
             padding: 0 0.5rem;

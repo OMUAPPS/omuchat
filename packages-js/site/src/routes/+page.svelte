@@ -16,12 +16,6 @@
 </Page>
 
 <style lang="scss">
-    section {
-        background: var(--color-bg-2);
-        padding: 1rem;
-        width: fit-content;
-    }
-
     header {
         position: relative;
         display: block;

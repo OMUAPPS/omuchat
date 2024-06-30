@@ -102,15 +102,6 @@
         inset: 0;
     }
 
-    .debug {
-        position: fixed;
-        top: 0;
-        left: 0;
-        padding: 10px;
-        background: #000;
-        color: #fff;
-    }
-
     img {
         position: absolute;
         width: 100%;
