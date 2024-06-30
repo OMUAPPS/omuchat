@@ -14,6 +14,7 @@ import { APP as translator } from './translator/app.js';
 import { APP as chatSubtitle } from './chatsubtitle/app.js';
 import { APP as fries } from './aoikuru-fries/app.js';
 import { APP as timer } from './timer/app.js';
+import { APP as marshmallow } from './marshmallow/app.js';
 
 export const apps = [
     archive,
@@ -28,6 +29,7 @@ export const apps = [
     translator,
     chatSubtitle,
     timer,
+    marshmallow,
 ] satisfies App[];
 
 const personalApps: Record<string, App[]> = {

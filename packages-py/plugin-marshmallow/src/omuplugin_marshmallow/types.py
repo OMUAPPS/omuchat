@@ -14,7 +14,7 @@ class User(TypedDict):
 
 REFRESH_USERS_ENDPOINT_TYPE = EndpointType[None, Mapping[str, User]].create_json(
     PLUGIN_ID,
-    "refresh_accounts",
+    "refresh_users",
 )
 
 

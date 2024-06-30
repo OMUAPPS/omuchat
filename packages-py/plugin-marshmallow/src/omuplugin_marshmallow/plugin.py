@@ -29,7 +29,7 @@ async def refresh_users(_):
         marshmallow = await Marshmallow.from_cookies(
             cookies=cookies[browser],
         )
-        sessions[browser] = marshmallow
-        new_var = await marshmallow.fetch_user()
-        users[browser] = User(**new_var.model_dump())
+        user = await marshmallow.fetch_user()
+        sessions[user.name] = marshmallow
+        users[user.name] = User(**user.model_dump())
     return users
