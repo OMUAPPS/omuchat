@@ -7,17 +7,25 @@
     export let user: User | null = null;
 </script>
 
-<button class="switch-account" class:switch={users && Object.keys(users).length > 1}>
+<button class="switcher" class:switch={users && Object.keys(users).length > 1}>
     {#if user}
         <Account {user} />
     {/if}
     {#if users && Object.keys(users).length > 1}
-        <Tooltip>アカウントを切り替える</Tooltip>
+        <Tooltip>
+            {#if user}
+                <b>{user.screen_name}</b> <small>にログインしています</small>
+            {:else}
+                ログインしていません
+            {/if}
+            <br />
+            アカウントを切り替える
+        </Tooltip>
         <Popup noBackground>
             {#if users}
                 <div class="users">
                     {#each Object.entries(users) as [id, entry]}
-                        <button on:click={() => (user = entry)} class="switch-account-user">
+                        <button on:click={() => (user = entry)} class="user">
                             <img src={entry.image} alt={entry.name} />
                             <span class="user-info">
                                 <p>{entry.screen_name}</p>
@@ -29,11 +37,19 @@
             {/if}
         </Popup>
         <i class="ti ti-chevron-down" />
+    {:else}
+        <Tooltip>
+            {#if user}
+                <b>{user.screen_name}</b> <small>にログインしています</small>
+            {:else}
+                ログインしていません
+            {/if}
+        </Tooltip>
     {/if}
 </button>
 
 <style lang="scss">
-    .switch-account {
+    .switcher {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -42,6 +58,9 @@
         border: none;
         cursor: pointer;
         border-bottom: 1px solid var(--color-outline);
+
+        > :global(*) {
+        }
 
         > i {
             display: flex;
@@ -65,7 +84,7 @@
         }
     }
 
-    .switch-account-user {
+    .user {
         display: flex;
         flex-direction: row;
         align-items: center;
