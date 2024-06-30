@@ -28,20 +28,37 @@ const GET_MESSAGES_ENDPOINT_TYPE = EndpointType.createJson<string, Message[]>(PL
 
 export type MarshmallowConfig = {
     user: string | null;
+    syncScroll: boolean;
 };
 
 const MARSHMALLOW_CONFIG_REGISTRY_TYPE = RegistryType.createJson<MarshmallowConfig>(APP_ID, {
     name: 'marshmallow_config',
     defaultValue: {
         user: null,
+        syncScroll: true,
+    },
+});
+
+export type MarshmallowData = {
+    message: Message | null;
+    scroll: number;
+};
+
+const MARSHMALLOW_DATA_REGISTRY_TYPE = RegistryType.createJson<MarshmallowData>(APP_ID, {
+    name: 'marshmallow_data',
+    defaultValue: {
+        message: null,
+        scroll: 0,
     },
 });
 
 export class MarshmallowApp {
     public readonly config: Writable<MarshmallowConfig>;
+    public readonly data: Writable<MarshmallowData>;
 
     constructor(private readonly omu: Omu) {
         this.config = makeRegistryWritable(omu.registry.get(MARSHMALLOW_CONFIG_REGISTRY_TYPE));
+        this.data = makeRegistryWritable(omu.registry.get(MARSHMALLOW_DATA_REGISTRY_TYPE));
     }
 
     async refreshUsers(): Promise<Record<string, User>> {

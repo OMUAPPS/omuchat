@@ -1,8 +1,36 @@
 <script lang="ts">
     import { Tooltip } from '@omujs/ui';
-    import type { Message } from '../marshmallow-app.js';
+    import type { MarshmallowApp, Message } from '../marshmallow-app.js';
+    import { onMount } from 'svelte';
 
+    export let marshmallow: MarshmallowApp;
     export let message: Message;
+    const { config, data } = marshmallow;
+
+    let container: HTMLElement;
+    let image: HTMLImageElement;
+
+    function handleScroll(e: Event) {
+        const target = e.target as HTMLElement;
+        let scroll = target.scrollTop;
+        const imageHeight = image.clientHeight;
+        const imageTop = image.offsetTop;
+        scroll = (scroll - imageTop) / imageHeight;
+        $data.scroll = scroll;
+        console.log(scroll);
+    }
+
+    onMount(() => {
+        const parent = container.parentElement;
+        if (!parent) {
+            throw new Error('Parent not found');
+        }
+        parent.addEventListener('scroll', handleScroll);
+
+        return () => {
+            parent.removeEventListener('scroll', handleScroll);
+        };
+    });
 </script>
 
 <div class="buttons">
@@ -18,16 +46,34 @@
             <i class="ti ti-heart" />
         {/if}
     </button>
-    <button class="scroll">
-        <Tooltip>スクロール同期を有効にする</Tooltip>
+    <button
+        class="scroll"
+        class:active={$config.syncScroll}
+        on:click={() => {
+            $config.syncScroll = !$config.syncScroll;
+        }}
+    >
+        <Tooltip>
+            {#if $config.syncScroll}
+                スクロール同期を無効にする
+            {:else}
+                スクロール同期を有効にする
+            {/if}
+        </Tooltip>
         <i class="ti ti-arrow-autofit-down" />
     </button>
 </div>
-<div class="message">
-    <img src="https://media.marshmallow-qa.com/system/images/{message.message_id}.png" alt="" />
-    <p>
-        {message.content}
-    </p>
+<div bind:this={container}>
+    <div class="message">
+        <img
+            src="https://media.marshmallow-qa.com/system/images/{message.message_id}.png"
+            alt=""
+            bind:this={image}
+        />
+        <p>
+            {message.content}
+        </p>
+    </div>
 </div>
 
 <style lang="scss">
@@ -54,6 +100,11 @@
 
         > .scroll {
             margin-left: auto;
+
+            &.active {
+                background: var(--color-1);
+                color: var(--color-bg-2);
+            }
         }
     }
 

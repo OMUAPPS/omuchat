@@ -94,7 +94,7 @@
             style={style({ top: `${popupPos.y}px`, left: `${popupPos.x}px` })}
             bind:this={popup}
         >
-            <slot />
+            <slot close={() => (open = false)} />
         </div>
         <div
             class="pointer"

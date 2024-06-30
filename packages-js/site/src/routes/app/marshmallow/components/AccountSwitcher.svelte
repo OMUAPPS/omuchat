@@ -21,16 +21,27 @@
             <br />
             アカウントを切り替える
         </Tooltip>
-        <Popup noBackground>
+        <Popup noBackground let:close>
             {#if users}
-                <div class="users">
+                <div class="popup">
                     {#each Object.entries(users) as [id, entry]}
-                        <button on:click={() => (user = entry)} class="user">
+                        {@const selected = user === entry}
+                        <button
+                            on:click={() => {
+                                user = entry;
+                                close();
+                            }}
+                            class="user"
+                            class:selected
+                        >
                             <img src={entry.image} alt={entry.name} />
                             <span class="user-info">
                                 <p>{entry.screen_name}</p>
                                 <small>{entry.name}</small>
                             </span>
+                            {#if selected}
+                                <i class="ti ti-check" />
+                            {/if}
                         </button>
                     {/each}
                 </div>
@@ -59,7 +70,8 @@
         cursor: pointer;
         border-bottom: 1px solid var(--color-outline);
 
-        > :global(*) {
+        > :not(.popup) {
+            pointer-events: none;
         }
 
         > i {
@@ -84,12 +96,18 @@
         }
     }
 
+    .popup {
+        min-width: 200px;
+        outline: 1px solid var(--color-outline);
+    }
+
     .user {
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: start;
         gap: 1rem;
-        padding: 0.5rem;
+        padding: 0.5rem 1rem;
         width: 100%;
         background: var(--color-bg-2);
         border: none;
@@ -102,12 +120,29 @@
         }
 
         > .user-info {
+            display: flex;
+            flex-direction: column;
             align-items: start;
+        }
+
+        &.selected {
+            background: var(--color-1);
+            color: var(--color-bg-2);
         }
 
         &:focus,
         &:hover {
-            background: var(--color-bg-1);
+            padding-left: 1.2rem;
+            padding-right: 0.8rem;
+            transition-duration: 0.0621s;
+            transition-property: padding-left, padding-right, background, color;
+        }
+
+        &:active {
+            padding-left: 0.8rem;
+            padding-right: 1.2rem;
+            transition-duration: 0.0621s;
+            transition-property: padding-left, padding-right, background, color;
         }
     }
 </style>

@@ -1,22 +1,24 @@
 <script lang="ts">
-    import AppPage from '$lib/components/AppPage.svelte';
-    import { AppHeader, Tooltip } from '@omujs/ui';
-    import Popup from '../caption/Popup.svelte';
-    import { APP } from './app.js';
-    import SelectUser from './components/SelectUser.svelte';
-    import { MarshmallowApp, type Message, type User } from './marshmallow-app.js';
-    import Account from './components/Account.svelte';
+    import { page } from '$app/stores';
+    import { DragLink, Tooltip } from '@omujs/ui';
     import AccountSwitcher from './components/AccountSwitcher.svelte';
     import MessageView from './components/MessageView.svelte';
+    import SelectUser from './components/SelectUser.svelte';
+    import { MarshmallowApp, type Message, type User } from './marshmallow-app.js';
 
     export let marshmallow: MarshmallowApp;
-    const { config } = marshmallow;
+    const { config, data } = marshmallow;
 
     let user: User | null = null;
     let users: Record<string, User> | null = null;
 
     marshmallow.refreshUsers().then((res) => {
         users = res;
+        users['test'] = {
+            name: 'test',
+            screen_name: 'Test User',
+            image: 'https://via.placeholder.com/150',
+        };
         console.log(users);
         if ($config.user) {
             user = users[$config.user];
@@ -32,7 +34,6 @@
     }
 
     let messages: Message[] = [];
-    let message: Message | null = null;
 
     $: {
         if (user) {
@@ -43,6 +44,13 @@
             });
         }
     }
+
+    function createAssetUrl() {
+        const url = new URL($page.url);
+        url.pathname = `${url.pathname}asset`;
+        url.searchParams.set('assetId', Date.now().toString());
+        return url;
+    }
 </script>
 
 <main>
@@ -50,7 +58,7 @@
         <AccountSwitcher {users} bind:user />
         <div class="messages">
             {#each messages as item}
-                <button class="message" on:click={() => (message = item)}>
+                <button class="message" on:click={() => ($data.message = item)}>
                     <Tooltip>
                         クリックでメッセージを表示
                         <i class="ti ti-chevron-right" />
@@ -66,8 +74,8 @@
                     </button>
                 </button>
             {/each}
-            {#if message}
-                <button on:click={() => (message = null)} class="message hide">
+            {#if $data.message}
+                <button on:click={() => ($data.message = null)} class="message hide">
                     <Tooltip>
                         クリックでメッセージを非表示
                         <i class="ti ti-chevron-right" />
@@ -79,12 +87,29 @@
         </div>
     </div>
     <div class="right">
-        {#if message}
-            <MessageView {message} />
+        {#if $data.message}
+            <MessageView {marshmallow} message={$data.message} />
         {:else}
-            メッセージを選択してください。
-            <small> メッセージを選択すると、メッセージの詳細を表示できます。 </small>
+            <div class="select-message">
+                メッセージを選択してください。
+                <small> メッセージを選択すると、メッセージの詳細を表示できます。 </small>
+            </div>
         {/if}
+        <small class="drag-hint">
+            OBS内で使用する場合は、
+            <br>
+            以下のボタンからドラッグ&ドロップしてください。
+        </small>
+        <DragLink href={createAssetUrl}>
+            <h3 slot="preview" class="drag-preview">
+                これをOBSにドロップ
+                <i class="ti ti-upload" />
+            </h3>
+            <div class="drag">
+                <i class="ti ti-drag-drop" />
+                ここをOBSにドラッグ&ドロップ
+            </div>
+        </DragLink>
     </div>
 </main>
 {#if users && !user}
@@ -187,5 +212,51 @@
         flex-direction: column;
         overflow-y: scroll;
         gap: 1rem;
+    }
+
+    .select-message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        color: var(--color-1);
+    }
+
+    .drag-hint {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-top: 1rem;
+        color: var(--color-1);
+    }
+
+    .drag-preview {
+        padding: 10px 20px;
+        background: var(--color-bg-2);
+    }
+
+    .drag {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: var(--color-1);
+        background: var(--color-bg-2);
+        outline: 2px solid var(--color-1);
+        padding: 10px;
+        margin: 1rem;
+        gap: 5px;
+        cursor: grab;
+
+        & > i {
+            font-size: 20px;
+        }
+
+        &:hover {
+            transition: 0.06233s;
+        }
     }
 </style>
