@@ -78,10 +78,10 @@
             {#if $data.message}
                 <button on:click={() => ($data.message = null)} class="message hide">
                     <Tooltip>
-                        クリックでメッセージを非表示
+                        表示中のメッセージを閉じる
                         <i class="ti ti-chevron-right" />
                     </Tooltip>
-                    <p>メッセージを非表示</p>
+                    <p>メッセージを閉じる</p>
                     <i class="ti ti-x" />
                 </button>
             {/if}
@@ -93,7 +93,7 @@
         {:else}
             <div class="select-message">
                 メッセージを選択してください。
-                <small> メッセージを選択すると、メッセージの詳細を表示できます。 </small>
+                <small> メッセージを選択すると、メッセージを表示できます。 </small>
             </div>
         {/if}
         <small class="drag-hint">
