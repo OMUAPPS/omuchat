@@ -2,12 +2,16 @@
     import { omu } from '$lib/client.js';
     import { i18n } from '$lib/i18n/i18n-context.js';
     import { DEFAULT_LOCALE, LOCALES } from '$lib/i18n/i18n.js';
-    import { language } from '$lib/main/settings.js';
+    import { installed, language } from '$lib/main/settings.js';
     import { waitForTauri } from '$lib/utils/tauri.js';
     import { createI18nUnion } from '@omujs/i18n';
     import { NetworkStatus } from '@omujs/omu/network/network.js';
     import { Theme } from '@omujs/ui';
     import './styles.scss';
+    import { screenContext } from '$lib/common/screen/screen.js';
+    import ScreenInstalling from '$lib/main/setup/ScreenInstalling.svelte';
+    import { checkUpdate } from '@tauri-apps/api/updater';
+    import UpdateScreen from '$lib/main/screen/UpdateScreen.svelte';
 
     async function init() {
         await loadLocale();
@@ -22,6 +26,17 @@
                     reject(status);
                 }
             });
+        });
+
+        const update = await checkUpdate();
+        const { manifest, shouldUpdate } = update;
+
+        if (shouldUpdate && manifest) {
+            screenContext.push(UpdateScreen, { manifest });
+        }
+
+        omu.onReady(() => {
+            screenContext.push(ScreenInstalling, {});
         });
     }
 
@@ -46,7 +61,13 @@
 <div class="app">
     <main>
         {#await promise}
-            <div class="loading" data-tauri-drag-region>loading...</div>
+            <div class="loading" data-tauri-drag-region>
+                {#if !$installed}
+                    インストール中...
+                {:else}
+                    loading...
+                {/if}
+            </div>
         {:then}
             <slot />
         {:catch error}
