@@ -117,14 +117,11 @@ class YoutubeAPI:
             return []
         return [video_id]
 
-    async def get_channel_id_by_vanity(self, vanity: str | None) -> str | None:
-        if vanity is None:
-            return None
-        clean_vanity = re.sub(r"[^a-zA-Z0-9_-]", "", vanity)
-        if not clean_vanity:
+    async def get_channel_id_by_vanity(self, vanity_id: str | None) -> str | None:
+        if vanity_id is None:
             return None
         async with self.throttle:
-            response = await self.session.get(f"{YOUTUBE_URL}/@{clean_vanity}")
+            response = await self.session.get(f"{YOUTUBE_URL}/@{vanity_id}")
         soup = bs4.BeautifulSoup(await response.text(), "html.parser")
         meta_tag = soup.select_one('meta[itemprop="identifier"]')
         if meta_tag is None:
