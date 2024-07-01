@@ -9,7 +9,7 @@
     let downloading = false;
     let showExtra = false;
 
-    onMount(async () => {
+    async function getVersion() {
         versions = await Api.getVersions();
         const platform = Api.getPlatform();
         if (versions.platforms[platform] === undefined) {
@@ -17,13 +17,15 @@
             return;
         }
         version = versions.platforms[platform];
-    });
+    }
 
     $: if (downloading) {
         setTimeout(() => {
             downloading = false;
         }, 1000);
     }
+
+    const promise = getVersion();
 </script>
 
 <svelte:head>
@@ -41,16 +43,22 @@
     </header>
     <main slot="content">
         <p>
-            {#if version}
-                <a href={version?.url} class="download" on:click={() => (downloading = true)}>
-                    {#if downloading}
-                        ダウンロード中...
-                    {:else}
-                        ダウンロード
-                    {/if}
-                    <i class="ti ti-download" />
-                </a>
-            {/if}
+            {#await promise}
+                <i class="ti ti-loader-2 loading" />
+            {:then}
+                {#if version}
+                    <a href={version?.url} class="download" on:click={() => (downloading = true)}>
+                        {#if downloading}
+                            ダウンロード中...
+                        {:else}
+                            ダウンロード
+                        {/if}
+                        <i class="ti ti-download" />
+                    </a>
+                {:else}
+                    <small> お使いのプラットフォームはサポートされていませんでした… </small>
+                {/if}
+            {/await}
             <a href="/app">
                 アプリを探す
                 <i class="ti ti-external-link" />
@@ -117,6 +125,19 @@
                 background: var(--color-bg-2);
                 outline: 1px solid var(--color-1);
             }
+        }
+    }
+
+    .loading {
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
         }
     }
 
