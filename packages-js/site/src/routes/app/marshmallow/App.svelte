@@ -34,14 +34,21 @@
     }
 
     let messages: Message[] = [];
+    let loading = false;
 
     $: {
         if (user) {
             messages = [];
-            marshmallow.getMessages(user.name).then((res) => {
-                console.log(res);
-                messages = res;
-            });
+            loading = true;
+            marshmallow
+                .getMessages(user.name)
+                .then((res) => {
+                    console.log(res);
+                    messages = res;
+                })
+                .finally(() => {
+                    loading = false;
+                });
         }
     }
 
@@ -65,14 +72,6 @@
                         <i class="ti ti-chevron-right" />
                     </Tooltip>
                     <p>{item.content}</p>
-                    <button class="like">
-                        <Tooltip>お気に入りにする</Tooltip>
-                        {#if item.liked}
-                            <i class="ti ti-heart-filled" />
-                        {:else}
-                            <i class="ti ti-heart" />
-                        {/if}
-                    </button>
                 </button>
             {/each}
             {#if $data.message}
@@ -89,7 +88,7 @@
     </div>
     <div class="right">
         {#if $data.message}
-            <MessageView {marshmallow} message={$data.message} />
+            <MessageView {marshmallow} bind:message={$data.message} />
         {:else}
             <div class="select-message">
                 メッセージを選択してください。
@@ -116,6 +115,12 @@
 {#if users && !user}
     <SelectUser {users} bind:user />
 {/if}
+{#if loading}
+    <div class="loading">
+        <i class="ti ti-loader-2" />
+        メッセージを読み込んでいます…
+    </div>
+{/if}
 
 <style lang="scss">
     main {
@@ -123,6 +128,33 @@
         display: flex;
         flex-direction: row;
         height: 100%;
+    }
+
+    .loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-bg-1);
+        opacity: 0.9;
+        color: var(--color-1);
+        font-size: 1.25rem;
+
+        > i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
     .messages {
@@ -149,32 +181,6 @@
                 text-overflow: ellipsis;
             }
 
-            > button {
-                background: none;
-                border: none;
-                cursor: pointer;
-                min-width: none;
-                width: 2rem;
-                height: 2rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--color-1);
-            }
-
-            > .like {
-                margin-left: auto;
-                background: none;
-                border: none;
-                cursor: pointer;
-                min-width: 2rem;
-                height: 2rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--color-1);
-            }
-            
             &.selected,
             &:focus,
             &:hover {
