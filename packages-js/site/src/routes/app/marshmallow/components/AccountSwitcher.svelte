@@ -99,6 +99,7 @@
     .popup {
         min-width: 200px;
         outline: 1px solid var(--color-outline);
+        box-shadow: 0.25rem -0.25rem 5rem var(--color-outline);
     }
 
     .user {
