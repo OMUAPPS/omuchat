@@ -6,9 +6,9 @@ YOUTUBE_IDENTIFIER = BASE_PROVIDER_IDENTIFIER / "youtube"
 YOUTUBE_URL = "https://www.youtube.com"
 YOUTUBE_REGEX = (
     HTTP_REGEX + r"(youtu\.be\/(?P<video_id_short>[\w-]+))|(m\.)?youtube\.com\/"
-    r"(watch\?v=(?P<video_id>[\w_-]+|)|@(?P<channel_id_vanity>[\w_-]+|)"
-    r"|channel\/(?P<channel_id>[\w_-]+|)|user\/(?P<channel_id_user>[\w_-]+|)"
-    r"|c\/(?P<channel_id_c>[\w_-]+|))"
+    r"(watch\?v=(?P<video_id>[\w_-]+|)|@(?P<channel_id_vanity>[^/]+|)"
+    r"|channel\/(?P<channel_id>[^/]+|)|user\/(?P<channel_id_user>[^/]+|)"
+    r"|c\/(?P<channel_id_c>[^/]+|))"
 )
 PROVIDER = Provider(
     id=YOUTUBE_IDENTIFIER,
