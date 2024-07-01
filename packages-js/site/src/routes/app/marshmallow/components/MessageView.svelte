@@ -17,7 +17,6 @@
         const imageTop = image.offsetTop;
         scroll = (scroll - imageTop) / imageHeight;
         $data.scroll = scroll;
-        console.log(scroll);
     }
 
     onMount(() => {
@@ -31,14 +30,39 @@
             parent.removeEventListener('scroll', handleScroll);
         };
     });
+
+    let locked = false;
+
+    async function lock<T>(promise: Promise<T>): Promise<T> {
+        locked = true;
+        try {
+            return await promise;
+        } finally {
+            locked = false;
+        }
+    }
 </script>
 
-<div class="buttons">
-    <button class="check">
+<div class="buttons" class:locked>
+    <button
+        class="check"
+        class:active={message.acknowledged}
+        on:click={async () => {
+            message = await lock(
+                marshmallow.setAcknowledged(message.message_id, !message.acknowledged),
+            );
+        }}
+    >
         <Tooltip>確認済みにする</Tooltip>
         <i class="ti ti-check" />
     </button>
-    <button class="like">
+    <button
+        class="like"
+        class:active={message.liked}
+        on:click={async () => {
+            message = await lock(marshmallow.setLiked(message.message_id, !message.liked));
+        }}
+    >
         <Tooltip>お気に入りにする</Tooltip>
         {#if message.liked}
             <i class="ti ti-heart-filled" />
@@ -46,6 +70,14 @@
             <i class="ti ti-heart" />
         {/if}
     </button>
+    <a
+        href="https://marshmallow-qa.com/messages/{message.message_id}"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        <Tooltip>ブラウザで開く</Tooltip>
+        <i class="ti ti-external-link" />
+    </a>
     <button
         class="scroll"
         class:active={$config.syncScroll}
@@ -85,8 +117,10 @@
         background: var(--color-bg-2);
         border-bottom: 1px solid var(--color-outline);
         padding: 0.5rem 1rem;
+        gap: 0.5rem;
 
-        > button {
+        > button,
+        > a {
             background: none;
             border: none;
             cursor: pointer;
@@ -95,16 +129,26 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 4px;
             color: var(--color-1);
+
+            &:hover {
+                background: var(--color-bg-1);
+            }
+        }
+
+        > .active {
+            background: var(--color-1);
+            color: var(--color-bg-2);
         }
 
         > .scroll {
             margin-left: auto;
+        }
 
-            &.active {
-                background: var(--color-1);
-                color: var(--color-bg-2);
-            }
+        &.locked {
+            pointer-events: none;
+            opacity: 0.5;
         }
     }
 
