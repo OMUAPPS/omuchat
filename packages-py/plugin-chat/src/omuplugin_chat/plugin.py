@@ -137,21 +137,19 @@ async def create_channel_tree(url: str) -> list[Channel]:
     results = await iwashi.tree(url)
     if results is None:
         return []
-    found_channels: list[Channel] = []
+    found_channels: dict[str, Channel] = {}
     services = await providers.fetch_all()
     for result in results.to_list():
         for provider in services.values():
             if re.search(provider.regex, result.url) is None:
                 continue
-            found_channels.append(
-                Channel(
-                    provider_id=provider.id,
-                    id=provider.id / result.id,
-                    name=result.name or result.id or result.service.name,
-                    description=result.description or "",
-                    icon_url=result.profile_picture or "",
-                    url=result.url,
-                    active=True,
-                )
+            found_channels[result.id] = Channel(
+                provider_id=provider.id,
+                id=provider.id / result.id,
+                name=result.name or result.id or result.service.name,
+                description=result.description or "",
+                icon_url=result.profile_picture or "",
+                url=result.url,
+                active=True,
             )
-    return found_channels
+    return list(found_channels.values())
