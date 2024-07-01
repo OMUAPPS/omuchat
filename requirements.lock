@@ -73,7 +73,7 @@ frozenlist==1.4.1
 idna==3.7
     # via requests
     # via yarl
-iwashi==3.0.5
+iwashi==3.0.8
     # via omu-chatprovider
     # via omuplugin-chat
 loguru==0.7.2
