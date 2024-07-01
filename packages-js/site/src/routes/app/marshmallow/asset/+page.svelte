@@ -46,8 +46,9 @@
         width: 100%;
         height: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: start;
         align-items: start;
+        overflow: hidden;
     }
 
     .async {
