@@ -58,7 +58,8 @@
         <AccountSwitcher {users} bind:user />
         <div class="messages">
             {#each messages as item}
-                <button class="message" on:click={() => ($data.message = item)}>
+                {@const selected = $data.message === item}
+                <button class="message" class:selected on:click={() => ($data.message = item)}>
                     <Tooltip>
                         クリックでメッセージを表示
                         <i class="ti ti-chevron-right" />
@@ -97,7 +98,7 @@
         {/if}
         <small class="drag-hint">
             OBS内で使用する場合は、
-            <br>
+            <br />
             以下のボタンからドラッグ&ドロップしてください。
         </small>
         <DragLink href={createAssetUrl}>
@@ -173,7 +174,8 @@
                 justify-content: center;
                 color: var(--color-1);
             }
-
+            
+            &.selected,
             &:focus,
             &:hover {
                 background: var(--color-bg-1);
