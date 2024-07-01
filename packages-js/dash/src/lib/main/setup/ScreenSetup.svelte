@@ -10,9 +10,10 @@
     import Background from '$lib/common/Background.svelte';
     import ProviderIcon from '$lib/common/ProviderIcon.svelte';
     import Screen from '$lib/common/screen/Screen.svelte';
-    import { type ScreenHandle } from '$lib/common/screen/screen.js';
+    import { screenContext, type ScreenHandle } from '$lib/common/screen/screen.js';
     import { IdentifierMap } from '@omujs/omu/identifier.js';
     import { Button, Textbox, Tooltip } from '@omujs/ui';
+    import ScreenInstallApps from './ScreenInstallApps.svelte';
 
     export let screen: {
         handle: ScreenHandle;
@@ -46,11 +47,16 @@
         const channels = [...result.values()].filter((v) => v.active).map((v) => v.channel);
         chat.channels!.add(...channels);
         screen.handle.pop();
-        $installed = true;
+        screenContext.push(ScreenInstallApps, {});
     }
 
     function reset() {
         result = undefined;
+    }
+
+    function skip() {
+        screen.handle.pop();
+        screenContext.push(ScreenInstallApps, {});
     }
 
     let tooltipHint: string;
@@ -73,18 +79,11 @@
     });
 </script>
 
-<Screen {screen} title="setup" windowed={false} disableDecorations disableClose>
-    <div class="background">
-        <Background />
-    </div>
+<Screen {screen} title="setup" disableClose>
     <div class="container">
         <div class="content">
-            <div class="title">
-                <i class="ti ti-settings" />
-                {$t('setup.title')}
-            </div>
             {#if result}
-                <div class="description">{$t('setup.whitch_channel')}</div>
+                <div class="description">{$t('setup.which_channel')}</div>
                 <div class="list">
                     {#each result.entries() as [key, { channel, active }] (key)}
                         <button class="item" class:active on:click={() => (active = !active)}>
@@ -130,10 +129,13 @@
                         placeholder={tooltipHint}
                         disabled={locked}
                     />
+                    {#each hints as hint}
+                        <p>{hint}</p>
+                    {/each}
                 </div>
             {/if}
         </div>
-        <button on:click={screen.handle.pop} class="skip">
+        <button on:click={skip} class="skip">
             {$t('setup.skip')}
             <i class="ti ti-arrow-right" />
         </button>
@@ -141,15 +143,6 @@
 </Screen>
 
 <style lang="scss">
-    .background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: var(--color-bg-2);
-    }
-
     .container {
         position: relative;
         display: flex;
@@ -159,6 +152,16 @@
         width: 100%;
         height: 100%;
         color: var(--color-text);
+        font-weight: bold;
+    }
+
+    .input {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: center;
+        width: 100%;
+        font-weight: normal;
     }
 
     .skip {
@@ -184,12 +187,6 @@
         min-height: 250px;
         padding: 20px;
         background: var(--color-bg-2);
-    }
-
-    .title {
-        padding: 5px 10px;
-        font-size: 24px;
-        font-weight: bold;
     }
 
     .list {

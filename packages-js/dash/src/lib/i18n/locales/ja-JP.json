@@ -93,12 +93,14 @@
     },
     "setup": {
         "title": "セットアップ",
-        "whitch_channel": "どのチャンネルを追加しますか？",
+        "which_channel": "どのチャンネルを追加しますか？",
         "installing": "インストール中",
         "append": "追加する",
         "start_again": "やり直す",
         "please_put_in_urls": "URLを入力すると、チャンネルを自動で追加します。",
-        "skip": "セットアップをスキップ"
+        "skip": "セットアップをスキップ",
+        "app_hint": "サイトから様々なアプリを追加することができます！",
+        "finish": "わかった"
     },
     "pages": {
         "main": {
