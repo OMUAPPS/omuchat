@@ -94,6 +94,10 @@
                 transition-property: padding-left, background, color;
             }
         }
+
+        &:focus {
+            outline: none;
+        }
     }
 
     .popup {

@@ -41,6 +41,14 @@
             locked = false;
         }
     }
+
+    async function next() {
+        message = await lock(marshmallow.setAcknowledged(message.message_id, true));
+        if (!$config.user) return;
+        const messages = await marshmallow.getMessages($config.user);
+        if (messages.length === 0) return;
+        message = messages[0];
+    }
 </script>
 
 <div class="buttons" class:locked>
@@ -102,6 +110,11 @@
             alt=""
             bind:this={image}
         />
+        <button class="next" on:click={() => next()}>
+            <Tooltip>メッセージを確認済みにして次のメッセージを表示</Tooltip>
+            確認して次へ
+            <i class="ti ti-arrow-right" />
+        </button>
         <p>
             {message.content}
         </p>
@@ -132,8 +145,16 @@
             border-radius: 4px;
             color: var(--color-1);
 
+            &:focus {
+                outline: 2px solid var(--color-1);
+                outline-offset: 1px;
+            }
             &:hover {
                 background: var(--color-bg-1);
+                color: var(--color-1);
+            }
+            &:active {
+                outline: none;
             }
         }
 
@@ -168,6 +189,26 @@
             white-space: pre-wrap;
             word-wrap: break-word;
             width: 100%;
+        }
+    }
+
+    .next {
+        background: var(--color-bg-2);
+        outline: 1px solid var(--color-1);
+        color: var(--color-1);
+        padding: 0.5rem 1rem;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: bold;
+        cursor: pointer;
+
+        &:focus,
+        &:hover {
+            background: var(--color-1);
+            color: var(--color-bg-2);
         }
     }
 </style>

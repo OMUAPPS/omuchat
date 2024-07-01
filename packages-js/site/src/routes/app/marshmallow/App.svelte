@@ -72,6 +72,9 @@
                         <i class="ti ti-chevron-right" />
                     </Tooltip>
                     <p>{item.content}</p>
+                    {#if selected}
+                        <i class="ti ti-chevron-right" />
+                    {/if}
                 </button>
             {/each}
             {#if $data.message}
@@ -137,8 +140,9 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 1rem;
         background: var(--color-bg-1);
-        opacity: 0.9;
+        opacity: 0.95;
         color: var(--color-1);
         font-size: 1.25rem;
 
@@ -181,14 +185,25 @@
                 text-overflow: ellipsis;
             }
 
+            > i {
+                margin-left: auto;
+                padding-left: 0.25rem;
+            }
+
             &.selected,
             &:focus,
             &:hover {
                 background: var(--color-bg-1);
                 color: var(--color-1);
+                outline: none;
+                outline-offset: -2px;
                 padding-left: 2.25rem;
                 transition-duration: 0.0621s;
                 transition-property: padding-left, background, color;
+            }
+
+            &.selected {
+                // outline: 1px solid var(--color-1);
             }
         }
     }
@@ -220,6 +235,28 @@
         flex-direction: column;
         overflow-y: scroll;
         gap: 1rem;
+        -webkit-overflow-scrolling: touch;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: var(--color-bg-2);
+            border-radius: 1px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: color-mix(in srgb, var(--color-1) 10%, transparent 0%);
+            border: 2px solid var(--color-bg-2);
+            border-radius: 1px;
+        }
+
+        &:hover {
+            &::-webkit-scrollbar-thumb {
+                background: var(--color-1);
+            }
+        }
     }
 
     .select-message {
